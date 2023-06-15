@@ -1,0 +1,122 @@
+<div class="container pt-2 d-none d-md-block">
+  <label for="search">Buscar producto:</label>
+  <input
+    type="text"
+    id="search"
+    [(ngModel)]="searchTerm"
+    (input)="filterProducts()"
+    class="form-control shadow"
+    placeholder="Ingresa tu busqueda aquí..."
+  />
+</div>
+<hr />
+<div class="container text-center">
+  <div class="row justify-content-center">
+    <div class="col-md-4 d-none d-md-block">
+      <div class="card border p-3 bg-custom customShadow mt-3">
+        <!-- Contenido de la primera tarjeta -->
+        <div
+          *ngIf="filteredProducts && filteredProducts.length > 0; else noMatchesMessage"
+          class="container"
+        >
+          <div
+            id="carouselExampleControls"
+            class="carousel slide"
+            data-ride="carousel"
+          >
+            <div class="carousel-inner" style="height: 130px">
+              <div
+                *ngFor="let producto of filteredProducts; let i = index"
+                class="carousel-item"
+                [class.active]="i === 0"
+              >
+                <h5 class="">{{ producto.name }}</h5>
+                <p>
+                  {{
+                    producto.purchase_price | currency : "CRC" : "₡" : "1.2-2"
+                  }}
+                  {{ producto.description }}
+                </p>
+              </div>
+            </div>
+            <div
+              class="carousel-controls d-flex align-items-center justify-content-center"
+            >
+              <button
+                class="carousel-control-prev"
+                type="button"
+                data-bs-target="#carouselExampleControls"
+                data-bs-slide="prev"
+              >
+                <a
+                  class="underline"
+                  href="#carouselExampleControls"
+                  role="button"
+                  data-slide="prev"
+                >
+                  <span aria-hidden="true">Ant.</span>
+                </a>
+              </button>
+              <div class="add-button-container">
+                <button type="button" class="btn roundButton my-clic clic-on-image">
+                  <i class="fas fa-shopping-cart"></i>
+                  <a href="" style="text-decoration: none;" class="hidden-link my-clic"></a>
+                </button>
+              </div>
+              <button
+                class="carousel-control-next"
+                type="button"
+                data-bs-target="#carouselExampleControls"
+                data-bs-slide="next"
+              >
+                <a
+                  class="underline"
+                  href="#carouselExampleControls"
+                  role="button"
+                  data-slide="next"
+                >
+                  <span aria-hidden="true">Sig.</span>
+                </a>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card border p-3 bg-custom customShadow mt-3">
+        <h3>Mis ventas</h3>
+        <div routerLink="/shopping-cart">
+          <img src="../../../assets/shopping.jpg" alt="Ventas" width="60%" height="75px" class="customShadow clic-on-image">
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card border p-3 bg-custom customShadow mt-3">
+        <h3>Mis compras</h3>
+        <div (click)="goToPurchaseHistory()">
+          <img src="../../../assets/purchase.png" alt="Compras" width="60%" height="75px" class="customShadow clic-on-image">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <div >
+          <app-digital-watch class="bg-custom customShadow mt-3"></app-digital-watch>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <!-- Contenido de la segunda columna de la segunda fila -->
+    </div>
+    <div class="col-md-4">
+      <!-- Contenido de la tercera columna de la segunda fila -->
+    </div>
+  </div>
+</div>
+
+<ng-template #noMatchesMessage>
+    <div class="text-center">
+      <p>Producto no coincide</p>
+    </div>
+  </ng-template>

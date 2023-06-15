@@ -1,0 +1,137 @@
+<header id="main-header" class="py-2 bg-info text-white main-board-style">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8">
+        <h1><i class="fas fa-cog"></i> Mis ventas</h1>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container pt-2 d-none d-md-block">
+  <label for="search">Buscar producto:</label>
+  <input
+    type="text"
+    id="search"
+    name="search"
+    class="form-control shadow"
+    placeholder="Ingresa tu busqueda aquí..."
+  />
+</div>
+<hr />
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 mb-2 d-flex justify-content-center">
+      <div class="card col-md-8 customShadow bg-custom p-3">
+        <a data-bs-toggle="modal" data-bs-target="#crearVentaModalLabel">
+          <div class="card-body">
+            <h5 class="card-title">Crear venta</h5>
+            <!-- Insertar formulario modal para crear venta -->
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="col-md-6 mb-2 d-flex justify-content-center">
+      <div class="card col-md-8 customShadow bg-custom p-3">
+        <div class="card-body">
+          <h5 class="card-title">Mi historial</h5>
+          <!-- Contenido para la opción "Mi historial" -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 mb-2 d-flex justify-content-center">
+      <div class="card col-md-8 customShadow bg-custom p-3">
+        <div class="card-body">
+          <h5 class="card-title">Mis productos</h5>
+          <!-- Contenido para la opción "Mis productos" -->
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 mb-2 d-flex justify-content-center">
+      <div class="card col-md-8 customShadow bg-custom p-3">
+        <div class="card-body">
+          <h5 class="card-title">Mis reportes</h5>
+          <!-- Contenido para la opción "Mis reportes" -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="crearVentaModal" tabindex="-1" role="dialog" aria-labelledby="crearVentaModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="crearVentaModalLabel">Crear venta</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Contenido del formulario -->
+        <form>
+          <!-- Fecha actual -->
+          <div class="mb-3">
+            <label for="fecha">Fecha:</label>
+            <input type="text" id="fecha" name="fecha" class="form-control" [value]="getCurrentDate()" disabled>
+          </div>
+          <!-- Cliente -->
+          <div class="mb-3">
+            <label for="cliente">Cliente:</label>
+            <select id="cliente" class="form-control" [(ngModel)]="selectedClient" name="cliente">
+              <option value="Contado">Contado</option>
+              <!-- Opciones para otros clientes -->
+            </select>
+          </div>
+          <!-- Forma de pago -->
+          <div class="mb-3">
+            <label for="formaPago">Forma de pago:</label>
+            <select id="formaPago" class="form-control" [(ngModel)]="selectedPaymentMethod" name="formaPago">
+              <option value="Contado">Contado</option>
+              <!-- Opciones para otras formas de pago -->
+            </select>
+          </div>
+          <!-- Búsqueda de productos -->
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" name="product" placeholder="Buscar por código" [(ngModel)]="searchProduct" name="searchProduct">
+            <button class="btn btn-outline-secondary" type="button" (click)="searchProductByCode()">Buscar</button>
+          </div>
+          <!-- Tabla de productos -->
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Precio de venta</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of searchedProducts">
+                <td>{{ product.int_code }}</td>
+                <td>{{ product.name }}</td>
+                <td>
+                  <input type="text" class="form-control" name="salePrice" [(ngModel)]="product.salePrice" name="salePrice">
+                </td>
+                <td>
+                  <button class="btn btn-danger" type="button" (click)="removeProduct(product)">Eliminar</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- Total de la venta -->
+          <div class="mb-3">
+            <label for="totalVenta">Total de la venta:</label>
+            <input type="text" id="totalVenta" name="totalVenta" class="form-control" [value]="getTotalSaleAmount()" disabled>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <!-- Botones de guardar y cerrar -->
+        <button type="button" class="btn btn-primary" (click)="guardarVenta()">Guardar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>

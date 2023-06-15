@@ -1,0 +1,51 @@
+.card {
+  min-height: 140px;
+  /* max-height: 150px; */
+  margin-top: 10px;
+}
+
+.underline {
+  text-decoration: none;
+}
+
+.customShadow {
+  box-shadow: 2px rgba(139, 138, 138, 0.8);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  border-radius: 10px;
+}
+.customShadow:hover {
+  box-shadow: 5px 5px 5px rgb(56, 55, 55);
+  transform: scale(1.05);
+  /* text-shadow: 1px 1px 2px rgb(20, 19, 19); */
+}
+
+.bg-custom {
+  background-color: rgb(219, 213, 176);
+  transition: background-color 0.3 ease, transform 0.3s ease;
+}
+.bg-custom:hover {
+  background-color: #b5f3b5;
+  transform: scale(1.05);
+  cursor: pointer;
+  text-shadow: 1px 1px 1px rgb(155, 155, 126);
+}
+
+.my-clic:hover {
+  box-shadow: 2px 1px 1px darkgray;
+}
+
+.my-clic:active {
+  transform: translateY(1px) tranlateZ(-1px) scale(0.95);
+  transition: transform 0.2s;
+  box-shadow: inset 2px 2px 2px darkgray;
+  background-color: #7ef37e;
+}
+
+.clic-on-image:active {
+  transform: scale(0.95);
+  transition: transform 0.2s;
+}
+
+a {
+    text-decoration: none;
+}
