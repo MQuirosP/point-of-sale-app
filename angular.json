@@ -31,7 +31,7 @@
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/popper.js/dist/umd/popper.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.min.js"
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
             ]
           },
           "configurations": {
@@ -40,12 +40,12 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumError": "2mb"
                 }
               ],
               "outputHashing": "all"

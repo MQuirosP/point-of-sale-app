@@ -1,6 +1,6 @@
 #reloj {
   margin: 0;
-  margin-top: 30px;
+  /* margin-top: 30px; */
   padding: 0;
   font-family: sans-serif;
   font-size: 3em;
@@ -9,12 +9,14 @@
 }
 
 .reloj-contenedor {
-  background-color: rgb(12, 119, 206);
-  padding: 0 25px 25px 0;
+  /* background-color: rgb(12, 119, 206); */
+  /* padding: 0 25px 25px 0; */
+  padding-top: 10px;
+  padding-bottom: 10px;
   /* max-width: 350px; */
   text-align: center;
   border-radius: 10px;
-  margin: 0 auto;
+  /* margin: 0 auto; */
   /* margin-top: 10%; */
   transition: border 300ms ease-out;
   /* border: rgb(12, 119, 206) 1px solid; */
@@ -29,16 +31,16 @@
 }
 
 .customShadow {
-  box-shadow: 2px rgb(20, 19, 19);
+  /* box-shadow: 2px rgb(20, 19, 19); */
   transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 .customShadow:hover {
-  box-shadow: 5px 5px 5px rgb(20, 19, 19);
+  box-shadow: 5px 5px 5px rgb(56, 55, 55);
   transform: scale(1.05);
 }
 
 .bg-custom {
-  background-color: rgb(219, 213, 176);
+  background-color: rgb(249, 250, 184);
   transition: background-color 0.3 ease, transform 0.3s ease;
 }
 .bg-custom:hover {
@@ -53,11 +55,11 @@
   transition: transform 0.3s;
 }
 
-@media (max-width: 600px) {
+/* @media (max-width: 600px) {
   #hora {
     display: none;
   }
   #hora::before {
     content: attr(data-hour);
   }
-}
+} */

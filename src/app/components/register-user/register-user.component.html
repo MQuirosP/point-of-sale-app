@@ -1,0 +1,83 @@
+<!-- Encabezado de componente Mis Usuarios -->
+<header id="main-header" class="py-2 bg-info text-white main-board-style">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8" [@fadeAnimation]>
+        <h1><i class="fas fa-cog"></i> Registro de usuarios</h1>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Formulario registro de usuarios -->
+<section id="registro" class="py-4 col col-md-6" [@fadeAnimation]>
+  <div class="mb-4">
+    <div class="row">
+      <div class="container col col-md-6 mb-3">
+        <div class="card">
+          <div class="card-header">
+            <h4>Registrar usuario</h4>
+          </div>
+          <form (ngSubmit)="registro()">
+            <div class="card-body">
+              <div class="form-group">
+                <label for="name" class="">Nombre:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  autofocus
+                  id="name"
+                  required
+                  [(ngModel)]="name"
+                  name="name"
+                  autocomplete="off"
+                />
+              </div>
+              <div class="form-group">
+                <label for="lastname" class="">Apellido:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="lastname"
+                  required
+                  [(ngModel)]="lastname"
+                  name="lastname"
+                  autocomplete="off"
+                />
+              </div>
+              <div class="form-group">
+                <label for="email" class="">Usuario:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="username"
+                  required
+                  [(ngModel)]="email"
+                  name="email"
+                  autocomplete="off"
+                />
+              </div>
+              <div class="form-group">
+                <label for="password" class="">Contraseña:</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  required
+                  [(ngModel)]="password"
+                  name="password"
+                />
+              </div>
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary shadow">Registro</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="mb-4">
+  <hr />
+</div>

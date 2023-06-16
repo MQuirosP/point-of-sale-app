@@ -1,3 +1,17 @@
+<!-- Cabecero panel principal -->
+<header id="main-header" class="py-2 bg-info text-white main-board-style">
+  <div class="container">
+      <div class="row">
+          <div class="col-md-8" [@fadeAnimation]>
+              <h1>
+                  <i class="fas fa-cog"></i> Panel principal
+              </h1>
+          </div>
+      </div>
+  </div>
+</header>
+
+<!-- Barra de búsqueda -->
 <div class="container pt-2 d-none d-md-block">
   <label for="search">Buscar producto:</label>
   <input
@@ -7,16 +21,22 @@
     (input)="filterProducts()"
     class="form-control shadow"
     placeholder="Ingresa tu busqueda aquí..."
+    autocomplete="off"
   />
 </div>
-<hr />
-<div class="container text-center">
-  <div class="row justify-content-center">
-    <div class="col-md-4 d-none d-md-block">
-      <div class="card border p-3 bg-custom customShadow mt-3">
-        <!-- Contenido de la primera tarjeta -->
+
+<!-- Tiles de menú -->
+<div class="container text-center" [@fadeAnimation]>
+  <!-- Cinta superior de tarjetas -->
+  <div class="row">
+    <div class="col-md-4 mb-2 mt-3">
+      <div class="card shadow card-height border mt-3 bg-custom customShadow">
+        <!-- Primer tarjeta, carrusel de productos -->
         <div
-          *ngIf="filteredProducts && filteredProducts.length > 0; else noMatchesMessage"
+          *ngIf="
+            filteredProducts && filteredProducts.length > 0;
+            else noMatchesMessage
+          "
           class="container"
         >
           <div
@@ -27,20 +47,20 @@
             <div class="carousel-inner" style="height: 130px">
               <div
                 *ngFor="let producto of filteredProducts; let i = index"
-                class="carousel-item"
+                class="carousel-item pt-2"
                 [class.active]="i === 0"
               >
                 <h5 class="">{{ producto.name }}</h5>
                 <p>
                   {{
-                    producto.purchase_price | currency : "CRC" : "₡" : "1.2-2"
+                    producto.sale_price | currency : "CRC" : "₡" : "1.2-2"
                   }}
                   {{ producto.description }}
                 </p>
               </div>
             </div>
             <div
-              class="carousel-controls d-flex align-items-center justify-content-center"
+              class="carousel-controls align-items-center justify-content-center"
             >
               <button
                 class="carousel-control-prev"
@@ -49,7 +69,7 @@
                 data-bs-slide="prev"
               >
                 <a
-                  class="underline"
+                  class="text-decoration-none"
                   href="#carouselExampleControls"
                   role="button"
                   data-slide="prev"
@@ -58,19 +78,27 @@
                 </a>
               </button>
               <div class="add-button-container">
-                <button type="button" class="btn roundButton my-clic clic-on-image">
+                <button
+                  (click)="openSaleModal()"
+                  type="button"
+                  class="btn roundButton my-clic clic-on-image"
+                >
                   <i class="fas fa-shopping-cart"></i>
-                  <a href="" style="text-decoration: none;" class="hidden-link my-clic"></a>
+                  <a
+                    href=""
+                    style="text-decoration: none"
+                    class="hidden-link my-clic text-decoration-none"
+                  ></a>
                 </button>
               </div>
               <button
                 class="carousel-control-next"
                 type="button"
-                data-bs-target="#carouselExampleControls"
-                data-bs-slide="next"
+                data-target="#carouselExampleControls"
+                data-slide="next"
               >
                 <a
-                  class="underline"
+                  class="text-decoration-none"
                   href="#carouselExampleControls"
                   role="button"
                   data-slide="next"
@@ -83,31 +111,61 @@
         </div>
       </div>
     </div>
-    <div class="col-md-4">
-      <div class="card border p-3 bg-custom customShadow mt-3">
+    <!-- Segunda tarjeta, Mis Ventas -->
+    <div class="col-md-4 mt-3">
+      <div class="card shadow card-height border p-3 bg-custom customShadow mt-3">
         <h3>Mis ventas</h3>
-        <div routerLink="/shopping-cart">
-          <img src="../../../assets/shopping.jpg" alt="Ventas" width="60%" height="75px" class="customShadow clic-on-image">
+        <div>
+          <a routerLink="/shopping-cart">
+            <img
+              src="../../../assets/shopping.jpg"
+              alt="Ventas"
+              width="60%"
+              height="75px"
+              class="customShadow clic-on-image"
+            />
+          </a>
         </div>
       </div>
     </div>
-    <div class="col-md-4">
-      <div class="card border p-3 bg-custom customShadow mt-3">
+    <!-- Tercera tarjeta, Mis Compras -->
+    <div class="col-md-4 mt-3">
+      <div class="card shadow card-height border p-3 bg-custom customShadow mt-3">
         <h3>Mis compras</h3>
-        <div (click)="goToPurchaseHistory()">
-          <img src="../../../assets/purchase.png" alt="Compras" width="60%" height="75px" class="customShadow clic-on-image">
+        <div>
+          <a routerLink="/purchase-history">
+            <img
+              src="../../../assets/purchase.png"
+              alt="Compras"
+              width="60%"
+              height="75px"
+              class="customShadow clic-on-image"
+            />
+          </a>
         </div>
       </div>
     </div>
   </div>
+  <!-- Cinta inferior de tarjetas -->
   <div class="row">
-    <div class="col-md-4">
-      <div >
-          <app-digital-watch class="bg-custom customShadow mt-3"></app-digital-watch>
+    <!-- Cuarta tarjeta, reloj y configuraciones -->
+    <div class="col-md-4 mt-3">
+      <div class="mt-3">
+        <app-digital-watch
+          class="border-0 card shadow card-height" style="background-color: transparent; width: 100%; height: 100%;"
+        ></app-digital-watch>
       </div>
     </div>
-    <div class="col-md-4">
-      <!-- Contenido de la segunda columna de la segunda fila -->
+    <!-- Quinta tarjeta, logo y reportes -->
+    <div class="col-md-8 mt-3 d-none d-md-block">
+      <div class="mt-3">
+        <img
+          src="../../../assets/verduleria sol.jpg"
+          alt=""
+          class="card shadow card-height border customShadow clic-on-image"
+          style="border-radius: 10px; width: 100%; height: 100%; cursor: pointer;"
+        />
+      </div>
     </div>
     <div class="col-md-4">
       <!-- Contenido de la tercera columna de la segunda fila -->
@@ -115,8 +173,9 @@
   </div>
 </div>
 
+<!-- Resultado no coincidente búsqueda de productos -->
 <ng-template #noMatchesMessage>
-    <div class="text-center">
-      <p>Producto no coincide</p>
-    </div>
-  </ng-template>
+  <div class="text-center mt-4">
+    <h4 class="strong">Producto no coincide</h4>
+  </div>
+</ng-template>

@@ -1,3 +1,5 @@
+import { OptionsService } from './services/optionsService';
+import { Subscription } from 'rxjs';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -6,12 +8,9 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
-import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { PurchaseHistoryComponent } from './components/purchase-history/purchase-history.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { LoginComponent } from './components/login/login.component';
-import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.component';
-import { SalesHistoryComponent } from './components/sales-history/sales-history.component';
 import { OptionsComponent } from './components/options/options.component';
 import { MainBoardComponent } from './components/main-board/main-board.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
@@ -21,6 +20,13 @@ import { FormsModule } from '@angular/forms';
 import { DigitalWatchComponent } from './components/digital-watch/digital-watch.component'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DbService } from './services/db.service';
+import { ModalService } from './services/modalService';
+import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.component';
+import { BrowserAnimationsModule} from '@angular/platform-browser/animations'
+import { LoginService } from './services/login.service';
+import { CookieService } from 'ngx-cookie-service';
+import { RegisterUserComponent } from './components/register-user/register-user.component';
+
 
 
 @NgModule({
@@ -29,17 +35,16 @@ import { DbService } from './services/db.service';
     HeaderComponent,
     FooterComponent,
     ProductListComponent,
-    ProductDetailsComponent,
     PurchaseHistoryComponent,
     UserProfileComponent,
     LoginComponent,
     ShoppingCartComponent,
-    SalesHistoryComponent,
     OptionsComponent,
     MainBoardComponent,
     NotFoundComponent,
     FrontPanelComponent,
     DigitalWatchComponent,
+    RegisterUserComponent,
 
   ],
   imports: [
@@ -48,9 +53,14 @@ import { DbService } from './services/db.service';
     HttpClientModule,
     FormsModule,
     NgbModule,
+    BrowserAnimationsModule,
   ],
   providers: [
     DbService,
+    ModalService,
+    LoginService,
+    CookieService,
+    // OptionsService,
   ],
   bootstrap: [AppComponent]
 })

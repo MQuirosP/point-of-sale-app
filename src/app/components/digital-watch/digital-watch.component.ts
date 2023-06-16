@@ -32,7 +32,7 @@ export class DigitalWatchComponent {
     // this.hora = `${hr}:${min}:${seg}`;
 
     const meses = ['Ene.', 'Feb.', 'Mar.', 'Abr.', 'May.', 'Jun.', 'Jul.', 'Ago.', 'Sep.', 'Oct.', 'Nov.', 'Dic.'];
-    const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+    const dias = ['Dom.', 'Lun.', 'Mar.', 'Mié.', 'Jue.', 'Vie.', 'Sáb.'];
     const diaSemana = dias[fecha.getDay()];
     const dia = fecha.getDate();
     const mes = meses[fecha.getMonth()];

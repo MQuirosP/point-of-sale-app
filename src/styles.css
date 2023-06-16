@@ -103,7 +103,7 @@ body {
   transition: 0.3s color ease;
 }
 
-.card {
+.card-height {
   min-height: 150px;
   max-height: 150px;
 }
@@ -113,11 +113,12 @@ body {
 }
 
 .customShadow {
-  box-shadow: 2px rgba(139, 138, 138, 0.8);
+  /* box-shadow: 2px rgba(139, 138, 138, 0.8); */
   transition: box-shadow 0.3s ease, transform 0.3s ease;
   border-radius: 10px;
 }
 .customShadow:hover {
+  /* color: rgb(109, 150, 184); */
   box-shadow: 5px 5px 5px rgb(56, 55, 55);
   transform: scale(1.05);
   
@@ -125,14 +126,17 @@ body {
 }
 
 .bg-custom {
-  background-color: rgb(219, 213, 176);
+  background-color: rgb(249, 250, 184);
+  /* background-color: rgb(219, 213, 176); */
   transition: background-color 0.3 ease, transform 0.3s ease;
 }
 .bg-custom:hover {
+  /* color: rgb(109, 150, 184); */
   background-color: #b5f3b5;
   transform: scale(1.05);
   cursor: pointer;
-  text-shadow: 1px 1px 1px rgb(155, 155, 126);
+  /* text-shadow: 1px 1px 1px rgb(155, 155, 126); */
+  text-shadow: 1px 1px 1px lightgoldenrodyellow;
 }
 
 .my-clic:hover {
@@ -179,9 +183,9 @@ body {
   right: 0;
 }
 
-.row {
+/* .row {
   margin-top: -5px;
-}
+} */
 
 .carousel-control-prev,
 .carousel-control-next {
@@ -208,7 +212,7 @@ body {
   border-radius: 30px;
   color: rgb(218, 223, 191);
   transition: background-color 0.5 ease, transform 0.3s ease;
-  background-color: rgb(219, 213, 176);
+  background-color: rgb(249, 250, 184);
   transform-style: preserve-3d;
 }
 
@@ -275,3 +279,36 @@ button {
     opacity: 1;
     height: auto;
 }
+
+#reloj {
+  margin: 0;
+  /* margin-top: 30px; */
+  padding: 0;
+  font-family: sans-serif;
+  font-size: 3em;
+  text-shadow: 0px 0px 1px #333;
+  color: #fff;
+}
+
+.reloj-contenedor {
+  /* background-color: rgb(12, 119, 206); */
+  /* padding: 0 25px 25px 0; */
+  padding-top: 10px;
+  padding-bottom: 10px;
+  /* max-width: 350px; */
+  text-align: center;
+  border-radius: 10px;
+  /* margin: 0 auto; */
+  /* margin-top: 10%; */
+  transition: border 300ms ease-out;
+  /* border: rgb(12, 119, 206) 1px solid; */
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+#fecha {
+  letter-spacing: 5px;
+  font-size: 15px;
+  line-height: 1.5em;
+}
+

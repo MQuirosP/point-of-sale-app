@@ -10,7 +10,6 @@ export class DbService {
 
   getAllProducts() {
     const url = `${this.backendUrl}/api/products`;
-    console.log(`Hola Mario ${this.http.get(url)}`);
     return this.http.get(url);
   }
 }

@@ -1,1 +1,396 @@
-<p>product-list works!</p>
+<header id="main-header" class="py-2 bg-info text-white main-board-style">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8" [@fadeAnimation]>
+        <h1><i class="fas fa-cog"></i> Mis productos</h1>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Barra de búsqueda de productos -->
+<div class="container pt-2 pb-2">
+  <label for="search">Buscar producto:</label>
+  <input
+    type="text"
+    id="search"
+    [(ngModel)]="searchTerm"
+    (ngModelChange)="filterProducts()"
+    class="form-control shadow"
+    placeholder="Ingresa tu búsqueda aquí..."
+    autocomplete="off"
+  />
+</div>
+
+<!-- Tabla con la lista de productos -->
+<div
+  class="container modal-container pt-2 mt-3"
+  style="margin-bottom: 10%"
+  [@fadeAnimation]
+>
+  <div
+    class="modal-content modal-dialog-scrollable shadow"
+    style="max-width: 100%; margin: 0 auto; margin-bottom: 120px"
+  >
+    <div class="modal-header w-100">
+      <div class="d-flex justify-content-between align-items-center">
+        <h4 class="h4">Lista de productos</h4>
+        <button
+          class="btn btn-primary shadow ml-4"
+          data-target="addProductModal"
+          (click)="openAddProductModal()"
+        >
+          Agregar
+        </button>
+      </div>
+    </div>
+    <div class="w-100" style="height: calc(100% - 60px)">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th class="text-left">Producto</th>
+              <th class="text-right">Cant. disponible</th>
+              <th class="text-right">Precio de compra</th>
+              <th class="text-right">Precio de venta</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of filteredProducts">
+              <td>
+                <span
+                  class="product-name"
+                  style="cursor: pointer"
+                  (click)="product.showIcons = !product.showIcons"
+                  tabindex="0"
+                >
+                  {{ product.int_code }} {{ product.name }}
+                </span>
+                <div
+                  class="product-icons"
+                  [ngClass]="{ 'show-icons': product.showIcons }"
+                >
+                  <a
+                    class="ml-2 mr-3"
+                    (click)="openEditModal(product.int_code)"
+                  >
+                    <i
+                      class="fa-solid fa-pen-to-square clic-on-icon"
+                      style="color: #1100fa; cursor: pointer"
+                    ></i>
+                  </a>
+                  <a class="" (click)="openPasswordModal(product.int_code)">
+                    <i
+                      class="fa-solid fa-trash clic-on-icon"
+                      style="color: #fa0000; cursor: pointer"
+                    ></i>
+                  </a>
+                </div>
+              </td>
+              <td class="text-right">
+                {{ product.quantity | number : "1.2-2" }}
+              </td>
+              <td class="text-right">
+                {{ product.purchase_price | currency : "CRC" : "₡" }}
+              </td>
+              <td class="text-right price-cell">
+                {{ product.sale_price | currency : "CRC" : "₡" }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Botón para ir al principio de la lista -->
+<button class="btn btn-primary btn-floating shadow" (click)="scrollToTop()">
+  <i class="fas fa-arrow-up"></i>
+</button>
+
+<!-- Modal para edición de productos -->
+<div
+  class="modal fade"
+  id="editProductModal"
+  #editProductModal
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="editProductModal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content shadow">
+      <div class="modal-header">
+        <h4 class="modal-title">Editar Producto</h4>
+        <button type="button" class="close" (click)="closeEditModal()">
+          <span aria-hidden="true"
+            ><i
+              class="fa-sharp fa-solid fa-circle-xmark"
+              style="color: #f40b0b"
+            ></i
+          ></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="saveProduct()">
+          <div class="form-group">
+            <label for="intCode">Código:</label>
+            <input
+              type="text"
+              id="intCode"
+              class="form-control"
+              name="intCode"
+              [(ngModel)]="editForm.int_code"
+              autocomplete="off"
+              disabled
+            />
+          </div>
+          <div class="form-group">
+            <label for="name">Nombre:</label>
+            <input
+              type="text"
+              id="name"
+              class="form-control"
+              name="name"
+              [(ngModel)]="editForm.name"
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="description">Descripción:</label>
+            <textarea
+              id="description"
+              class="form-control"
+              rows="3"
+              name="description"
+              [(ngModel)]="editForm.description"
+              disabled
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="quantity">Cantidad:</label>
+            <input
+              type="number"
+              id="quantity"
+              class="form-control"
+              name="quantity"
+              [(ngModel)]="editForm.quantity"
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="purchasePrice">Precio de Compra:</label>
+            <input
+              type="number"
+              id="purchasePrice"
+              class="form-control"
+              name="purchasePrice"
+              [(ngModel)]="editForm.purchase_price"
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="salePrice">Precio de Venta:</label>
+            <input
+              type="number"
+              id="salePrice"
+              class="form-control"
+              name="salePrice"
+              [(ngModel)]="editForm.sale_price"
+              autocomplete="off"
+            />
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="closeEditModal()"
+            >
+              Cerrar
+            </button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para agregar nuevo producto -->
+<div
+  class="modal fade"
+  id="addProductModal"
+  #addProductModal
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="addProductModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content shadow">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addProductModalLabel">
+          Agregar nuevo producto
+        </h5>
+        <button type="button" class="close" (click)="closeAddProductModal()">
+          <span aria-hidden="true"
+            ><i
+              class="fa-sharp fa-solid fa-circle-xmark"
+              style="color: #f40b0b"
+            ></i
+          ></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="productCode">Código:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="deleteCode"
+              [(ngModel)]="newProduct.code"
+              name="productCode"
+              autocomplete="off"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="productName">Nombre:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="productName"
+              [(ngModel)]="newProduct.name"
+              name="productName"
+              autocomplete="off"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="productDescription">Descripción:</label>
+            <textarea
+              class="form-control"
+              id="productDescription"
+              [(ngModel)]="newProduct.description"
+              name="productDescription"
+              rows="3"
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="productPrice">Precio de compra:</label>
+            <input
+              type="number"
+              class="form-control"
+              id="productPrice"
+              [(ngModel)]="newProduct.purchasePrice"
+              name="productPrice"
+              required
+              autocomplete="off"
+              (ngModelChange)="calculateTotal()"
+            />
+          </div>
+          <div class="form-group">
+            <label for="productMargin">Margen (%):</label>
+            <input
+              type="number"
+              class="form-control"
+              id="productMargin"
+              [(ngModel)]="newProduct.margin"
+              name="productMargin"
+              required
+              autocomplete="off"
+              (ngModelChange)="calculateTotal()"
+            />
+          </div>
+          <div class="form-group">
+            <label for="productTotal">Precio de venta:</label>
+            <input
+              type="number"
+              class="form-control"
+              id="productTotal"
+              [(ngModel)]="newProduct.salePrice"
+              name="salePrice"
+              readonly
+              autocomplete="off"
+              (ngModelChange)="calculateTotal()"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="closeAddProductModal()"
+        >
+          Cancelar
+        </button>
+        <button type="button" class="btn btn-primary" (click)="addProduct()">
+          Guardar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para contraseña -->
+<div
+  class="modal fade"
+  id="deletePasswordModal"
+  #deletePasswordModal
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="editProductModal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content shadow">
+      <div class="modal-header">
+        <h2 class="modal-title">Eliminar producto</h2>
+        <span class="close" (click)="closePasswordModal()" aria-hidden="true"
+          ><i
+            class="fa-sharp fa-solid fa-circle-xmark"
+            style="color: #f40b0b; cursor: pointer;"
+          ></i
+        ></span>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="deleteProduct(editForm.int_code)">
+          <div class="form-group">
+            <label for="editIntCode">Producto a eliminar:</label>
+            <input
+              type="text"
+              id="editIntCode"
+              class="form-control"
+              name="name"
+              [(ngModel)]="editForm.name"
+              disabled
+              autocomplete="off"
+            />
+            <label for="password">Contraseña:</label>
+            <input
+              type="password"
+              id="password"
+              class="form-control"
+              name="password"
+              [(ngModel)]="password"
+              autocomplete="off"
+            />
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="closePasswordModal()"
+            >
+              Cerrar
+            </button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

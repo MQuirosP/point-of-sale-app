@@ -1,11 +1,63 @@
-<header id="main-header" class="py-2 bg-info text-white">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8">
-                <h1>
-                    <i class="fas fa-cog"></i> Opciones
-                </h1>
-            </div>
-        </div>
+<header id="main-header" class="py-2 bg-info text-white main-board-style">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8" [@fadeAnimation]>
+        <h1><i class="fas fa-cog"></i> Opciones</h1>
+      </div>
     </div>
+  </div>
 </header>
+
+<section id="actions" class="py-4 mb-4 bg-transparent" [@fadeAnimation]>
+  <div class="container">
+    <div class="row justify-content-evenly">
+      <div class="col-6 col-md-2">
+        <a routerLink="/" class="btn btn-warning shadow">
+          <i class="fas fa-arrow-left"></i> Volver
+        </a>
+      </div>
+      <div class="col-6 col-md-2">
+        <button
+          type="submit"
+          (click)="saveRegisterStatus()"
+          class="btn btn-success shadow"
+        >
+          <i class="fas fa-check"></i> Guardar
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="configuracion" [@fadeAnimation]>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="card shadow">
+          <div class="card-header text-center">
+            <h3 class="h4">Editar configuración</h3>
+          </div>
+          <div class="card-body">
+            <fieldset class="row">
+              <legend class="text-center" style="font-size: 18px">
+                Permitir Registro de Usuarios
+              </legend>
+              <div class="container col-2">
+                <label for="" class="form-check-label">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    name="activateRegister"
+                    [(ngModel)]="activateRegister"
+                    [checked]="activateRegister"
+                  />
+                  {{ activateRegister ? "Sí" : "No" }}
+                </label>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
