@@ -1,13 +1,11 @@
 <!-- Cabecero panel principal -->
 <header id="main-header" class="py-2 bg-info text-white main-board-style">
   <div class="container">
-      <div class="row">
-          <div class="col-md-8" [@fadeAnimation]>
-              <h1>
-                  <i class="fas fa-cog"></i> Panel principal
-              </h1>
-          </div>
+    <div class="row">
+      <div class="col-md-8" [@fadeAnimation]>
+        <h1><i class="fas fa-cog"></i> Panel principal</h1>
       </div>
+    </div>
   </div>
 </header>
 
@@ -26,10 +24,10 @@
 </div>
 
 <!-- Tiles de menú -->
-<div class="container text-center" [@fadeAnimation]>
+<div class="container text-center high" [@fadeAnimation]>
   <!-- Cinta superior de tarjetas -->
   <div class="row">
-    <div class="col-md-4 mb-2 mt-3">
+    <div class="col-md-4 mb-2">
       <div class="card shadow card-height border mt-3 bg-custom customShadow">
         <!-- Primer tarjeta, carrusel de productos -->
         <div
@@ -52,9 +50,7 @@
               >
                 <h5 class="">{{ producto.name }}</h5>
                 <p>
-                  {{
-                    producto.sale_price | currency : "CRC" : "₡" : "1.2-2"
-                  }}
+                  {{ producto.sale_price | currency : "CRC" : "₡" : "1.2-2" }}
                   {{ producto.description }}
                 </p>
               </div>
@@ -112,8 +108,10 @@
       </div>
     </div>
     <!-- Segunda tarjeta, Mis Ventas -->
-    <div class="col-md-4 mt-3">
-      <div class="card shadow card-height border p-3 bg-custom customShadow mt-3">
+    <div class="col-md-4">
+      <div
+        class="card shadow card-height border p-3 bg-custom customShadow mt-3"
+      >
         <h3>Mis ventas</h3>
         <div>
           <a routerLink="/shopping-cart">
@@ -121,7 +119,7 @@
               src="../../../assets/shopping.jpg"
               alt="Ventas"
               width="60%"
-              height="75px"
+              height="70px"
               class="customShadow clic-on-image"
             />
           </a>
@@ -129,8 +127,10 @@
       </div>
     </div>
     <!-- Tercera tarjeta, Mis Compras -->
-    <div class="col-md-4 mt-3">
-      <div class="card shadow card-height border p-3 bg-custom customShadow mt-3">
+    <div class="col-md-4">
+      <div
+        class="card shadow card-height border p-3 bg-custom customShadow mt-3"
+      >
         <h3>Mis compras</h3>
         <div>
           <a routerLink="/purchase-history">
@@ -138,7 +138,7 @@
               src="../../../assets/purchase.png"
               alt="Compras"
               width="60%"
-              height="75px"
+              height="70px"
               class="customShadow clic-on-image"
             />
           </a>
@@ -149,21 +149,27 @@
   <!-- Cinta inferior de tarjetas -->
   <div class="row">
     <!-- Cuarta tarjeta, reloj y configuraciones -->
-    <div class="col-md-4 mt-3">
+    <div class="col-md-4">
       <div class="mt-3">
         <app-digital-watch
-          class="border-0 card shadow card-height" style="background-color: transparent; width: 100%; height: 100%;"
+          class="shadow card-height"
+          style="background-color: transparent; width: 100%; height: 100%"
         ></app-digital-watch>
       </div>
     </div>
     <!-- Quinta tarjeta, logo y reportes -->
-    <div class="col-md-8 mt-3 d-none d-md-block">
+    <div class="col-md-8 d-none d-md-block">
       <div class="mt-3">
         <img
           src="../../../assets/verduleria sol.jpg"
           alt=""
           class="card shadow card-height border customShadow clic-on-image"
-          style="border-radius: 10px; width: 100%; height: 100%; cursor: pointer;"
+          style="
+            border-radius: 10px;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+          "
         />
       </div>
     </div>

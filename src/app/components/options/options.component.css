@@ -1,0 +1,4 @@
+.template-scroll-disabled {
+  height: 100%;
+  overflow-y: hidden;
+}
