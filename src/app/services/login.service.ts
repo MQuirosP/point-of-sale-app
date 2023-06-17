@@ -5,6 +5,7 @@ import { catchError, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root',
@@ -20,43 +21,68 @@ export class LoginService {
   private readonly COOKIE_Name = 'username';
 
   constructor(
-    private http: HttpClient, 
+    private http: HttpClient,
     private router: Router,
     private cookieService: CookieService,
-    ) {
-  }
+    private toastr: ToastrService
+  ) {}
 
   onLogin(username: string, password: string) {
-    const loginData = {
-      username: username,
-      password: password,
-    };
 
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + environment.SECRET_KEY,
-    });
-    this.http
-      .post<any>(`${this.backendUrl}login/`, loginData, { headers })
-      .pipe(
-        tap((response) => {
-          if (response.success === true) {
-            localStorage.setItem('token', response.message.token);
-            const name = response.message.name;
-            this.cookieService.set(this.COOKIE_Name, name);
-            this.setLoggedIn(true);
-            this.router.navigate(['/home'])
+    if (!username || !password) {
+      this.toastr.warning('Ingrese usuario y contraseña');
+    } else {
+      const loginData = {
+        username: username,
+        password: password,
+      };
+      this.http.get(`${this.backendUrl}${username}`).subscribe({
+        next: (response: any) => {
+          // console.log(response.details);
+          if (response.message) {
+            const headers = new HttpHeaders({
+              'Content-Type': 'application/json',
+              Authorization: 'Bearer ' + environment.SECRET_KEY,
+            });
+            this.http
+              .post<any>(`${this.backendUrl}login/`, loginData, { headers })
+              .pipe(
+                tap((response) => {
+                  if (response.success === true) {
+                    localStorage.setItem('token', response.message.token);
+                    const name = response.message.name;
+                    this.cookieService.set(this.COOKIE_Name, name);
+                    this.setLoggedIn(true);
+                    this.toastr.success(
+                      `¡Bienvenido ${this.capitalizeFirstLetter(name)}!`
+                    );
+                    setTimeout(() => {
+                      this.router.navigate(['/home']);
+                    }, 500);
+                  } else {
+                    this.setLoggedIn(false);
+                  }
+                }),
+                catchError((error) => {
+                  this.toastr.error('Credenciales inválidas');
+                  return of(null);
+                })
+              )
+              .subscribe();
           } else {
-            this.setLoggedIn(false);
+            this.toastr.warning('Error consultando el usuario');
           }
-        }),
-        catchError((error) => {
-          alert('Credenciales inválidas');
-          console.log(error);
-          return of(null);
-        })
-      )
-      .subscribe();
+        },
+        error: (error: any) => {
+          this.toastr.error(`Usuario ${this.capitalizeFirstLetter(username)} no existe`)
+        }
+      });
+    }
+    
+  }
+
+  capitalizeFirstLetter(value: string): string {
+    return value.charAt(0).toUpperCase() + value.slice(1);
   }
 
   getUserName(): string {
@@ -80,9 +106,10 @@ export class LoginService {
           this.setLoggedIn(false);
           this.cookieService.delete(this.COOKIE_Name);
           this.username = '';
+          this.toastr.success('Sesión cerrada exitosamente')
         }),
         catchError((error) => {
-          alert('Error al cerrar sesión');
+          this.toastr.error('Error al cerrar sesión');
           console.log(error);
           return of(null);
         })

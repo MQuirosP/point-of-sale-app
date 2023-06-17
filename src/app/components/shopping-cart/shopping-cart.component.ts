@@ -11,6 +11,7 @@ import {
 // import { Observable } from 'rxjs';
 import { jsPDF } from 'jspdf';
 import { fadeAnimation } from 'src/app/fadeAnimation';
+import { ToastrService } from 'ngx-toastr';
 
 interface ApiSaleResponse {
   success: boolean;
@@ -57,7 +58,8 @@ export class ShoppingCartComponent {
     private modalService: ModalService,
     private router: Router,
     private calendar: NgbCalendar,
-    private dateParser: NgbDateParserFormatter
+    private dateParser: NgbDateParserFormatter,
+    private toastr: ToastrService,
     ) {
     this.date = this.getCurrentDate();
     this.selectedDate = this.calendar.getToday();
@@ -208,7 +210,7 @@ export class ShoppingCartComponent {
       (response: any) => {
         console.log('Venta guardada exitosamente', response);
 
-        alert('La venta ha sido guardada exitosamente');
+        this.toastr.success('La venta ha sido guardada exitosamente');
         this.date = this.getCurrentDate();
         this.getSalesHistory(this.date);
         setTimeout(() => {
@@ -224,7 +226,7 @@ export class ShoppingCartComponent {
       },
       (error: any) => {
         console.error('Error al guardar la venta', error);
-        alert(
+        this.toastr.error(
           'Ocurrió un error al guardar la venta. Por favor inténtalo nuevamente'
         );
       }
@@ -236,7 +238,7 @@ export class ShoppingCartComponent {
     this.http.put(`${this.url}sales/${myDocument}`, null).subscribe(
       (response: any) => {
         console.log('Venta anulada exitosamente', response);
-        alert('Venta anulada exitosamente');
+        this.toastr.success('Venta anulada exitosamente');
 
         const canceledSale = this.sales.find(
           (sale) => sale.doc_number === doc_number
@@ -247,7 +249,7 @@ export class ShoppingCartComponent {
       },
       (error: any) => {
         console.log('Error anulando documento', error);
-        alert('No se pudo anular el documento');
+        this.toastr.error('No se pudo anular el documento');
       }
     );
   }

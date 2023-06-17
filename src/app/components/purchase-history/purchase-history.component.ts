@@ -12,6 +12,7 @@ import { forkJoin } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ModalService } from 'src/app/services/modalService';
 import { fadeAnimation } from 'src/app/fadeAnimation';
+import { ToastrService } from 'ngx-toastr';
 
 interface ApiPurchaseResponse {
   success: boolean;
@@ -73,7 +74,8 @@ export class PurchaseHistoryComponent {
     private modalService: ModalService,
     private router: Router,
     private calendar: NgbCalendar,
-    private dateParser: NgbDateParserFormatter
+    private dateParser: NgbDateParserFormatter,
+    private toastr: ToastrService,
   ) {
     this.date = this.getCurrentDate();
     this.selectedDate = this.calendar.getToday();
@@ -208,7 +210,7 @@ export class PurchaseHistoryComponent {
 
   createPurchase() {
     if (!this.doc_number) {
-      alert('Por favor ingresa un número de documento');
+      this.toastr.error('Por favor ingresa un número de documento');
       return;
     }
 
@@ -242,7 +244,7 @@ export class PurchaseHistoryComponent {
           (response: any) => {
             console.log('Compra guardada exitosamente', response);
 
-            alert('La compra ha sido guardada exitosamente');
+            this.toastr.success('La compra ha sido guardada exitosamente');
             this.date = this.getCurrentDate();
             this.getPurchasesHistory(this.date);
             this.productList = [];
@@ -258,7 +260,7 @@ export class PurchaseHistoryComponent {
           },
           (error: any) => {
             console.log('Error al guardar la compra', error);
-            alert(
+            this.toastr.error(
               'Ocurrió un error al guardar la venta. Por favor inténtalo nuevamente'
             );
           }
@@ -266,7 +268,7 @@ export class PurchaseHistoryComponent {
       },
       (error: any) => {
         console.log('Error al actualizar los precios de compra', error);
-        alert(
+        this.toastr.error(
           'Ocurrió un error al actualizar los precios de compra. Por favor inténtalo nuevamente'
         );
       }
@@ -278,7 +280,7 @@ export class PurchaseHistoryComponent {
     this.http.put(`${this.url}purchases/${myDocument}`, null).subscribe(
       (response: any) => {
         console.log('Compra anulada exitosamente', response);
-        alert('Compra anulada exitosamente');
+        this.toastr.success('Compra anulada exitosamente');
 
         const canceledPurchase = this.purchases.find(
           (purchase) => purchase.doc_number === doc_number
@@ -289,7 +291,7 @@ export class PurchaseHistoryComponent {
       },
       (error: any) => {
         console.log('Error anulando documento', error);
-        alert('No se pudo anular el documento');
+        this.toastr.error('No se pudo anular el documento');
       }
     );
   }

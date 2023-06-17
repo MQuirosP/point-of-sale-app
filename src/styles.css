@@ -312,3 +312,58 @@ button {
   line-height: 1.5em;
 }
 
+.toast-container {
+  position: fixed;
+  top: 100px;
+  right: 100px;
+  width: 300px;
+  z-index: 9999;
+}
+
+.toast {
+  margin-bottom: 5px;
+}
+
+.toast-success {
+  text-align: center;
+  background-color: #dff0d8;
+  color: #3c763d;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 
+  4px 4px 8px rgba(0, 0, 0, 0.2),
+  -4px -4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.toast-error {
+  text-align: center;
+  background-color: #f2dede;
+  color: #a94442;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 
+  4px 4px 8px rgba(0, 0, 0, 0.2),
+  -4px -4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.toast-info {
+  text-align: center;
+  background-color: #d9edf7;
+  color: #31708f;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 
+  4px 4px 8px rgba(0, 0, 0, 0.2),
+  -4px -4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.toast-warning {
+  text-align: center;
+  background-color: #fcf8e3;
+  color: #8a6d3b;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 
+  4px 4px 8px rgba(0, 0, 0, 0.2),
+  -4px -4px 8px rgba(0, 0, 0, 0.2);
+}

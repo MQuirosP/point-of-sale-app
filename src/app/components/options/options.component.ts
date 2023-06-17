@@ -1,5 +1,6 @@
 import { OptionsService } from './../../services/optionsService';
 import { Component } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { fadeAnimation } from 'src/app/fadeAnimation';
 
 @Component({
@@ -11,7 +12,10 @@ import { fadeAnimation } from 'src/app/fadeAnimation';
 export class OptionsComponent {
   activateRegister: boolean | any;
 
-  constructor(private optionService: OptionsService) {}
+  constructor(
+    private optionService: OptionsService,
+    private toastr: ToastrService,
+    ) {}
 
   ngOnInit() {
     this.optionService.getRegisterStatus().subscribe((status: boolean) => {
@@ -23,13 +27,13 @@ export class OptionsComponent {
     this.optionService.changeRegisterStatus(this.activateRegister).subscribe({
       next: () => {
         if(this.activateRegister) {
-          alert('Registro de usuarios activado');
+          this.toastr.success('Registro de usuarios activado');
         } else {
-          alert('Registro de usuarios desactivado')
+          this.toastr.warning('Registro de usuarios desactivado')
         }
       },
       error: () => {
-        alert('No se pudo activar el registro de usuarios');
+        this.toastr.error('No se pudo activar el registro de usuarios');
       },
     });
   }

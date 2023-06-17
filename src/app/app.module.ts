@@ -26,6 +26,7 @@ import { BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import { LoginService } from './services/login.service';
 import { CookieService } from 'ngx-cookie-service';
 import { RegisterUserComponent } from './components/register-user/register-user.component';
+import { ToastrModule } from 'ngx-toastr';
 
 
 
@@ -54,6 +55,11 @@ import { RegisterUserComponent } from './components/register-user/register-user.
     FormsModule,
     NgbModule,
     BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      timeOut: 2500,
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+    }),
   ],
   providers: [
     DbService,

@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { fadeAnimation } from 'src/app/fadeAnimation';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-product-list',
@@ -57,7 +58,8 @@ export class ProductListComponent implements OnInit {
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
-    private http: HttpClient
+    private http: HttpClient,
+    private toastr: ToastrService,
   ) {}
 
   ngOnInit(): void {
@@ -173,7 +175,7 @@ export class ProductListComponent implements OnInit {
 
     this.http.get(`${this.backendUrl}products/int_code/${int_code}`).subscribe({
       next: (response: any) => {
-        console.log(response.message.product);
+        // console.log(response.message.product);
         if (
           response &&
           response.message &&
@@ -202,10 +204,12 @@ export class ProductListComponent implements OnInit {
           this.editForm.sale_price = sale_price;
         } else {
           console.log('No se encontró el producto');
+          this.toastr.warning('Producto no encontrado')
         }
       },
       error: (error) => {
         console.log('Error al obtener el producto', error);
+        this.toastr.error('Error al obtener el producto')
       },
     });
   }
@@ -227,11 +231,13 @@ export class ProductListComponent implements OnInit {
       .put(`${this.backendUrl}products/${int_code}`, this.editForm)
       .subscribe({
         next: (response: any) => {
-          alert('Producto modificado exitosamente');
+          this.toastr.success('Producto modificado exitosamente');
           this.updateProductList(this.editForm);
           this.closeEditModal();
+          this.searchTerm = '';
         },
         error: (error) => {
+          this.toastr.error(`Error al guardar la información del producto ${error}`)
           console.log('Error al guardar la información del producto', error);
         },
       });
@@ -264,7 +270,7 @@ export class ProductListComponent implements OnInit {
     this.http.post(`${this.backendUrl}products/`, data).subscribe({
       next: (response) => {
         // Manejar la respuesta exitosa del servidor aquí
-        console.log('Producto creado exitosamente', response);
+        this.toastr.success(`Producto creado exitosamente ${data.name}`);
         this.closeAddProductModal();
         this.refreshProductList();
       },
@@ -304,18 +310,19 @@ export class ProductListComponent implements OnInit {
       next: (response: any) => {
         console.log('Respuesta recibida del DBService', response);
         if (response.success) {
-          alert(`Producto eliminado satisfactoriamente`);
+          this.toastr.success(`Producto eliminado satisfactoriamente`);
           this.closePasswordModal();
           this.refreshProductList();
+          this.searchTerm = '';
         } else {
           const errorMessage =
             response.message || 'Error al eliminar el producto';
-          alert(errorMessage);
+          this.toastr.error(errorMessage);
         }
       },
       error: (error: any) => {
         console.error('Error al eliminar el producto:', error);
-        alert('Error al eliminar el producto: ' + error.message);
+        this.toastr.error('Error al eliminar el producto: ' + error.message);
       },
     });
   }
@@ -345,10 +352,12 @@ export class ProductListComponent implements OnInit {
           this.editForm.sale_price = sale_price;
         } else {
           console.log('No se encontró el producto');
+          this.toastr.warning('Producto no encontrado')
         }
       },
       error: (error) => {
         console.log('Error al obtener el producto', error);
+        this.toastr.error('Error al obtener el producto')
       },
     });
   }
