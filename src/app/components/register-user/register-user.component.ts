@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { fadeAnimation } from 'src/app/fadeAnimation';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-register-user',
@@ -17,8 +18,9 @@ export class RegisterUserComponent {
   // email: string = '';
   password: string = '';
 
-  backendUrl = 'http://localhost:3000/api/users/';
-
+  // backendUrl = 'http://localhost:3000/api/users/';
+  backendUrl = `${environment.apiUrl}/users/`
+  
   constructor(
     private http: HttpClient,
     private router: Router,

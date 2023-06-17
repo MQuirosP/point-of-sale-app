@@ -11,7 +11,8 @@ import { ToastrService } from 'ngx-toastr';
   providedIn: 'root',
 })
 export class LoginService {
-  private backendUrl = 'http://localhost:3000/api/users/';
+  // private backendUrl = 'http://192.168.0.8:3000/api/users/';
+  private backendUrl = `${environment.apiUrl}users/`
   private isLoggedInSubject: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
   public isLoggedIn$: Observable<boolean> =

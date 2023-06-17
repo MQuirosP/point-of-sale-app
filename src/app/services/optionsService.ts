@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, distinctUntilChanged, map, tap } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
@@ -9,7 +10,8 @@ import { BehaviorSubject, Observable, distinctUntilChanged, map, tap } from 'rxj
 export class OptionsService {
 
   private registerStatusSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private backendUrl = 'http://localhost:3000/api/options';
+  // private backendUrl = 'http://localhost:3000/api/options';
+  private backendUrl = `${environment.apiUrl}options`
   id = 1;
   
   constructor(

@@ -12,6 +12,7 @@ import {
 import { jsPDF } from 'jspdf';
 import { fadeAnimation } from 'src/app/fadeAnimation';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from 'src/environments/environment';
 
 interface ApiSaleResponse {
   success: boolean;
@@ -29,7 +30,8 @@ interface ApiSaleResponse {
 export class ShoppingCartComponent {
   selectedDate: NgbDateStruct;
   // Variables generales
-  url: string = 'http://localhost:3000/api/';
+  // url: string = 'http://localhost:3000/api/';
+  backendUrl = `${environment.apiUrl}`
 
   // Crear Ventas
   int_code: string = '';
@@ -105,7 +107,7 @@ export class ShoppingCartComponent {
       console.log('Fecha no especificada', selectedDate);
       return;
     }
-    this.http.get<ApiSaleResponse>(`${this.url}sales`).subscribe({
+    this.http.get<ApiSaleResponse>(`${this.backendUrl}sales`).subscribe({
       next: (response) => {
         if (response.success) {
           const sales = response.message?.Sales || [];
@@ -135,7 +137,7 @@ export class ShoppingCartComponent {
 
   searchProducts() {
     const searchTerm = this.productName.toLowerCase();
-    this.http.get(`${this.url}products`).subscribe({
+    this.http.get(`${this.backendUrl}products`).subscribe({
       next: (response: any) => {
         const products = response?.message?.products;
         if (Array.isArray(products) && products.length > 0) {
@@ -206,7 +208,7 @@ export class ShoppingCartComponent {
         quantity: product.quantity,
       })),
     };
-    this.http.post(`${this.url}sales/`, sale).subscribe(
+    this.http.post(`${this.backendUrl}sales/`, sale).subscribe(
       (response: any) => {
         console.log('Venta guardada exitosamente', response);
 
@@ -235,7 +237,7 @@ export class ShoppingCartComponent {
 
   cancelSale(doc_number: string) {
     const myDocument = doc_number;
-    this.http.put(`${this.url}sales/${myDocument}`, null).subscribe(
+    this.http.put(`${this.backendUrl}sales/${myDocument}`, null).subscribe(
       (response: any) => {
         console.log('Venta anulada exitosamente', response);
         this.toastr.success('Venta anulada exitosamente');
@@ -281,7 +283,7 @@ export class ShoppingCartComponent {
   }
 
   generateTicket(docNumber: string): void {
-    this.http.get<any>(`${this.url}sales/${docNumber}`).subscribe(
+    this.http.get<any>(`${this.backendUrl}sales/${docNumber}`).subscribe(
       (response: any) => {
         if (
           response.success &&

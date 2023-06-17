@@ -16,7 +16,7 @@ html {
 @media (min-width: 360px) and (max-width: 600px){
   /* Estilos para pantallas de móvil */
   html {
-    height: 140%;
+    height: 122%;
     overflow: scroll;
   }
 }
