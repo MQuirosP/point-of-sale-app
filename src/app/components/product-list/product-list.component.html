@@ -219,9 +219,10 @@
             <label for="" class="form-check-label ml-5">
               <input
                 type="checkbox"
+                id="taxes"
                 class="form-check-input"
                 formControlName="taxes"
-                (ngModelChange)="calculateTotal(editForm.get('purchase_price').value,
+                (change)="toggleTaxes(); calculateTotal(editForm.get('purchase_price').value,
                 editForm.get('margin').value,
                 editForm.get('taxes').value,
                 true)"
@@ -351,7 +352,7 @@
                 name="activateRegister"
                 [(ngModel)]="newProduct.taxes"
                 [checked]="newProduct.taxes"
-                (ngModelChange)="
+                (ngModelChange)="isTaxed = !isTaxed;
                   calculateTotal(
                     newProduct.purchase_price,
                     newProduct.margin,

@@ -97,6 +97,16 @@ export class ProductListComponent implements OnInit {
     this.showScrollButton = scrollPos > 0;
   }
 
+  toggleTaxes() {
+    this.isTaxed = this.editForm.get('taxes').value;
+    this.calculateTotal(
+      this.editForm.get('purchase_price').value,
+      this.editForm.get('margin').value,
+      this.isTaxed,
+      true
+    );
+  }
+
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
