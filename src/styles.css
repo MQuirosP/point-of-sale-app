@@ -11,6 +11,7 @@ html {
     linear-gradient(to left, #a8e6ce, #6d9bcc);
   overflow: visible;
   transition: opacity 100ms;
+  z-index: 1;
 }
 
 @media (min-width: 360px) and (max-width: 600px) {
