@@ -25,13 +25,13 @@ interface ApiSaleResponse {
   selector: 'app-shopping-cart',
   templateUrl: './shopping-cart.component.html',
   styleUrls: ['./shopping-cart.component.css'],
-  animations: [fadeAnimation]
+  animations: [fadeAnimation],
 })
 export class ShoppingCartComponent {
   selectedDate: NgbDateStruct;
   // Variables generales
   // url: string = 'http://localhost:3000/api/';
-  backendUrl = `${environment.apiUrl}`
+  backendUrl = `${environment.apiUrl}`;
 
   // Crear Ventas
   int_code: string = '';
@@ -54,15 +54,15 @@ export class ShoppingCartComponent {
   @ViewChild('newSaleModal', { static: false }) newSaleModal!: ElementRef;
   @ViewChild('saleHistoryModal', { static: false })
   saleHistoryModal!: ElementRef;
-  
+
   constructor(
     private http: HttpClient,
     private modalService: ModalService,
     private router: Router,
     private calendar: NgbCalendar,
     private dateParser: NgbDateParserFormatter,
-    private toastr: ToastrService,
-    ) {
+    private toastr: ToastrService
+  ) {
     this.date = this.getCurrentDate();
     this.selectedDate = this.calendar.getToday();
   }
@@ -112,9 +112,7 @@ export class ShoppingCartComponent {
         if (response.success) {
           const sales = response.message?.Sales || [];
           this.sales = sales.filter((sale: any) => {
-            const saleDate = moment(sale.createdAt).format(
-              'YYYY-MM-DD'
-              );
+            const saleDate = moment(sale.createdAt).format('YYYY-MM-DD');
             return saleDate === selectedDate;
           });
           this.sales.forEach((sale: any) => {
@@ -171,6 +169,15 @@ export class ShoppingCartComponent {
   }
 
   addProduct() {
+    if (
+      !this.int_code ||
+      !this.productName ||
+      !this.selectedProductPrice ||
+      !this.productQuantity
+    ) {
+      this.toastr.warning('Se debe suministrar todos los campos');
+      return;
+    }
     const product = {
       int_code: this.int_code,
       name: this.productName,

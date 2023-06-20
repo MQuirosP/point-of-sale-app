@@ -11,12 +11,13 @@ import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { fadeAnimation } from 'src/app/fadeAnimation';
 import { ToastrService } from 'ngx-toastr';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css'],
-  animations: [fadeAnimation]
+  animations: [fadeAnimation],
 })
 export class ProductListComponent implements OnInit {
   @ViewChild('editProductModal', { static: false })
@@ -36,35 +37,52 @@ export class ProductListComponent implements OnInit {
 
   showScrollButton: boolean = false;
 
-  editForm: any = {};
+  editForm: FormGroup;
 
   newProduct: {
     code: string;
     name: string;
     description: string;
-    purchasePrice: number;
+    purchase_price: number;
     margin: number;
-    salePrice: number;
+    sale_price: number;
+    taxes: boolean;
   } = {
     code: '',
     name: '',
     description: '',
-    purchasePrice: 0,
+    purchase_price: 0,
     margin: 0,
-    salePrice: 0,
+    sale_price: 0,
+    taxes: false,
   };
 
   password: string = '';
+
+  isTaxed: boolean;
+  TAXES: number = 0.13;
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private http: HttpClient,
     private toastr: ToastrService,
-  ) {}
+    private formBuilder: FormBuilder
+  ) {
+    this.editForm = this.formBuilder.group({
+      int_code: [''], // Asegúrate de definir los controles adecuados para cada propiedad
+      name: ['', Validators.required],
+      description: ['', Validators.required],
+      quantity: ['', Validators.required],
+      purchase_price: ['', Validators.required],
+      sale_price: ['', Validators.required],
+      taxes: [false],
+      margin: ['', Validators.required],
+    });
+  }
 
   ngOnInit(): void {
     this.loadData();
-    this.editForm = {};
+    // this.editForm = {};
   }
 
   ngAfterViewInit(): void {}
@@ -106,7 +124,7 @@ export class ProductListComponent implements OnInit {
         }
       },
       error: (error) => {
-        console.log('Error al obtener productos', error);
+        this.toastr.error('Error al obtener productos', error);
       },
     });
   }
@@ -130,7 +148,7 @@ export class ProductListComponent implements OnInit {
         }
       },
       error: (error) => {
-        console.log('Error al obtener productos', error);
+        this.toastr.error('Error al obtener productos', error);
       },
     });
   }
@@ -157,7 +175,7 @@ export class ProductListComponent implements OnInit {
 
       const productCodeNormalized = product.int_code
         .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[\u0300-\u036f]/g, '');
 
       const searchTermLower = searchTermNormalized.toLowerCase();
 
@@ -185,7 +203,8 @@ export class ProductListComponent implements OnInit {
           response.message.product.description &&
           response.message.product.quantity !== null &&
           response.message.product.quantity !== undefined &&
-          response.message.product.sale_price
+          response.message.product.sale_price &&
+          response.message.product.margin
         ) {
           const {
             int_code,
@@ -194,22 +213,28 @@ export class ProductListComponent implements OnInit {
             quantity,
             purchase_price,
             sale_price,
+            taxes,
+            margin,
           } = response.message.product;
 
-          this.editForm.int_code = int_code;
-          this.editForm.name = name;
-          this.editForm.description = description;
-          this.editForm.quantity = quantity;
-          this.editForm.purchase_price = purchase_price;
-          this.editForm.sale_price = sale_price;
+          this.editForm.patchValue({
+            int_code,
+            name,
+            description,
+            quantity,
+            purchase_price,
+            sale_price,
+            taxes,
+            margin,
+          });
         } else {
           console.log('No se encontró el producto');
-          this.toastr.warning('Producto no encontrado')
+          this.toastr.warning('Producto no encontrado');
         }
       },
       error: (error) => {
         console.log('Error al obtener el producto', error);
-        this.toastr.error('Error al obtener el producto')
+        this.toastr.error('Error al obtener el producto');
       },
     });
   }
@@ -225,19 +250,24 @@ export class ProductListComponent implements OnInit {
     this.loadData();
   }
 
-  saveProduct() {
-    const { int_code } = this.editForm;
+  editProduct() {
+    const int_code = this.editForm.get('int_code').value;
+    const formData = this.editForm.getRawValue(); // Obtener los valores del formulario como un objeto plano
+  
     this.http
-      .put(`${this.backendUrl}products/${int_code}`, this.editForm)
+      .put(`${this.backendUrl}products/${int_code}`, formData) // Enviar formData en lugar de this.editForm
       .subscribe({
         next: (response: any) => {
           this.toastr.success('Producto modificado exitosamente');
-          this.updateProductList(this.editForm);
+          // this.updateProductList(this.editForm);
+          this.refreshProductList();
           this.closeEditModal();
           this.searchTerm = '';
         },
         error: (error) => {
-          this.toastr.error(`Error al guardar la información del producto ${error}`)
+          this.toastr.error(
+            `Error al guardar la información del producto ${error}`
+          );
           console.log('Error al guardar la información del producto', error);
         },
       });
@@ -258,38 +288,81 @@ export class ProductListComponent implements OnInit {
   }
 
   addProduct() {
+    if (
+      !this.newProduct.code ||
+      !this.newProduct.name ||
+      !this.newProduct.description ||
+      !this.newProduct.purchase_price ||
+      !this.newProduct.margin
+    ) {
+      this.toastr.warning('Se debe suministrar todos los campos');
+      return;
+    }
     const data = {
       int_code: this.newProduct.code,
       name: this.newProduct.name,
       description: this.newProduct.description,
       quantity: 0,
-      purchase_price: this.newProduct.purchasePrice,
-      sale_price: this.newProduct.salePrice,
+      purchase_price: this.newProduct.purchase_price,
+      sale_price: this.newProduct.sale_price,
+      margin: this.newProduct.margin,
+      taxes: this.newProduct.taxes,
     };
 
     this.http.post(`${this.backendUrl}products/`, data).subscribe({
       next: (response) => {
-        // Manejar la respuesta exitosa del servidor aquí
         this.toastr.success(`Producto creado exitosamente ${data.name}`);
+        this.newProduct.code = '';
+        this.newProduct.name = '';
+        this.newProduct.description = '';
+        this.newProduct.purchase_price = 0;
+        this.newProduct.sale_price = 0;
+        this.newProduct.margin = 0;
+        this.newProduct.taxes = false;
         this.closeAddProductModal();
         this.refreshProductList();
       },
       error: (error) => {
-        // Manejar el error en caso de que la solicitud no sea exitosa
+        this.toastr.error('Error al crear el producto');
         console.error('Error al crear el producto', error);
       },
     });
   }
 
-  calculateTotal() {
-    const purchasePrice = this.newProduct.purchasePrice;
-    const margin = this.newProduct.margin;
+  calculateTotal(
+    purchase_price: number,
+    margin: number,
+    taxes: boolean,
+    isEditForm: boolean = false
+  ): void {
+    // Almacenamos el valor anterior de sale_price
+    const oldSalePrice = this.newProduct.sale_price; 
 
-    if (!isNaN(purchasePrice) && !isNaN(margin)) {
-      const total = purchasePrice + (purchasePrice * margin) / 100;
-      this.newProduct.salePrice = total;
+    if (!taxes) {
+      if (!isNaN(purchase_price) && !isNaN(margin)) {
+        const total = purchase_price + (purchase_price * margin) / 100;
+        this.newProduct.sale_price = total;
+        if (isEditForm && total !== oldSalePrice) {
+          // Verificamos si el valor ha cambiado antes de asignarlo
+          this.editForm.controls['sale_price'].setValue(total);
+        }
+      } else {
+        this.newProduct.sale_price = 0;
+        if (isEditForm && oldSalePrice !== 0) {
+          this.editForm.controls['sale_price'].setValue(0);
+        }
+      }
     } else {
-      this.newProduct.salePrice = 0;
+      if (!isNaN(purchase_price) && !isNaN(margin)) {
+        const total =
+          purchase_price +
+          (purchase_price * margin) / 100 +
+          purchase_price * this.TAXES;
+        this.newProduct.sale_price = total;
+        if (isEditForm && total !== oldSalePrice) {
+          this.editForm.controls['sale_price'].setValue(total);
+        }
+      }
     }
   }
 
@@ -314,15 +387,19 @@ export class ProductListComponent implements OnInit {
           this.closePasswordModal();
           this.refreshProductList();
           this.searchTerm = '';
+          this.password = '';
         } else {
           const errorMessage =
-            response.message || 'Error al eliminar el producto';
+            response.message.error || 'Error al eliminar el producto';
           this.toastr.error(errorMessage);
         }
       },
       error: (error: any) => {
-        console.error('Error al eliminar el producto:', error);
-        this.toastr.error('Error al eliminar el producto: ' + error.message);
+        console.log(error.error.error);
+        console.error('Error al eliminar el producto:', error.error.error);
+        this.toastr.error(
+          'Error al eliminar el producto: ' + error.error.error
+        );
       },
     });
   }
@@ -345,19 +422,21 @@ export class ProductListComponent implements OnInit {
           const product = response.message.product;
           const { int_code, name, description, quantity, sale_price } = product;
 
-          this.editForm.int_code = int_code;
-          this.editForm.name = name;
-          this.editForm.description = description;
-          this.editForm.quantity = quantity;
-          this.editForm.sale_price = sale_price;
+          this.editForm.patchValue({
+            int_code,
+            name,
+            description,
+            quantity,
+            sale_price,
+          });
         } else {
           console.log('No se encontró el producto');
-          this.toastr.warning('Producto no encontrado')
+          this.toastr.warning('Producto no encontrado');
         }
       },
       error: (error) => {
         console.log('Error al obtener el producto', error);
-        this.toastr.error('Error al obtener el producto')
+        this.toastr.error('Error al obtener el producto');
       },
     });
   }

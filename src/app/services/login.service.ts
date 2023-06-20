@@ -75,7 +75,7 @@ export class LoginService {
           }
         },
         error: (error: any) => {
-          this.toastr.error(`Usuario ${this.capitalizeFirstLetter(username)} no existe`)
+          this.toastr.error(`Usuario ${this.capitalizeFirstLetter(username)} no registrado`)
         }
       });
     }

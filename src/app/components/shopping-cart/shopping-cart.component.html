@@ -26,9 +26,9 @@
 <!-- Opciones de Mis ventas -->
 <div class="container justify-content-center" [@fadeAnimation]>
   <div class="row justify-content-center">
-    <div class="col-md-6 mb-2 d-flex justify-content-center">
+    <div class="col-md-6 d-flex justify-content-center">
       <div
-        class="card shadow card-height border col-md-8 mt-3 customShadow bg-custom clic-on-image"
+        class="card shadow card-height border col-md-8 mt-4 customShadow bg-custom clic-on-image"
       >
         <a class="text-decoration-none" (click)="openSaleModal()">
           <div class="card-body">
@@ -37,9 +37,9 @@
         </a>
       </div>
     </div>
-    <div class="col-md-6 mb-2 d-flex justify-content-center">
+    <div class="col-md-6 d-flex justify-content-center">
       <div
-        class="card shadow card-height border col-md-8 mt-3 customShadow bg-custom clic-on-image"
+        class="card shadow card-height border col-md-8 mt-4 customShadow bg-custom clic-on-image"
       >
         <a class="text-decoration-none" (click)="openSaleHistoryModal()">
           <div class="card-body">
@@ -50,9 +50,9 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-6 mb-2 d-flex justify-content-center">
+    <div class="col-md-6 d-flex justify-content-center">
       <div
-        class="card shadow card-height col-md-8 border customShadow mt-3 bg-custom clic-on-image"
+        class="card shadow card-height col-md-8 border customShadow mt-4 bg-custom clic-on-image"
       >
         <a routerLink="/product-list" class="text-decoration-none">
           <div class="card-body">
@@ -63,7 +63,7 @@
     </div>
     <div class="col-md-6 d-flex justify-content-center">
       <div
-        class="card shadow card-height col-md-8 border customShadow mt-3 bg-custom clic-on-image"
+        class="card shadow card-height col-md-8 border customShadow mt-4 bg-custom clic-on-image"
       >
         <div class="card-body">
           <h5 class="card-title">Mis reportes</h5>
@@ -89,7 +89,7 @@
         <h5 class="modal-title">Crear venta</h5>
         <button
           type="button"
-          class="close overflow-visible"
+          class="close overflow-visible clic-on-image"
           data-dismiss="modal"
           aria-label="Close"
           (click)="closeSaleModal()"
@@ -194,7 +194,7 @@
           />
         </div>
         <div class="d-flex justify-content-center">
-          <button type="button" class="btn btn-primary" (click)="addProduct()">
+          <button type="button" class="btn btn-primary clic-on-image" (click)="addProduct()">
             Agregar producto
           </button>
         </div>
@@ -218,7 +218,7 @@
               <td>
                 <button
                   type="button"
-                  class="btn btn-danger btn-sm"
+                  class="btn btn-danger btn-sm clic-on-image"
                   (click)="removeProduct(product)"
                 >
                   Eliminar
@@ -233,12 +233,12 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="createSale()">
+        <button type="button" class="btn btn-primary clic-on-image" (click)="createSale()">
           Guardar venta
         </button>
         <button
           type="button"
-          class="btn btn-secondary"
+          class="btn btn-secondary clic-on-image"
           data-dismiss="modal"
           (click)="closeSaleModal()"
         >
@@ -265,7 +265,7 @@
         <h5 class="modal-title">Historial de ventas</h5>
         <button
           type="button"
-          class="close overflow-visible"
+          class="close overflow-visible clic-on-image"
           data-dismiss="modal"
           aria-label="Close"
           (click)="closeSaleHistoryModal()"
@@ -319,14 +319,14 @@
               </p>
               <button
                 *ngIf="sale.status === 'aceptado'"
-                class="btn btn-primary mr-2"
+                class="btn btn-primary mr-2 clic-on-image"
                 (click)="generateTicket(sale.doc_number)"
               >
                 Reimprimir
               </button>
               <button
                 *ngIf="sale.status === 'aceptado'"
-                class="btn btn-danger"
+                class="btn btn-danger clic-on-image"
                 (click)="cancelSale(sale.doc_number)"
               >
                 Anular
@@ -355,7 +355,7 @@
         <div class="modal-footer">
           <button
             type="button"
-            class="btn btn-secondary"
+            class="btn btn-secondary clic-on-image"
             data-dismiss="modal"
             (click)="closeSaleHistoryModal()"
           >

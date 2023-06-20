@@ -16,7 +16,7 @@ import { MainBoardComponent } from './components/main-board/main-board.component
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { FrontPanelComponent } from './components/front-panel/front-panel.component';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DigitalWatchComponent } from './components/digital-watch/digital-watch.component'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DbService } from './services/db.service';
@@ -60,6 +60,7 @@ import { ToastrModule } from 'ngx-toastr';
       positionClass: 'toast-top-right',
       preventDuplicates: true,
     }),
+    ReactiveFormsModule
   ],
   providers: [
     DbService,

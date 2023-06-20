@@ -25,9 +25,9 @@
 <!-- Opciones de Mis compras -->
 <div class="container justify-content-center" [@fadeAnimation]>
   <div class="row justify-content-center">
-    <div class="col-md-6 mb-2 d-flex justify-content-center">
+    <div class="col-md-6 d-flex justify-content-center">
       <div
-        class="card shadow card-height border col-md-8 mt-3 customShadow bg-custom clic-on-image"
+        class="card shadow card-height border col-md-8 mt-4 customShadow bg-custom clic-on-image"
       >
         <a (click)="openPurchaseModal()" class="text-decoration-none">
           <div class="card-body">
@@ -36,9 +36,9 @@
         </a>
       </div>
     </div>
-    <div class="col-md-6 mb-2 d-flex justify-content-center">
+    <div class="col-md-6 d-flex justify-content-center">
       <div
-        class="card shadow card-height border col-md-8 mt-3 customShadow bg-custom clic-on-image"
+        class="card shadow card-height border col-md-8 mt-4 customShadow bg-custom clic-on-image"
       >
         <a (click)="openPurchaseHistoryModal()" class="text-decoration-none">
           <div class="card-body">
@@ -49,9 +49,9 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-6 mb-2 d-flex justify-content-center">
+    <div class="col-md-6 d-flex justify-content-center">
       <div
-        class="card shadow card-height border col-md-8 mt-3 customShadow bg-custom clic-on-image"
+        class="card shadow card-height border col-md-8 mt-4 customShadow bg-custom clic-on-image"
       >
         <a routerLink="/product-list" class="text-decoration-none">
           <div class="card-body">
@@ -60,9 +60,9 @@
         </a>
       </div>
     </div>
-    <div class="col-md-6 mb-2 d-flex justify-content-center">
+    <div class="col-md-6 d-flex justify-content-center">
       <div
-        class="card shadow card-height border col-md-8 mt-3 customShadow bg-custom clic-on-image"
+        class="card shadow card-height border col-md-8 mt-4 customShadow bg-custom clic-on-image"
       >
         <div class="card-body">
           <h5 class="card-title">Mis reportes</h5>
@@ -88,7 +88,7 @@
         <h5 class="modal-title">Crear compra</h5>
         <button
           type="button"
-          class="close overflow-visible"
+          class="close overflow-visible clic-on-image"
           data-dismiss="modal"
           aria-label="Close"
           (click)="closePurchaseModal()"
@@ -170,18 +170,18 @@
         </div>
         <hr />
         <div class="form-group">
-          <label for="productName">Nombre del producto</label>
+          <label for="name">Nombre del producto</label>
           <input
             type="text"
-            id="productName"
-            name="productName"
-            [(ngModel)]="productName"
+            id="name"
+            name="name"
+            [(ngModel)]="name"
             class="form-control"
             (keyup)="searchProducts()"
             autocomplete="off"
           />
-          <div class="suggestions" *ngIf="productName && suggestionsList.length > 0">
-            <ul class="list-inline" *ngIf="productName && suggestionsList.length > 0">
+          <div class="suggestions" *ngIf="name && suggestionsList.length > 0">
+            <ul class="list-inline" *ngIf="name && suggestionsList.length > 0">
               <li *ngFor="let suggestion of suggestionsList">
                 <a
                   class="text-decoration-none"
@@ -195,41 +195,51 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="productPrice">Precio anterior</label>
+          <label for="price">Precio anterior</label>
+          <label for="" class="form-check-label ml-5">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                [(ngModel)]="selectedProductTaxes"
+                [checked]="selectedProductTaxes"
+                disabled
+              />
+              {{ selectedProductTaxes ? 'Gravado' : 'Exento' }}
+            </label>
           <input
             type="number"
-            id="productPrice"
-            name="productPrice"
-            [(ngModel)]="productPrice"
+            id="price"
+            name="price"
+            [(ngModel)]="price"
             class="form-control"
             [value]="selectedProductPrice"
             autocomplete="off"
           />
         </div>
         <div class="form-group">
-          <label for="productPrice">Precio actual</label>
+          <label for="price">Precio actual</label>
           <input
             type="number"
-            id="productPrice"
-            name="productNewPrice"
-            [(ngModel)]="productNewPrice"
+            id="price"
+            name="new_price"
+            [(ngModel)]="new_price"
             class="form-control"
             autocomplete="off"
           />
         </div>
         <div class="form-group">
-          <label for="productQuantity">Cantidad</label>
+          <label for="quantity">Cantidad</label>
           <input
             type="number"
-            id="productQuantity"
-            name="productQuantity"
-            [(ngModel)]="productQuantity"
+            id="quantity"
+            name="quantity"
+            [(ngModel)]="quantity"
             class="form-control"
             autocomplete="off"
           />
         </div>
         <div class="d-flex justify-content-center">
-          <button type="button" class="btn btn-primary" (click)="addProduct()">
+          <button type="button" class="btn btn-primary clic-on-image" (click)="addProduct()">
             Agregar producto
           </button>
         </div>
@@ -253,7 +263,7 @@
               <td>
                 <button
                   type="button"
-                  class="btn btn-danger btn-sm"
+                  class="btn btn-danger btn-sm clic-on-image"
                   (click)="removeProduct(product)"
                 >
                   Eliminar
@@ -263,21 +273,32 @@
           </tbody>
         </table>
         <hr />
-        <div class="d-flex justify-content-end">
-          <h4>Total: {{ totalPurchaseAmount | currency : "CRC" : "₡" }}</h4>
+        <div class="d-flex justify-content-between">
+          <div class="flex-column align-items-center">
+            <h4>Sub Total</h4>
+            <p>{{ subTotalPurchaseAmount | currency : "CRC" : "₡" }}</p>
+          </div>
+          <div class="flex-column align-items-center">
+            <h4>IVA</h4>
+            <p>{{ totalTaxesAmount | currency : "CRC" : "₡" }}</p>
+          </div>
+          <div class="flex-column align-items-center">
+            <h4>Total</h4>
+            <p>{{ totalPurchaseAmount | currency : "CRC" : "₡" }}</p>
+          </div>
         </div>
       </div>
       <div class="modal-footer">
         <button
           type="button"
-          class="btn btn-primary"
+          class="btn btn-primary clic-on-image"
           (click)="createPurchase()"
         >
           Guardar compra
         </button>
         <button
           type="button"
-          class="btn btn-secondary"
+          class="btn btn-secondary clic-on-image"
           data-dismiss="modal"
           (click)="closePurchaseModal()"
         >
@@ -304,7 +325,7 @@
         <h5 class="modal-title">Historial de compras</h5>
         <button
           type="button"
-          class="close overflow-visible"
+          class="close overflow-visible clic-on-image"
           data-dismiss="modal"
           aria-label="Close"
           (click)="closePurchaseHistoryModal()"
@@ -360,7 +381,7 @@
               </p>
               <button
                 *ngIf="purchase.status === 'aceptado'"
-                class="btn btn-danger"
+                class="btn btn-danger clic-on-image"
                 (click)="cancelPurchase(purchase.doc_number)"
               >
                 Anular
@@ -391,7 +412,7 @@
         <div class="modal-footer">
           <button
             type="button"
-            class="btn btn-secondary"
+            class="btn btn-secondary clic-on-image"
             data-dismiss="modal"
             (click)="closePurchaseHistoryModal()"
           >

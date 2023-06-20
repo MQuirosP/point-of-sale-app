@@ -9,11 +9,11 @@ html {
     -webkit-gradient(linear, right top, left top, from(#7b4397), to(#dc2430));
   background: url(src/assets/bg-pattern.png),
     linear-gradient(to left, #a8e6ce, #6d9bcc);
-    overflow: visible;
-    transition: opacity 100ms;
+  overflow: visible;
+  transition: opacity 100ms;
 }
 
-@media (min-width: 360px) and (max-width: 600px){
+@media (min-width: 360px) and (max-width: 600px) {
   /* Estilos para pantallas de móvil */
   html {
     height: 122%;
@@ -34,7 +34,7 @@ body {
 .app-container {
   display: flex;
   flex-direction: column;
-  
+
   /* min-height: 102%; */
 }
 
@@ -113,21 +113,23 @@ body {
 
 .customShadow {
   /* box-shadow: 2px rgba(139, 138, 138, 0.8); */
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  /* transform: scale(1); */
   border-radius: 10px;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 .customShadow:hover {
   /* color: rgb(109, 150, 184); */
-  /* box-shadow: 5px 5px 5px rgb(56, 55, 55); */
+  box-shadow: 5px 5px 5px rgb(56, 55, 55);
   transform: scale(1.05);
-  
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+
   /* text-shadow: 1px 1px 2px rgb(20, 19, 19); */
 }
 
 .bg-custom {
   background-color: rgb(249, 250, 184);
   /* background-color: rgb(219, 213, 176); */
-  transition: background-color 0.3 ease, transform 0.3s ease;
+  transition: background-color 0.3 ease, transform 0.3s ease-in-out;
 }
 .bg-custom:hover {
   /* color: rgb(109, 150, 184); */
@@ -140,11 +142,11 @@ body {
 
 .my-clic:hover {
   box-shadow: 2px 1px 1px darkgray;
-  transform: scale(1.05)
+  transform: scale(1.05);
 }
 
 .my-clic:active {
-  transform: translateY(1px) tranlateZ(-1px) scale(0.90);
+  transform: translateY(1px) tranlateZ(-1px) scale(0.9);
   transition: transform 0.2s;
   box-shadow: inset 2px 2px 2px darkgray;
   background-color: #7ef37e;
@@ -233,7 +235,7 @@ body {
 
 button {
   border: none;
-  background-color:transparent;
+  background-color: transparent;
 }
 
 /* .app-container {
@@ -247,47 +249,50 @@ button {
 }
 
 .clic-on-icon:active {
-    transform: scale(0.95);
-    transition: transform 0.3s ease-in-out;
+  transform: scale(0.95);
+  transition: transform 0.3s ease-in-out;
 }
 
 /* Botón scroll up */
 .btn-floating {
-    position: fixed;
-    bottom: 15%;
-    right: 5%;
-    z-index: 999;
+  position: fixed;
+  bottom: 15%;
+  right: 5%;
+  z-index: 999;
 }
 
 /* Ocultar íconos modificar/eliminar */
 .product-name:hover + .product-icons,
 .productname:focus + .product-icons {
-    display: block;
+  display: block;
 }
 
 .product-icons {
-    display: none;
-    opacity: 0;
-    height: 0;
-    overflow: hidden;
-    transition: height 0.3s, opacity 0.3s;
-    margin-left: 40px;
+  display: none;
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  transition: height 0.3s, opacity 0.3s;
+  margin-left: 40px;
 }
 
 .show-icons {
-    display: block;
-    opacity: 1;
-    height: auto;
+  display: block;
+  opacity: 1;
+  height: auto;
 }
 
 #reloj {
   margin: 0;
   /* margin-top: 30px; */
   padding: 0;
-  font-family: sans-serif;
-  font-size: 3em;
-  text-shadow: 0px 0px 1px #333;
-  color: #fff;
+  /* font-family: sans-serif; */
+  font-size: 2.5em;
+  /* text-shadow: 0px 0px 1px #333; */
+  /* color: #f8abab; */
+  color: #fac2c2;
+  min-height: 140px;
+  max-height: 140px;
 }
 
 .reloj-contenedor {
@@ -330,9 +335,7 @@ button {
   color: #3c763d;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 
-  4px 4px 8px rgba(0, 0, 0, 0.2),
-  -4px -4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2), -4px -4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .toast-error {
@@ -341,9 +344,7 @@ button {
   color: #a94442;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 
-  4px 4px 8px rgba(0, 0, 0, 0.2),
-  -4px -4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2), -4px -4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .toast-info {
@@ -352,9 +353,7 @@ button {
   color: #31708f;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 
-  4px 4px 8px rgba(0, 0, 0, 0.2),
-  -4px -4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2), -4px -4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .toast-warning {
@@ -363,7 +362,5 @@ button {
   color: #8a6d3b;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 
-  4px 4px 8px rgba(0, 0, 0, 0.2),
-  -4px -4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2), -4px -4px 8px rgba(0, 0, 0, 0.2);
 }

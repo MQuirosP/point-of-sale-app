@@ -36,7 +36,7 @@
       <div class="d-flex justify-content-between align-items-center">
         <h4 class="h4">Lista de productos</h4>
         <button
-          class="btn btn-primary shadow ml-4"
+          class="btn btn-primary shadow ml-4 clic-on-image"
           data-target="addProductModal"
           (click)="openAddProductModal()"
         >
@@ -105,7 +105,10 @@
 </div>
 
 <!-- Botón para ir al principio de la lista -->
-<button class="btn btn-primary btn-floating shadow" (click)="scrollToTop()">
+<button
+  class="btn btn-primary btn-floating shadow clic-on-image"
+  (click)="scrollToTop()"
+>
   <i class="fas fa-arrow-up"></i>
 </button>
 
@@ -123,27 +126,30 @@
     <div class="modal-content shadow">
       <div class="modal-header">
         <h4 class="modal-title">Editar Producto</h4>
-        <button type="button" class="close" (click)="closeEditModal()">
-          <span aria-hidden="true"
-            ><i
+        <button
+          type="button"
+          class="close clic-on-image"
+          (click)="closeEditModal()"
+        >
+          <span aria-hidden="true">
+            <i
               class="fa-sharp fa-solid fa-circle-xmark"
               style="color: #f40b0b"
-            ></i
-          ></span>
+            ></i>
+          </span>
         </button>
       </div>
       <div class="modal-body">
-        <form (ngSubmit)="saveProduct()">
+        <form [formGroup]="editForm" (ngSubmit)="editProduct()">
           <div class="form-group">
             <label for="intCode">Código:</label>
             <input
               type="text"
               id="intCode"
               class="form-control"
-              name="intCode"
-              [(ngModel)]="editForm.int_code"
+              formControlName="int_code"
               autocomplete="off"
-              disabled
+              [value]="editForm.get('int_code').value"
             />
           </div>
           <div class="form-group">
@@ -152,9 +158,9 @@
               type="text"
               id="name"
               class="form-control"
-              name="name"
-              [(ngModel)]="editForm.name"
+              formControlName="name"
               autocomplete="off"
+              [value]="editForm.get('name').value"
             />
           </div>
           <div class="form-group">
@@ -163,10 +169,9 @@
               id="description"
               class="form-control"
               rows="3"
-              name="description"
-              [(ngModel)]="editForm.description"
-              disabled
-            ></textarea>
+              formControlName="description"
+              [readonly]="true"
+            >{{ editForm.get('description').value }}</textarea>
           </div>
           <div class="form-group">
             <label for="quantity">Cantidad:</label>
@@ -174,42 +179,77 @@
               type="number"
               id="quantity"
               class="form-control"
-              name="quantity"
-              [(ngModel)]="editForm.quantity"
+              formControlName="quantity"
               autocomplete="off"
+              [value]="editForm.get('quantity').value"
             />
           </div>
           <div class="form-group">
-            <label for="purchasePrice">Precio de Compra:</label>
+            <label for="purchase_price">Precio de Compra:</label>
             <input
               type="number"
-              id="purchasePrice"
+              id="purchase_price"
               class="form-control"
-              name="purchasePrice"
-              [(ngModel)]="editForm.purchase_price"
+              formControlName="purchase_price"
               autocomplete="off"
+              [value]="editForm.get('purchase_price').value"
+              (ngModelChange)="calculateTotal(editForm.get('purchase_price').value,
+              editForm.get('margin').value,
+              editForm.get('taxes').value,
+              true)"
+            />
+          </div>
+          <div class="form-group">
+            <label for="purchaseMargin">Margen de ganancia:</label>
+            <input
+              type="number"
+              id="purchaseMargin"
+              class="form-control"
+              formControlName="margin"
+              autocomplete="off"
+              [value]="editForm.get('margin').value"
+              (ngModelChange)="calculateTotal(editForm.get('purchase_price').value,
+              editForm.get('margin').value,
+              editForm.get('taxes').value,
+              true)"
             />
           </div>
           <div class="form-group">
             <label for="salePrice">Precio de Venta:</label>
+            <label for="" class="form-check-label ml-5">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                formControlName="taxes"
+                (ngModelChange)="calculateTotal(editForm.get('purchase_price').value,
+                editForm.get('margin').value,
+                editForm.get('taxes').value,
+                true)"
+              />
+              {{ editForm.get('taxes').value ? 'Gravado' : 'Exento' }}
+            </label>
             <input
               type="number"
               id="salePrice"
               class="form-control"
-              name="salePrice"
-              [(ngModel)]="editForm.sale_price"
+              formControlName="sale_price"
+              (ngModelChange)="calculateTotal(editForm.get('purchase_price').value,
+              editForm.get('margin').value,
+              editForm.get('taxes').value,
+              true)"
               autocomplete="off"
+              [value]="editForm.get('sale_price').value"
             />
           </div>
           <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Guardar</button>
             <button
               type="button"
-              class="btn btn-secondary"
+              class="btn btn-secondary clic-on-image"
               (click)="closeEditModal()"
             >
               Cerrar
             </button>
-            <button type="submit" class="btn btn-primary">Guardar</button>
           </div>
         </form>
       </div>
@@ -233,7 +273,11 @@
         <h5 class="modal-title" id="addProductModalLabel">
           Agregar nuevo producto
         </h5>
-        <button type="button" class="close" (click)="closeAddProductModal()">
+        <button
+          type="button"
+          class="close clic-on-image"
+          (click)="closeAddProductModal()"
+        >
           <span aria-hidden="true"
             ><i
               class="fa-sharp fa-solid fa-circle-xmark"
@@ -284,15 +328,39 @@
               type="number"
               class="form-control"
               id="productPrice"
-              [(ngModel)]="newProduct.purchasePrice"
+              [(ngModel)]="newProduct.purchase_price"
               name="productPrice"
               required
               autocomplete="off"
-              (ngModelChange)="calculateTotal()"
+              (ngModelChange)="
+                calculateTotal(
+                  newProduct.purchase_price,
+                  newProduct.margin,
+                  newProduct.taxes
+                )
+              "
             />
           </div>
           <div class="form-group">
             <label for="productMargin">Margen (%):</label>
+            <label for="" class="form-check-label ml-5">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                style="margin-top: 7px"
+                name="activateRegister"
+                [(ngModel)]="newProduct.taxes"
+                [checked]="newProduct.taxes"
+                (ngModelChange)="
+                  calculateTotal(
+                    newProduct.purchase_price,
+                    newProduct.margin,
+                    newProduct.taxes
+                  )
+                "
+              />
+              {{ isTaxed ? "Gravado" : "Exento" }}
+            </label>
             <input
               type="number"
               class="form-control"
@@ -301,7 +369,13 @@
               name="productMargin"
               required
               autocomplete="off"
-              (ngModelChange)="calculateTotal()"
+              (ngModelChange)="
+                calculateTotal(
+                  newProduct.purchase_price,
+                  newProduct.margin,
+                  newProduct.taxes
+                )
+              "
             />
           </div>
           <div class="form-group">
@@ -310,11 +384,17 @@
               type="number"
               class="form-control"
               id="productTotal"
-              [(ngModel)]="newProduct.salePrice"
+              [(ngModel)]="newProduct.sale_price"
               name="salePrice"
               readonly
               autocomplete="off"
-              (ngModelChange)="calculateTotal()"
+              (ngModelChange)="
+                calculateTotal(
+                  newProduct.purchase_price,
+                  newProduct.margin,
+                  newProduct.taxes
+                )
+              "
             />
           </div>
         </form>
@@ -322,20 +402,24 @@
       <div class="modal-footer">
         <button
           type="button"
-          class="btn btn-secondary"
+          class="btn btn-primary clic-on-image"
+          (click)="addProduct()"
+        >
+          Guardar
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary clic-on-image"
           (click)="closeAddProductModal()"
         >
           Cancelar
-        </button>
-        <button type="button" class="btn btn-primary" (click)="addProduct()">
-          Guardar
         </button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Modal para contraseña -->
+<!-- Modal contraseña para eliminar producto -->
 <div
   class="modal fade"
   id="deletePasswordModal"
@@ -349,15 +433,18 @@
     <div class="modal-content shadow">
       <div class="modal-header">
         <h2 class="modal-title">Eliminar producto</h2>
-        <span class="close" (click)="closePasswordModal()" aria-hidden="true"
+        <span
+          class="close clic-on-image"
+          (click)="closePasswordModal()"
+          aria-hidden="true"
           ><i
             class="fa-sharp fa-solid fa-circle-xmark"
-            style="color: #f40b0b; cursor: pointer;"
+            style="color: #f40b0b; cursor: pointer"
           ></i
         ></span>
       </div>
       <div class="modal-body">
-        <form (ngSubmit)="deleteProduct(editForm.int_code)">
+        <form (ngSubmit)="deleteProduct(editForm.get('int_code').value)">
           <div class="form-group">
             <label for="editIntCode">Producto a eliminar:</label>
             <input
@@ -365,8 +452,7 @@
               id="editIntCode"
               class="form-control"
               name="name"
-              [(ngModel)]="editForm.name"
-              disabled
+              [value]="editForm.get('name').value"
               autocomplete="off"
             />
             <label for="password">Contraseña:</label>
@@ -380,14 +466,16 @@
             />
           </div>
           <div class="modal-footer">
+            <button type="submit" class="btn btn-primary clic-on-image">
+              Guardar
+            </button>
             <button
               type="button"
-              class="btn btn-secondary"
+              class="btn btn-secondary clic-on-image"
               (click)="closePasswordModal()"
             >
               Cerrar
             </button>
-            <button type="submit" class="btn btn-primary">Guardar</button>
           </div>
         </form>
       </div>
