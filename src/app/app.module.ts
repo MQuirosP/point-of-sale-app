@@ -27,6 +27,7 @@ import { LoginService } from './services/login.service';
 import { CookieService } from 'ngx-cookie-service';
 import { RegisterUserComponent } from './components/register-user/register-user.component';
 import { ToastrModule } from 'ngx-toastr';
+import { TicketService } from './services/ticket.service';
 
 
 
@@ -67,7 +68,7 @@ import { ToastrModule } from 'ngx-toastr';
     ModalService,
     LoginService,
     CookieService,
-    // OptionsService,
+    TicketService,
   ],
   bootstrap: [AppComponent]
 })

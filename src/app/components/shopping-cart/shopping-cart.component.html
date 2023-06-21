@@ -140,24 +140,18 @@
         </div>
         <hr />
         <div class="form-group">
-          <label for="productName">Nombre del producto</label>
+          <label for="name">Nombre del producto</label>
           <input
             type="text"
-            id="productName"
-            name="productName"
-            [(ngModel)]="productName"
+            id="name"
+            name="name"
+            [(ngModel)]="name"
             class="form-control"
             (keyup)="searchProducts()"
             autocomplete="off"
           />
-          <div
-            class="suggestions"
-            *ngIf="productName && suggestionsList.length > 0"
-          >
-            <ul
-              class="list-inline"
-              *ngIf="productName && suggestionsList.length > 0"
-            >
+          <div class="suggestions" *ngIf="name && suggestionsList.length > 0">
+            <ul class="list-inline" *ngIf="name && suggestionsList.length > 0">
               <li *ngFor="let suggestion of suggestionsList">
                 <a
                   class="text-decoration-none"
@@ -171,30 +165,45 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="productPrice">Precio</label>
+          <label for="price">Precio</label>
+          <label for="" class="form-check-label ml-5">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              [(ngModel)]="selectedProductTaxes"
+              [checked]="selectedProductTaxes"
+              disabled
+            />
+            {{ selectedProductTaxes ? "Gravado" : "Exento" }}
+          </label>
           <input
             type="number"
-            id="productPrice"
-            name="productPrice"
-            [(ngModel)]="productPrice"
+            id="price"
+            name="price"
+            [(ngModel)]="price"
             class="form-control"
             [value]="selectedProductPrice"
             autocomplete="off"
           />
         </div>
         <div class="form-group">
-          <label for="productQuantity">Cantidad</label>
+          <label for="quantity">Cantidad</label>
           <input
             type="number"
-            id="productQuantity"
-            name="productQuantity"
-            [(ngModel)]="productQuantity"
+            id="quantity"
+            name="quantity"
+            [(ngModel)]="quantity"
             class="form-control"
             autocomplete="off"
+            step="0.1"
           />
         </div>
         <div class="d-flex justify-content-center">
-          <button type="button" class="btn btn-primary clic-on-image" (click)="addProduct()">
+          <button
+            type="button"
+            class="btn btn-primary clic-on-image"
+            (click)="addProduct()"
+          >
             Agregar producto
           </button>
         </div>
@@ -228,12 +237,27 @@
           </tbody>
         </table>
         <hr />
-        <div class="d-flex justify-content-end">
-          <h4>Total: {{ totalSaleAmount | currency : "CRC" : "₡" }}</h4>
+        <div class="d-flex justify-content-between">
+          <div class="flex-column align-items-center">
+            <h4>Sub Total</h4>
+            <p>{{ subTotalSaleAmount | currency : "CRC" : "₡" }}</p>
+          </div>
+          <div class="flex-column align-items-center">
+            <h4>IVA</h4>
+            <p>{{ totalTaxesAmount | currency : "CRC" : "₡" }}</p>
+          </div>
+          <div class="flex-column align-items-center">
+            <h4>Total</h4>
+            <p>{{ totalSaleAmount | currency : "CRC" : "₡" }}</p>
+          </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary clic-on-image" (click)="createSale()">
+        <button
+          type="button"
+          class="btn btn-primary clic-on-image"
+          (click)="createSale()"
+        >
           Guardar venta
         </button>
         <button
@@ -314,8 +338,16 @@
               <p>Estado: {{ sale.status }}</p>
               <p>Cliente: {{ sale.customer_name }}</p>
               <p>Fecha de creación: {{ sale.createdAt | date }}</p>
-              <p>
-                <b>{{ sale.total | currency : "CRC" : "₡" : "1.2-2" }}</b>
+              <p class="text-right">
+                Sub Total:
+                {{ sale.sub_total | currency : "CRC" : "₡" : "1.2-2" }}
+              </p>
+              <p class="text-right">
+                IVA: {{ sale.taxes_amount | currency : "CRC" : "₡" : "1.2-2" }}
+              </p>
+              <p class="text-right">
+                <b>Total:
+                  {{ sale.total | currency : "CRC" : "₡" : "1.2-2" }}</b>
               </p>
               <button
                 *ngIf="sale.status === 'aceptado'"

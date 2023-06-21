@@ -13,6 +13,7 @@ import { jsPDF } from 'jspdf';
 import { fadeAnimation } from 'src/app/fadeAnimation';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
+import { TicketService } from 'src/app/services/ticket.service';
 
 interface ApiSaleResponse {
   success: boolean;
@@ -35,13 +36,19 @@ export class ShoppingCartComponent {
 
   // Crear Ventas
   int_code: string = '';
-  productName: string = '';
-  productPrice: number = 0;
+  name: string = '';
+  price: number = 0;
   selectedProductPrice: number = 0;
-  productQuantity: number = 0;
+  quantity: number = 0;
+
+  TAXES = 0.13;
+  selectedProductTaxes: boolean;
+  subTotalSaleAmount: number = 0;
+  totalTaxesAmount: number = 0;
+  totalSaleAmount: number = 0;
+
   productList: any[] = [];
   lastSaleDocNumber: string = '';
-  totalSaleAmount: number = 0;
   customerName: string = 'Contado';
   paymentMethod: string = 'contado';
   date: Date | any = '';
@@ -61,7 +68,8 @@ export class ShoppingCartComponent {
     private router: Router,
     private calendar: NgbCalendar,
     private dateParser: NgbDateParserFormatter,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private ticketService: TicketService
   ) {
     this.date = this.getCurrentDate();
     this.selectedDate = this.calendar.getToday();
@@ -109,6 +117,7 @@ export class ShoppingCartComponent {
     }
     this.http.get<ApiSaleResponse>(`${this.backendUrl}sales`).subscribe({
       next: (response) => {
+        // console.log(response);
         if (response.success) {
           const sales = response.message?.Sales || [];
           this.sales = sales.filter((sale: any) => {
@@ -134,7 +143,7 @@ export class ShoppingCartComponent {
   }
 
   searchProducts() {
-    const searchTerm = this.productName.toLowerCase();
+    const searchTerm = this.name.toLowerCase();
     this.http.get(`${this.backendUrl}products`).subscribe({
       next: (response: any) => {
         const products = response?.message?.products;
@@ -149,6 +158,7 @@ export class ShoppingCartComponent {
               int_code: product.int_code,
               name: product.name,
               sale_price: product.sale_price,
+              taxes: product.taxes,
             }));
         } else {
           this.suggestionsList = [];
@@ -163,38 +173,72 @@ export class ShoppingCartComponent {
   selectSuggestion(suggestion: any, event: Event) {
     event.preventDefault();
     this.int_code = suggestion.int_code;
-    this.productName = suggestion.name;
-    this.selectedProductPrice = suggestion.sale_price;
+    this.name = suggestion.name;
+    (this.selectedProductTaxes = suggestion.taxes),
+      (this.selectedProductPrice = suggestion.sale_price);
     this.suggestionsList = [];
   }
 
   addProduct() {
     if (
       !this.int_code ||
-      !this.productName ||
+      !this.name ||
       !this.selectedProductPrice ||
-      !this.productQuantity
+      !this.quantity
     ) {
       this.toastr.warning('Se debe suministrar todos los campos');
       return;
     }
+  
+    let taxesAmount = 0;
+    let subTotal = this.selectedProductPrice * this.quantity;
+  
+    if (this.selectedProductTaxes) {
+      const priceWithoutTaxes = this.selectedProductPrice / (1 + this.TAXES);
+      const taxes = this.selectedProductPrice - priceWithoutTaxes;
+      taxesAmount = taxes * this.quantity;
+      subTotal = priceWithoutTaxes * this.quantity;
+    }
+  
     const product = {
       int_code: this.int_code,
-      name: this.productName,
+      name: this.name,
       price: this.selectedProductPrice,
-      quantity: this.productQuantity,
+      quantity: this.quantity,
+      taxes: this.selectedProductTaxes,
+      taxes_amount: taxesAmount,
+      sub_total: subTotal,
     };
+  
+    // console.log(product);
     this.productList.push(product);
     this.calculateTotalSaleAmount();
-    this.productName = '';
+    this.name = '';
     this.selectedProductPrice = 0;
-    this.productQuantity = 0;
+    this.quantity = 0;
+    this.selectedProductTaxes = false;
   }
 
   private calculateTotalSaleAmount() {
-    this.totalSaleAmount = this.productList.reduce((total, product) => {
-      return total + product.price * product.quantity;
+    this.subTotalSaleAmount = this.productList.reduce((subTotal, product) => {
+      if (!product.taxes) {
+        return this.subTotalSaleAmount + product.price * product.quantity;
+      } else {
+        const priceWithoutTaxes = product.price / (1 + this.TAXES);
+        return this.subTotalSaleAmount + priceWithoutTaxes * product.quantity;
+      }
     }, 0);
+
+    this.totalTaxesAmount = this.productList.reduce((taxesTotal, product) => {
+      if (product.taxes) {
+        const taxes = product.price - product.price / (1 + this.TAXES);
+        return taxesTotal + taxes * product.quantity;
+      } else {
+        return taxesTotal;
+      }
+    }, 0);
+
+    this.totalSaleAmount = this.subTotalSaleAmount + this.totalTaxesAmount;
   }
 
   removeProduct(product: any) {
@@ -210,13 +254,18 @@ export class ShoppingCartComponent {
       customerId: 1,
       customer_name: this.customerName,
       paymentMethod: this.paymentMethod,
+      sub_total: this.subTotalSaleAmount,
+      taxes_amount: this.totalTaxesAmount,
       products: this.productList.map((product) => ({
         int_code: product.int_code,
         quantity: product.quantity,
+        sub_total: product.sub_total,
+        taxes_amount: product.taxes_amount,
       })),
     };
-    this.http.post(`${this.backendUrl}sales/`, sale).subscribe(
-      (response: any) => {
+    console.log(sale);
+    this.http.post(`${this.backendUrl}sales/`, sale).subscribe({
+      next: (response: any) => {
         console.log('Venta guardada exitosamente', response);
 
         this.toastr.success('La venta ha sido guardada exitosamente');
@@ -226,20 +275,27 @@ export class ShoppingCartComponent {
           this.generateTicket(this.lastSaleDocNumber);
         }, 1000);
 
-        this.productName = '';
-        this.productPrice = 0;
-        this.productQuantity = 0;
-        this.productList = [];
-        this.totalSaleAmount = 0;
+        this.clearSaleFormData();
         this.closeSaleModal();
       },
-      (error: any) => {
+      error: (error: any) => {
         console.error('Error al guardar la venta', error);
         this.toastr.error(
           'Ocurrió un error al guardar la venta. Por favor inténtalo nuevamente'
         );
-      }
-    );
+      },
+    });
+  }
+
+  private clearSaleFormData() {
+    this.name = '';
+    this.price = 0;
+    this.quantity = 0;
+    this.productList = [];
+    this.totalSaleAmount = 0;
+    this.subTotalSaleAmount = 0;
+    this.totalTaxesAmount = 0;
+    this.totalSaleAmount = 0;
   }
 
   cancelSale(doc_number: string) {
@@ -289,87 +345,7 @@ export class ShoppingCartComponent {
     sale.showDetails = !sale.showDetails;
   }
 
-  generateTicket(docNumber: string): void {
-    this.http.get<any>(`${this.backendUrl}sales/${docNumber}`).subscribe(
-      (response: any) => {
-        if (
-          response.success &&
-          response.message &&
-          response.message.Sale.length > 0
-        ) {
-          const saleData = response.message.Sale[0];
-          const { doc_number, customer_name, createdAt, total, saleItems } =
-            saleData;
-
-          const doc = new jsPDF('p', 'mm', [77, 150]);
-
-          doc.setFontSize(18);
-          doc.text('Verdulería Sol', 39, 10, { align: 'center' });
-          doc.setFontSize(14);
-          doc.text('Tiquete de Venta', 5, 20);
-          doc.setFontSize(12);
-          doc.text(`N° ${doc_number}`, 5, 25);
-
-          doc.setFontSize(10);
-          doc.text(`Fecha: ${createdAt}`, 5, 30);
-          doc.text(`Cliente: ${customer_name}`, 5, 35);
-          doc.text(
-            `--------------------------------------------------------`,
-            5,
-            37
-          );
-          let y = 42;
-
-          saleItems.forEach((item: any, index: number) => {
-            const { name, quantity, sale_price, total: totalPrice } = item;
-
-            doc.text(`Producto ${index + 1}:`, 5, y);
-            doc.text(`${name}`, 25, y);
-            y += 5;
-            doc.text(`Cantidad:`, 5, y);
-            doc.text(`${quantity}`, 25, y);
-            y += 5;
-            doc.text(`Precio:`, 5, y);
-            doc.text(`${sale_price}`, 25, y);
-            y += 5;
-            doc.text(`Total:`, 5, y);
-
-            const formattedTotalPrice = totalPrice.toLocaleString('es-CR', {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            });
-            doc.text(`${formattedTotalPrice}`, 25, y);
-            y += 5;
-          });
-
-          doc.text(
-            `--------------------------------------------------------`,
-            5,
-            y
-          );
-          y += 5;
-          doc.setFontSize(14);
-          const formattedTotal = total.toLocaleString('es-CR', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          });
-
-          doc.text(`Total: ${formattedTotal}`, 70, y, { align: 'right' });
-          doc.save(`${docNumber}.pdf`);
-        } else {
-          console.error('Error al obtener los datos del documento');
-        }
-      },
-      (error: any) => {
-        console.error(
-          'Error en la petición para obtener los datos del documento',
-          error
-        );
-      }
-    );
-  }
-
-  goToProductManagement() {
-    this.router.navigate(['/product-list']);
+  generateTicket(doc_number: string) {
+    this.ticketService.generateTicket(doc_number);
   }
 }

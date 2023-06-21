@@ -197,15 +197,15 @@
         <div class="form-group">
           <label for="price">Precio anterior</label>
           <label for="" class="form-check-label ml-5">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                [(ngModel)]="selectedProductTaxes"
-                [checked]="selectedProductTaxes"
-                disabled
-              />
-              {{ selectedProductTaxes ? 'Gravado' : 'Exento' }}
-            </label>
+            <input
+              type="checkbox"
+              class="form-check-input"
+              [(ngModel)]="selectedProductTaxes"
+              [checked]="selectedProductTaxes"
+              disabled
+            />
+            {{ selectedProductTaxes ? "Gravado" : "Exento" }}
+          </label>
           <input
             type="number"
             id="price"
@@ -239,7 +239,11 @@
           />
         </div>
         <div class="d-flex justify-content-center">
-          <button type="button" class="btn btn-primary clic-on-image" (click)="addProduct()">
+          <button
+            type="button"
+            class="btn btn-primary clic-on-image"
+            (click)="addProduct()"
+          >
             Agregar producto
           </button>
         </div>
@@ -376,10 +380,19 @@
               <p>Estado: {{ purchase.status }}</p>
               <p>Cliente: {{ purchase.provider_name }}</p>
               <p>Fecha de creación: {{ purchase.createdAt | date }}</p>
-              <p class="text-right">Sub Total: {{ purchase.sub_total | currency : "CRC" : "₡" : "1.2-2" }}</p>
-              <p class="text-right">IVA: {{ purchase.taxes_amount | currency : "CRC" : "₡" : "1.2-2" }}</p>
               <p class="text-right">
-                <b>Total: {{ purchase.total | currency : "CRC" : "₡" : "1.2-2" }}</b>
+                Sub Total:
+                {{ purchase.sub_total | currency : "CRC" : "₡" : "1.2-2" }}
+              </p>
+              <p class="text-right">
+                IVA:
+                {{ purchase.taxes_amount | currency : "CRC" : "₡" : "1.2-2" }}
+              </p>
+              <p class="text-right">
+                <b
+                  >Total:
+                  {{ purchase.total | currency : "CRC" : "₡" : "1.2-2" }}</b
+                >
               </p>
               <button
                 *ngIf="purchase.status === 'aceptado'"

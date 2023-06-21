@@ -198,11 +198,17 @@ export class PurchaseHistoryComponent {
       this.toastr.warning('Se debe suministrar todos los campos');
       return;
     }
-    const priceWithoutTaxes = this.new_price / (1 + this.TAXES);
-    const taxes = this.new_price - priceWithoutTaxes;
-    const subTotal = priceWithoutTaxes * this.quantity;
-    const taxesAmount = taxes * this.quantity;
-
+  
+    let taxesAmount = 0;
+    let subTotal = this.new_price * this.quantity;
+  
+    if (this.selectedProductTaxes) {
+      const priceWithoutTaxes = this.new_price / (1 + this.TAXES);
+      const taxes = this.new_price - priceWithoutTaxes;
+      taxesAmount = taxes * this.quantity;
+      subTotal = priceWithoutTaxes * this.quantity;
+    }
+  
     const product = {
       int_code: this.int_code,
       name: this.name,
@@ -212,7 +218,7 @@ export class PurchaseHistoryComponent {
       taxes_amount: taxesAmount,
       sub_total: subTotal,
     };
-
+  
     this.productList.push(product);
     this.calculateTotalPurchaseAmount();
     this.name = '';
@@ -326,7 +332,7 @@ export class PurchaseHistoryComponent {
         sub_total: product.sub_total,
       })),
     };
-    console.log(purchase);
+    // console.log(purchase);
 
     this.http.post(`${this.url}purchases`, purchase).subscribe({
       next: () => {
