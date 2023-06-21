@@ -11,6 +11,8 @@ export class ModalService {
   showNewProductModal: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   showDeletePasswordModal: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   showNewPurchaseModal: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  providerModal: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  customerModal: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor() { }
 
