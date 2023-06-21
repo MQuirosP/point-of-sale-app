@@ -24,10 +24,10 @@ import { ModalService } from './services/modalService';
 import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.component';
 import { BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import { LoginService } from './services/login.service';
-import { CookieService } from 'ngx-cookie-service';
 import { RegisterUserComponent } from './components/register-user/register-user.component';
 import { ToastrModule } from 'ngx-toastr';
 import { TicketService } from './services/ticket.service';
+import { CookieService } from 'ngx-cookie-service';
 
 
 
