@@ -53,7 +53,6 @@ export class TicketService {
           let y = 42;
 
           saleItems.forEach((item: any, index: number) => {
-            // console.log(item);
             const {
               name,
               quantity,

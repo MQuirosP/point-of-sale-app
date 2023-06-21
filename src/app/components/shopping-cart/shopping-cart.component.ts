@@ -8,8 +8,6 @@ import {
   NgbCalendar,
   NgbDateParserFormatter,
 } from '@ng-bootstrap/ng-bootstrap';
-// import { Observable } from 'rxjs';
-import { jsPDF } from 'jspdf';
 import { fadeAnimation } from 'src/app/fadeAnimation';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
@@ -30,8 +28,6 @@ interface ApiSaleResponse {
 })
 export class ShoppingCartComponent {
   selectedDate: NgbDateStruct;
-  // Variables generales
-  // url: string = 'http://localhost:3000/api/';
   backendUrl = `${environment.apiUrl}`;
 
   // Crear Ventas
