@@ -172,6 +172,57 @@
             autocomplete="off"
           />
         </div>
+        <div class="w-100">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="width: 40%;">Nombre</th>
+                  <th style="width: 30%;">Email</th>
+                  <th style="width: 30%;">Teléfono</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let provider of filteredProviders">
+                  <td class="bg-transparent">
+                    <span
+                      class="product-name"
+                      style="cursor: pointer"
+                      (click)="provider.showIcons = !provider.showIcons"
+                      tabindex="0"
+                    >
+                      {{ provider.name }}
+                    </span>
+                    <div
+                      class="product-icons text-left"
+                      [ngClass]="{ 'show-icons': provider.showIcons }"
+                      style="z-index: 9999;"
+                    >
+                      <a class="ml-2 mr-3">
+                        <i
+                          class="fa-solid fa-pen-to-square clic-on-icon"
+                          style="color: #1100fa; cursor: pointer"
+                        ></i>
+                      </a>
+                      <a class="text-left">
+                        <i
+                          class="fa-solid fa-trash clic-on-icon"
+                          style="color: #fa0000; cursor: pointer"
+                        ></i>
+                      </a>
+                    </div>
+                  </td>
+                  <td class="text-left">
+                    {{ provider.email }}
+                  </td>
+                  <td class="text-left">
+                    {{ provider.phone }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary clic-on-image">
@@ -232,6 +283,57 @@
             placeholder="Ingresa tu búsqueda aquí..."
             autocomplete="off"
           />
+        </div>
+        <div class="w-100">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="width: 40%;">Nombre</th>
+                  <th style="width: 30%;">Email</th>
+                  <th style="width: 30%;">Teléfono</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let provider of filteredProviders">
+                  <td class="bg-transparent">
+                    <span
+                      class="product-name"
+                      style="cursor: pointer"
+                      (click)="provider.showIcons = !provider.showIcons"
+                      tabindex="0"
+                    >
+                      {{ provider.name }}
+                    </span>
+                    <div
+                      class="product-icons text-left"
+                      [ngClass]="{ 'show-icons': provider.showIcons }"
+                      style="z-index: 9999;"
+                    >
+                      <a class="ml-2 mr-3">
+                        <i
+                          class="fa-solid fa-pen-to-square clic-on-icon"
+                          style="color: #1100fa; cursor: pointer"
+                        ></i>
+                      </a>
+                      <a class="text-left">
+                        <i
+                          class="fa-solid fa-trash clic-on-icon"
+                          style="color: #fa0000; cursor: pointer"
+                        ></i>
+                      </a>
+                    </div>
+                  </td>
+                  <td class="text-left">
+                    {{ provider.email }}
+                  </td>
+                  <td class="text-left">
+                    {{ provider.phone }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
       <div class="modal-footer">

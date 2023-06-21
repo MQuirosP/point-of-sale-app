@@ -274,7 +274,7 @@ button {
   height: 0;
   overflow: hidden;
   transition: height 0.3s, opacity 0.3s;
-  margin-left: 40px;
+  margin-left: 5px;
 }
 
 .show-icons {
