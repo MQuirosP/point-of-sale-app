@@ -37,12 +37,14 @@ export class ShoppingCartComponent {
   selectedProductPrice: number = 0;
   quantity: number = 0;
 
+  // Cálculo de impuestos, sub total y total
   TAXES = 0.13;
   selectedProductTaxes: boolean;
   subTotalSaleAmount: number = 0;
   totalTaxesAmount: number = 0;
   totalSaleAmount: number = 0;
 
+  // Misceláneos
   productList: any[] = [];
   lastSaleDocNumber: string = '';
   customerName: string = 'Contado';
@@ -111,31 +113,37 @@ export class ShoppingCartComponent {
       console.log('Fecha no especificada', selectedDate);
       return;
     }
-    this.http.get<ApiSaleResponse>(`${this.backendUrl}sales`).subscribe({
-      next: (response) => {
-        // console.log(response);
-        if (response.success) {
-          const sales = response.message?.Sales || [];
-          this.sales = sales.filter((sale: any) => {
-            const saleDate = moment(sale.createdAt).format('YYYY-MM-DD');
-            return saleDate === selectedDate;
-          });
-          this.sales.forEach((sale: any) => {
-            sale.showDetails = false;
-          });
-
-          if (this.sales.length > 0) {
-            const lastSale = this.sales[this.sales.length - 1];
-            this.lastSaleDocNumber = lastSale.doc_number;
+    this.http
+      .get<ApiSaleResponse>(`${this.backendUrl}sales/date/${selectedDate}`)
+      .subscribe({
+        next: (response) => {
+          if (response.message.Sales.length === 0) {
+            this.toastr.warning(
+              'No hay ventas para mostrar en la fecha seleccionada'
+            );
           }
-        } else {
-          console.log('Error recuperando las ventas');
-        }
-      },
-      error: (error) => {
-        console.log('Error al obtener el historial de ventas', error);
-      },
-    });
+          if (response.success) {
+            const sales = response.message?.Sales || [];
+            this.sales = sales.filter((sale: any) => {
+              const saleDate = moment(sale.createdAt).format('YYYY-MM-DD');
+              return saleDate === selectedDate;
+            });
+            this.sales.forEach((sale: any) => {
+              sale.showDetails = false;
+            });
+
+            if (this.sales.length > 0) {
+              const lastSale = this.sales[this.sales.length - 1];
+              this.lastSaleDocNumber = lastSale.doc_number;
+            }
+          } else {
+            console.log('Error recuperando las ventas');
+          }
+        },
+        error: (error) => {
+          console.log('Error al obtener el historial de ventas', error);
+        },
+      });
   }
 
   searchProducts() {
@@ -185,17 +193,17 @@ export class ShoppingCartComponent {
       this.toastr.warning('Se debe suministrar todos los campos');
       return;
     }
-  
+
     let taxesAmount = 0;
     let subTotal = this.selectedProductPrice * this.quantity;
-  
+
     if (this.selectedProductTaxes) {
       const priceWithoutTaxes = this.selectedProductPrice / (1 + this.TAXES);
       const taxes = this.selectedProductPrice - priceWithoutTaxes;
       taxesAmount = taxes * this.quantity;
       subTotal = priceWithoutTaxes * this.quantity;
     }
-  
+
     const product = {
       int_code: this.int_code,
       name: this.name,
@@ -205,7 +213,7 @@ export class ShoppingCartComponent {
       taxes_amount: taxesAmount,
       sub_total: subTotal,
     };
-  
+
     // console.log(product);
     this.productList.push(product);
     this.calculateTotalSaleAmount();

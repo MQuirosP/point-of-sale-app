@@ -116,7 +116,7 @@ export class PurchaseHistoryComponent {
     this.purchaseHistoryModal.nativeElement.classList.toggle('show');
     this.purchaseHistoryModal.nativeElement.style.display = 'block';
     this.selectedDate = this.calendar.getToday();
-    this.getPurchasesHistory(this.date)
+    this.getPurchasesHistory(this.date);
   }
 
   closePurchaseHistoryModal() {
@@ -129,27 +129,34 @@ export class PurchaseHistoryComponent {
       console.log('Fecha no especificada', selectedDate);
       return;
     }
-    this.http.get<ApiPurchaseResponse>(`${this.url}purchases`).subscribe({
-      next: (response) => {
-        if (response.success) {
-          const purchases = response.message?.Purchases || [];
-          this.purchases = purchases.filter((purchase: any) => {
-            const purchaseDate = moment(purchase.createdAt).format(
-              'YYYY-MM-DD'
+    this.http
+      .get<ApiPurchaseResponse>(`${this.url}purchases/date/${selectedDate}`)
+      .subscribe({
+        next: (response) => {
+          if (response.message.Purchases.length === 0) {
+            this.toastr.warning(
+              'No hay compras para mostrar en la fecha seleccionada'
             );
-            return purchaseDate === selectedDate;
-          });
-          this.purchases.forEach((purchase: any) => {
-            purchase.showDetails = false;
-          });
-        } else {
-          console.log('Error recuperando las compras');
-        }
-      },
-      error: (error) => {
-        console.log('Error al obtener el historial de compras', error);
-      },
-    });
+          }
+          if (response.success) {
+            const purchases = response.message?.Purchases || [];
+            this.purchases = purchases.filter((purchase: any) => {
+              const purchaseDate = moment(purchase.createdAt).format(
+                'YYYY-MM-DD'
+              );
+              return purchaseDate === selectedDate;
+            });
+            this.purchases.forEach((purchase: any) => {
+              purchase.showDetails = false;
+            });
+          } else {
+            console.log('Error recuperando las compras');
+          }
+        },
+        error: (error) => {
+          console.log('Error al obtener el historial de compras', error);
+        },
+      });
   }
 
   searchProducts() {
@@ -198,17 +205,17 @@ export class PurchaseHistoryComponent {
       this.toastr.warning('Se debe suministrar todos los campos');
       return;
     }
-  
+
     let taxesAmount = 0;
     let subTotal = this.new_price * this.quantity;
-  
+
     if (this.selectedProductTaxes) {
       const priceWithoutTaxes = this.new_price / (1 + this.TAXES);
       const taxes = this.new_price - priceWithoutTaxes;
       taxesAmount = taxes * this.quantity;
       subTotal = priceWithoutTaxes * this.quantity;
     }
-  
+
     const product = {
       int_code: this.int_code,
       name: this.name,
@@ -218,7 +225,7 @@ export class PurchaseHistoryComponent {
       taxes_amount: taxesAmount,
       sub_total: subTotal,
     };
-  
+
     this.productList.push(product);
     this.calculateTotalPurchaseAmount();
     this.name = '';
