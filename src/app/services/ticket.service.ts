@@ -30,8 +30,15 @@ export class TicketService {
             saleItems,
           } = saleData;
 
-          const doc = new jsPDF('p', 'mm', [58, 150]);
+          const lineHeight = 5; // Espacio vertical ocupado por cada línea
+          const headerHeight = 40; // Espacio vertical ocupado por el encabezado
+          const itemHeight = saleItems.length * 3 * lineHeight; // Espacio vertical ocupado por los artículos
+          const footerHeight = 25; // Espacio vertical ocupado por el pie de página
+          const totalHeight = 20; // Espacio vertical ocupado por el total
+          const minHeight = headerHeight + itemHeight + footerHeight + totalHeight;
 
+          const doc = new jsPDF('p', 'mm', [58, minHeight]);
+          
           doc.setFontSize(14);
           doc.text('Verdulería Sol', 29, 10, { align: 'center' });
           doc.setFontSize(8);
