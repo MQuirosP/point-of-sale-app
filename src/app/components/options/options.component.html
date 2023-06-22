@@ -411,7 +411,7 @@
                         class="ml-2 mr-3"
                         role="button"
                         (click)="
-                          openCustomerInfoModal(true, customer.customer_id);
+                          openCustomerInfoModal(true, customer.customer_id)
                         "
                       >
                         <i
@@ -419,7 +419,10 @@
                           style="color: #1100fa; cursor: pointer"
                         ></i>
                       </a>
-                      <a class="text-left" (click)="deleteCustomer(customer.customer_id)">
+                      <a
+                        class="text-left"
+                        (click)="deleteCustomer(customer.customer_id)"
+                      >
                         <i
                           class="fa-solid fa-trash clic-on-icon"
                           style="color: #fa0000; cursor: pointer"
@@ -605,4 +608,3 @@
     </div>
   </div>
 </div>
-

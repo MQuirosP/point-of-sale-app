@@ -33,10 +33,6 @@ export class OptionsComponent implements OnInit {
   modalActionLabel: boolean = false;
   customerInfo: any = {};
 
-  editMode: boolean = false;
-
-  
-
   constructor(
     private optionService: OptionsService,
     private toastr: ToastrService,
@@ -48,9 +44,9 @@ export class OptionsComponent implements OnInit {
     this.optionService.getRegisterStatus().subscribe((status: boolean) => {
       this.activateRegister = status;
     });
-    this.getProviderList();
-    this.filterCustomers();
-    this.getCustomerList();
+    // this.getProviderList();
+    // this.filterCustomers();
+    // this.getCustomerList();
   }
 
   saveRegisterStatus() {
@@ -219,7 +215,6 @@ export class OptionsComponent implements OnInit {
           if (response.success) {
             this.toastr.success('Cliente guardado exitosamente');
             this.customerInfo = {};
-            this.getCustomerList();
             this.refreshCustomersList();
             this.closeCustomerInfoModal();
           } else {
@@ -279,5 +274,6 @@ export class OptionsComponent implements OnInit {
     this.getCustomerList();
     this.filteredCustomers = [...this.customers];
     this.searchTermCustomer = '';
+    this.changeDetectorRef.detectChanges();
   }
 }
