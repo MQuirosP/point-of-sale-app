@@ -219,9 +219,8 @@ export class OptionsComponent implements OnInit {
           if (response.success) {
             this.toastr.success('Cliente guardado exitosamente');
             this.customerInfo = {};
-            this.modalActionLabel = false;
+            this.getCustomerList();
             this.refreshCustomersList();
-            this.changeDetectorRef.detectChanges();
             this.closeCustomerInfoModal();
           } else {
             this.toastr.error('Error al guardar el cliente');
@@ -242,14 +241,12 @@ export class OptionsComponent implements OnInit {
         email: this.customerInfo.email,
         address: this.customerInfo.address
       };
-      console.log(customerData);
       this.http.put(`${this.backendUrl}customers/${customerData.customer_id}`, customerData).subscribe({
         next: (response: any) => {
           if (response.success) {
             this.toastr.success('Cliente actualizado exitosamente');
-            this.customerInfo = {};
-            this.modalActionLabel = false;
             this.refreshCustomersList();
+            this.customerInfo = {};
             this.closeCustomerInfoModal();
           } else {
             this.toastr.error('Error al actualizar el cliente');
