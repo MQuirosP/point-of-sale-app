@@ -1,18 +1,17 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import * as moment from 'moment';
+import { environment } from 'src/environments/environment';
 import {
   NgbCalendar,
   NgbDateParserFormatter,
   NgbDateStruct,
 } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, forkJoin } from 'rxjs';
-import { environment } from 'src/environments/environment';
 import { ModalService } from 'src/app/services/modalService';
 import { fadeAnimation } from 'src/app/fadeAnimation';
 import { ToastrService } from 'ngx-toastr';
+// import * as moment from 'moment';
 
 interface ApiPurchaseResponse {
   success: boolean;
@@ -139,13 +138,17 @@ export class PurchaseHistoryComponent {
             );
           }
           if (response.success) {
-            const purchases = response.message?.Purchases || [];
-            this.purchases = purchases.filter((purchase: any) => {
-              const purchaseDate = moment(purchase.createdAt).format(
-                'YYYY-MM-DD'
-              );
-              return purchaseDate === selectedDate;
-            });
+            // const purchases = response.message?.Purchases || [];
+            // this.purchases = purchases.filter((purchase: any) => {
+            //   const purchaseDate = moment(purchase.createdAt).format(
+            //     'YYYY-MM-DD'
+            //   );
+            //   return purchaseDate === selectedDate;
+            // });
+            // this.purchases.forEach((purchase: any) => {
+            //   purchase.showDetails = false;
+            // });
+            this.purchases = response.message?.Purchases || [];
             this.purchases.forEach((purchase: any) => {
               purchase.showDetails = false;
             });

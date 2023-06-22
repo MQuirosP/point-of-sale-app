@@ -69,7 +69,7 @@ export class ProductListComponent implements OnInit {
     private formBuilder: FormBuilder
   ) {
     this.editForm = this.formBuilder.group({
-      int_code: [''], // Asegúrate de definir los controles adecuados para cada propiedad
+      int_code: [''],
       name: ['', Validators.required],
       description: ['', Validators.required],
       quantity: ['', Validators.required],

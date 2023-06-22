@@ -88,7 +88,8 @@
                   <a
                     role="button"
                     class="btn btn-primary shadow clic-on-image"
-                    (click)="openProviderMainteinanceModal()"
+                    data-toggle="modal"
+                    data-target="#providerModal"
                   >
                     Abrir lista
                   </a>
@@ -115,7 +116,9 @@
                   <a
                     role="button"
                     class="btn btn-primary shadow clic-on-image"
-                    (click)="openCustomerMainteinanceModal()"
+                    data-toggle="modal"
+                    data-target="#customerModal"
+                    (click)="getCustomerList()"
                   >
                     Abrir lista
                   </a>
@@ -139,8 +142,8 @@
   aria-labelledby="providerModal"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-dialog-scrollable" role="document">
-    <div class="modal-content shadow">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content modal-dialog-scrollable shadow">
       <div class="modal-header">
         <h5 class="modal-title">Mantenimiento de proveedores</h5>
         <button
@@ -148,7 +151,6 @@
           class="close clic-on-image"
           data-dismiss="modal"
           aria-label="Cerrar"
-          (click)="closeProviderMainteinanceModal()"
         >
           <span aria-hidden="true"
             ><i
@@ -177,9 +179,9 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th style="width: 40%;">Nombre</th>
-                  <th style="width: 30%;">Email</th>
-                  <th style="width: 30%;">Teléfono</th>
+                  <th style="width: 40%">Nombre</th>
+                  <th style="width: 30%">Email</th>
+                  <th style="width: 30%">Teléfono</th>
                 </tr>
               </thead>
               <tbody>
@@ -196,7 +198,7 @@
                     <div
                       class="product-icons text-left"
                       [ngClass]="{ 'show-icons': provider.showIcons }"
-                      style="z-index: 9999;"
+                      style="z-index: 9999"
                     >
                       <a class="ml-2 mr-3">
                         <i
@@ -225,17 +227,114 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary clic-on-image">
-          Guardar
+        <button
+          type="button"
+          class="btn btn-primary clic-on-image"
+          data-toggle="modal"
+          data-target="#newProviderModal"
+        >
+          Nuevo
         </button>
         <button
           type="button"
           class="btn btn-secondary clic-on-image"
           data-dismiss="modal"
-          (click)="closeProviderMainteinanceModal()"
         >
           Cerrar
         </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para el registro de proveedores -->
+<div
+  class="modal fade"
+  id="newProviderModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="providerModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content modal-dialog-scrollable">
+      <div class="modal-header">
+        <h5 class="modal-title" id="providerModalLabel">
+          Registrar Nuevo Proveedor
+        </h5>
+        <button
+          type="button"
+          class="close clic-on-image"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true"
+            ><i
+              class="fa-sharp fa-solid fa-circle-xmark"
+              style="color: #f40b0b"
+            ></i
+          ></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Formulario de registro de proveedores -->
+        <form>
+          <div class="form-group">
+            <label for="name">Nombre:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              placeholder="Nombre del proveedor"
+              required
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="address">Dirección:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="address"
+              placeholder="Dirección del proveedor"
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="phone">Teléfono:</label>
+            <input
+              type="tel"
+              class="form-control"
+              id="phone"
+              placeholder="Teléfono del proveedor"
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              placeholder="Email del proveedor"
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="dni">DNI:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="dni"
+              placeholder="DNI del proveedor"
+              required
+              autocomplete="off"
+            />
+          </div>
+          <button type="submit" class="btn btn-primary clic-on-image">
+            Guardar
+          </button>
+        </form>
       </div>
     </div>
   </div>
@@ -251,8 +350,8 @@
   aria-labelledby="customerModal"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-dialog-scrollable" role="document">
-    <div class="modal-content shadow">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content modal-dialog-scrollable shadow">
       <div class="modal-header">
         <h5 class="modal-title">Mantenimiento de clientes</h5>
         <button
@@ -260,7 +359,6 @@
           class="close clic-on-image"
           data-dismiss="modal"
           aria-label="Cerrar"
-          (click)="closeCustomerMainteinanceModal()"
         >
           <span aria-hidden="true"
             ><i
@@ -289,34 +387,39 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th style="width: 40%;">Nombre</th>
-                  <th style="width: 30%;">Email</th>
-                  <th style="width: 30%;">Teléfono</th>
+                  <th style="width: 40%">Nombre</th>
+                  <th style="width: 30%">Email</th>
+                  <th style="width: 30%">Teléfono</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let provider of filteredProviders">
+                <tr *ngFor="let customer of filteredCustomers">
                   <td class="bg-transparent">
                     <span
                       class="product-name"
                       style="cursor: pointer"
-                      (click)="provider.showIcons = !provider.showIcons"
+                      (click)="customer.showIcons = !customer.showIcons"
                       tabindex="0"
                     >
-                      {{ provider.name }}
+                      {{ customer.name }} {{ customer.first_lastname }}
                     </span>
                     <div
                       class="product-icons text-left"
-                      [ngClass]="{ 'show-icons': provider.showIcons }"
-                      style="z-index: 9999;"
+                      [ngClass]="{ 'show-icons': customer.showIcons }"
                     >
-                      <a class="ml-2 mr-3">
+                      <a
+                        class="ml-2 mr-3"
+                        role="button"
+                        (click)="
+                          openCustomerInfoModal(true, customer.customer_id);
+                        "
+                      >
                         <i
                           class="fa-solid fa-pen-to-square clic-on-icon"
                           style="color: #1100fa; cursor: pointer"
                         ></i>
                       </a>
-                      <a class="text-left">
+                      <a class="text-left" (click)="deleteCustomer(customer.customer_id)">
                         <i
                           class="fa-solid fa-trash clic-on-icon"
                           style="color: #fa0000; cursor: pointer"
@@ -325,10 +428,10 @@
                     </div>
                   </td>
                   <td class="text-left">
-                    {{ provider.email }}
+                    {{ customer.email }}
                   </td>
                   <td class="text-left">
-                    {{ provider.phone }}
+                    {{ customer.phone }}
                   </td>
                 </tr>
               </tbody>
@@ -337,14 +440,19 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary clic-on-image">
-          Guardar
+        <button
+          type="button"
+          class="btn btn-primary clic-on-image"
+          data-toggle="modal"
+          data-target="#customerInfoModal"
+          (click)="openCustomerInfoModal(false)"
+        >
+          Nuevo
         </button>
         <button
           type="button"
           class="btn btn-secondary clic-on-image"
           data-dismiss="modal"
-          (click)="closeCustomerMainteinanceModal()"
         >
           Cerrar
         </button>
@@ -352,3 +460,149 @@
     </div>
   </div>
 </div>
+
+<!-- Modal para el registro/edición de clientes -->
+<div
+  class="modal fade"
+  id="customerInfoModal"
+  #customerInfoModal
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="customerInfoModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content modal-dialog-scrollable">
+      <div class="modal-header">
+        <h5 class="modal-title" id="customerInfoModalLabel">
+          {{ modalTitle }}
+        </h5>
+        <button
+          type="button"
+          class="close clic-on-image"
+          data-dismiss="modal"
+          aria-label="Close"
+          (click)="closeCustomerInfoModal()"
+        >
+          <span aria-hidden="true"
+            ><i
+              class="fa-sharp fa-solid fa-circle-xmark"
+              style="color: #f40b0b"
+            ></i
+          ></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Formulario de registro de clientes -->
+        <form>
+          <div class="form-group">
+            <label for="name">Nombre:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              name="name"
+              placeholder="Nombre del cliente"
+              [(ngModel)]="customerInfo.name"
+              required
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="first_lastname">Primer Apellido:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="first_lastname"
+              name="first_lastname"
+              placeholder="Primer Apellido del cliente"
+              [(ngModel)]="customerInfo.first_lastname"
+              required
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="second_lastname">Segundo Apellido:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="second_lastname"
+              name="second_lastname"
+              placeholder="Segundo Apellido del cliente"
+              [(ngModel)]="customerInfo.second_lastname"
+              required
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="address">Dirección:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="address"
+              name="address"
+              placeholder="Dirección del cliente"
+              [(ngModel)]="customerInfo.address"
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="phone">Teléfono:</label>
+            <input
+              type="tel"
+              class="form-control"
+              id="phone"
+              name="phone"
+              placeholder="Teléfono del cliente"
+              [(ngModel)]="customerInfo.phone"
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              name="email"
+              placeholder="Email del cliente"
+              [(ngModel)]="customerInfo.email"
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-group">
+            <label for="dni">DNI:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="dni"
+              name="dni"
+              placeholder="DNI del cliente"
+              [(ngModel)]="customerInfo.customer_dni"
+              required
+              autocomplete="off"
+            />
+          </div>
+          <div class="modal-footer">
+            <button
+              type="submit"
+              class="btn btn-primary clic-on-image"
+              (click)="saveCustomerInfo()"
+            >
+              Guardar
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary clic-on-image ml-2"
+              data-dismiss="modal"
+              (click)="closeCustomerInfoModal()"
+            >
+              Cerrar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

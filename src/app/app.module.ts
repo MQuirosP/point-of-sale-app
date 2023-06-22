@@ -61,7 +61,7 @@ import { CookieService } from 'ngx-cookie-service';
       positionClass: 'toast-top-right',
       preventDuplicates: true,
     }),
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [
     DbService,

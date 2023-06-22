@@ -1,17 +1,17 @@
-import { ModalService } from '../../services/modalService';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import * as moment from 'moment';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 import {
   NgbDateStruct,
   NgbCalendar,
   NgbDateParserFormatter,
 } from '@ng-bootstrap/ng-bootstrap';
+import { ModalService } from '../../services/modalService';
 import { fadeAnimation } from 'src/app/fadeAnimation';
 import { ToastrService } from 'ngx-toastr';
-import { environment } from 'src/environments/environment';
 import { TicketService } from 'src/app/services/ticket.service';
+// import * as moment from 'moment';
 
 interface ApiSaleResponse {
   success: boolean;
@@ -123,11 +123,12 @@ export class ShoppingCartComponent {
             );
           }
           if (response.success) {
-            const sales = response.message?.Sales || [];
-            this.sales = sales.filter((sale: any) => {
-              const saleDate = moment(sale.createdAt).format('YYYY-MM-DD');
-              return saleDate === selectedDate;
-            });
+            // const sales = response.message?.Sales || [];
+            // this.sales = sales.filter((sale: any) => {
+            //   const saleDate = moment(sale.createdAt).format('YYYY-MM-DD');
+            //   return saleDate === selectedDate;
+            // });
+            this.sales = response.message?.Sales || [];
             this.sales.forEach((sale: any) => {
               sale.showDetails = false;
             });

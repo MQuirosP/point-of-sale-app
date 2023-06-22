@@ -30,7 +30,11 @@
       <div
         class="card shadow card-height border col-md-8 mt-4 customShadow bg-custom clic-on-image"
       >
-        <a class="text-decoration-none" (click)="openSaleModal()">
+        <a
+          class="text-decoration-none"
+          data-toggle="modal"
+          data-target="#newSaleModal"
+        >
           <div class="card-body">
             <h5 class="card-title">Crear venta</h5>
           </div>
@@ -41,7 +45,12 @@
       <div
         class="card shadow card-height border col-md-8 mt-4 customShadow bg-custom clic-on-image"
       >
-        <a class="text-decoration-none" (click)="openSaleHistoryModal()">
+        <a
+          class="text-decoration-none"
+          data-toggle="modal"
+          data-target="#saleHistoryModal"
+          (click)="getSalesHistory(getCurrentDate())"
+        >
           <div class="card-body">
             <h5 class="card-title">Mi historial</h5>
           </div>
@@ -346,8 +355,9 @@
                 IVA: {{ sale.taxes_amount | currency : "CRC" : "₡" : "1.2-2" }}
               </p>
               <p class="text-right">
-                <b>Total:
-                  {{ sale.total | currency : "CRC" : "₡" : "1.2-2" }}</b>
+                <b
+                  >Total: {{ sale.total | currency : "CRC" : "₡" : "1.2-2" }}</b
+                >
               </p>
               <button
                 *ngIf="sale.status === 'aceptado'"

@@ -29,7 +29,11 @@
       <div
         class="card shadow card-height border col-md-8 mt-4 customShadow bg-custom clic-on-image"
       >
-        <a (click)="openPurchaseModal()" class="text-decoration-none">
+        <a
+          data-toggle="modal"
+          data-target="#newPurchaseModal"
+          class="text-decoration-none"
+        >
           <div class="card-body">
             <h5 class="card-title">Crear compra</h5>
           </div>
@@ -40,7 +44,12 @@
       <div
         class="card shadow card-height border col-md-8 mt-4 customShadow bg-custom clic-on-image"
       >
-        <a (click)="openPurchaseHistoryModal()" class="text-decoration-none">
+        <a
+          data-toggle="modal"
+          data-target="#purchaseHistoryModal"
+          (click)="getPurchasesHistory(getCurrentDate())"
+          class="text-decoration-none"
+        >
           <div class="card-body">
             <h5 class="card-title">Mi historial</h5>
           </div>
