@@ -14,12 +14,13 @@
   <label for="search">Buscar producto:</label>
   <input
     type="text"
+    autofocus
     id="search"
     [(ngModel)]="searchTerm"
     (input)="filterProducts()"
     class="form-control shadow"
     placeholder="Ingresa tu busqueda aquí..."
-    autocomplete="off"
+    [autocomplete]="false"
   />
 </div>
 

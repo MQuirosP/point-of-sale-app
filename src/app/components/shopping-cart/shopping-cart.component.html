@@ -93,7 +93,7 @@
   aria-hidden="true"
 >
   <div class="modal-dialog modal-dialog-scrollable shadow" role="document">
-    <div class="modal-content">
+    <div class="modal-content shadow">
       <div class="modal-header">
         <h5 class="modal-title">Crear venta</h5>
         <button
@@ -119,7 +119,7 @@
             id="customerName"
             name="customerName"
             [(ngModel)]="customerName"
-            class="form-control"
+            class="form-control shadow"
             value="Contado"
             autocomplete="off"
           />
@@ -131,7 +131,7 @@
             id="paymentMethod"
             name="paymentMethod"
             [(ngModel)]="paymentMethod"
-            class="form-control"
+            class="form-control shadow"
             value="contado"
             autocomplete="off"
           />
@@ -143,7 +143,7 @@
             id="date"
             name="date"
             [(ngModel)]="date"
-            class="form-control"
+            class="form-control shadow"
             autocomplete="off"
           />
         </div>
@@ -155,7 +155,7 @@
             id="name"
             name="name"
             [(ngModel)]="name"
-            class="form-control"
+            class="form-control shadow"
             (keyup)="searchProducts()"
             autocomplete="off"
           />
@@ -178,7 +178,7 @@
           <label for="" class="form-check-label ml-5">
             <input
               type="checkbox"
-              class="form-check-input"
+              class="form-check-input shadow"
               [(ngModel)]="selectedProductTaxes"
               [checked]="selectedProductTaxes"
               disabled
@@ -190,7 +190,7 @@
             id="price"
             name="price"
             [(ngModel)]="price"
-            class="form-control"
+            class="form-control shadow"
             [value]="selectedProductPrice"
             autocomplete="off"
           />
@@ -202,7 +202,7 @@
             id="quantity"
             name="quantity"
             [(ngModel)]="quantity"
-            class="form-control"
+            class="form-control shadow"
             autocomplete="off"
             step="0.1"
           />
@@ -210,7 +210,7 @@
         <div class="d-flex justify-content-center">
           <button
             type="button"
-            class="btn btn-primary clic-on-image"
+            class="btn btn-primary shadow clic-on-image"
             (click)="addProduct()"
           >
             Agregar producto
@@ -236,7 +236,7 @@
               <td>
                 <button
                   type="button"
-                  class="btn btn-danger btn-sm clic-on-image"
+                  class="btn btn-danger btn-sm shadow clic-on-image"
                   (click)="removeProduct(product)"
                 >
                   Eliminar
@@ -264,14 +264,14 @@
       <div class="modal-footer">
         <button
           type="button"
-          class="btn btn-primary clic-on-image"
+          class="btn btn-primary shadow clic-on-image"
           (click)="createSale()"
         >
           Guardar venta
         </button>
         <button
           type="button"
-          class="btn btn-secondary clic-on-image"
+          class="btn btn-secondary shadow clic-on-image"
           data-dismiss="modal"
           (click)="closeSaleModal()"
         >
@@ -315,7 +315,7 @@
         >
           <input
             type="date"
-            class="form-control input-group-text"
+            class="form-control input-group-text shadow"
             [(ngModel)]="selectedDate"
             (ngModelChange)="filterSalesByDate()"
             ngbDatepicker

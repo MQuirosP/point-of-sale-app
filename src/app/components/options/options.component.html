@@ -39,8 +39,6 @@
   </section>
 </div>
 
-
-
 <!-- Opción para activar/desactivar registro de usuarios, listados clientes y proveedores -->
 <div class="container">
   <div class="row">
@@ -91,7 +89,7 @@
                     role="button"
                     class="btn btn-primary shadow clic-on-image"
                     data-toggle="modal"
-                    data-target="#providerModal"
+                    data-target="#providerListModal"
                     (click)="openProviderListModal()"
                   >
                     Abrir lista
@@ -120,7 +118,7 @@
                     role="button"
                     class="btn btn-primary shadow clic-on-image"
                     data-toggle="modal"
-                    data-target="#customerModal"
+                    data-target="#customerListModal"
                     (click)="openCustomerListModal()"
                   >
                     Abrir lista
@@ -242,7 +240,7 @@
       <div class="modal-footer">
         <button
           type="button"
-          class="btn btn-primary clic-on-image"
+          class="btn btn-primary shadow clic-on-image"
           data-toggle="modal"
           data-target="#providerInfoModal"
           (click)="openProviderInfoModal(false, ''); this.editMode = false"
@@ -251,7 +249,7 @@
         </button>
         <button
           type="button"
-          class="btn btn-secondary clic-on-image"
+          class="btn btn-secondary shadow clic-on-image"
           data-dismiss="modal"
           (click)="closeProviderListModal()"
         >
@@ -300,7 +298,7 @@
             <label for="provider_name">Nombre:</label>
             <input
               type="text"
-              class="form-control"
+              class="form-control shadow"
               id="provider_name"
               formControlName="provider_name"
               placeholder="Nombre del proveedor"
@@ -313,7 +311,7 @@
             <label for="provider_address">Dirección:</label>
             <input
               type="text"
-              class="form-control"
+              class="form-control shadow"
               id="provider_address"
               formControlName="provider_address"
               placeholder="Dirección del proveedor"
@@ -325,7 +323,7 @@
             <label for="provider_phone">Teléfono:</label>
             <input
               type="text"
-              class="form-control"
+              class="form-control shadow"
               id="provider_phone"
               formControlName="provider_phone"
               placeholder="Teléfono del proveedor"
@@ -337,7 +335,7 @@
             <label for="provider_email">Email:</label>
             <input
               type="email"
-              class="form-control"
+              class="form-control shadow"
               id="provider_email"
               formControlName="provider_email"
               placeholder="Email del proveedor"
@@ -349,7 +347,7 @@
             <label for="provider_dni">DNI:</label>
             <input
               type="text"
-              class="form-control"
+              class="form-control shadow"
               id="provider_dni"
               formControlName="provider_dni"
               placeholder="DNI del proveedor"
@@ -362,7 +360,7 @@
             <button
               *ngIf="this.editMode === false"
               type="submit"
-              class="btn btn-primary clic-on-image"
+              class="btn btn-primary shadow clic-on-image"
               (click)="createProvider()"
             >
               Guardar
@@ -370,7 +368,7 @@
             <button
               *ngIf="this.editMode === true"
               type="submit"
-              class="btn btn-primary clic-on-image"
+              class="btn btn-primary shadow clic-on-image"
               (click)="editProvider(providerForm.get('provider_id').value)"
             >
               Editar
@@ -452,7 +450,8 @@
                       (click)="customer.showIcons = !customer.showIcons"
                       tabindex="0"
                     >
-                      {{ customer.customer_name }} {{ customer.customer_first_lastname }}
+                      {{ customer.customer_name }}
+                      {{ customer.customer_first_lastname }}
                     </span>
                     <div
                       class="product-icons text-left"

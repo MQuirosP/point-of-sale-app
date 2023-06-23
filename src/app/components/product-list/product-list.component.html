@@ -37,7 +37,8 @@
         <h4 class="h4">Lista de productos</h4>
         <button
           class="btn btn-primary shadow ml-4 clic-on-image"
-          data-target="addProductModal"
+          data-toggle="modal"
+          data-target="#addProductModal"
           (click)="openAddProductModal()"
         >
           Agregar
@@ -71,6 +72,9 @@
                   [ngClass]="{ 'show-icons': product.showIcons }"
                 >
                   <a
+                    role="button"
+                    data-toggle="modal"
+                    data-target="#editProductModal"
                     class="ml-2 mr-3"
                     (click)="openEditModal(product.int_code)"
                   >
@@ -79,7 +83,12 @@
                       style="color: #1100fa; cursor: pointer"
                     ></i>
                   </a>
-                  <a class="" (click)="openPasswordModal(product.int_code)">
+                  <a
+                    class=""
+                    data-toggle="modal"
+                    data-target="#deletePasswordModal"
+                    (click)="openPasswordModal(product.int_code)"
+                  >
                     <i
                       class="fa-solid fa-trash clic-on-icon"
                       style="color: #fa0000; cursor: pointer"
@@ -119,7 +128,7 @@
   #editProductModal
   tabindex="-1"
   role="dialog"
-  aria-labelledby="editProductModal"
+  aria-labelledby="editProductModalLabel"
   aria-hidden="true"
 >
   <div class="modal-dialog modal-dialog-scrollable" role="document">
@@ -128,6 +137,8 @@
         <h4 class="modal-title">Editar Producto</h4>
         <button
           type="button"
+          data-dismiss="modal"
+          aria-label="Close"
           class="close clic-on-image"
           (click)="closeEditModal()"
         >
@@ -146,7 +157,7 @@
             <input
               type="text"
               id="intCode"
-              class="form-control"
+              class="form-control shadow"
               formControlName="int_code"
               autocomplete="off"
               [value]="editForm.get('int_code').value"
@@ -157,7 +168,7 @@
             <input
               type="text"
               id="name"
-              class="form-control"
+              class="form-control shadow"
               formControlName="name"
               autocomplete="off"
               [value]="editForm.get('name').value"
@@ -167,17 +178,18 @@
             <label for="description">Descripción:</label>
             <textarea
               id="description"
-              class="form-control"
+              class="form-control shadow"
               rows="3"
               formControlName="description"
-            >{{ editForm.get('description').value }}</textarea>
+              >{{ editForm.get("description").value }}</textarea
+            >
           </div>
           <div class="form-group">
             <label for="quantity">Cantidad:</label>
             <input
               type="number"
               id="quantity"
-              class="form-control"
+              class="form-control shadow"
               formControlName="quantity"
               autocomplete="off"
               [value]="editForm.get('quantity').value"
@@ -189,14 +201,18 @@
             <input
               type="number"
               id="purchase_price"
-              class="form-control"
+              class="form-control shadow"
               formControlName="purchase_price"
               autocomplete="off"
               [value]="editForm.get('purchase_price').value"
-              (ngModelChange)="calculateTotal(editForm.get('purchase_price').value,
-              editForm.get('margin').value,
-              editForm.get('taxes').value,
-              true)"
+              (ngModelChange)="
+                calculateTotal(
+                  editForm.get('purchase_price').value,
+                  editForm.get('margin').value,
+                  editForm.get('taxes').value,
+                  true
+                )
+              "
             />
           </div>
           <div class="form-group">
@@ -204,14 +220,18 @@
             <input
               type="number"
               id="purchaseMargin"
-              class="form-control"
+              class="form-control shadow"
               formControlName="margin"
               autocomplete="off"
               [value]="editForm.get('margin').value"
-              (ngModelChange)="calculateTotal(editForm.get('purchase_price').value,
-              editForm.get('margin').value,
-              editForm.get('taxes').value,
-              true)"
+              (ngModelChange)="
+                calculateTotal(
+                  editForm.get('purchase_price').value,
+                  editForm.get('margin').value,
+                  editForm.get('taxes').value,
+                  true
+                )
+              "
             />
           </div>
           <div class="form-group">
@@ -220,34 +240,46 @@
               <input
                 type="checkbox"
                 id="taxes"
-                class="form-check-input"
+                class="form-check-input shadow"
                 formControlName="taxes"
-                (change)="toggleTaxes(); calculateTotal(editForm.get('purchase_price').value,
-                editForm.get('margin').value,
-                editForm.get('taxes').value,
-                true)"
+                (change)="
+                  toggleTaxes();
+                  calculateTotal(
+                    editForm.get('purchase_price').value,
+                    editForm.get('margin').value,
+                    editForm.get('taxes').value,
+                    true
+                  )
+                "
               />
-              {{ editForm.get('taxes').value ? 'Gravado' : 'Exento' }}
+              {{ editForm.get("taxes").value ? "Gravado" : "Exento" }}
             </label>
             <input
               type="number"
               id="salePrice"
-              class="form-control"
+              class="form-control shadow"
               formControlName="sale_price"
-              (ngModelChange)="calculateTotal(editForm.get('purchase_price').value,
-              editForm.get('margin').value,
-              editForm.get('taxes').value,
-              true)"
+              (ngModelChange)="
+                calculateTotal(
+                  editForm.get('purchase_price').value,
+                  editForm.get('margin').value,
+                  editForm.get('taxes').value,
+                  true
+                )
+              "
               autocomplete="off"
               [value]="editForm.get('sale_price').value"
             />
           </div>
           <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="submit" class="btn btn-primary shadow clic-on-image">
+              Guardar
+            </button>
             <button
               type="button"
-              class="btn btn-secondary clic-on-image"
+              class="btn btn-secondary shadow clic-on-image"
               (click)="closeEditModal()"
+              data-dismiss="modal"
             >
               Cerrar
             </button>
@@ -276,6 +308,8 @@
         </h5>
         <button
           type="button"
+          data-dismiss="modal"
+          aria-label="Close"
           class="close clic-on-image"
           (click)="closeAddProductModal()"
         >
@@ -293,7 +327,7 @@
             <label for="productCode">Código:</label>
             <input
               type="text"
-              class="form-control"
+              class="form-control shadow"
               id="deleteCode"
               [(ngModel)]="newProduct.code"
               name="productCode"
@@ -305,7 +339,7 @@
             <label for="productName">Nombre:</label>
             <input
               type="text"
-              class="form-control"
+              class="form-control shadow"
               id="productName"
               [(ngModel)]="newProduct.name"
               name="productName"
@@ -316,7 +350,7 @@
           <div class="form-group">
             <label for="productDescription">Descripción:</label>
             <textarea
-              class="form-control"
+              class="form-control shadow"
               id="productDescription"
               [(ngModel)]="newProduct.description"
               name="productDescription"
@@ -327,7 +361,7 @@
             <label for="productPrice">Precio de compra:</label>
             <input
               type="number"
-              class="form-control"
+              class="form-control shadow"
               id="productPrice"
               [(ngModel)]="newProduct.purchase_price"
               name="productPrice"
@@ -347,12 +381,13 @@
             <label for="" class="form-check-label ml-5">
               <input
                 type="checkbox"
-                class="form-check-input"
+                class="form-check-input shadow"
                 style="margin-top: 7px"
                 name="activateRegister"
                 [(ngModel)]="newProduct.taxes"
                 [checked]="newProduct.taxes"
-                (ngModelChange)="isTaxed = !isTaxed;
+                (ngModelChange)="
+                  isTaxed = !isTaxed;
                   calculateTotal(
                     newProduct.purchase_price,
                     newProduct.margin,
@@ -364,7 +399,7 @@
             </label>
             <input
               type="number"
-              class="form-control"
+              class="form-control shadow"
               id="productMargin"
               [(ngModel)]="newProduct.margin"
               name="productMargin"
@@ -383,7 +418,7 @@
             <label for="productTotal">Precio de venta:</label>
             <input
               type="number"
-              class="form-control"
+              class="form-control shadow"
               id="productTotal"
               [(ngModel)]="newProduct.sale_price"
               name="salePrice"
@@ -403,15 +438,16 @@
       <div class="modal-footer">
         <button
           type="button"
-          class="btn btn-primary clic-on-image"
+          class="btn btn-primary shadow clic-on-image"
           (click)="addProduct()"
         >
           Guardar
         </button>
         <button
           type="button"
-          class="btn btn-secondary clic-on-image"
+          class="btn btn-secondary shadow clic-on-image"
           (click)="closeAddProductModal()"
+          data-dismiss="modal"
         >
           Cancelar
         </button>
@@ -437,6 +473,7 @@
         <span
           class="close clic-on-image"
           (click)="closePasswordModal()"
+          data-dismiss="modal"
           aria-hidden="true"
           ><i
             class="fa-sharp fa-solid fa-circle-xmark"
@@ -451,7 +488,7 @@
             <input
               type="text"
               id="editIntCode"
-              class="form-control"
+              class="form-control shadow"
               name="name"
               [value]="editForm.get('name').value"
               autocomplete="off"
@@ -460,7 +497,7 @@
             <input
               type="password"
               id="password"
-              class="form-control"
+              class="form-control shadow"
               name="password"
               [(ngModel)]="password"
               autocomplete="off"
@@ -474,6 +511,7 @@
               type="button"
               class="btn btn-secondary clic-on-image"
               (click)="closePasswordModal()"
+              data-dismiss="modal"
             >
               Cerrar
             </button>

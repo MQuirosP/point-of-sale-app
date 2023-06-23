@@ -118,7 +118,7 @@
             id="providerName"
             name="providerName"
             [(ngModel)]="providerName"
-            class="form-control"
+            class="form-control shadow"
             (keyup)="getProvidersList()"
             autocomplete="off"
           />
@@ -149,7 +149,7 @@
             id="doc_number"
             name="doc_number"
             [(ngModel)]="doc_number"
-            class="form-control"
+            class="form-control shadow"
             autocomplete="off"
             required="required"
           />
@@ -161,7 +161,7 @@
             id="paymentMethod"
             name="paymentMethod"
             [(ngModel)]="paymentMethod"
-            class="form-control"
+            class="form-control shadow"
             value="contado"
             autocomplete="off"
           />
@@ -173,7 +173,7 @@
             id="date"
             name="date"
             [(ngModel)]="date"
-            class="form-control"
+            class="form-control shadow"
             autocomplete="off"
           />
         </div>
@@ -185,7 +185,7 @@
             id="name"
             name="name"
             [(ngModel)]="name"
-            class="form-control"
+            class="form-control shadow"
             (keyup)="searchProducts()"
             autocomplete="off"
           />
@@ -208,7 +208,7 @@
           <label for="" class="form-check-label ml-5">
             <input
               type="checkbox"
-              class="form-check-input"
+              class="form-check-input shadow"
               [(ngModel)]="selectedProductTaxes"
               [checked]="selectedProductTaxes"
               disabled
@@ -220,7 +220,7 @@
             id="price"
             name="price"
             [(ngModel)]="price"
-            class="form-control"
+            class="form-control shadow"
             [value]="selectedProductPrice"
             autocomplete="off"
           />
@@ -232,7 +232,7 @@
             id="price"
             name="new_price"
             [(ngModel)]="new_price"
-            class="form-control"
+            class="form-control shadow"
             autocomplete="off"
           />
         </div>
@@ -243,14 +243,14 @@
             id="quantity"
             name="quantity"
             [(ngModel)]="quantity"
-            class="form-control"
+            class="form-control shadow"
             autocomplete="off"
           />
         </div>
         <div class="d-flex justify-content-center">
           <button
             type="button"
-            class="btn btn-primary clic-on-image"
+            class="btn btn-primary shadow clic-on-image"
             (click)="addProduct()"
           >
             Agregar producto
@@ -278,6 +278,7 @@
                   type="button"
                   class="btn btn-danger btn-sm clic-on-image"
                   (click)="removeProduct(product)"
+                  data-dismiss="modal"
                 >
                   Eliminar
                 </button>
@@ -288,15 +289,15 @@
         <hr />
         <div class="d-flex justify-content-between">
           <div class="flex-column align-items-center">
-            <h4>Sub Total</h4>
+            <h5>Sub Total</h5>
             <p>{{ subTotalPurchaseAmount | currency : "CRC" : "₡" }}</p>
           </div>
           <div class="flex-column align-items-center">
-            <h4>IVA</h4>
+            <h5>IVA</h5>
             <p>{{ totalTaxesAmount | currency : "CRC" : "₡" }}</p>
           </div>
           <div class="flex-column align-items-center">
-            <h4>Total</h4>
+            <h5>Total</h5>
             <p>{{ totalPurchaseAmount | currency : "CRC" : "₡" }}</p>
           </div>
         </div>
@@ -304,18 +305,19 @@
       <div class="modal-footer">
         <button
           type="button"
-          class="btn btn-primary clic-on-image"
+          class="btn btn-primary shadow clic-on-image"
           (click)="createPurchase()"
         >
-          Guardar compra
+          Guardar
         </button>
         <button
           type="button"
           class="btn btn-secondary clic-on-image"
           data-dismiss="modal"
           (click)="closePurchaseModal()"
+          data-dismiss="modal"
         >
-          Cerrar
+          Cancelar
         </button>
       </div>
     </div>
@@ -332,7 +334,7 @@
   aria-labelledby="purchaseHistoryModal"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-dialog-scrollable" role="document">
+  <div class="modal-dialog shadow modal-dialog-scrollable" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Historial de compras</h5>
@@ -355,7 +357,7 @@
         >
           <input
             type="date"
-            class="form-control input-group-text"
+            class="form-control input-group-text shadow"
             [(ngModel)]="selectedDate"
             (ngModelChange)="filterPurchasesByDate()"
             ngbDatepicker
@@ -405,7 +407,7 @@
               </p>
               <button
                 *ngIf="purchase.status === 'aceptado'"
-                class="btn btn-danger clic-on-image"
+                class="btn btn-danger shadow clic-on-image"
                 (click)="cancelPurchase(purchase.doc_number)"
               >
                 Anular
@@ -436,7 +438,7 @@
         <div class="modal-footer">
           <button
             type="button"
-            class="btn btn-secondary clic-on-image"
+            class="btn btn-secondary shadow clic-on-image"
             data-dismiss="modal"
             (click)="closePurchaseHistoryModal()"
           >
