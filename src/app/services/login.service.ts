@@ -46,7 +46,7 @@ export class LoginService {
 
   onLogin(username: string, password: string) {
     if (!username || !password) {
-      this.toastr.warning('Ingrese usuario y contraseña');
+      this.toastr.warning('Ingrese usuario y contraseña.');
       return;
     }
 
@@ -72,13 +72,13 @@ export class LoginService {
             }, 500);
           } else {
             this.setLoggedIn(false);
-            this.toastr.error('Credenciales inválidas');
+            this.toastr.error('Credenciales inválidas.');
           }
         }),
         catchError((error) => {
           this.setLoggedIn(false);
           this.toastr.error(
-            `Usuario ${this.capitalizeFirstLetter(username)} no registrado`
+            `Usuario ${this.capitalizeFirstLetter(username)} no registrado.`
           );
           return of(null);
         })
@@ -97,7 +97,7 @@ export class LoginService {
   onLogout() {
     const token = localStorage.getItem('token');
     if (!token) {
-      this.toastr.error('No se ha iniciado sesión');
+      this.toastr.error('No se ha iniciado sesión.');
       return;
     }
 
@@ -113,11 +113,11 @@ export class LoginService {
           localStorage.removeItem('token');
           this.setLoggedIn(false);
           this.cookieService.delete(this.COOKIE_Name);
-          this.toastr.success('Sesión cerrada exitosamente');
+          this.toastr.success('Sesión cerrada exitosamente.');
           this.router.navigate(['/login']);
         }),
         catchError((error) => {
-          this.toastr.error('Error al cerrar sesión');
+          this.toastr.error('Error al cerrar sesión.');
           console.log(error);
           return of(null);
         })
@@ -143,7 +143,7 @@ export class LoginService {
   }
 
   private logoutDueToInactivity() {
-    this.toastr.warning("Sesión cerrada por inactividad");
+    this.toastr.warning("Sesión cerrada por inactividad.");
     this.onLogout();
   }
 }

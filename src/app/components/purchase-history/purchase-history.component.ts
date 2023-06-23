@@ -40,23 +40,22 @@ export class PurchaseHistoryComponent {
 
   // Crear compras
   int_code: string = '';
-  name: string = '';
-  price: number = 0;
-  new_price: number = 0;
+  product_name: string = '';
+  product_price: number = 0;
+  product_new_price: number = 0;
   selectedProductPrice: number = 0;
   selectedProductTaxes: boolean;
-  quantity: number = 0;
+  product_quantity: number = 0;
   productList: any[] = [];
 
   subTotalPurchaseAmount: number = 0;
   totalTaxesAmount: number = 0;
   totalPurchaseAmount: number = 0;
 
-  providerName: string = '';
   doc_number: string = '';
   paymentMethod: string = 'Contado';
   date: Date | any = '';
-  suggestionsList: any[] = [];
+  productSuggestionList: any[] = [];
 
   TAXES: number = 0.13;
 
@@ -65,9 +64,10 @@ export class PurchaseHistoryComponent {
   purchase: any[] = [];
 
   // Consultar proveedores
-  providerId: number = 0;
+  provider_id: number = 0;
+  provider_name: string = '';
   providersList: any[] = [];
-  filteredProviders: any[] = [];
+  providerSuggestionList: any[] = [];
 
   @ViewChild('newPurchaseModal', { static: false })
   newPurchaseModal!: ElementRef;
@@ -98,7 +98,7 @@ export class PurchaseHistoryComponent {
 
   ngAfterViewInit() {
     this.date = this.getCurrentDate();
-    this.getProvidersList();
+    // this.searchProviders();
   }
 
   openPurchaseModal() {
@@ -134,7 +134,7 @@ export class PurchaseHistoryComponent {
         next: (response) => {
           if (response.message.Purchases.length === 0) {
             this.toastr.warning(
-              'No hay compras para mostrar en la fecha seleccionada'
+              'No hay compras para mostrar en la fecha seleccionada.'
             );
           }
           if (response.success) {
@@ -163,12 +163,13 @@ export class PurchaseHistoryComponent {
   }
 
   searchProducts() {
-    const searchTerm = this.name.toLowerCase();
+    const searchTerm = this.product_name.toLowerCase();
     this.http.get(`${this.url}products`).subscribe({
       next: (response: any) => {
+        // console.log(response);
         const products = response?.message?.products;
         if (Array.isArray(products) && products.length > 0) {
-          this.suggestionsList = products
+          this.productSuggestionList = products
             .filter((product: any) =>
               product.name.toLowerCase().includes(searchTerm)
             )
@@ -179,51 +180,52 @@ export class PurchaseHistoryComponent {
               taxes: product.taxes,
             }));
         } else {
-          this.suggestionsList = [];
+          this.productSuggestionList = [];
         }
       },
       error: (error) => {
         console.log('Error al recuperar productos');
+        this.toastr.error('Error al recuperar productos.');
       },
     });
   }
 
-  selectSuggestion(suggestion: any, event: Event) {
+  selectProductSuggestion(product: any, event: Event) {
     event.preventDefault();
-    this.int_code = suggestion.int_code;
-    this.name = suggestion.name;
-    this.selectedProductTaxes = suggestion.taxes;
-    this.selectedProductPrice = suggestion.purchase_price;
-    this.suggestionsList = [];
+    this.int_code = product.int_code;
+    this.product_name = product.name;
+    this.selectedProductTaxes = product.taxes;
+    this.selectedProductPrice = product.purchase_price;
+    this.productSuggestionList = [];
   }
 
   addProduct() {
     if (
       !this.int_code ||
-      !this.name ||
-      !this.new_price ||
+      !this.product_name ||
+      !this.product_new_price ||
       !this.selectedProductPrice ||
-      !this.quantity
+      !this.product_quantity
     ) {
-      this.toastr.warning('Se debe suministrar todos los campos');
+      this.toastr.warning('Se debe suministrar todos los campos.');
       return;
     }
 
     let taxesAmount = 0;
-    let subTotal = this.new_price * this.quantity;
+    let subTotal = this.product_new_price * this.product_quantity;
 
     if (this.selectedProductTaxes) {
-      const priceWithoutTaxes = this.new_price / (1 + this.TAXES);
-      const taxes = this.new_price - priceWithoutTaxes;
-      taxesAmount = taxes * this.quantity;
-      subTotal = priceWithoutTaxes * this.quantity;
+      const priceWithoutTaxes = this.product_new_price / (1 + this.TAXES);
+      const taxes = this.product_new_price - priceWithoutTaxes;
+      taxesAmount = taxes * this.product_quantity;
+      subTotal = priceWithoutTaxes * this.product_quantity;
     }
 
     const product = {
       int_code: this.int_code,
-      name: this.name,
-      price: this.new_price,
-      quantity: this.quantity,
+      name: this.product_name,
+      price: this.product_new_price,
+      quantity: this.product_quantity,
       taxes: this.selectedProductTaxes,
       taxes_amount: taxesAmount,
       sub_total: subTotal,
@@ -231,10 +233,10 @@ export class PurchaseHistoryComponent {
 
     this.productList.push(product);
     this.calculateTotalPurchaseAmount();
-    this.name = '';
+    this.product_name = '';
     this.selectedProductPrice = 0;
-    this.new_price = 0;
-    this.quantity = 0;
+    this.product_new_price = 0;
+    this.product_quantity = 0;
   }
 
   private calculateTotalPurchaseAmount() {
@@ -242,10 +244,11 @@ export class PurchaseHistoryComponent {
       (subTotal, product) => {
         if (!product.taxes) {
           return (
-            this.subTotalPurchaseAmount + this.new_price * product.quantity
+            this.subTotalPurchaseAmount +
+            this.product_new_price * product.product_quantity
           );
         } else {
-          const priceWithoutTaxes = this.new_price / (1 + this.TAXES);
+          const priceWithoutTaxes = this.product_new_price / (1 + this.TAXES);
           return (
             this.subTotalPurchaseAmount + priceWithoutTaxes * product.quantity
           );
@@ -285,14 +288,14 @@ export class PurchaseHistoryComponent {
     updateProductPrices$.subscribe({
       next: () => {
         this.toastr.success(
-          'Precios de compra actualizados para los productos'
+          'Precios de compra actualizados para los productos.'
         );
         this.savePurchase();
       },
       error: (error) => {
-        console.log('Error al actualizar los precios de compra', error);
+        console.log('Error al actualizar los precios de compra.', error);
         this.toastr.error(
-          'Ocurrió un error al actualizar los precios de compra. Por favor inténtalo nuevamente'
+          'Ocurrió un error al actualizar los precios de compra. Por favor inténtalo nuevamente.'
         );
       },
     });
@@ -300,12 +303,12 @@ export class PurchaseHistoryComponent {
 
   private validatePurchaseData(): boolean {
     if (!this.doc_number) {
-      this.toastr.error('Por favor ingresa un número de documento');
+      this.toastr.error('Por favor ingresa un número de documento.');
       return false;
     }
 
     if (this.productList.length === 0) {
-      this.toastr.error('Agrega al menos un producto a la lista');
+      this.toastr.error('Agrega al menos un producto a la lista.');
       return false;
     }
 
@@ -327,8 +330,8 @@ export class PurchaseHistoryComponent {
 
   private savePurchase() {
     const purchase = {
-      providerId: this.providerId,
-      providerName: this.providerName,
+      providerId: this.provider_id,
+      providerName: this.provider_name,
       paymentMethod: this.paymentMethod,
       doc_number: this.doc_number,
       status: 'aceptado',
@@ -346,7 +349,7 @@ export class PurchaseHistoryComponent {
 
     this.http.post(`${this.url}purchases`, purchase).subscribe({
       next: () => {
-        this.toastr.success('Compra creada exitosamente');
+        this.toastr.success('Compra creada exitosamente.');
         this.resetForm();
         this.subTotalPurchaseAmount = 0;
         this.totalTaxesAmount = 0;
@@ -355,15 +358,15 @@ export class PurchaseHistoryComponent {
       error: (error) => {
         console.log('Error al crear la compra', error);
         this.toastr.error(
-          'Ocurrió un error al crear la compra. Por favor inténtalo nuevamente'
+          'Ocurrió un error al crear la compra. Por favor inténtalo nuevamente.'
         );
       },
     });
   }
 
   resetForm() {
-    this.providerId = null;
-    this.providerName = '';
+    this.provider_id = null;
+    this.provider_name = '';
     this.paymentMethod = '';
     this.doc_number = '';
     this.productList = [];
@@ -371,10 +374,10 @@ export class PurchaseHistoryComponent {
 
   cancelPurchase(doc_number: string) {
     const myDocument = doc_number;
-    this.http.put(`${this.url}purchases/${myDocument}`, null).subscribe(
-      (response: any) => {
+    this.http.put(`${this.url}purchases/${myDocument}`, null).subscribe({
+      next: (response: any) => {
         console.log('Compra anulada exitosamente', response);
-        this.toastr.success('Compra anulada exitosamente');
+        this.toastr.success('Compra anulada exitosamente.');
 
         const canceledPurchase = this.purchases.find(
           (purchase) => purchase.doc_number === doc_number
@@ -383,11 +386,11 @@ export class PurchaseHistoryComponent {
           canceledPurchase.status = 'anulada';
         }
       },
-      (error: any) => {
+      error: (error: any) => {
         console.log('Error anulando documento', error);
-        this.toastr.error('No se pudo anular el documento');
-      }
-    );
+        this.toastr.error('No se pudo anular el documento.');
+      },
+    });
   }
 
   getCurrentDate(): string {
@@ -416,31 +419,36 @@ export class PurchaseHistoryComponent {
     purchase.showDetails = !purchase.showDetails;
   }
 
-  getProvidersList() {
-    const searchTerm = this.name.toLowerCase();
+  searchProviders() {
+    const searchTerm = this.provider_name.toLowerCase();
     this.http.get(`${this.url}providers`).subscribe({
       next: (response: any) => {
         const providers = response?.message?.providers;
         if (Array.isArray(providers) && providers.length > 0) {
-          this.filteredProviders = providers
-            .filter((providers: any) =>
-              providers.provider_name.toLowerCase().includes(searchTerm)
+          this.providerSuggestionList = providers
+            .filter((provider: any) =>
+              provider.provider_name.toLowerCase().includes(searchTerm)
             )
             .map((provider: any) => ({
-              id: provider.id,
-              name: provider.provider_name,
+              provider_id: provider.provider_id,
+              provider_dni: provider.provider_dni,
+              provider_name: provider.provider_name,
             }));
         } else {
-          this.filteredProviders = [];
+          this.providerSuggestionList = [];
         }
+      },
+      error: (error: any) => {
+        console.log('Error al recuperar proveedores');
+        this.toastr.error('Error al recuperar la lista de proveedores.');
       },
     });
   }
 
-  selectProvider(provider: any, event: Event) {
+  selectProviderSuggestion(provider: any, event: Event) {
     event.preventDefault();
-    this.providerId = provider.id;
-    this.providerName = provider.provider_name;
-    this.filteredProviders = [];
+    this.provider_id = provider.provider_id;
+    this.provider_name = provider.provider_name;
+    this.providerSuggestionList = [];
   }
 }

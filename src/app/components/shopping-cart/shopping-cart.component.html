@@ -113,16 +113,42 @@
       </div>
       <div class="modal-body">
         <div class="form-group">
-          <label for="customerName">Cliente</label>
+          <label for="customer_name">Cliente</label>
           <input
             type="text"
-            id="customerName"
-            name="customerName"
-            [(ngModel)]="customerName"
+            id="customer_name"
+            name="customer_name"
+            [(ngModel)]="customer_name"
             class="form-control shadow"
-            value="Contado"
+            (keyup)="searchCustomers()"
             autocomplete="off"
           />
+          <div *ngIf="selectedCustomer">
+            {{ selectedCustomer.customer_name }}
+            {{ selectedCustomer.customer_first_lastname }}
+            {{ selectedCustomer.customer_second_lastname }}
+          </div>
+          <div
+            class="suggestions"
+            *ngIf="customer_name && customerSuggestionList.length > 0"
+          >
+            <ul
+              class="list-inline"
+              *ngIf="customer_name && customerSuggestionList.length > 0"
+            >
+              <li *ngFor="let customer of customerSuggestionList">
+                <a
+                  class="text-decoration-none"
+                  href=""
+                  (click)="selectCustomerSuggestion(customer, $event)"
+                >
+                  {{ customer.customer_name }}
+                  {{ customer.customer_first_lastname }}
+                  {{ customer.customer_second_lastname }}</a
+                >
+              </li>
+            </ul>
+          </div>
         </div>
         <div class="form-group">
           <label for="paymentMethod">Método de pago</label>
@@ -159,9 +185,15 @@
             (keyup)="searchProducts()"
             autocomplete="off"
           />
-          <div class="suggestions" *ngIf="name && suggestionsList.length > 0">
-            <ul class="list-inline" *ngIf="name && suggestionsList.length > 0">
-              <li *ngFor="let suggestion of suggestionsList">
+          <div
+            class="suggestions"
+            *ngIf="name && productSuggestionList.length > 0"
+          >
+            <ul
+              class="list-inline"
+              *ngIf="name && productSuggestionList.length > 0"
+            >
+              <li *ngFor="let suggestion of productSuggestionList">
                 <a
                   class="text-decoration-none"
                   href=""
@@ -266,6 +298,7 @@
           type="button"
           class="btn btn-primary shadow clic-on-image"
           (click)="createSale()"
+          data-dismiss="modal"
         >
           Guardar venta
         </button>

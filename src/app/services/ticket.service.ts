@@ -6,7 +6,9 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root',
 })
+
 export class TicketService {
+  separator: string = '----------------------------------------------------------'
   backendUrl = `${environment.apiUrl}`;
 
   constructor(private http: HttpClient) {}
@@ -56,7 +58,7 @@ export class TicketService {
             doc.text(`Fecha: ${createdAt}`, 2, 30);
             doc.text(`Cliente: ${customer_name}`, 2, 35);
             doc.text(
-              `----------------------------------------------------------`,
+              `${this.separator}`,
               1,
               37
             );
@@ -96,7 +98,7 @@ export class TicketService {
             });
 
             doc.text(
-              `----------------------------------------------------------`,
+              `${this.separator}`,
               1,
               y
             );

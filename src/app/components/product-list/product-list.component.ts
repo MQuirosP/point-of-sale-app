@@ -134,7 +134,7 @@ export class ProductListComponent implements OnInit {
         }
       },
       error: (error) => {
-        this.toastr.error('Error al obtener productos', error);
+        this.toastr.error('Error al obtener productos.', error);
       },
     });
   }
@@ -158,7 +158,7 @@ export class ProductListComponent implements OnInit {
         }
       },
       error: (error) => {
-        this.toastr.error('Error al obtener productos', error);
+        this.toastr.error('Error al obtener productos.', error);
       },
     });
   }
@@ -239,12 +239,12 @@ export class ProductListComponent implements OnInit {
           });
         } else {
           console.log('No se encontró el producto');
-          this.toastr.warning('Producto no encontrado');
+          this.toastr.warning('Producto no encontrado.');
         }
       },
       error: (error) => {
         console.log('Error al obtener el producto', error);
-        this.toastr.error('Error al obtener el producto');
+        this.toastr.error('Error al obtener el producto.');
       },
     });
   }
@@ -268,7 +268,7 @@ export class ProductListComponent implements OnInit {
       .put(`${this.backendUrl}products/${int_code}`, formData) // Enviar formData en lugar de this.editForm
       .subscribe({
         next: (response: any) => {
-          this.toastr.success('Producto modificado exitosamente');
+          this.toastr.success('Producto modificado exitosamente.');
           // this.updateProductList(this.editForm);
           this.refreshProductList();
           this.closeEditModal();
@@ -276,9 +276,9 @@ export class ProductListComponent implements OnInit {
         },
         error: (error) => {
           this.toastr.error(
-            `Error al guardar la información del producto ${error}`
+            `Error al guardar la información del producto. ${error}`
           );
-          console.log('Error al guardar la información del producto', error);
+          console.log('Error al guardar la información del producto.', error);
         },
       });
   }
@@ -305,7 +305,7 @@ export class ProductListComponent implements OnInit {
       !this.newProduct.purchase_price ||
       !this.newProduct.margin
     ) {
-      this.toastr.warning('Se debe suministrar todos los campos');
+      this.toastr.warning('Se debe suministrar todos los campos.');
       return;
     }
     const data = {
@@ -321,7 +321,7 @@ export class ProductListComponent implements OnInit {
 
     this.http.post(`${this.backendUrl}products/`, data).subscribe({
       next: (response) => {
-        this.toastr.success(`Producto creado exitosamente ${data.name}`);
+        this.toastr.success(`Producto creado exitosamente ${data.name}.`);
         this.newProduct.code = '';
         this.newProduct.name = '';
         this.newProduct.description = '';
@@ -334,7 +334,7 @@ export class ProductListComponent implements OnInit {
       },
       error: (error) => {
         this.toastr.error('Error al crear el producto');
-        console.error('Error al crear el producto', error);
+        console.error('Error al crear el producto.', error);
       },
     });
   }
@@ -391,9 +391,9 @@ export class ProductListComponent implements OnInit {
 
     this.http.delete(url, httpOptions).subscribe({
       next: (response: any) => {
-        console.log('Respuesta recibida del DBService', response);
+        // console.log('Respuesta recibida del DBService', response);
         if (response.success) {
-          this.toastr.success(`Producto eliminado satisfactoriamente`);
+          this.toastr.success(`Producto eliminado satisfactoriamente.`);
           this.closePasswordModal();
           this.refreshProductList();
           this.searchTerm = '';
@@ -441,12 +441,12 @@ export class ProductListComponent implements OnInit {
           });
         } else {
           console.log('No se encontró el producto');
-          this.toastr.warning('Producto no encontrado');
+          this.toastr.warning('Producto no encontrado.');
         }
       },
       error: (error) => {
         console.log('Error al obtener el producto', error);
-        this.toastr.error('Error al obtener el producto');
+        this.toastr.error('Error al obtener el producto.');
       },
     });
   }

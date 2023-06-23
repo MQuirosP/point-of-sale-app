@@ -100,13 +100,13 @@ export class OptionsComponent implements OnInit {
     this.optionService.changeRegisterStatus(this.activateRegister).subscribe({
       next: () => {
         if (this.activateRegister) {
-          this.toastr.success('Registro de usuarios activado');
+          this.toastr.success('Registro de usuarios activado.');
         } else {
-          this.toastr.warning('Registro de usuarios desactivado');
+          this.toastr.warning('Registro de usuarios desactivado.');
         }
       },
       error: () => {
-        this.toastr.error('No se pudo activar el registro de usuarios');
+        this.toastr.error('No se pudo activar el registro de usuarios.');
       },
     });
   }
@@ -123,7 +123,7 @@ export class OptionsComponent implements OnInit {
         this.filteredCustomers = [...this.customers];
       },
       error: (error) => {
-        this.toastr.error('Error al obtener clientes', error);
+        this.toastr.error('Error al obtener clientes.', error);
       },
     });
   }
@@ -163,13 +163,13 @@ export class OptionsComponent implements OnInit {
           const customer = response.message.customer;
           this.updateCustomerForm(customer);
           this.customerInfo = { ...customer };
-          this.toastr.success('Información de cliente recuperada con éxito');
+          this.toastr.success('Información de cliente recuperada con éxito.');
         } else {
-          this.toastr.warning('Cliente no encontrado');
+          this.toastr.warning('Cliente no encontrado.');
         }
       },
       error: (error: any) => {
-        this.toastr.error('Error al obtener el cliente');
+        this.toastr.error('Error al obtener el cliente.');
       },
     });
   }
@@ -277,7 +277,7 @@ export class OptionsComponent implements OnInit {
         }
       },
       error: (error: any) => {
-        this.toastr.error('Error al guardar el cliente', error);
+        this.toastr.error('Error al guardar el cliente.', error);
       },
     });
   }
@@ -309,7 +309,7 @@ export class OptionsComponent implements OnInit {
           this.getCustomerList();
         },
         error: (error: any) => {
-          this.toastr.error('Error al actualizar el cliente', error);
+          this.toastr.error('Error al actualizar el cliente.', error);
         },
       });
   }
@@ -334,7 +334,7 @@ export class OptionsComponent implements OnInit {
         }
       },
       error: (error: any) => {
-        this.toastr.error('Error al eliminar el cliente', error);
+        this.toastr.error('Error al eliminar el cliente.', error);
       },
     });
   }
@@ -367,7 +367,7 @@ export class OptionsComponent implements OnInit {
         this.filteredProviders = [...this.providers];
       },
       error: (error) => {
-        this.toastr.error('Error al obtener proveedores', error);
+        this.toastr.error('Error al obtener proveedores.', error);
       },
     });
   }
@@ -407,13 +407,13 @@ export class OptionsComponent implements OnInit {
           const provider = response.message.provider;
           this.updateProviderForm(provider);
           this.providerInfo = { ...provider };
-          this.toastr.success('Información de proveedor recuperada con éxito');
+          this.toastr.success('Información de proveedor recuperada con éxito.');
         } else {
-          this.toastr.warning('Proveedor no encontrado');
+          this.toastr.warning('Proveedor no encontrado.');
         }
       },
       error: (error: any) => {
-        this.toastr.error('Error al obtener el proveedor');
+        this.toastr.error('Error al obtener el proveedor.');
       },
     });
   }
@@ -514,7 +514,7 @@ export class OptionsComponent implements OnInit {
         }
       },
       error: (error: any) => {
-        this.toastr.error('Error al guardar el proveedor', error);
+        this.toastr.error('Error al guardar el proveedor.', error);
       },
     });
   }
@@ -546,7 +546,7 @@ export class OptionsComponent implements OnInit {
           this.getProviderList();
         },
         error: (error: any) => {
-          this.toastr.error('Error al actualizar el proveedor', error);
+          this.toastr.error('Error al actualizar el proveedor.', error);
         },
       });
   }
@@ -571,7 +571,7 @@ export class OptionsComponent implements OnInit {
         }
       },
       error: (error: any) => {
-        this.toastr.error('Error al eliminar el proveedor', error);
+        this.toastr.error('Error al eliminar el proveedor.', error);
       },
     });
   }

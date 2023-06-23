@@ -47,14 +47,21 @@ export class ShoppingCartComponent {
   // Misceláneos
   productList: any[] = [];
   lastSaleDocNumber: string = '';
-  customerName: string = 'Contado';
   paymentMethod: string = 'contado';
   date: Date | any = '';
-  suggestionsList: any[] = [];
+  productSuggestionList: any[] = [];
 
   // Consultar las ventas
   sales: any[] = [];
   sale: any[] = [];
+
+  // Consultar clientes
+  selectedCustomer: any;
+  customer_id: number = 0;
+  customer_name: string = '';
+  customer_dni: string;
+  customersList: any[] = [];
+  customerSuggestionList: any[] = [];
 
   @ViewChild('newSaleModal', { static: false }) newSaleModal!: ElementRef;
   @ViewChild('saleHistoryModal', { static: false })
@@ -94,6 +101,7 @@ export class ShoppingCartComponent {
   closeSaleModal() {
     this.newSaleModal.nativeElement.classList.remove('show');
     this.newSaleModal.nativeElement.style.display = 'none';
+    this.selectedCustomer = '';
   }
 
   openSaleHistoryModal() {
@@ -119,7 +127,7 @@ export class ShoppingCartComponent {
         next: (response) => {
           if (response.message.Sales.length === 0) {
             this.toastr.warning(
-              'No hay ventas para mostrar en la fecha seleccionada'
+              'No hay ventas para mostrar en la fecha seleccionada.'
             );
           }
           if (response.success) {
@@ -153,7 +161,7 @@ export class ShoppingCartComponent {
       next: (response: any) => {
         const products = response?.message?.products;
         if (Array.isArray(products) && products.length > 0) {
-          this.suggestionsList = products
+          this.productSuggestionList = products
             .filter(
               (product: any) =>
                 product.name.toLowerCase().includes(searchTerm) ||
@@ -166,11 +174,12 @@ export class ShoppingCartComponent {
               taxes: product.taxes,
             }));
         } else {
-          this.suggestionsList = [];
+          this.productSuggestionList = [];
         }
       },
       error: (error) => {
         console.log('Error al recuperar productos');
+        this.toastr.error('Error al recuperar los productos.')
       },
     });
   }
@@ -181,7 +190,7 @@ export class ShoppingCartComponent {
     this.name = suggestion.name;
     (this.selectedProductTaxes = suggestion.taxes),
       (this.selectedProductPrice = suggestion.sale_price);
-    this.suggestionsList = [];
+    this.productSuggestionList = [];
   }
 
   addProduct() {
@@ -191,7 +200,7 @@ export class ShoppingCartComponent {
       !this.selectedProductPrice ||
       !this.quantity
     ) {
-      this.toastr.warning('Se debe suministrar todos los campos');
+      this.toastr.warning('Se debe suministrar todos los campos.');
       return;
     }
 
@@ -255,41 +264,50 @@ export class ShoppingCartComponent {
   }
 
   createSale() {
-    const sale = {
-      customerId: 1,
-      customer_name: this.customerName,
-      paymentMethod: this.paymentMethod,
-      sub_total: this.subTotalSaleAmount,
-      taxes_amount: this.totalTaxesAmount,
-      products: this.productList.map((product) => ({
-        int_code: product.int_code,
-        quantity: product.quantity,
-        sub_total: product.sub_total,
-        taxes_amount: product.taxes_amount,
-      })),
-    };
-    console.log(sale);
-    this.http.post(`${this.backendUrl}sales/`, sale).subscribe({
-      next: (response: any) => {
-        console.log('Venta guardada exitosamente', response);
+    this.http
+      .get(`${this.backendUrl}customers/id/${this.customer_id}`)
+      .subscribe({
+        next: (response: any) => {
+          const customer = response?.message.customer;
+          const customerFullName = `${customer.customer_name} ${customer.customer_first_lastname} ${customer.customer_second_lastname}`;
 
-        this.toastr.success('La venta ha sido guardada exitosamente');
-        this.date = this.getCurrentDate();
-        this.getSalesHistory(this.date);
-        setTimeout(() => {
-          this.generateTicket(this.lastSaleDocNumber);
-        }, 1000);
+          const sale = {
+            customerId: this.customer_id,
+            customer_name: customerFullName,
+            paymentMethod: this.paymentMethod,
+            sub_total: this.subTotalSaleAmount,
+            taxes_amount: this.totalTaxesAmount,
+            products: this.productList.map((product) => ({
+              int_code: product.int_code,
+              quantity: product.quantity,
+              sub_total: product.sub_total,
+              taxes_amount: product.taxes_amount,
+            })),
+          };
 
-        this.clearSaleFormData();
-        this.closeSaleModal();
-      },
-      error: (error: any) => {
-        console.error('Error al guardar la venta', error);
-        this.toastr.error(
-          'Ocurrió un error al guardar la venta. Por favor inténtalo nuevamente'
-        );
-      },
-    });
+          this.http.post(`${this.backendUrl}sales/`, sale).subscribe({
+            next: (response: any) => {
+              this.toastr.success('La venta ha sido guardada exitosamente.');
+              this.date = this.getCurrentDate();
+              this.getSalesHistory(this.date);
+              setTimeout(() => {
+                this.generateTicket(this.lastSaleDocNumber);
+              }, 1000);
+              this.selectedCustomer = '';
+              this.clearSaleFormData();
+              this.closeSaleModal();
+            },
+            error: (error: any) => {
+              this.toastr.error(
+                'Ocurrió un error al guardar la venta. Por favor inténtalo nuevamente.'
+              );
+            },
+          });
+        },
+        error: (error: any) => {
+          this.toastr.error('Error recuperando el nombre de cliente.');
+        },
+      });
   }
 
   private clearSaleFormData() {
@@ -307,8 +325,7 @@ export class ShoppingCartComponent {
     const myDocument = doc_number;
     this.http.put(`${this.backendUrl}sales/${myDocument}`, null).subscribe(
       (response: any) => {
-        console.log('Venta anulada exitosamente', response);
-        this.toastr.success('Venta anulada exitosamente');
+        this.toastr.success('Venta anulada exitosamente.');
 
         const canceledSale = this.sales.find(
           (sale) => sale.doc_number === doc_number
@@ -318,8 +335,7 @@ export class ShoppingCartComponent {
         }
       },
       (error: any) => {
-        console.log('Error anulando documento', error);
-        this.toastr.error('No se pudo anular el documento');
+        this.toastr.error('No se pudo anular el documento.');
       }
     );
   }
@@ -352,5 +368,51 @@ export class ShoppingCartComponent {
 
   generateTicket(doc_number: string) {
     this.ticketService.generateTicket(doc_number);
+  }
+
+  searchCustomers() {
+    const searchTerm = this.customer_name.toLowerCase();
+    this.http.get(`${this.backendUrl}customers`).subscribe({
+      next: (response: any) => {
+        const customers = response?.message?.customers;
+        if (Array.isArray(customers) && customers.length > 0) {
+          this.customerSuggestionList = customers
+            .filter(
+              (customer: any) =>
+                customer.customer_name.toLowerCase().includes(searchTerm) ||
+                customer.customer_dni.toLowerCase().includes(searchTerm) ||
+                customer.customer_first_lastname
+                  .toLowerCase()
+                  .includes(searchTerm)
+            )
+            .map((customer: any) => ({
+              customer_id: customer.customer_id,
+              customer_dni: customer.customer_dni,
+              customer_name: customer.customer_name,
+              customer_first_lastname: customer.customer_first_lastname,
+              customer_second_lastname: customer.customer_second_lastname,
+            }));
+        } else {
+          this.customerSuggestionList = [];
+        }
+      },
+      error: (error: any) => {
+        console.log('Error al recuperar clientes');
+        this.toastr.error('Error al recuperar la lista de clientes.');
+      },
+    });
+  }
+
+  selectCustomerSuggestion(customer: any, event: Event) {
+    event.preventDefault();
+    this.customer_id = customer.customer_id;
+    this.customer_dni = customer.customer_dni;
+    this.customer_name = customer.customer_name;
+    this.customerSuggestionList = [];
+  }
+
+  selectCustomer(customer: any) {
+    this.selectedCustomer = customer;
+    this.customer_name = `${customer.customer_name} ${customer.customer_first_lastname} ${customer.customer_second_lastname}`;
   }
 }
