@@ -34,7 +34,7 @@ export class TicketService {
 
             const lineHeight = 5; // Espacio vertical ocupado por cada línea
             const headerHeight = 40; // Espacio vertical ocupado por el encabezado
-            const itemHeight = saleItems.length * 3 * lineHeight; // Espacio vertical ocupado por los artículos
+            const itemHeight = saleItems.length * 2.7 * lineHeight; // Espacio vertical ocupado por los artículos
             const footerHeight = 25; // Espacio vertical ocupado por el pie de página
             const totalHeight = 20; // Espacio vertical ocupado por el total
             const minHeight =
