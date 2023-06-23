@@ -39,6 +39,8 @@
   </section>
 </div>
 
+
+
 <!-- Opción para activar/desactivar registro de usuarios, listados clientes y proveedores -->
 <div class="container">
   <div class="row">
@@ -90,6 +92,7 @@
                     class="btn btn-primary shadow clic-on-image"
                     data-toggle="modal"
                     data-target="#providerModal"
+                    (click)="openProviderListModal()"
                   >
                     Abrir lista
                   </a>
@@ -118,7 +121,7 @@
                     class="btn btn-primary shadow clic-on-image"
                     data-toggle="modal"
                     data-target="#customerModal"
-                    (click)="getCustomerList()"
+                    (click)="openCustomerListModal()"
                   >
                     Abrir lista
                   </a>
@@ -135,21 +138,22 @@
 <!-- Modal para listado de proveedores -->
 <div
   class="modal fade"
-  id="providerModal"
-  #providerModal
+  id="providerListModal"
+  #providerListModal
   tabindex="-1"
   role="dialog"
-  aria-labelledby="providerModal"
+  aria-labelledby="providerListModalLabel"
   aria-hidden="true"
 >
-  <div class="modal-dialog" role="document">
-    <div class="modal-content modal-dialog-scrollable shadow">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content shadow">
       <div class="modal-header">
         <h5 class="modal-title">Mantenimiento de proveedores</h5>
         <button
           type="button"
           class="close clic-on-image"
           data-dismiss="modal"
+          (click)="closeProviderListModal()"
           aria-label="Cerrar"
         >
           <span aria-hidden="true"
@@ -171,7 +175,7 @@
             (ngModelChange)="filterProviders()"
             class="form-control shadow"
             placeholder="Ingresa tu búsqueda aquí..."
-            autocomplete="off"
+            [autocomplete]="false"
           />
         </div>
         <div class="w-100">
@@ -193,20 +197,29 @@
                       (click)="provider.showIcons = !provider.showIcons"
                       tabindex="0"
                     >
-                      {{ provider.name }}
+                      {{ provider.provider_name }}
                     </span>
                     <div
                       class="product-icons text-left"
                       [ngClass]="{ 'show-icons': provider.showIcons }"
-                      style="z-index: 9999"
                     >
-                      <a class="ml-2 mr-3">
+                      <a
+                        class="ml-2 mr-3"
+                        role="button"
+                        (click)="
+                          openProviderInfoModal(true, provider.provider_id);
+                          this.editMode = true
+                        "
+                      >
                         <i
                           class="fa-solid fa-pen-to-square clic-on-icon"
                           style="color: #1100fa; cursor: pointer"
                         ></i>
                       </a>
-                      <a class="text-left">
+                      <a
+                        class="text-left"
+                        (click)="deleteProvider(provider.provider_id)"
+                      >
                         <i
                           class="fa-solid fa-trash clic-on-icon"
                           style="color: #fa0000; cursor: pointer"
@@ -215,10 +228,10 @@
                     </div>
                   </td>
                   <td class="text-left">
-                    {{ provider.email }}
+                    {{ provider.provider_email }}
                   </td>
                   <td class="text-left">
-                    {{ provider.phone }}
+                    {{ provider.provider_phone }}
                   </td>
                 </tr>
               </tbody>
@@ -231,7 +244,8 @@
           type="button"
           class="btn btn-primary clic-on-image"
           data-toggle="modal"
-          data-target="#newProviderModal"
+          data-target="#providerInfoModal"
+          (click)="openProviderInfoModal(false, ''); this.editMode = false"
         >
           Nuevo
         </button>
@@ -239,6 +253,7 @@
           type="button"
           class="btn btn-secondary clic-on-image"
           data-dismiss="modal"
+          (click)="closeProviderListModal()"
         >
           Cerrar
         </button>
@@ -247,26 +262,28 @@
   </div>
 </div>
 
-<!-- Modal para el registro de proveedores -->
+<!-- Modal para el registro y edición de proveedores -->
 <div
   class="modal fade"
-  id="newProviderModal"
+  id="providerInfoModal"
+  #providerInfoModal
   tabindex="-1"
   role="dialog"
-  aria-labelledby="providerModalLabel"
+  aria-labelledby="providerInfoModalLabel"
   aria-hidden="true"
 >
-  <div class="modal-dialog" role="document">
-    <div class="modal-content modal-dialog-scrollable">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content shadow">
       <div class="modal-header">
-        <h5 class="modal-title" id="providerModalLabel">
-          Registrar Nuevo Proveedor
+        <h5 class="modal-title" id="providerInfoModalLabel">
+          {{ modalTitle }} de proveedores
         </h5>
         <button
           type="button"
           class="close clic-on-image"
           data-dismiss="modal"
           aria-label="Close"
+          (click)="closeProviderInfoModal()"
         >
           <span aria-hidden="true"
             ><i
@@ -278,62 +295,95 @@
       </div>
       <div class="modal-body">
         <!-- Formulario de registro de proveedores -->
-        <form>
+        <form [formGroup]="providerForm">
           <div class="form-group">
-            <label for="name">Nombre:</label>
+            <label for="provider_name">Nombre:</label>
             <input
               type="text"
               class="form-control"
-              id="name"
+              id="provider_name"
+              formControlName="provider_name"
               placeholder="Nombre del proveedor"
+              [value]="providerForm.get('provider_name').value"
               required
-              autocomplete="off"
+              [autocomplete]="false"
             />
           </div>
           <div class="form-group">
-            <label for="address">Dirección:</label>
+            <label for="provider_address">Dirección:</label>
             <input
               type="text"
               class="form-control"
-              id="address"
+              id="provider_address"
+              formControlName="provider_address"
               placeholder="Dirección del proveedor"
-              autocomplete="off"
+              [value]="providerForm.get('provider_address').value"
+              [autocomplete]="false"
             />
           </div>
           <div class="form-group">
-            <label for="phone">Teléfono:</label>
+            <label for="provider_phone">Teléfono:</label>
             <input
-              type="tel"
+              type="text"
               class="form-control"
-              id="phone"
+              id="provider_phone"
+              formControlName="provider_phone"
               placeholder="Teléfono del proveedor"
-              autocomplete="off"
+              [value]="providerForm.get('provider_phone')"
+              [autocomplete]="false"
             />
           </div>
           <div class="form-group">
-            <label for="email">Email:</label>
+            <label for="provider_email">Email:</label>
             <input
               type="email"
               class="form-control"
-              id="email"
+              id="provider_email"
+              formControlName="provider_email"
               placeholder="Email del proveedor"
-              autocomplete="off"
+              [value]="providerForm.get('provider_email').value"
+              [autocomplete]="false"
             />
           </div>
           <div class="form-group">
-            <label for="dni">DNI:</label>
+            <label for="provider_dni">DNI:</label>
             <input
               type="text"
               class="form-control"
-              id="dni"
+              id="provider_dni"
+              formControlName="provider_dni"
               placeholder="DNI del proveedor"
+              [value]="providerForm.get('provider_dni').value"
               required
-              autocomplete="off"
+              [autocomplete]="false"
             />
           </div>
-          <button type="submit" class="btn btn-primary clic-on-image">
-            Guardar
-          </button>
+          <div class="modal-footer">
+            <button
+              *ngIf="this.editMode === false"
+              type="submit"
+              class="btn btn-primary clic-on-image"
+              (click)="createProvider()"
+            >
+              Guardar
+            </button>
+            <button
+              *ngIf="this.editMode === true"
+              type="submit"
+              class="btn btn-primary clic-on-image"
+              (click)="editProvider(providerForm.get('provider_id').value)"
+            >
+              Editar
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary clic-on-image ml-2"
+              data-dismiss="modal"
+              (click)="closeProviderInfoModal()"
+            >
+              Cerrar
+            </button>
+          </div>
         </form>
       </div>
     </div>
@@ -343,21 +393,22 @@
 <!-- Modal para listado de clientes -->
 <div
   class="modal fade"
-  id="customerModal"
-  #customerModal
+  id="customerListModal"
+  #customerListModal
   tabindex="-1"
   role="dialog"
-  aria-labelledby="customerModal"
+  aria-labelledby="customerListModalLabel"
   aria-hidden="true"
 >
-  <div class="modal-dialog" role="document">
-    <div class="modal-content modal-dialog-scrollable shadow">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content shadow">
       <div class="modal-header">
         <h5 class="modal-title">Mantenimiento de clientes</h5>
         <button
           type="button"
           class="close clic-on-image"
           data-dismiss="modal"
+          (click)="closeCustomerListModal()"
           aria-label="Cerrar"
         >
           <span aria-hidden="true"
@@ -379,7 +430,7 @@
             (ngModelChange)="filterCustomers()"
             class="form-control shadow"
             placeholder="Ingresa tu búsqueda aquí..."
-            autocomplete="off"
+            [autocomplete]="false"
           />
         </div>
         <div class="w-100">
@@ -401,7 +452,7 @@
                       (click)="customer.showIcons = !customer.showIcons"
                       tabindex="0"
                     >
-                      {{ customer.name }} {{ customer.first_lastname }}
+                      {{ customer.customer_name }} {{ customer.customer_first_lastname }}
                     </span>
                     <div
                       class="product-icons text-left"
@@ -411,7 +462,8 @@
                         class="ml-2 mr-3"
                         role="button"
                         (click)="
-                          openCustomerInfoModal(true, customer.customer_id)
+                          openCustomerInfoModal(true, customer.customer_id);
+                          this.editMode = true
                         "
                       >
                         <i
@@ -431,10 +483,10 @@
                     </div>
                   </td>
                   <td class="text-left">
-                    {{ customer.email }}
+                    {{ customer.customer_email }}
                   </td>
                   <td class="text-left">
-                    {{ customer.phone }}
+                    {{ customer.customer_phone }}
                   </td>
                 </tr>
               </tbody>
@@ -448,7 +500,7 @@
           class="btn btn-primary clic-on-image"
           data-toggle="modal"
           data-target="#customerInfoModal"
-          (click)="openCustomerInfoModal(false)"
+          (click)="openCustomerInfoModal(false, ''); this.editMode = false"
         >
           Nuevo
         </button>
@@ -456,6 +508,7 @@
           type="button"
           class="btn btn-secondary clic-on-image"
           data-dismiss="modal"
+          (click)="closeCustomerListModal()"
         >
           Cerrar
         </button>
@@ -464,7 +517,7 @@
   </div>
 </div>
 
-<!-- Modal para el registro/edición de clientes -->
+<!-- Modal para el registro y edición de clientes -->
 <div
   class="modal fade"
   id="customerInfoModal"
@@ -474,11 +527,11 @@
   aria-labelledby="customerInfoModalLabel"
   aria-hidden="true"
 >
-  <div class="modal-dialog" role="document">
-    <div class="modal-content modal-dialog-scrollable">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content shadow">
       <div class="modal-header">
         <h5 class="modal-title" id="customerInfoModalLabel">
-          {{ modalTitle }}
+          {{ modalTitle }} de clientes
         </h5>
         <button
           type="button"
@@ -497,102 +550,111 @@
       </div>
       <div class="modal-body">
         <!-- Formulario de registro de clientes -->
-        <form>
+        <form [formGroup]="customerForm">
           <div class="form-group">
-            <label for="name">Nombre:</label>
+            <label for="customer_name">Nombre:</label>
             <input
               type="text"
               class="form-control"
-              id="name"
-              name="name"
+              id="customer_name"
+              formControlName="customer_name"
               placeholder="Nombre del cliente"
-              [(ngModel)]="customerInfo.name"
+              [value]="customerForm.get('customer_name').value"
               required
-              autocomplete="off"
+              [autocomplete]="false"
             />
           </div>
           <div class="form-group">
-            <label for="first_lastname">Primer Apellido:</label>
+            <label for="customer_first_lastname">Primer Apellido:</label>
             <input
               type="text"
               class="form-control"
-              id="first_lastname"
-              name="first_lastname"
-              placeholder="Primer Apellido del cliente"
-              [(ngModel)]="customerInfo.first_lastname"
+              id="customer_first_lastname"
+              formControlName="customer_first_lastname"
+              placeholder="Primer apellido"
+              [value]="customerForm.get('customer_first_lastname').value"
               required
-              autocomplete="off"
+              [autocomplete]="false"
             />
           </div>
           <div class="form-group">
-            <label for="second_lastname">Segundo Apellido:</label>
+            <label for="customer_second_lastname">Segundo Apellido:</label>
             <input
               type="text"
               class="form-control"
-              id="second_lastname"
-              name="second_lastname"
-              placeholder="Segundo Apellido del cliente"
-              [(ngModel)]="customerInfo.second_lastname"
+              id="customer_second_lastname"
+              formControlName="customer_second_lastname"
+              placeholder="Segundo apellido"
+              [value]="customerForm.get('customer_second_lastname').value"
               required
-              autocomplete="off"
+              [autocomplete]="false"
             />
           </div>
           <div class="form-group">
-            <label for="address">Dirección:</label>
+            <label for="customer_address">Dirección:</label>
             <input
               type="text"
               class="form-control"
-              id="address"
-              name="address"
-              placeholder="Dirección del cliente"
-              [(ngModel)]="customerInfo.address"
-              autocomplete="off"
+              id="customer_address"
+              formControlName="customer_address"
+              placeholder="Dirección"
+              [value]="customerForm.get('customer_address').value"
+              [autocomplete]="false"
             />
           </div>
           <div class="form-group">
-            <label for="phone">Teléfono:</label>
+            <label for="customer_phone">Teléfono:</label>
             <input
               type="tel"
               class="form-control"
-              id="phone"
-              name="phone"
+              id="customer_phone"
+              formControlName="customer_phone"
               placeholder="Teléfono del cliente"
-              [(ngModel)]="customerInfo.phone"
-              autocomplete="off"
+              [value]="customerForm.get('customer_phone').value"
+              [autocomplete]="false"
             />
           </div>
           <div class="form-group">
-            <label for="email">Email:</label>
+            <label for="customer_email">Email:</label>
             <input
               type="email"
               class="form-control"
               id="email"
-              name="email"
+              formControlName="customer_email"
               placeholder="Email del cliente"
-              [(ngModel)]="customerInfo.email"
-              autocomplete="off"
+              [value]="customerForm.get('customer_email').value"
+              [autocomplete]="false"
             />
           </div>
           <div class="form-group">
-            <label for="dni">DNI:</label>
+            <label for="customer_dni">DNI:</label>
             <input
               type="text"
               class="form-control"
-              id="dni"
-              name="dni"
+              id="customer_dni"
+              formControlName="customer_dni"
               placeholder="DNI del cliente"
-              [(ngModel)]="customerInfo.customer_dni"
+              [value]="customerForm.get('customer_dni').value"
               required
-              autocomplete="off"
+              [autocomplete]="false"
             />
           </div>
           <div class="modal-footer">
             <button
+              *ngIf="this.editMode === false"
               type="submit"
               class="btn btn-primary clic-on-image"
-              (click)="saveCustomerInfo()"
+              (click)="createCustomer()"
             >
               Guardar
+            </button>
+            <button
+              *ngIf="this.editMode === true"
+              type="submit"
+              class="btn btn-primary clic-on-image"
+              (click)="editCustomer(customerForm.get('customer_id').value)"
+            >
+              Editar
             </button>
             <button
               type="button"

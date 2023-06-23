@@ -424,11 +424,11 @@ export class PurchaseHistoryComponent {
         if (Array.isArray(providers) && providers.length > 0) {
           this.filteredProviders = providers
             .filter((providers: any) =>
-              providers.name.toLowerCase().includes(searchTerm)
+              providers.provider_name.toLowerCase().includes(searchTerm)
             )
             .map((provider: any) => ({
               id: provider.id,
-              name: provider.name,
+              name: provider.provider_name,
             }));
         } else {
           this.filteredProviders = [];
@@ -440,7 +440,7 @@ export class PurchaseHistoryComponent {
   selectProvider(provider: any, event: Event) {
     event.preventDefault();
     this.providerId = provider.id;
-    this.providerName = provider.name;
+    this.providerName = provider.provider_name;
     this.filteredProviders = [];
   }
 }
