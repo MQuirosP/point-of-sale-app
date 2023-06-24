@@ -492,10 +492,10 @@ export class OptionsComponent implements OnInit {
   
   private extractProviderFormData() {
     return {
-      name: this.providerForm.get('provider_name').value,
-      address: this.providerForm.get('provider_address').value,
-      phone: this.providerForm.get('provider_phone').value,
-      email: this.providerForm.get('provider_email').value,
+      provider_name: this.providerForm.get('provider_name').value,
+      provider_address: this.providerForm.get('provider_address').value,
+      provider_phone: this.providerForm.get('provider_phone').value,
+      provider_email: this.providerForm.get('provider_email').value,
       provider_dni: this.providerForm.get('provider_dni').value,
     };
   }

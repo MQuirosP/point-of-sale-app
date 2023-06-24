@@ -143,7 +143,9 @@ export class LoginService {
   }
 
   private logoutDueToInactivity() {
-    this.toastr.warning("Sesión cerrada por inactividad.");
-    this.onLogout();
+    if (this.isLoggedInSubject.getValue()) {
+      this.toastr.warning('Sesión cerrada por inactividad.');
+      this.onLogout();
+    }
   }
 }

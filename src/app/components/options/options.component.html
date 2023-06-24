@@ -204,6 +204,8 @@
                       <a
                         class="ml-2 mr-3"
                         role="button"
+                        data-toggle="modal"
+                        data-target="#providerInfoModal"
                         (click)="
                           openProviderInfoModal(true, provider.provider_id);
                           this.editMode = true
@@ -362,6 +364,7 @@
               type="submit"
               class="btn btn-primary shadow clic-on-image"
               (click)="createProvider()"
+              data-dismiss="modal"
             >
               Guardar
             </button>
@@ -370,6 +373,7 @@
               type="submit"
               class="btn btn-primary shadow clic-on-image"
               (click)="editProvider(providerForm.get('provider_id').value)"
+              data-dismiss="modal"
             >
               Editar
             </button>
@@ -460,6 +464,8 @@
                       <a
                         class="ml-2 mr-3"
                         role="button"
+                        data-toggle="modal"
+                        data-target="#customerInfoModal"
                         (click)="
                           openCustomerInfoModal(true, customer.customer_id);
                           this.editMode = true
@@ -651,6 +657,7 @@
               *ngIf="this.editMode === true"
               type="submit"
               class="btn btn-primary clic-on-image"
+              data-dismiss="modal"
               (click)="editCustomer(customerForm.get('customer_id').value)"
             >
               Editar
