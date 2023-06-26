@@ -18,18 +18,16 @@
           <div class="card-header">
             <h4>Registrar usuario</h4>
           </div>
-          <form (ngSubmit)="registerNewUser()">
+          <form [formGroup]="newUserForm" (ngSubmit)="registerNewUser()"> 
             <div class="card-body">
               <div class="form-group">
                 <label for="name" class="">Nombre:</label>
                 <input
                   type="text"
-                  class="form-control"
+                  class="form-control shadow"
                   autofocus
                   id="name"
-                  required
-                  [(ngModel)]="name"
-                  name="name"
+                  formControlName="name"
                   autocomplete="off"
                 />
               </div>
@@ -37,11 +35,9 @@
                 <label for="lastname" class="">Apellido:</label>
                 <input
                   type="text"
-                  class="form-control"
+                  class="form-control shadow"
                   id="lastname"
-                  required
-                  [(ngModel)]="lastname"
-                  name="lastname"
+                  formControlName="lastname"
                   autocomplete="off"
                 />
               </div>
@@ -49,11 +45,9 @@
                 <label for="username" class="">Usuario:</label>
                 <input
                   type="text"
-                  class="form-control"
+                  class="form-control shadow"
                   id="username"
-                  required
-                  [(ngModel)]="username"
-                  name="username"
+                  formControlName="username"
                   autocomplete="off"
                 />
               </div>
@@ -61,15 +55,29 @@
                 <label for="password" class="">Contraseña:</label>
                 <input
                   type="password"
-                  class="form-control"
+                  class="form-control shadow"
                   id="password"
-                  required
-                  [(ngModel)]="password"
-                  name="password"
+                  formControlName="password"
+                />
+              </div>
+              <div class="form-group">
+                <label for="email" class="">Email:</label>
+                <input
+                  type="email"
+                  class="form-control shadow"
+                  id="email"
+                  formControlName="email"
+                  autocomplete="off"
                 />
               </div>
               <div class="text-center">
-                <button type="submit" class="btn btn-primary shadow">Registro</button>
+                <button
+                  type="submit"
+                  class="btn btn-primary shadow clic-on-image"
+                  style="cursor: pointer;"
+                >
+                  Registro
+                </button>
               </div>
             </div>
           </form>

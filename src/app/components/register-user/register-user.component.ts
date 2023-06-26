@@ -1,9 +1,18 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { fadeAnimation } from 'src/app/fadeAnimation';
 import { environment } from 'src/environments/environment';
+
+interface NewUser {
+  username: string;
+  name: string;
+  lastname: string;
+  password: string;
+  email: string;
+}
 
 @Component({
   selector: 'app-register-user',
@@ -11,61 +20,61 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./register-user.component.css'],
   animations: [fadeAnimation],
 })
-export class RegisterUserComponent {
-  username: string = '';
-  name: string = '';
-  lastname: string = '';
-  // email: string = '';
-  password: string = '';
+export class RegisterUserComponent implements OnInit {
+  newUserForm: FormGroup;
+  backendUrl = `${environment.apiUrl}users/`;
 
-  // backendUrl = 'http://localhost:3000/api/users/';
-  backendUrl = `${environment.apiUrl}/users/`
-  
   constructor(
+    private formBuilder: FormBuilder,
     private http: HttpClient,
     private router: Router,
     private toastr: ToastrService
   ) {}
 
+  ngOnInit() {
+    this.newUserForm = this.formBuilder.group({
+      username: ['', Validators.required],
+      name: ['', Validators.required],
+      lastname: ['', Validators.required],
+      password: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+    });
+  }
+
   registerNewUser() {
-    if (!this.username || !this.name || !this.lastname || !this.password) {
-      this.toastr.warning(
-        `Información incompleta, por favor complete todos los campos`
-      );
+    if (this.newUserForm.invalid) {
+      this.toastr.warning('Información incompleta o inválida. Por favor, complete todos los campos correctamente.');
       return;
     }
-    const newUser = {
-      username: this.username,
-      name: this.name,
-      lastname: this.lastname,
-      // email: this.email,
-      password: this.password,
-    };
+
+    const newUser: NewUser = this.newUserForm.value;
+
     this.http.get(`${this.backendUrl}${newUser.username}`).subscribe({
       next: (response: any) => {
-        if (response.message) {
-          this.toastr.info(`Usuario ${this.username} ya existe en los registros. `);
+        if (response.success === false) {
+          this.createUser(newUser);
         } else {
-          this.http.post(this.backendUrl, newUser).subscribe({
-            next: (response: any) => {
-              this.toastr.success(
-                `Usuario creado satisfactoriamente: ${response.message.username}`
-              );
-              this.username = '';
-              this.lastname = '';
-              // this.email = '';
-              this.name = '';
-              this.password = '';
-              // this.router.navigate(['/login'])
-            },
-            error: (error: any) => {
-              this.toastr.error(`Error al crear el usuario: ${error.message}`);
-            },
-          });
+          this.toastr.info(`Usuario ${newUser.username} ya existe en los registros.`);
         }
       },
       error: (error: any) => {
-        this.toastr.error('Error consultando usuario');
+        if (error.status === 404) {
+          this.createUser(newUser);
+        } else {
+          this.toastr.error('Error consultando usuario');
+        }
+      },
+    });
+  }
+
+  private createUser(newUser: NewUser) {
+    this.http.post(this.backendUrl, newUser).subscribe({
+      next: (response: any) => {
+        this.toastr.success(`Usuario creado satisfactoriamente: ${response.message.username}`);
+        this.newUserForm.reset();
+      },
+      error: (error: any) => {
+        this.toastr.error(`Error al crear el usuario: ${error.message}`);
       },
     });
   }

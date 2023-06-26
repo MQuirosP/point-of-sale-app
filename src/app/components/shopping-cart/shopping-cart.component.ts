@@ -11,6 +11,7 @@ import { ModalService } from '../../services/modalService';
 import { fadeAnimation } from 'src/app/fadeAnimation';
 import { ToastrService } from 'ngx-toastr';
 import { TicketService } from 'src/app/services/ticket.service';
+import { SaleService } from 'src/app/services/sale.service';
 // import * as moment from 'moment';
 
 interface ApiSaleResponse {
@@ -74,7 +75,8 @@ export class ShoppingCartComponent {
     private calendar: NgbCalendar,
     private dateParser: NgbDateParserFormatter,
     private toastr: ToastrService,
-    private ticketService: TicketService
+    private ticketService: TicketService,
+    private saleService: SaleService
   ) {
     this.date = this.getCurrentDate();
     this.selectedDate = this.calendar.getToday();
@@ -179,7 +181,7 @@ export class ShoppingCartComponent {
       },
       error: (error) => {
         console.log('Error al recuperar productos');
-        this.toastr.error('Error al recuperar los productos.')
+        this.toastr.error('Error al recuperar los productos.');
       },
     });
   }
@@ -285,7 +287,7 @@ export class ShoppingCartComponent {
             })),
           };
 
-          this.http.post(`${this.backendUrl}sales/`, sale).subscribe({
+          this.saleService.createSale(sale).subscribe({
             next: (response: any) => {
               this.toastr.success('La venta ha sido guardada exitosamente.');
               this.date = this.getCurrentDate();
@@ -322,9 +324,8 @@ export class ShoppingCartComponent {
   }
 
   cancelSale(doc_number: string) {
-    const myDocument = doc_number;
-    this.http.put(`${this.backendUrl}sales/${myDocument}`, null).subscribe(
-      (response: any) => {
+    this.saleService.cancelSale(doc_number).subscribe({
+      next: (response: any) => {
         this.toastr.success('Venta anulada exitosamente.');
 
         const canceledSale = this.sales.find(
@@ -334,10 +335,10 @@ export class ShoppingCartComponent {
           canceledSale.status = 'anulada';
         }
       },
-      (error: any) => {
+      error: (error: any) => {
         this.toastr.error('No se pudo anular el documento.');
-      }
-    );
+      },
+    });
   }
 
   getCurrentDate(): string {

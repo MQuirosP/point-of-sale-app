@@ -11,6 +11,7 @@ import { Observable, forkJoin } from 'rxjs';
 import { ModalService } from 'src/app/services/modalService';
 import { fadeAnimation } from 'src/app/fadeAnimation';
 import { ToastrService } from 'ngx-toastr';
+import { PurchaseService } from 'src/app/services/purchase.service';
 // import * as moment from 'moment';
 
 interface ApiPurchaseResponse {
@@ -25,6 +26,25 @@ interface ApiProviderResponse {
   message: {
     Providers: any[];
   };
+}
+
+interface Purchase {
+  providerId: number;
+  providerName: string;
+  paymentMethod: string;
+  doc_number: string;
+  status: string;
+  sub_total: number;
+  taxes_amount: number;
+  products: Product[];
+}
+
+interface Product {
+  int_code: number;
+  quantity: number;
+  price: number;
+  taxes_amount: number;
+  sub_total: number;
 }
 
 @Component({
@@ -81,7 +101,8 @@ export class PurchaseHistoryComponent {
     private router: Router,
     private calendar: NgbCalendar,
     private dateParser: NgbDateParserFormatter,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private purchaseService: PurchaseService,
   ) {
     this.date = this.getCurrentDate();
     this.selectedDate = this.calendar.getToday();
@@ -138,16 +159,6 @@ export class PurchaseHistoryComponent {
             );
           }
           if (response.success) {
-            // const purchases = response.message?.Purchases || [];
-            // this.purchases = purchases.filter((purchase: any) => {
-            //   const purchaseDate = moment(purchase.createdAt).format(
-            //     'YYYY-MM-DD'
-            //   );
-            //   return purchaseDate === selectedDate;
-            // });
-            // this.purchases.forEach((purchase: any) => {
-            //   purchase.showDetails = false;
-            // });
             this.purchases = response.message?.Purchases || [];
             this.purchases.forEach((purchase: any) => {
               purchase.showDetails = false;
@@ -329,25 +340,18 @@ export class PurchaseHistoryComponent {
   }
 
   private savePurchase() {
-    const purchase = {
+    const purchase: Purchase = {
       providerId: this.provider_id,
       providerName: this.provider_name,
       paymentMethod: this.paymentMethod,
       doc_number: this.doc_number,
       status: 'aceptado',
       sub_total: this.subTotalPurchaseAmount,
-      taxes_amount: this.totalTaxesAmount,
-      products: this.productList.map((product) => ({
-        int_code: product.int_code,
-        quantity: product.quantity,
-        price: product.price,
-        taxes_amount: product.taxes_amount,
-        sub_total: product.sub_total,
-      })),
+      taxes_amount: this.totalTaxesAmount || 0,
+      products: this.productList.map((product) => ({ ...product })),
     };
-    // console.log(purchase);
 
-    this.http.post(`${this.url}purchases`, purchase).subscribe({
+    this.purchaseService.createPurchase(purchase).subscribe({
       next: () => {
         this.toastr.success('Compra creada exitosamente.');
         this.resetForm();
@@ -357,9 +361,7 @@ export class PurchaseHistoryComponent {
       },
       error: (error) => {
         console.log('Error al crear la compra', error);
-        this.toastr.error(
-          'Ocurrió un error al crear la compra. Por favor inténtalo nuevamente.'
-        );
+        this.toastr.error('Ocurrió un error al crear la compra. Por favor inténtalo nuevamente.');
       },
     });
   }
@@ -373,12 +375,11 @@ export class PurchaseHistoryComponent {
   }
 
   cancelPurchase(doc_number: string) {
-    const myDocument = doc_number;
-    this.http.put(`${this.url}purchases/${myDocument}`, null).subscribe({
+    this.purchaseService.cancelPurchase(doc_number).subscribe({
       next: (response: any) => {
         console.log('Compra anulada exitosamente', response);
         this.toastr.success('Compra anulada exitosamente.');
-
+  
         const canceledPurchase = this.purchases.find(
           (purchase) => purchase.doc_number === doc_number
         );
