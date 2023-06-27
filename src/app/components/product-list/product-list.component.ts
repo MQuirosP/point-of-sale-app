@@ -257,14 +257,12 @@ export class ProductListComponent implements OnInit {
 
   editProduct() {
     const int_code = this.editForm.get('int_code').value;
-    const formData = this.editForm.getRawValue(); // Obtener los valores del formulario como un objeto plano
-  
+    const formData = this.editForm.getRawValue();
     this.http
-      .put(`${this.backendUrl}products/${int_code}`, formData) // Enviar formData en lugar de this.editForm
+      .put(`${this.backendUrl}products/${int_code}`, formData)
       .subscribe({
         next: (response: any) => {
           this.toastr.success('Producto modificado exitosamente.');
-          // this.updateProductList(this.editForm);
           this.refreshProductList();
           this.closeEditModal();
           this.searchTerm = '';

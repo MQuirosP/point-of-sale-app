@@ -153,10 +153,10 @@
       <div class="modal-body">
         <form [formGroup]="editForm" (ngSubmit)="editProduct()">
           <div class="form-group">
-            <label for="intCode">Código:</label>
+            <label for="int_code">Código:</label>
             <input
               type="text"
-              id="intCode"
+              id="int_code"
               class="form-control shadow"
               formControlName="int_code"
               autocomplete="off"
@@ -276,6 +276,7 @@
               type="submit"
               class="btn btn-primary shadow clic-on-image"
               data-dismiss="modal"
+              (click)="editProduct()"
             >
               Guardar
             </button>
