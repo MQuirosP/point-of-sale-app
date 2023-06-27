@@ -1,6 +1,4 @@
-import { DbService } from './../../services/db.service';
 import { Component } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { fadeAnimation } from 'src/app/fadeAnimation';
 
 @Component({

@@ -1,0 +1,264 @@
+<header id="main-header" class="py-2 bg-info text-white main-board-style">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8" [@fadeAnimation]>
+        <h1><i class="fas fa-cog"></i> Mis reportes</h1>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Seccion de botones opciones -->
+<div class="container">
+  <section id="actions" class="py-4 bg-transparent" [@fadeAnimation]>
+    <div class="container">
+      <div
+        class="row justify-content-center"
+        style="width: 50%; margin-left: 25%"
+      >
+        <div class="col col-md-12 d-flex justify-content-between">
+          <a
+            routerLink="/shopping-cart"
+            role="button"
+            type="submit"
+            class="btn btn-success border border-success shadow clic-on-image"
+            style="width: 140px"
+          >
+            <i class="fas fa-arrow-left"></i> Mis ventas
+          </a>
+          <a
+            routerLink="/home"
+            role="button"
+            type="submit"
+            class="btn btn-warning border border-warning shadow clic-on-image ml-2 mr-2"
+            style="width: 140px"
+          >
+            <i class="fas fa-home"></i> Inicio
+          </a>
+          <a
+            routerLink="/purchase-history"
+            role="button"
+            type="submit"
+            class="btn btn-success border border-success shadow clic-on-image"
+            style="width: 140px"
+          >
+            Mis compras <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Tarjetas para selección de Ventas/Compras -->
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-4 mt-3">
+      <section id="proveedores" [@fadeAnimation]>
+        <div class="container">
+          <div class="card shadow">
+            <div class="card-header text-center">
+              <h3 class="h4">Ventas</h3>
+            </div>
+            <div class="card-body">
+              <fieldset class="row">
+                <legend class="text-center" style="font-size: 18px">
+                  Reportes de ventas generales
+                </legend>
+                <div class="col-12 text-center">
+                  <a
+                    role="button"
+                    class="btn btn-primary shadow clic-on-image"
+                    data-toggle="modal"
+                    data-target="#salesReportModal"
+                  >
+                    Ver opciones
+                  </a>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="col-12 col-md-4 mt-3">
+      <section [@fadeAnimation]>
+        <div class="container">
+          <div class="card shadow">
+            <div class="card-header text-center">
+              <h3 class="h4">Compras</h3>
+            </div>
+            <div class="card-body">
+              <fieldset class="row">
+                <legend class="text-center" style="font-size: 18px">
+                  Reportes de compras generales
+                </legend>
+                <div class="col-12 text-center">
+                  <a
+                    role="button"
+                    class="btn btn-primary shadow clic-on-image"
+                    data-toggle="modal"
+                    data-target="#purchasesReportModal"
+                  >
+                    Abrir lista
+                  </a>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para reportes de ventas -->
+<div id="salesReportModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Generar Reporte de Ventas</h5>
+        <button
+          type="button"
+          class="close clic-on-image"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true"
+            ><i
+              class="fa-sharp fa-solid fa-circle-xmark"
+              style="color: #f40b0b"
+            ></i
+          ></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row justify-content-between ml-4 mr-4">
+            <div class="form-group">
+              <label for="startDate">Fecha inicial:</label>
+              <input
+                type="date"
+                class="form-control input-group-text shadow shadow-lg"
+                id="startDate"
+                name="startDate"
+                [(ngModel)]="startDate"
+                ngbDatepicker
+                #datepicker="ngbDatepicker"
+                style="width: 160px"
+              />
+            </div>
+            <div class="form-group">
+              <label for="endDate">Fecha final:</label>
+              <input
+                type="date"
+                class="form-control input-group-text shadow"
+                id="endDate"
+                name="endDate"
+                [(ngModel)]="endDate"
+                ngbDatepicker
+                #datepicker="ngbDatepicker"
+                style="width: 160px"
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary shadow clic-on-image"
+          (click)="generateGeneralSalesReport()"
+        >
+          General
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary shadow clic-on-image"
+          (click)="generateDetailSalesReport()"
+        >
+          Detalle
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary shadow clic-on-image"
+          data-dismiss="modal"
+        >
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para reportes de ventas -->
+<div id="purchasesReportModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Generar Reporte de Compras</h5>
+        <button
+          type="button"
+          class="close clic-on-image"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true"
+            ><i
+              class="fa-sharp fa-solid fa-circle-xmark"
+              style="color: #f40b0b"
+            ></i
+          ></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row justify-content-between ml-4 mr-4">
+            <div class="form-group">
+              <label for="startDate">Fecha inicial:</label>
+              <input
+                type="date"
+                class="form-control input-group-text shadow"
+                id="startDate"
+                name="startDate"
+                [(ngModel)]="startDate"
+                ngbDatepicker
+                #datepicker="ngbDatepicker"
+                style="width: 160px"
+              />
+            </div>
+            <div class="form-group">
+              <label for="endDate">Fecha final:</label>
+              <input
+                type="date"
+                class="form-control input-group-text shadow"
+                id="endDate"
+                name="endDate"
+                [(ngModel)]="endDate"
+                ngbDatepicker
+                #datepicker="ngbDatepicker"
+                style="width: 160px"
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary shadow clic-on-image"
+          (click)="generatePurchasesReport()"
+        >
+          Generar Reporte
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary shadow clic-on-image"
+          data-dismiss="modal"
+        >
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

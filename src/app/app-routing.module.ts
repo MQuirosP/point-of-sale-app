@@ -11,6 +11,7 @@ import { PurchaseHistoryComponent } from './components/purchase-history/purchase
 import { FrontPanelComponent } from './components/front-panel/front-panel.component';
 import { AuthGuard } from './guards/auth.guard';
 import { RegisterUserComponent } from './components/register-user/register-user.component';
+import { ReportsComponent } from './components/reports/reports.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterUserComponent },
   { path: 'shopping-cart', component: ShoppingCartComponent, canActivate: [AuthGuard] },
   { path: 'purchase-history', component: PurchaseHistoryComponent, canActivate: [AuthGuard]},
+  { path: 'reports', component: ReportsComponent, canActivate: [AuthGuard]},
   { path: 'options', component: OptionsComponent, canActivate: [AuthGuard] },
   { path: 'product-list', component: ProductListComponent, canActivate: [AuthGuard]},
   { path: '', redirectTo: '/home', pathMatch: 'full' },

@@ -19,7 +19,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DigitalWatchComponent } from './components/digital-watch/digital-watch.component'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { DbService } from './services/db.service';
 import { ModalService } from './services/modalService';
 import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.component';
 import { BrowserAnimationsModule} from '@angular/platform-browser/animations'
@@ -28,6 +27,9 @@ import { RegisterUserComponent } from './components/register-user/register-user.
 import { ToastrModule } from 'ngx-toastr';
 import { TicketService } from './services/ticket.service';
 import { CookieService } from 'ngx-cookie-service';
+import { SaleService } from './services/sale.service';
+import { PurchaseService } from './services/purchase.service';
+import { ReportsComponent } from './components/reports/reports.component';
 
 
 
@@ -47,6 +49,7 @@ import { CookieService } from 'ngx-cookie-service';
     FrontPanelComponent,
     DigitalWatchComponent,
     RegisterUserComponent,
+    ReportsComponent,
 
   ],
   imports: [
@@ -64,11 +67,14 @@ import { CookieService } from 'ngx-cookie-service';
     ReactiveFormsModule,
   ],
   providers: [
-    DbService,
     ModalService,
     LoginService,
     CookieService,
     TicketService,
+    SaleService,
+    PurchaseService,
+    OptionsService,
+    
   ],
   bootstrap: [AppComponent]
 })
