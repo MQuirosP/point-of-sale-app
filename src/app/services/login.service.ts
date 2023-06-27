@@ -31,7 +31,7 @@ export class LoginService {
 
     this.sessionTimeoutTimer$ = this.isLoggedIn$.pipe(
       switchMap((isLoggedIn) => {
-        if(isLoggedIn) {
+        if (isLoggedIn) {
           return timer(this.sessionTimeoutMinutes * 60 * 1000);
         } else {
           return of(null);
@@ -41,8 +41,8 @@ export class LoginService {
 
     this.sessionTimeoutTimer$.subscribe(() => {
       this.logoutDueToInactivity();
-    })
-  };
+    });
+  }
 
   onLogin(username: string, password: string) {
     if (!username || !password) {
@@ -147,5 +147,19 @@ export class LoginService {
       this.toastr.warning('Sesión cerrada por inactividad.');
       this.onLogout();
     }
+  }
+
+  createBackup() {
+    this.http.get(`http://localhost:3000/backup`).subscribe({
+      next: (response: any) => {
+        console.log(response.message);
+        this.toastr.success('El respaldo se ha creado exitosamente.');
+        // Realiza cualquier acción adicional después de crear el respaldo
+      },
+      error: (error) => {
+        this.toastr.error('Error al crear el respaldo:', error);
+        // Maneja el error de creación del respaldo
+      },
+    });
   }
 }

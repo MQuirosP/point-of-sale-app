@@ -48,4 +48,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.authService.onLogout();
     this.user = '';
   }
+
+  createBackup() {
+    this.authService.createBackup();
+  }
 }

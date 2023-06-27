@@ -31,19 +31,20 @@
         <div class="navbar-nav">
           <ul class="navbar-nav ms-auto">
             <li *ngIf="(isLoggedIn$ | async)" class="nav-link dropdown px-2">
-              <a
-                href="#"
-                class="nav-link dropdown-toggle"
-                data-toggle="dropdown"
-              >
+              <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
                 <i class="fas fa-user"></i> Bienvenido {{ user }}
               </a>
               <div class="dropdown-menu shadow-lg">
                 <a routerLink="/options" class="dropdown-item">
                   <i class="fas fa-cog"></i> Opciones
                 </a>
+                <a class="dropdown-item" (click)="createBackup()" style="cursor: pointer;">
+                  <i class="fa-solid fa-database"></i> Respaldar BD
+                </a>
               </div>
             </li>
+            
+            
             <!-- Componente Login -->
             <li *ngIf="!(isLoggedIn$ | async)" class="nav-link px-2">
               <a

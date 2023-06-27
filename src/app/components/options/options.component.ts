@@ -347,7 +347,7 @@ export class OptionsComponent implements OnInit {
             return { ...customer, showIcons: false };
           });
           this.filteredCustomers = [...this.customers];
-          // this.toastr.success('Lista de clientes actualizada.');
+          this.toastr.success('Lista de clientes actualizada.');
         } else {
         }
       },
