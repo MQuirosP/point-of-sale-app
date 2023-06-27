@@ -163,11 +163,6 @@ export class ProductListComponent implements OnInit {
     });
   }
 
-  // compare(a: string, b: string): number {
-  //   const normalizedA = a.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  //   const normalizedB = b.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  //   return normalizedA.localeCompare(normalizedB);
-  // }
 
   filterProducts() {
     if (this.searchTerm === '') {

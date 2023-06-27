@@ -343,9 +343,11 @@ export class OptionsComponent implements OnInit {
     this.http.get(`${this.backendUrl}customers`).subscribe({
       next: (response: any) => {
         if (response.success) {
-          this.customers = response.message?.customers;
+          this.customers = response.message?.customers.map((customer: any) => {
+            return { ...customer, showIcons: false };
+          });
           this.filteredCustomers = [...this.customers];
-          this.toastr.success('Lista de clientes actualizada.');
+          // this.toastr.success('Lista de clientes actualizada.');
         } else {
         }
       },
@@ -561,14 +563,15 @@ export class OptionsComponent implements OnInit {
   }
 
   deleteProvider(id: number) {
-    this.http.delete(`${this.backendUrl}customers/${id}`).subscribe({
+    this.http.delete(`${this.backendUrl}providers/${id}`).subscribe({
       next: (response: any) => {
         if (response.success) {
           this.toastr.success('Proveedor eliminado exitosamente.');
-          this.refreshProvidersList();
+          
         } else {
           this.toastr.error('Error al eliminar el proveedor.');
         }
+        this.refreshProvidersList();
       },
       error: (error: any) => {
         this.toastr.error('Error al eliminar el proveedor.', error);
@@ -577,10 +580,12 @@ export class OptionsComponent implements OnInit {
   }
 
   refreshProvidersList() {
-    this.http.get(`${this.backendUrl}customers`).subscribe({
+    this.http.get(`${this.backendUrl}providers`).subscribe({
       next: (response: any) => {
         if (response.success) {
-          this.providers = response.data;
+          this.providers = response.message.providers.map((provider: any) => {
+            return { ...provider, showIcons: false}
+          });
           this.filteredProviders = [...this.providers];
           this.toastr.success('Lista de proveedores actualizada.');
         } else {

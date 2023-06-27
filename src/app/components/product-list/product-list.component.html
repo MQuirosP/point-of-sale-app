@@ -444,6 +444,7 @@
           type="button"
           class="btn btn-primary shadow clic-on-image"
           (click)="addProduct()"
+          data-dismiss="modal"
         >
           Guardar
         </button>
@@ -508,7 +509,11 @@
             />
           </div>
           <div class="modal-footer">
-            <button type="submit" class="btn btn-primary clic-on-image">
+            <button
+              type="submit"
+              class="btn btn-primary clic-on-image"
+              data-dismiss="modal"
+            >
               Guardar
             </button>
             <button

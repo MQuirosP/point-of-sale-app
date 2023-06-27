@@ -65,7 +65,7 @@ export class PurchaseHistoryComponent {
   product_new_price: number = 0;
   selectedProductPrice: number = 0;
   selectedProductTaxes: boolean;
-  product_quantity: number = 0;
+  quantity: number = 0;
   productList: any[] = [];
 
   subTotalPurchaseAmount: number = 0;
@@ -216,27 +216,27 @@ export class PurchaseHistoryComponent {
       !this.product_name ||
       !this.product_new_price ||
       !this.selectedProductPrice ||
-      !this.product_quantity
+      !this.quantity
     ) {
       this.toastr.warning('Se debe suministrar todos los campos.');
       return;
     }
 
     let taxesAmount = 0;
-    let subTotal = this.product_new_price * this.product_quantity;
+    let subTotal = this.product_new_price * this.quantity;
 
     if (this.selectedProductTaxes) {
       const priceWithoutTaxes = this.product_new_price / (1 + this.TAXES);
       const taxes = this.product_new_price - priceWithoutTaxes;
-      taxesAmount = taxes * this.product_quantity;
-      subTotal = priceWithoutTaxes * this.product_quantity;
+      taxesAmount = taxes * this.quantity;
+      subTotal = priceWithoutTaxes * this.quantity;
     }
 
     const product = {
       int_code: this.int_code,
       name: this.product_name,
       price: this.product_new_price,
-      quantity: this.product_quantity,
+      quantity: this.quantity,
       taxes: this.selectedProductTaxes,
       taxes_amount: taxesAmount,
       sub_total: subTotal,
@@ -247,7 +247,7 @@ export class PurchaseHistoryComponent {
     this.product_name = '';
     this.selectedProductPrice = 0;
     this.product_new_price = 0;
-    this.product_quantity = 0;
+    this.quantity = 0;
   }
 
   private calculateTotalPurchaseAmount() {
@@ -256,7 +256,7 @@ export class PurchaseHistoryComponent {
         if (!product.taxes) {
           return (
             this.subTotalPurchaseAmount +
-            this.product_new_price * product.product_quantity
+            this.product_new_price * product.quantity
           );
         } else {
           const priceWithoutTaxes = this.product_new_price / (1 + this.TAXES);
