@@ -100,7 +100,7 @@
                     data-toggle="modal"
                     data-target="#purchasesReportModal"
                   >
-                    Abrir lista
+                    Ver opciones
                   </a>
                 </div>
               </fieldset>
@@ -191,7 +191,7 @@
   </div>
 </div>
 
-<!-- Modal para reportes de ventas -->
+<!-- Modal para reportes de compras -->
 <div id="purchasesReportModal" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -247,9 +247,16 @@
         <button
           type="button"
           class="btn btn-primary shadow clic-on-image"
-          (click)="generatePurchasesReport()"
+          (click)="generateGeneralPurchasesReport()"
         >
-          Generar Reporte
+          General
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary shadow clic-on-image"
+          (click)="generateDetailPurchasesReport()"
+        >
+          Detalle
         </button>
         <button
           type="button"

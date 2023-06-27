@@ -104,5 +104,47 @@ export class ReportsComponent {
     this.endDate = this.calendar.getToday();
   }
 
-  generatePurchasesReport() {}
+  generateDetailPurchasesReport() {
+    this.getDate();
+
+    const endDateObj = new Date(
+      this.endDate.year,
+      this.endDate.month - 1,
+      this.endDate.day
+    );
+    endDateObj.setDate(endDateObj.getDate() + 1);
+    const updatedEndDate = this.formatDate({
+      year: endDateObj.getFullYear(),
+      month: endDateObj.getMonth() + 1,
+      day: endDateObj.getDate(),
+    });
+
+    this.reportService.generateDetailPurchasesReport(
+      this.formatDate(this.startDate),
+      updatedEndDate
+    );
+    this.resetDates();
+  }
+
+  generateGeneralPurchasesReport() {
+    this.getDate();
+
+    const endDateObj = new Date(
+      this.endDate.year,
+      this.endDate.month - 1,
+      this.endDate.day
+    );
+    endDateObj.setDate(endDateObj.getDate() + 1);
+    const updatedEndDate = this.formatDate({
+      year: endDateObj.getFullYear(),
+      month: endDateObj.getMonth() + 1,
+      day: endDateObj.getDate(),
+    });
+
+    this.reportService.generateGeneralPurchasesReport(
+      this.formatDate(this.startDate),
+      updatedEndDate
+    );
+    this.resetDates();
+  }
 }
