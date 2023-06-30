@@ -43,7 +43,7 @@ export class TicketService {
 
     const lineHeight = 5; // Espacio vertical ocupado por cada línea
     const headerHeight = 40; // Espacio vertical ocupado por el encabezado
-    const itemHeight = saleItems.length * 2.7 * lineHeight; // Espacio vertical ocupado por los artículos
+    const itemHeight = saleItems.length * 3 * lineHeight; // Espacio vertical ocupado por los artículos
     const footerHeight = 25; // Espacio vertical ocupado por el pie de página
     const totalHeight = 20; // Espacio vertical ocupado por el total
     const minHeight = headerHeight + itemHeight + footerHeight + totalHeight;
@@ -53,21 +53,21 @@ export class TicketService {
 
     const doc = new jsPDF('p', 'mm', [customWidth, customHeight]);
 
-  const marginLeft = 3; // Margen izquierdo en mm
+  const marginLeft = 1; // Margen izquierdo en mm
 
   doc.setFontSize(14);
-  doc.text('Verdulería Sol', marginLeft + 29, 10, { align: 'center' });
+  doc.text('Verdulería Sol', marginLeft + 20, 10, { align: 'center' });
   doc.setFontSize(8);
-  doc.text('Margarita Quirós Pizarro', marginLeft + 29, 13, { align: 'center' });
-  doc.text('céd. 6-0331-0720', marginLeft + 29, 16, { align: 'center' });
+  doc.text('Margarita Quirós Pizarro', marginLeft + 25, 13, { align: 'center' });
+  doc.text('céd. 6-0331-0720', marginLeft + 25, 16, { align: 'center' });
   doc.setFontSize(8);
-  doc.text('Tiquete de Venta', marginLeft + 3, 22);
+  doc.text('Tiquete de Venta', marginLeft, 22);
   doc.setFontSize(9);
-  doc.text(`N° ${doc_number}`, marginLeft + 3, 26);
+  doc.text(`N° ${doc_number}`, marginLeft, 26);
 
   doc.setFontSize(8);
-  doc.text(`Fecha: ${createdAt}`, marginLeft + 3, 30);
-  doc.text(`Cliente: ${customer_name}`, marginLeft + 2, 35);
+  doc.text(`Fecha: ${createdAt}`, marginLeft, 30);
+  doc.text(`Cliente: ${customer_name}`, marginLeft, 35);
   doc.text(
     `${this.separator}`,
     marginLeft + 1,
@@ -77,17 +77,17 @@ export class TicketService {
 
   saleItems.forEach((item: SaleItem, index: number) => {
     doc.setFontSize(10);
-    doc.text(`${item.name}`, marginLeft + 3, y);
+    doc.text(`${item.name}`, marginLeft, y);
     y += 3;
     doc.setFontSize(8);
     doc.text(`Cantidad:`, marginLeft + 7, y);
-    doc.text(`${item.quantity}`, marginLeft + 40, y, { align: 'right' });
+    doc.text(`${item.quantity}`, marginLeft + 38, y, { align: 'right' });
     y += 3;
     doc.text(`Precio:`, marginLeft + 7, y);
-    doc.text(`${item.sale_price}`, marginLeft + 40, y, { align: 'right' });
+    doc.text(`${item.sale_price}`, marginLeft + 38, y, { align: 'right' });
     y += 3;
     doc.text(`IVA:`, marginLeft + 7, y);
-    doc.text(`${item.taxes_amount}`, marginLeft + 40, y, { align: 'right' });
+    doc.text(`${item.taxes_amount}`, marginLeft + 38, y, { align: 'right' });
     y += 3;
     doc.text(`Total:`, marginLeft + 7, y);
 
@@ -95,7 +95,7 @@ export class TicketService {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
-    doc.text(`${formattedTotalPrice}`, marginLeft + 41, y, { align: 'right' });
+    doc.text(`${formattedTotalPrice}`, marginLeft + 39, y, { align: 'right' });
     y += 5;
   });
 
@@ -113,11 +113,11 @@ export class TicketService {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
-  doc.text(`Sub Total: ${formattedSubTotalAmount}`, marginLeft + 48, y, {
+  doc.text(`Sub Total: ${formattedSubTotalAmount}`, marginLeft + 47, y, {
     align: 'right',
   });
   y += 5;
-  doc.text(`IVA:     ${formattedTaxesAmount}`, marginLeft + 48, y, {
+  doc.text(`IVA:     ${formattedTaxesAmount}`, marginLeft + 47, y, {
     align: 'right',
   });
   y += 5;
@@ -128,10 +128,10 @@ export class TicketService {
     maximumFractionDigits: 2,
   });
 
-  doc.text(`Total: ${formattedTotal}`, marginLeft + 49, y, { align: 'right' });
+  doc.text(`Total: ${formattedTotal}`, marginLeft + 48, y, { align: 'right' });
   y += 5;
   doc.setFontSize(10);
-  doc.text('¡Gracias por su preferencia!', marginLeft + 25, y, {
+  doc.text('¡Gracias por su preferencia!', marginLeft + 24, y, {
     align: 'center',
   });
 

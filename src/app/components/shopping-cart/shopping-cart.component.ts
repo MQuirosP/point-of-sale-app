@@ -353,6 +353,17 @@ export class ShoppingCartComponent {
     return value < 10 ? `0${value}` : `${value}`;
   }
 
+  isCurrentDate(createdAt: string): boolean {
+    const saleDate = new Date(createdAt);
+    const currentDate = new Date();
+    // Compara solo el año, mes y día para ignorar la hora exacta
+    return (
+      saleDate.getFullYear() === currentDate.getFullYear() &&
+      saleDate.getMonth() === currentDate.getMonth() &&
+      saleDate.getDate() === currentDate.getDate()
+    );
+  }
+
   filterSalesByDate() {
     if (this.selectedDate) {
       const selectedDateString = this.dateParser.format(this.selectedDate);

@@ -402,7 +402,7 @@
                 Reimprimir
               </button>
               <button
-                *ngIf="sale.status === 'aceptado'"
+                *ngIf="sale.status === 'aceptado' && isCurrentDate(sale.createdAt)"
                 class="btn btn-danger clic-on-image"
                 (click)="cancelSale(sale.doc_number)"
               >
