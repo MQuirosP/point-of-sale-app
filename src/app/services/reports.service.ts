@@ -128,6 +128,7 @@ export class ReportsService {
       'Número de Documento',
       'Fecha de Creación',
       'Cliente',
+      'Status',
       'Código',
       'Productos',
       'Cantidad',
@@ -138,7 +139,7 @@ export class ReportsService {
     ]);
 
     reportData.forEach((sale: any) => {
-      const { doc_number, createdAt, customer_name, saleItems } = sale;
+      const { doc_number, createdAt, customer_name, status, saleItems } = sale;
 
       saleItems.forEach((item: any) => {
         const {
@@ -154,6 +155,7 @@ export class ReportsService {
           doc_number,
           createdAt,
           customer_name,
+          status,
           int_code,
           name,
           parseFloat(quantity),
@@ -378,6 +380,7 @@ export class ReportsService {
       'Número de Documento',
       'Fecha de Creación',
       'Proveedor',
+      'Status',
       'Código',
       'Productos',
       'Cantidad',
@@ -388,7 +391,7 @@ export class ReportsService {
     ]);
 
     reportData.forEach((purchase: any) => {
-      const { doc_number, createdAt, provider_name, purchaseItems } = purchase;
+      const { doc_number, createdAt, provider_name, status, purchaseItems } = purchase;
 
       purchaseItems.forEach((item: any) => {
         const {
@@ -404,6 +407,7 @@ export class ReportsService {
           doc_number,
           createdAt,
           provider_name,
+          status,
           int_code,
           name,
           parseFloat(quantity),
