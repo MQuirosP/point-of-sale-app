@@ -68,7 +68,6 @@ export class LoginService {
       .pipe(
         tap((response) => {
           if (response.success === true) {
-            console.log(response);
             const username = response.message.username;
             const name = response.message.name;
             localStorage.setItem('token', response.message.token);
