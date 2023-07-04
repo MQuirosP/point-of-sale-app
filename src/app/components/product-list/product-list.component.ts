@@ -170,8 +170,6 @@ export class ProductListComponent implements OnInit {
     });
   }
   
-
-
   filterProducts() {
     if (this.searchTerm === '') {
       this.filteredProducts = [...this.products];
