@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment';
 interface SaleItem {
   name: string;
   quantity: number;
-  sale_price: number;
+  sub_total: number;
   taxes_amount: number;
   total: number;
 }
@@ -84,7 +84,7 @@ export class TicketService {
     doc.text(`${item.quantity}`, marginLeft + 38, y, { align: 'right' });
     y += 3;
     doc.text(`Precio:`, marginLeft + 7, y);
-    doc.text(`${item.sale_price}`, marginLeft + 38, y, { align: 'right' });
+    doc.text(`${item.sub_total}`, marginLeft + 38, y, { align: 'right' });
     y += 3;
     doc.text(`IVA:`, marginLeft + 7, y);
     doc.text(`${item.taxes_amount}`, marginLeft + 38, y, { align: 'right' });
@@ -95,7 +95,7 @@ export class TicketService {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
-    doc.text(`${formattedTotalPrice}`, marginLeft + 39, y, { align: 'right' });
+    doc.text(`${formattedTotalPrice}`, marginLeft + 38, y, { align: 'right' });
     y += 5;
   });
 
@@ -128,7 +128,7 @@ export class TicketService {
     maximumFractionDigits: 2,
   });
 
-  doc.text(`Total: ${formattedTotal}`, marginLeft + 48, y, { align: 'right' });
+  doc.text(`Total: ${formattedTotal}`, marginLeft + 47, y, { align: 'right' });
   y += 5;
   doc.setFontSize(10);
   doc.text('¡Gracias por su preferencia!', marginLeft + 24, y, {

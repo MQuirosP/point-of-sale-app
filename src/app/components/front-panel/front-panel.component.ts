@@ -5,6 +5,7 @@ import { ModalService } from '../../services/modalService';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { fadeAnimation } from 'src/app/fadeAnimation';
+import { ProductCacheService } from 'src/app/services/product-cache.service';
 
 @Component({
   selector: 'app-front-panel',
@@ -28,11 +29,13 @@ export class FrontPanelComponent {
     private router: Router,
     private changeDetectorRef: ChangeDetectorRef,
     private modalService: ModalService,
-    private http: HttpClient
+    private http: HttpClient,
+    private productCacheService: ProductCacheService,
   ) {}
 
   ngOnInit(): void {
-    this.loadDataFromCache();
+    this.loadData();
+    // this.loadDataFromCache();
   }
 
   ngOnDestroy() {
@@ -67,6 +70,7 @@ export class FrontPanelComponent {
           this.productos = response.message.products;
           this.filteredProducts = [...this.productos];
           this.cachedProducts = [...this.productos];
+          this.productCacheService.setCachedProducts(this.cachedProducts);
           this.dataLoaded = true;
           localStorage.setItem(
             'cachedProducts',

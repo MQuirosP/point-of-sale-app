@@ -50,6 +50,7 @@
         <table class="table">
           <thead>
             <tr>
+              <th class="text-left">Código</th>
               <th class="text-left">Producto</th>
               <th class="text-right">Cant. disponible</th>
               <th class="text-right">Precio de compra</th>
@@ -58,6 +59,9 @@
           </thead>
           <tbody>
             <tr *ngFor="let product of filteredProducts">
+              <td class="product-code">
+                {{ product.int_code }}
+              </td>
               <td>
                 <span
                   class="product-name"
@@ -65,7 +69,7 @@
                   (click)="product.showIcons = !product.showIcons"
                   tabindex="0"
                 >
-                  {{ product.int_code }} {{ product.name }}
+                   {{ product.name }}
                 </span>
                 <div
                   class="product-icons"
@@ -205,21 +209,22 @@
               formControlName="purchase_price"
               autocomplete="off"
               [value]="editForm.get('purchase_price').value"
-              (ngModelChange)="
+              (change)="
                 calculateTotal(
                   editForm.get('purchase_price').value,
                   editForm.get('margin').value,
                   editForm.get('taxes').value,
+                  editForm.get('taxPercentage').value,
                   true
                 )
               "
             />
           </div>
           <div class="form-group">
-            <label for="purchaseMargin">Margen de ganancia:</label>
+            <label for="productMargin">Margen de ganancia:</label>
             <input
               type="number"
-              id="purchaseMargin"
+              id="productMargin"
               class="form-control shadow"
               formControlName="margin"
               autocomplete="off"
@@ -229,6 +234,29 @@
                   editForm.get('purchase_price').value,
                   editForm.get('margin').value,
                   editForm.get('taxes').value,
+                  editForm.get('taxPercentage').value,
+                  true
+                )
+              "
+              step="0.001"
+            />
+          </div>
+          <div class="form-group">
+            <label for="taxPercentage">Porcentaje de Impuestos:</label>
+            <input
+              type="number"
+              id="taxPercentage"
+              class="form-control shadow"
+              formControlName="taxPercentage"
+              autocomplete="off"
+              [value]="editForm.get('taxPercentage').value"
+              step="0.01"
+              (ngModelChange)="
+                calculateTotal(
+                  editForm.get('purchase_price').value,
+                  editForm.get('margin').value,
+                  editForm.get('taxes').value,
+                  editForm.get('taxPercentage').value,
                   true
                 )
               "
@@ -248,6 +276,7 @@
                     editForm.get('purchase_price').value,
                     editForm.get('margin').value,
                     editForm.get('taxes').value,
+                    editForm.get('taxPercentage').value,
                     true
                   )
                 "
@@ -259,11 +288,12 @@
               id="salePrice"
               class="form-control shadow"
               formControlName="sale_price"
-              (ngModelChange)="
+              (change)="
                 calculateTotal(
                   editForm.get('purchase_price').value,
                   editForm.get('margin').value,
                   editForm.get('taxes').value,
+                  editForm.get('taxPercentage').value,
                   true
                 )
               "
@@ -271,6 +301,7 @@
               [value]="editForm.get('sale_price').value"
             />
           </div>
+          
           <div class="modal-footer">
             <button
               type="submit"
@@ -376,7 +407,8 @@
                 calculateTotal(
                   newProduct.purchase_price,
                   newProduct.margin,
-                  newProduct.taxes
+                  newProduct.taxes,
+                  newProduct.taxPercentage
                 )
               "
             />
@@ -396,7 +428,8 @@
                   calculateTotal(
                     newProduct.purchase_price,
                     newProduct.margin,
-                    newProduct.taxes
+                    newProduct.taxes,
+                    newProduct.taxPercentage
                   )
                 "
               />
@@ -405,7 +438,7 @@
             <input
               type="number"
               class="form-control shadow"
-              id="productMargin"
+              id="productMargin1"
               [(ngModel)]="newProduct.margin"
               name="productMargin"
               required
@@ -414,7 +447,34 @@
                 calculateTotal(
                   newProduct.purchase_price,
                   newProduct.margin,
-                  newProduct.taxes
+                  newProduct.taxes,
+                  newProduct.taxPercentage
+                )
+              "
+            />
+          </div>
+          <div class="form-group" *ngIf="isTaxed">
+            <label for="taxPercentage">Porcentaje de Impuestos (%):</label>
+            <input
+              type="number"
+              class="form-control shadow"
+              id="taxPercentage"
+              [(ngModel)]="newProduct.taxPercentage"
+              name="taxPercentage"
+              required
+              autocomplete="off"
+              step="0.01"
+              min="0"
+              max="100"
+              pattern="^[0-9]+(\.[0-9]{1,2})?$"
+              [ngModelOptions]="{ updateOn: 'blur' }"
+              (blur)="limitDecimals('taxPercentage')"
+              (ngModelChange)="
+                calculateTotal(
+                  newProduct.purchase_price,
+                  newProduct.margin,
+                  newProduct.taxes,
+                  newProduct.taxPercentage
                 )
               "
             />
@@ -433,7 +493,8 @@
                 calculateTotal(
                   newProduct.purchase_price,
                   newProduct.margin,
-                  newProduct.taxes
+                  newProduct.taxes,
+                  newProduct.taxPercentage
                 )
               "
             />
@@ -488,7 +549,7 @@
         ></span>
       </div>
       <div class="modal-body">
-        <form (ngSubmit)="deleteProduct(editForm.get('int_code').value)">
+        <form>
           <div class="form-group">
             <label for="editIntCode">Producto a eliminar:</label>
             <input
@@ -514,6 +575,7 @@
               type="submit"
               class="btn btn-primary clic-on-image"
               data-dismiss="modal"
+              (click)="deleteProduct(editForm.get('int_code').value)"
             >
               Guardar
             </button>

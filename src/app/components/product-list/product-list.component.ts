@@ -12,6 +12,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { fadeAnimation } from 'src/app/fadeAnimation';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ProductCacheService } from 'src/app/services/product-cache.service';
 
 @Component({
   selector: 'app-product-list',
@@ -19,6 +20,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./product-list.component.css'],
   animations: [fadeAnimation],
 })
+
 export class ProductListComponent implements OnInit {
   @ViewChild('editProductModal', { static: false })
   editProductModal!: ElementRef;
@@ -47,6 +49,7 @@ export class ProductListComponent implements OnInit {
     margin: number;
     sale_price: number;
     taxes: boolean;
+    taxPercentage: number;
   } = {
     code: '',
     name: '',
@@ -55,6 +58,7 @@ export class ProductListComponent implements OnInit {
     margin: 0,
     sale_price: 0,
     taxes: false,
+    taxPercentage: 0,
   };
 
   password: string = '';
@@ -66,7 +70,8 @@ export class ProductListComponent implements OnInit {
     private changeDetectorRef: ChangeDetectorRef,
     private http: HttpClient,
     private toastr: ToastrService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private productCacheService: ProductCacheService,
   ) {
     this.editForm = this.formBuilder.group({
       int_code: [''],
@@ -76,6 +81,7 @@ export class ProductListComponent implements OnInit {
       purchase_price: ['', Validators.required],
       sale_price: ['', Validators.required],
       taxes: [false],
+      taxPercentage: [0, Validators.required],
       margin: ['', Validators.required],
     });
   }
@@ -103,6 +109,7 @@ export class ProductListComponent implements OnInit {
       this.editForm.get('purchase_price').value,
       this.editForm.get('margin').value,
       this.isTaxed,
+      this.editForm.get('taxPercentage').value,
       true
     );
   }
@@ -152,8 +159,8 @@ export class ProductListComponent implements OnInit {
           this.products = response.message.products.map((product: any) => {
             return { ...product, showIcons: false };
           });
-
-          this.filteredProducts = [...this.products];
+  
+          this.filteredProducts = [...this.products]; // Actualizar la lista filtrada
           this.changeDetectorRef.detectChanges();
         }
       },
@@ -162,6 +169,7 @@ export class ProductListComponent implements OnInit {
       },
     });
   }
+  
 
 
   filterProducts() {
@@ -220,6 +228,7 @@ export class ProductListComponent implements OnInit {
             sale_price,
             taxes,
             margin,
+            taxPercentage,
           } = response.message.product;
 
           this.editForm.patchValue({
@@ -231,6 +240,7 @@ export class ProductListComponent implements OnInit {
             sale_price,
             taxes,
             margin,
+            taxPercentage,
           });
         } else {
           console.log('No se encontró el producto');
@@ -310,7 +320,9 @@ export class ProductListComponent implements OnInit {
       sale_price: this.newProduct.sale_price,
       margin: this.newProduct.margin,
       taxes: this.newProduct.taxes,
+      taxPercentage: this.newProduct.taxPercentage,
     };
+
 
     this.http.post(`${this.backendUrl}products/`, data).subscribe({
       next: (response) => {
@@ -322,6 +334,7 @@ export class ProductListComponent implements OnInit {
         this.newProduct.sale_price = 0;
         this.newProduct.margin = 0;
         this.newProduct.taxes = false;
+        this.newProduct.taxPercentage = 0;
         this.closeAddProductModal();
         this.refreshProductList();
       },
@@ -336,6 +349,7 @@ export class ProductListComponent implements OnInit {
     purchase_price: number,
     margin: number,
     taxes: boolean,
+    taxPercentage: number,
     isEditForm: boolean = false
   ): void {
     // Almacenamos el valor anterior de sale_price
@@ -343,11 +357,11 @@ export class ProductListComponent implements OnInit {
 
     if (!taxes) {
       if (!isNaN(purchase_price) && !isNaN(margin)) {
-        const total = purchase_price + (purchase_price * margin) / 100;
-        this.newProduct.sale_price = total;
+        const total = purchase_price / (1 - margin / 100);
+        this.newProduct.sale_price = Number(total.toFixed(2));
         if (isEditForm && total !== oldSalePrice) {
           // Verificamos si el valor ha cambiado antes de asignarlo
-          this.editForm.controls['sale_price'].setValue(total);
+          this.editForm.controls['sale_price'].setValue(total.toFixed(2));
         }
       } else {
         this.newProduct.sale_price = 0;
@@ -358,12 +372,10 @@ export class ProductListComponent implements OnInit {
     } else {
       if (!isNaN(purchase_price) && !isNaN(margin)) {
         const total =
-          purchase_price +
-          (purchase_price * margin) / 100 +
-          purchase_price * this.TAXES;
-        this.newProduct.sale_price = total;
+          (purchase_price / (1 - margin / 100)) / (1 - taxPercentage / 100)
+        this.newProduct.sale_price = Number(total.toFixed(2));
         if (isEditForm && total !== oldSalePrice) {
-          this.editForm.controls['sale_price'].setValue(total);
+          this.editForm.controls['sale_price'].setValue(total.toFixed(2));
         }
       }
     }
@@ -410,7 +422,6 @@ export class ProductListComponent implements OnInit {
   openPasswordModal(int_code: string) {
     this.deletePasswordModal.nativeElement.classList.toggle('show');
     this.deletePasswordModal.nativeElement.style.display = 'block';
-
     this.http.get(`${this.backendUrl}products/int_code/${int_code}`).subscribe({
       next: (response: any) => {
         if (
@@ -447,5 +458,9 @@ export class ProductListComponent implements OnInit {
   closePasswordModal() {
     this.deletePasswordModal.nativeElement.classList.remove('show');
     this.deletePasswordModal.nativeElement.style.display = 'none';
+  }
+
+  limitDecimals(field: string): void {
+    this.newProduct[field] = Number(this.newProduct[field].toFixed(2));
   }
 }
