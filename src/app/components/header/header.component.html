@@ -1,3 +1,4 @@
+<!-- Barra de navegación principal -->
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark p-0" [@fadeAnimation]>
   <div class="container d-flex">
     <a
@@ -16,7 +17,7 @@
 
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <div class="navbar-nav me-auto">
-        <ul *ngIf="(isLoggedIn$ | async)" class="navbar-nav">
+        <ul *ngIf="isLoggedIn$ | async" class="navbar-nav">
           <li class="nav-item px-2 nav-link">
             <a
               routerLink="/home"
@@ -30,21 +31,36 @@
       <div class="navbar-nav ml-auto">
         <div class="navbar-nav">
           <ul class="navbar-nav ms-auto">
-            <li *ngIf="(isLoggedIn$ | async)" class="nav-link dropdown px-2">
-              <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+            <li *ngIf="isLoggedIn$ | async" class="nav-link dropdown px-2">
+              <a
+                href="#"
+                class="nav-link dropdown-toggle"
+                data-toggle="dropdown"
+              >
                 <i class="fas fa-user"></i> Bienvenido {{ user }}
               </a>
               <div class="dropdown-menu shadow-lg">
-                <a routerLink="/options" class="dropdown-item">
-                  <i class="fas fa-cog"></i> Opciones
+                <a
+                  data-toggle="modal"
+                  data-target="#changePasswordModal"
+                  class="dropdown-item"
+                  style="cursor: pointer"
+                >
+                  <i class="fa-solid fa-pen-to-square"></i> Cambiar contraseña
                 </a>
-                <a class="dropdown-item" (click)="createBackup()" style="cursor: pointer;">
+                <a routerLink="/options" class="dropdown-item">
+                  <i class="fas fa-cog"></i> Configuración
+                </a>
+                <a
+                  class="dropdown-item"
+                  (click)="createBackup()"
+                  style="cursor: pointer"
+                >
                   <i class="fa-solid fa-database"></i> Respaldar BD
                 </a>
               </div>
             </li>
-            
-            
+
             <!-- Componente Login -->
             <li *ngIf="!(isLoggedIn$ | async)" class="nav-link px-2">
               <a
@@ -55,7 +71,7 @@
                 <i class="fas fa-user"></i> Ingreso
               </a>
             </li>
-            <li *ngIf="(isLoggedIn$ | async)" class="nav-link">
+            <li *ngIf="isLoggedIn$ | async" class="nav-link">
               <a
                 style="cursor: pointer"
                 class="nav-link px-2"
@@ -65,7 +81,10 @@
               </a>
             </li>
             <!-- Registro usuarios -->
-            <li *ngIf="!(isLoggedIn$ | async) && (allowRegisterUsers$ | async)" class="nav-link">
+            <li
+              *ngIf="!(isLoggedIn$ | async) && (allowRegisterUsers$ | async)"
+              class="nav-link"
+            >
               <a
                 routerLink="/register"
                 class="nav-link px-2"
@@ -80,3 +99,120 @@
     </div>
   </div>
 </nav>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="changePasswordModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="changePasswordModalLabel"
+  aria-hidden="true"
+  #changePasswordModal
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="changePasswordModalLabel">
+          Cambio de Contraseña
+        </h5>
+        <button
+          type="button"
+          class="close clic-on-image"
+          data-dismiss="modal"
+          aria-label="Close"
+          (click)="resetForm()"
+        >
+        <span
+        ><i
+          class="fa-sharp fa-solid fa-circle-xmark"
+          style="color: #f40b0b; cursor: pointer"
+        ></i
+      ></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="passwordForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="currentPassword">Contraseña actual:</label>
+            <input
+              type="password"
+              class="form-control"
+              formControlName="currentPassword"
+            />
+            <div
+              *ngIf="
+                passwordForm.get('currentPassword').invalid &&
+                (passwordForm.get('currentPassword').dirty ||
+                  passwordForm.get('currentPassword').touched)
+              "
+            >
+              <div
+                *ngIf="passwordForm.get('currentPassword').hasError('required')"
+              >
+                Contraseña actual es requerida.
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="newPassword">Nueva contraseña:</label>
+            <input
+              type="password"
+              class="form-control"
+              formControlName="newPassword"
+            />
+            <div
+              *ngIf="
+                passwordForm.get('newPassword').invalid &&
+                (passwordForm.get('newPassword').dirty ||
+                  passwordForm.get('newPassword').touched)
+              "
+            >
+              <div *ngIf="passwordForm.get('newPassword').hasError('required')">
+                Nueva contraseña es requerida.
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">Confirmar contraseña:</label>
+            <input
+              type="password"
+              class="form-control"
+              formControlName="confirmPassword"
+            />
+            <div
+              *ngIf="
+                passwordForm.get('confirmPassword').invalid &&
+                (passwordForm.get('confirmPassword').dirty ||
+                  passwordForm.get('confirmPassword').touched)
+              "
+            >
+              <div
+                *ngIf="passwordForm.get('confirmPassword').hasError('required')"
+              >
+                Confirmar contraseña es requerida.
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="submit"
+              class="btn btn-primary clic-on-image"
+              [disabled]="passwordForm.invalid"
+            >
+              Guardar
+            </button>
+            <button
+            type="button"
+            class="btn btn-secondary clic-on-image"
+            data-dismiss="modal"
+            (click)="resetForm()"
+            >
+              Cerrar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

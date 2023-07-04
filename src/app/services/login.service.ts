@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable, of, timer } from 'rxjs';
+import { BehaviorSubject, Observable, of, throwError, timer } from 'rxjs';
 import { catchError, tap, switchMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
@@ -20,6 +20,14 @@ export class LoginService {
   private sessionTimeoutMinutes = 60;
 
   private sessionTimeoutTimer$: Observable<number>;
+
+  private usernameSubject: BehaviorSubject<string> =
+    new BehaviorSubject<string>('');
+  private nameSubject: BehaviorSubject<string> = new BehaviorSubject<string>(
+    ''
+  );
+  public username$: Observable<string> = this.usernameSubject.asObservable();
+  public name$: Observable<string> = this.nameSubject.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -60,10 +68,14 @@ export class LoginService {
       .pipe(
         tap((response) => {
           if (response.success === true) {
+            console.log(response);
+            const username = response.message.username;
             const name = response.message.name;
             localStorage.setItem('token', response.message.token);
+            localStorage.setItem('username', username);
+            localStorage.setItem('name', name);
             this.cookieService.set(this.COOKIE_Name, name);
-            this.setLoggedIn(true);
+            this.setLoggedIn(true, username, name);
             this.toastr.success(
               `¡Bienvenido ${this.capitalizeFirstLetter(name)}!`
             );
@@ -71,12 +83,12 @@ export class LoginService {
               this.router.navigate(['/home']);
             }, 500);
           } else {
-            this.setLoggedIn(false);
+            this.setLoggedIn(false, '', '');
             this.toastr.error('Credenciales inválidas.');
           }
         }),
         catchError((error) => {
-          this.setLoggedIn(false);
+          this.setLoggedIn(false, '', '');
           this.toastr.error(
             `Usuario ${this.capitalizeFirstLetter(username)} no registrado.`
           );
@@ -111,7 +123,9 @@ export class LoginService {
       .pipe(
         tap(() => {
           localStorage.removeItem('token');
-          this.setLoggedIn(false);
+          localStorage.removeItem('username');
+          localStorage.removeItem('name');
+          this.setLoggedIn(false, '', '');
           this.cookieService.delete(this.COOKIE_Name);
           this.toastr.success('Sesión cerrada exitosamente.');
           this.router.navigate(['/login']);
@@ -133,13 +147,23 @@ export class LoginService {
     return this.isLoggedInSubject.getValue();
   }
 
-  setLoggedIn(value: boolean) {
+  setLoggedIn(value: boolean, username?: string, name?: string) {
     this.isLoggedInSubject.next(value);
+    if (username) {
+      localStorage.setItem('username', username);
+    }
+    if (name) {
+      localStorage.setItem('name', name);
+    }
   }
 
   checkLoggedIn(): void {
     const token = localStorage.getItem('token');
-    this.setLoggedIn(!!token);
+    this.setLoggedIn(
+      !!token,
+      localStorage.getItem('username') || '',
+      localStorage.getItem('name') || ''
+    );
   }
 
   private logoutDueToInactivity() {
@@ -152,14 +176,50 @@ export class LoginService {
   createBackup() {
     this.http.get(`http://localhost:3000/backup`).subscribe({
       next: (response: any) => {
-        console.log(response.message);
         this.toastr.success('El respaldo se ha creado exitosamente.');
-        // Realiza cualquier acción adicional después de crear el respaldo
       },
       error: (error) => {
         this.toastr.error('Error al crear el respaldo:', error);
-        // Maneja el error de creación del respaldo
       },
     });
+  }
+
+  changePassword(
+    username: string,
+    currentPassword: string,
+    newPassword: string
+  ): Observable<any> {
+    const token = localStorage.getItem('token');
+  
+    if (!token) {
+      return throwError(() => new Error('No se ha iniciado sesión.'));
+    }
+  
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token,
+    });
+  
+    const passwordData = {
+      username: localStorage.getItem('username'),
+      currentPassword: currentPassword,
+      newPassword: newPassword,
+    };
+  
+    return this.http
+      .post<any>(
+        `${this.backendUrl}${username}changePassword/`,
+        passwordData,
+        { headers }
+      )
+      .pipe(
+        tap(() => {
+          // Aquí podemos realizar cualquier acción adicional después de cambiar la contraseña
+        }),
+        catchError((error) => {
+          const errorMessage = error.error.error || 'Error al cambiar la contraseña.';
+          return throwError(() => new Error(errorMessage));
+        })
+      );
   }
 }

@@ -365,3 +365,11 @@ button {
   border-radius: 10px;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2), -4px -4px 8px rgba(0, 0, 0, 0.2);
 }
+
+.table-row-even {
+  background-color: #f2f2f2;
+}
+
+.table-row-odd {
+  background-color: #ffffff;
+}

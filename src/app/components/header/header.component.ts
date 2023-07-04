@@ -1,8 +1,10 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { LoginService } from 'src/app/services/login.service';
-import { Observable, Subscription, of } from 'rxjs';
+import { Observable, Subscription, of, switchMap, throwError } from 'rxjs';
 import { fadeAnimation } from 'src/app/fadeAnimation';
 import { OptionsService } from 'src/app/services/optionsService';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-header',
@@ -15,29 +17,79 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isLoggedIn$: Observable<boolean>;
   allowRegisterUsers$: Observable<boolean>;
   private isLoggedInSubscription!: Subscription;
+  public username: string;
+  public name: string;
+
+  passwordForm: FormGroup;
 
   constructor(
     private authService: LoginService,
     private optionsService: OptionsService,
     private cdr: ChangeDetectorRef,
-  ) {}
+    private formBuilder: FormBuilder,
+    private toastr: ToastrService
+  ) {
+    this.authService.username$.subscribe((username) => {
+      this.username = username;
+    });
+
+    this.authService.name$.subscribe((name) => {
+      this.name = name;
+    });
+  }
 
   ngOnInit() {
-    this.isLoggedInSubscription = this.authService.isLoggedIn$.subscribe((isLoggedIn: boolean) => {
-      this.isLoggedIn$ = this.authService.isLoggedIn$;
-      if (isLoggedIn) {
-        this.user = this.authService.getUserName();
-        this.user = this.capitalizeFirstLetter(this.user);
+    this.isLoggedInSubscription = this.authService.isLoggedIn$.subscribe(
+      (isLoggedIn: boolean) => {
+        this.isLoggedIn$ = this.authService.isLoggedIn$;
+        if (isLoggedIn) {
+          this.user = this.authService.getUserName();
+          this.user = this.capitalizeFirstLetter(this.user);
+        }
       }
-    });
+    );
     this.optionsService.fetchRegisterStatus().subscribe((status) => {
       this.allowRegisterUsers$ = this.optionsService.getRegisterStatus();
       this.cdr.detectChanges();
+    });
+    this.passwordForm = this.formBuilder.group({
+      currentPassword: ['', Validators.required],
+      newPassword: ['', Validators.required],
+      confirmPassword: ['', Validators.required],
     });
   }
 
   ngOnDestroy(): void {
     this.isLoggedInSubscription.unsubscribe();
+  }
+
+  onSubmit() {
+    if (this.passwordForm.invalid) {
+      return;
+    }
+  
+    const currentPassword = this.passwordForm.value.currentPassword;
+    const newPassword = this.passwordForm.value.newPassword;
+    const confirmPassword = this.passwordForm.value.confirmPassword;
+  
+    if (newPassword !== confirmPassword) {
+      this.toastr.error('Las contraseñas no coinciden.');
+      return;
+    }
+  
+    this.authService.username$.pipe(
+      switchMap((username) => {
+        return this.authService.changePassword(username, currentPassword, newPassword);
+      })
+    ).subscribe({
+      next: () => {
+        this.passwordForm.reset();
+        this.toastr.success('¡La contraseña se ha cambiado exitosamente!');
+      },
+      error: (error) => {
+        this.toastr.error('Error al cambiar la contraseña: ' + error);
+      }
+  });
   }
 
   capitalizeFirstLetter(value: string): string {
@@ -51,5 +103,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   createBackup() {
     this.authService.createBackup();
+  }
+
+  resetForm() {
+    this.passwordForm.reset();
   }
 }
