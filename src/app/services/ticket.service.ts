@@ -162,9 +162,9 @@ export class TicketService {
           if (
             response.success &&
             response.message &&
-            response.message.Sale.length > 0
+            response.message.sale.length > 0
           ) {
-            const saleData = response.message.Sale[0];
+            const saleData = response.message.sale[0];
             const ticketData: SaleData = {
               doc_number: saleData.doc_number,
               customer_name: saleData.customer_name,
