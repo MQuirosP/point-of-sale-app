@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
@@ -51,6 +51,7 @@ export class ShoppingCartComponent {
   paymentMethod: string = 'contado';
   date: Date | any = '';
   productSuggestionList: any[] = [];
+  filteredProducts: any[] = [];
 
   // Consultar las ventas
   sales: any[] = [];
@@ -71,7 +72,7 @@ export class ShoppingCartComponent {
   constructor(
     private http: HttpClient,
     private modalService: ModalService,
-    private router: Router,
+    private changeDetectorRef: ChangeDetectorRef,
     private calendar: NgbCalendar,
     private dateParser: NgbDateParserFormatter,
     private toastr: ToastrService,
@@ -89,6 +90,7 @@ export class ShoppingCartComponent {
       }
     });
     this.selectedDate = this.calendar.getToday();
+    this.getProductList();
   }
 
   ngAfterViewInit() {
@@ -157,34 +159,60 @@ export class ShoppingCartComponent {
       });
   }
 
-  searchProducts() {
-    const searchTerm = this.name.toLowerCase();
-    this.http.get(`${this.backendUrl}products`).subscribe({
-      next: (response: any) => {
-        const products = response?.message?.products;
-        if (Array.isArray(products) && products.length > 0) {
-          this.productSuggestionList = products
-            .filter(
-              (product: any) =>
-                product.name.toLowerCase().includes(searchTerm) ||
-                product.int_code.toLowerCase().includes(searchTerm)
-            )
-            .map((product: any) => ({
-              int_code: product.int_code,
-              name: product.name,
-              sale_price: product.sale_price,
-              taxes: product.taxes,
-            }));
-        } else {
-          this.productSuggestionList = [];
-        }
-      },
-      error: (error) => {
-        console.log('Error al recuperar productos');
-        this.toastr.error('Error al recuperar los productos.');
-      },
-    });
+  // Método para obtener la lista de productos
+getProductList() {
+  this.http.get(`${this.backendUrl}products`).subscribe({
+    next: (response: any) => {
+      const products = response?.message?.products;
+      if (Array.isArray(products) && products.length > 0) {
+        this.filteredProducts = products.map((product: any) => ({
+          int_code: product.int_code,
+          name: product.name,
+          sale_price: product.sale_price,
+          taxes: product.taxes,
+        }));
+      } else {
+        this.filteredProducts = [];
+      }
+    },
+    error: (error) => {
+      console.log('Error al recuperar productos');
+      this.toastr.error('Error al recuperar los productos.');
+    },
+  });
+}
+
+// Método para buscar un producto en la lista filtrada
+searchProduct() {
+  if (!this.name) {
+    this.productSuggestionList = [...this.filteredProducts];
+    return;
   }
+
+  const searchTermNormalized = this.name
+    ? this.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    : '';
+  this.productSuggestionList = this.filteredProducts.filter((product: any) => {
+    const productNameNormalized = product.name
+      ? product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      : '';
+
+    const productCodeNormalized = product.int_code
+      ? product.int_code.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      : '';
+
+    const searchTermLower = searchTermNormalized.toLowerCase();
+
+    return (
+      productNameNormalized.toLowerCase().includes(searchTermLower) ||
+      productCodeNormalized.toLowerCase().includes(searchTermLower)
+    );
+  });
+
+  this.changeDetectorRef.detectChanges();
+}
+
+
 
   selectSuggestion(suggestion: any, event: Event) {
     event.preventDefault();
@@ -277,13 +305,13 @@ export class ShoppingCartComponent {
             customerId: this.customer_id,
             customer_name: customerFullName,
             paymentMethod: this.paymentMethod,
-            sub_total: this.subTotalSaleAmount,
-            taxes_amount: this.totalTaxesAmount,
+            sub_total: this.subTotalSaleAmount.toFixed(2),
+            taxes_amount: this.totalTaxesAmount.toFixed(2),
             products: this.productList.map((product) => ({
               int_code: product.int_code,
               quantity: product.quantity,
-              sub_total: product.sub_total,
-              taxes_amount: product.taxes_amount,
+              sub_total: product.sub_total.toFixed(2),
+              taxes_amount: product.taxes_amount.toFixed(2),
             })),
           };
 

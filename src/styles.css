@@ -128,7 +128,8 @@ body {
 }
 
 .bg-custom {
-  background-color: rgb(249, 250, 184);
+  background-color: rgb(242, 243, 206);
+  /* background-color: rgb(249, 250, 184); */
   /* background-color: rgb(219, 213, 176); */
   transition: background-color 0.3 ease, transform 0.3s ease-in-out;
 }
@@ -215,7 +216,7 @@ body {
   border-radius: 30px;
   color: rgb(218, 223, 191);
   transition: background-color 0.5 ease, transform 0.3s ease;
-  background-color: rgb(249, 250, 184);
+  background-color: rgb(242, 243, 206);
   transform-style: preserve-3d;
 }
 

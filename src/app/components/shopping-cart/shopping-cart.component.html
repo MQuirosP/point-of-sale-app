@@ -152,30 +152,33 @@
             </ul>
           </div>
         </div>
-        <div class="form-group">
-          <label for="paymentMethod">Método de pago</label>
-          <input
-            type="text"
-            id="paymentMethod"
-            name="paymentMethod"
-            [(ngModel)]="paymentMethod"
-            class="form-control shadow"
-            value="contado"
-            autocomplete="off"
-          />
+        <div class="form-group form-row">
+          <div class="col">
+            <label for="paymentMethod">Método de pago</label>
+            <input
+              type="text"
+              id="paymentMethod"
+              name="paymentMethod"
+              [(ngModel)]="paymentMethod"
+              class="form-control shadow"
+              value="contado"
+              autocomplete="off"
+            />
+          </div>
+          <div class="col">
+            <label for="date">Fecha</label>
+            <input
+              type="text"
+              id="date"
+              name="date"
+              [(ngModel)]="date"
+              class="form-control shadow"
+              autocomplete="off"
+              disabled="true"
+            />
+          </div>
         </div>
-        <div class="form-group">
-          <label for="date">Fecha</label>
-          <input
-            type="text"
-            id="date"
-            name="date"
-            [(ngModel)]="date"
-            class="form-control shadow"
-            autocomplete="off"
-          />
-        </div>
-        <hr />
+
         <div class="form-group">
           <label for="name">Nombre del producto</label>
           <input
@@ -184,7 +187,7 @@
             name="name"
             [(ngModel)]="name"
             class="form-control shadow"
-            (keyup)="searchProducts()"
+            (keyup)="searchProduct()"
             autocomplete="off"
           />
           <div
@@ -201,7 +204,8 @@
                   href=""
                   (click)="selectSuggestion(suggestion, $event)"
                 >
-                  {{ suggestion.name }} - {{ suggestion.sale_price }}
+                  {{ suggestion.name }} -
+                  {{ suggestion.sale_price | currency : "CRC" : "₡" }}
                 </a>
               </li>
             </ul>
@@ -251,7 +255,21 @@
             Agregar producto
           </button>
         </div>
-        <hr />
+
+        <div class="d-flex justify-content-between mt-2">
+          <div class="flex-column align-items-center">
+            <h6>Sub Total</h6>
+            <p>{{ subTotalSaleAmount | currency : "CRC" : "₡" }}</p>
+          </div>
+          <div class="flex-column align-items-center">
+            <h6>IVA</h6>
+            <p>{{ totalTaxesAmount | currency : "CRC" : "₡" }}</p>
+          </div>
+          <div class="flex-column align-items-center">
+            <h6>Total</h6>
+            <p>{{ totalSaleAmount | currency : "CRC" : "₡" }}</p>
+          </div>
+        </div>
         <table class="table">
           <thead>
             <tr>
@@ -280,22 +298,8 @@
             </tr>
           </tbody>
         </table>
-        <hr />
-        <div class="d-flex justify-content-between">
-          <div class="flex-column align-items-center">
-            <h4>Sub Total</h4>
-            <p>{{ subTotalSaleAmount | currency : "CRC" : "₡" }}</p>
-          </div>
-          <div class="flex-column align-items-center">
-            <h4>IVA</h4>
-            <p>{{ totalTaxesAmount | currency : "CRC" : "₡" }}</p>
-          </div>
-          <div class="flex-column align-items-center">
-            <h4>Total</h4>
-            <p>{{ totalSaleAmount | currency : "CRC" : "₡" }}</p>
-          </div>
-        </div>
       </div>
+
       <div class="modal-footer">
         <button
           type="button"
@@ -403,7 +407,9 @@
                 Reimprimir
               </button>
               <button
-                *ngIf="sale.status === 'aceptado' && isCurrentDate(sale.createdAt)"
+                *ngIf="
+                  sale.status === 'aceptado' && isCurrentDate(sale.createdAt)
+                "
                 class="btn btn-danger clic-on-image"
                 (click)="cancelSale(sale.doc_number)"
               >

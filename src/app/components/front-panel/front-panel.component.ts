@@ -17,7 +17,7 @@ export class FrontPanelComponent {
   backendUrl: string = environment.apiUrl;
 
   subscription: Subscription = new Subscription();
-  productos: any[] = [];
+  products: any[] = [];
   filteredProducts: any[] = [];
   searchTerm: string = '';
   currentSlide: number = 0;
@@ -67,9 +67,9 @@ export class FrontPanelComponent {
           response.message.products &&
           response.message.products.length > 0
         ) {
-          this.productos = response.message.products;
-          this.filteredProducts = [...this.productos];
-          this.cachedProducts = [...this.productos];
+          this.products = response.message.products;
+          this.filteredProducts = [...this.products];
+          this.cachedProducts = [...this.products];
           this.productCacheService.setCachedProducts(this.cachedProducts);
           this.dataLoaded = true;
           localStorage.setItem(
@@ -79,47 +79,55 @@ export class FrontPanelComponent {
         }
       },
       error: (error) => {
-        console.log('Error al obtener productos', error);
+        console.log('Error al obtener products', error);
       },
     });
   }
 
   filterProducts() {
-    if (this.searchTerm === '') {
-      this.filteredProducts = [...this.cachedProducts];
+    if (!this.searchTerm) {
+      this.filteredProducts = [...this.products];
       return;
     }
 
-    setTimeout(() => {
-      this.filteredProducts = this.cachedProducts.filter((product) => {
-        const normalizedSearchTerm = this.normalizeString(this.searchTerm);
-        const normalizedName = this.normalizeString(product.name);
-        const normalizedIntCode = this.normalizeString(product.int_code);
+    const searchTermNormalized = this.searchTerm
+      ? this.searchTerm.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      : '';
 
-        return (
-          normalizedName.includes(normalizedSearchTerm) ||
-          normalizedIntCode.includes(normalizedSearchTerm)
-        );
-      });
+    this.filteredProducts = this.products.filter((product: any) => {
+      const productNameNormalized = product.name
+        ? product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        : '';
 
-      this.changeDetectorRef.detectChanges();
-    }, 100);
+      const productCodeNormalized = product.int_code
+        ? product.int_code.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        : '';
+
+      const searchTermLower = searchTermNormalized.toLowerCase();
+
+      return (
+        productNameNormalized.toLowerCase().includes(searchTermLower) ||
+        productCodeNormalized.toLowerCase().includes(searchTermLower)
+      );
+    });
+
+    this.changeDetectorRef.detectChanges();
   }
 
-  normalizeString(str: any) {
-    return str
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '');
-  }
+  // normalizeString(str: any) {
+  //   return str
+  //     .toLowerCase()
+  //     .normalize('NFD')
+  //     .replace(/[\u0300-\u036f]/g, '');
+  // }
 
   goToShoppingCart() {
     this.router.navigate(['/shopping-cart']);
   }
 
-  goToPurchaseHistory() {
-    this.router.navigate(['/purchase-history']);
-  }
+  // goToPurchaseHistory() {
+  //   this.router.navigate(['/purchase-history']);
+  // }
 
   openSaleModal() {
     this.goToShoppingCart();
