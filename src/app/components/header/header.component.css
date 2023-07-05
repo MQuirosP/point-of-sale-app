@@ -3,7 +3,7 @@
 }
 
 .dropdown-item:hover {
-    transform: scale(1.1);
+    transform: scale(1.06);
     border: 1px solid white;
     border-radius: 5px;
     background-color: rgb(150, 203, 253);
