@@ -50,7 +50,7 @@ export class ProductListComponent implements OnInit {
     private http: HttpClient,
     private toastr: ToastrService,
     private formBuilder: FormBuilder
-  ) // private productCacheService: ProductCacheService
+  )
   {
     this.productForm = this.formBuilder.group({
       productId: [0],
@@ -76,17 +76,12 @@ export class ProductListComponent implements OnInit {
   @HostListener('window:scroll', ['$event'])
   onWindowScroll() {
     const scrollPos =
-      window.pageYOffset ||
+      window.scrollY ||
       document.documentElement.scrollTop ||
       document.body.scrollTop ||
       0;
     this.showScrollButton = scrollPos > 0;
   }
-
-  // toggleTaxes(): void {
-  //   this.isTaxed = this.productForm.value.taxes;
-  //   this.calculateTotal(true);
-  // }
 
   toggleTaxPercentage() {
     const taxPercentageControl = this.productForm.get('taxPercentage');
@@ -130,7 +125,6 @@ export class ProductListComponent implements OnInit {
           });
 
           this.filteredProducts = [...this.products];
-          // this.dataLoaded = true;
         }
       },
       error: (error) => {
@@ -196,7 +190,6 @@ export class ProductListComponent implements OnInit {
   openProductModal(value: boolean, product_id: string) {
     let selectedProductId = null;
     if (value && product_id) {
-      // this.editMode = value;
       this.modalTitle = value ? 'Edición' : 'Registro';
       this.modalActionLabel = value;
       this.changeDetectorRef.detectChanges();
@@ -265,7 +258,7 @@ export class ProductListComponent implements OnInit {
 
   editProduct(productId: number) {
     if (this.productForm.invalid) {
-      this.toastr.error('Por favor, completa todos los campos requeridos');
+      this.toastr.error('Por favor, completa todos los campos requeridos.');
       return;
     }
 
@@ -282,7 +275,7 @@ export class ProductListComponent implements OnInit {
             this.toastr.success('Producto actualizado exitosamente.');
             this.updateLocalProduct(productId, productData);
           } else {
-            this.toastr.error('Error al actualizar el producto');
+            this.toastr.error('Error al actualizar el producto.');
           }
           this.refreshProductList();
         },
@@ -355,7 +348,7 @@ export class ProductListComponent implements OnInit {
           this.refreshProductList();
           this.closeProductModal();
         } else {
-          this.toastr.error('Error al guardar el producto');
+          this.toastr.error('Error al guardar el producto.');
         }
       },
       error: (error: any) => {
@@ -420,7 +413,6 @@ export class ProductListComponent implements OnInit {
 
     this.http.delete(url, httpOptions).subscribe({
       next: (response: any) => {
-        // console.log('Respuesta recibida del DBService', response);
         if (response.success) {
           this.toastr.success(`Producto eliminado satisfactoriamente.`);
           this.closePasswordModal();
@@ -429,7 +421,7 @@ export class ProductListComponent implements OnInit {
           this.password = '';
         } else {
           const errorMessage =
-            response.message.error || 'Error al eliminar el producto';
+            response.message.error || 'Error al eliminar el producto.';
           this.toastr.error(errorMessage);
         }
       },
@@ -488,15 +480,4 @@ export class ProductListComponent implements OnInit {
     const fieldValue = this.productForm.value[field];
     this.productForm.patchValue({ [field]: Number(fieldValue.toFixed(2)) });
   }
-
-  // resetNewProductForm() {
-  //   this.newProduct.code = '';
-  //   this.newProduct.name = '';
-  //   this.newProduct.description = '';
-  //   this.newProduct.purchase_price = 0;
-  //   this.newProduct.sale_price = 0;
-  //   this.newProduct.margin = 0;
-  //   this.newProduct.taxes = false;
-  //   this.newProduct.taxPercentage = 0;
-  // }
 }

@@ -1,4 +1,9 @@
-import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
@@ -12,6 +17,7 @@ import { fadeAnimation } from 'src/app/fadeAnimation';
 import { ToastrService } from 'ngx-toastr';
 import { TicketService } from 'src/app/services/ticket.service';
 import { SaleService } from 'src/app/services/sale.service';
+import { Observable, map } from 'rxjs';
 // import * as moment from 'moment';
 
 interface ApiSaleResponse {
@@ -135,11 +141,6 @@ export class ShoppingCartComponent {
             );
           }
           if (response.success) {
-            // const sales = response.message?.Sales || [];
-            // this.sales = sales.filter((sale: any) => {
-            //   const saleDate = moment(sale.createdAt).format('YYYY-MM-DD');
-            //   return saleDate === selectedDate;
-            // });
             this.sales = response.message?.Sales || [];
             this.sales.forEach((sale: any) => {
               sale.showDetails = false;
@@ -160,59 +161,59 @@ export class ShoppingCartComponent {
   }
 
   // Método para obtener la lista de productos
-getProductList() {
-  this.http.get(`${this.backendUrl}products`).subscribe({
-    next: (response: any) => {
-      const products = response?.message?.products;
-      if (Array.isArray(products) && products.length > 0) {
-        this.filteredProducts = products.map((product: any) => ({
-          int_code: product.int_code,
-          name: product.name,
-          sale_price: product.sale_price,
-          taxes: product.taxes,
-        }));
-      } else {
-        this.filteredProducts = [];
-      }
-    },
-    error: (error) => {
-      console.log('Error al recuperar productos');
-      this.toastr.error('Error al recuperar los productos.');
-    },
-  });
-}
-
-// Método para buscar un producto en la lista filtrada
-searchProduct() {
-  if (!this.name) {
-    this.productSuggestionList = [...this.filteredProducts];
-    return;
+  getProductList() {
+    this.http.get(`${this.backendUrl}products`).subscribe({
+      next: (response: any) => {
+        const products = response?.message?.products;
+        if (Array.isArray(products) && products.length > 0) {
+          this.filteredProducts = products.map((product: any) => ({
+            int_code: product.int_code,
+            name: product.name,
+            sale_price: product.sale_price,
+            taxes: product.taxes,
+          }));
+        } else {
+          this.filteredProducts = [];
+        }
+      },
+      error: (error) => {
+        console.log('Error al recuperar productos');
+        this.toastr.error('Error al recuperar los productos.');
+      },
+    });
   }
 
-  const searchTermNormalized = this.name
-    ? this.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    : '';
-  this.productSuggestionList = this.filteredProducts.filter((product: any) => {
-    const productNameNormalized = product.name
-      ? product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  // Método para buscar un producto en la lista filtrada
+  searchProduct() {
+    if (!this.name) {
+      this.productSuggestionList = [...this.filteredProducts];
+      return;
+    }
+
+    const searchTermNormalized = this.name
+      ? this.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
       : '';
+    this.productSuggestionList = this.filteredProducts.filter(
+      (product: any) => {
+        const productNameNormalized = product.name
+          ? product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+          : '';
 
-    const productCodeNormalized = product.int_code
-      ? product.int_code.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-      : '';
+        const productCodeNormalized = product.int_code
+          ? product.int_code.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+          : '';
 
-    const searchTermLower = searchTermNormalized.toLowerCase();
+        const searchTermLower = searchTermNormalized.toLowerCase();
 
-    return (
-      productNameNormalized.toLowerCase().includes(searchTermLower) ||
-      productCodeNormalized.toLowerCase().includes(searchTermLower)
+        return (
+          productNameNormalized.toLowerCase().includes(searchTermLower) ||
+          productCodeNormalized.toLowerCase().includes(searchTermLower)
+        );
+      }
     );
-  });
 
-  this.changeDetectorRef.detectChanges();
-}
-
-
+    this.changeDetectorRef.detectChanges();
+  }
 
   selectSuggestion(suggestion: any, event: Event) {
     event.preventDefault();
@@ -294,51 +295,75 @@ searchProduct() {
   }
 
   createSale() {
-    this.http
-      .get(`${this.backendUrl}customers/id/${this.customer_id}`)
-      .subscribe({
-        next: (response: any) => {
-          const customer = response?.message.customer;
-          const customerFullName = `${customer.customer_name} ${customer.customer_first_lastname} ${customer.customer_second_lastname}`;
-
-          const sale = {
-            customerId: this.customer_id,
-            customer_name: customerFullName,
-            paymentMethod: this.paymentMethod,
-            sub_total: this.subTotalSaleAmount.toFixed(2),
-            taxes_amount: this.totalTaxesAmount.toFixed(2),
-            products: this.productList.map((product) => ({
-              int_code: product.int_code,
-              quantity: product.quantity,
-              sub_total: product.sub_total.toFixed(2),
-              taxes_amount: product.taxes_amount.toFixed(2),
-            })),
-          };
-
-          this.saleService.createSale(sale).subscribe({
-            next: (response: any) => {
-              this.toastr.success('La venta ha sido guardada exitosamente.');
-              this.date = this.getCurrentDate();
-              this.getSalesHistory(this.date);
-              setTimeout(() => {
-                this.generateTicket(this.lastSaleDocNumber);
-              }, 1000);
-              this.selectedCustomer = '';
-              this.clearSaleFormData();
-              this.closeSaleModal();
-            },
-            error: (error: any) => {
-              this.toastr.error(
-                'Ocurrió un error al guardar la venta. Por favor inténtalo nuevamente.'
-              );
-            },
-          });
-        },
-        error: (error: any) => {
-          this.toastr.error('Error recuperando el nombre de cliente.');
-        },
-      });
+    this.getCustomerDetails().subscribe({
+      next: (customer: any) => {
+        const customerFullName = this.getCustomerFullName(customer);
+        const sale = this.buildSaleObject(customer, customerFullName);
+        this.saveSale(sale);
+      },
+      error: () => {
+        this.toastr.error('Error al recuperar el nombre del cliente.');
+      },
+    });
   }
+  
+  getCustomerDetails(): Observable<any> {
+    return this.http.get(`${this.backendUrl}customers/id/${this.customer_id}`)
+      .pipe(map((response: any) => response?.message?.customer));
+  }
+  
+  getCustomerFullName(customer: any): string {
+    const { customer_name, customer_first_lastname, customer_second_lastname } = customer;
+    return `${customer_name} ${customer_first_lastname} ${customer_second_lastname}`;
+  }
+  
+  buildSaleObject(customer: any, customerFullName: string): any {
+    return {
+      customerId: this.customer_id,
+      customer_name: customerFullName,
+      paymentMethod: this.paymentMethod,
+      sub_total: this.subTotalSaleAmount.toFixed(2),
+      taxes_amount: this.totalTaxesAmount.toFixed(2),
+      products: this.buildProductList(),
+    };
+  }
+  
+  buildProductList(): any[] {
+    return this.productList.map((product) => ({
+      int_code: product.int_code,
+      quantity: product.quantity,
+      sub_total: product.sub_total.toFixed(2),
+      taxes_amount: product.taxes_amount.toFixed(2),
+    }));
+  }
+  
+  saveSale(sale: any) {
+    this.saleService.createSale(sale).subscribe({
+      next: () => {
+        this.handleSaleCreationSuccess();
+      },
+      error: () => {
+        this.handleSaleCreationError();
+      },
+    });
+  }
+  
+  handleSaleCreationSuccess() {
+    this.toastr.success('La venta ha sido guardada exitosamente.');
+    this.date = this.getCurrentDate();
+    this.getSalesHistory(this.date);
+    setTimeout(() => {
+      this.generateTicket(this.lastSaleDocNumber);
+    }, 1000);
+    this.selectedCustomer = '';
+    this.clearSaleFormData();
+    this.closeSaleModal();
+  }
+  
+  handleSaleCreationError() {
+    this.toastr.error('Ocurrió un error al guardar la venta. Por favor inténtalo nuevamente.');
+  }
+  
 
   private clearSaleFormData() {
     this.name = '';
