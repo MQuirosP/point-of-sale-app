@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { fadeAnimation } from 'src/app/fadeAnimation';
 import { ToastrService } from 'ngx-toastr';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ProductCacheService } from 'src/app/services/product-cache.service';
 
 @Component({
@@ -60,7 +60,7 @@ export class ProductListComponent implements OnInit {
       purchase_price: ['', Validators.required],
       sale_price: ['', Validators.required],
       taxes: [false],
-      taxPercentage: [0, Validators.required],
+      taxPercentage: new FormControl({ value: null, disabled: true }, Validators.required),
       margin: ['', Validators.required],
     });
   }
@@ -89,11 +89,13 @@ export class ProductListComponent implements OnInit {
   // }
 
   toggleTaxPercentage() {
+    const taxPercentageControl = this.productForm.get('taxPercentage');
+  
     if (this.productForm.get('taxes').value) {
-      this.productForm.get('taxPercentage').enable();
+      taxPercentageControl?.enable();
     } else {
-      this.productForm.get('taxPercentage').disable();
-      this.productForm.get('taxPercentage').setValue(0);
+      taxPercentageControl?.disable();
+      taxPercentageControl?.setValue(0);
     }
   }
 

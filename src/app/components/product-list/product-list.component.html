@@ -243,7 +243,6 @@
               formControlName="taxPercentage"
               name="taxPercentage"
               (change)="calculateTotal(true)"
-              [disabled]="isTaxPercentageDisabled()"
               [value]="getTaxPercentageValue()"
               required
               min="0"
