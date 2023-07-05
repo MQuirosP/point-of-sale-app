@@ -96,7 +96,7 @@
   <div class="modal-dialog modal-dialog-scrollable" role="document">
     <div class="modal-content shadow">
       <div class="modal-header">
-        <h5 class="modal-title">Crear compra</h5>
+        <h5 class="modal-title">Registro de compras</h5>
         <button
           type="button"
           class="close overflow-visible clic-on-image"
@@ -144,29 +144,31 @@
             </ul>
           </div>
         </div>
-        <div class="form-group">
-          <label for="doc_number">Documento</label>
-          <input
-            type="text"
-            id="doc_number"
-            name="doc_number"
-            [(ngModel)]="doc_number"
-            class="form-control shadow"
-            autocomplete="off"
-            required="required"
-          />
-        </div>
-        <div class="form-group">
-          <label for="paymentMethod">Método de pago</label>
-          <input
-            type="text"
-            id="paymentMethod"
-            name="paymentMethod"
-            [(ngModel)]="paymentMethod"
-            class="form-control shadow"
-            value="contado"
-            autocomplete="off"
-          />
+        <div class="form-group form-row">
+          <div class="col">
+            <label for="doc_number">Documento</label>
+            <input
+              type="text"
+              id="doc_number"
+              name="doc_number"
+              [(ngModel)]="doc_number"
+              class="form-control shadow"
+              autocomplete="off"
+              required="required"
+            />
+          </div>
+          <div class="col">
+            <label for="paymentMethod">Método de pago</label>
+            <input
+              type="text"
+              id="paymentMethod"
+              name="paymentMethod"
+              [(ngModel)]="paymentMethod"
+              class="form-control shadow"
+              value="contado"
+              autocomplete="off"
+            />
+          </div>
         </div>
         <div class="form-group">
           <label for="date">Fecha</label>
@@ -177,9 +179,9 @@
             [(ngModel)]="date"
             class="form-control shadow"
             autocomplete="off"
+            disabled
           />
         </div>
-        <hr />
         <div class="form-group">
           <label for="product_name">Nombre del producto</label>
           <input
@@ -212,49 +214,53 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="product_price">Precio anterior</label>
-          <label for="" class="form-check-label ml-5">
-            <input
-              type="checkbox"
-              class="form-check-input shadow"
-              [(ngModel)]="selectedProductTaxes"
-              [checked]="selectedProductTaxes"
-              disabled
-            />
-            {{ selectedProductTaxes ? "Gravado" : "Exento" }}
-          </label>
-          <input
-            type="number"
-            id="product_price"
-            name="product_price"
-            [(ngModel)]="product_price"
-            class="form-control shadow"
-            [value]="selectedProductPrice"
-            autocomplete="off"
-          />
-        </div>
-        <div class="form-group">
-          <label for="product_price">Precio actual</label>
-          <input
-            type="number"
-            id="product_price"
-            name="product_new_price"
-            [(ngModel)]="product_new_price"
-            class="form-control shadow"
-            autocomplete="off"
-          />
-        </div>
-        <div class="form-group">
           <label for="product_quantity">Cantidad</label>
           <input
             type="number"
             id="product_quantity"
             name="product_quantity"
             [(ngModel)]="quantity"
-            class="form-control shadow"
+            class="form-control shadow text-right"
             autocomplete="off"
           />
         </div>
+        <div class="form-group form-row">
+          <div class="col">
+            <label for="product_price">Precio anterior</label>
+            <label for="" class="form-check-label ml-5">
+              <input
+                type="checkbox"
+                class="form-check-input shadow text-right"
+                [(ngModel)]="selectedProductTaxes"
+                [checked]="selectedProductTaxes"
+                disabled="true"
+              />
+              {{ selectedProductTaxes ? "Gravado" : "Exento" }}
+            </label>
+            <input
+              type="number"
+              id="product_price"
+              name="product_price"
+              [(ngModel)]="product_price"
+              class="form-control shadow text-right"
+              [value]="selectedProductPrice"
+              autocomplete="off"
+              disabled="true"
+            />
+          </div>
+          <div class="col">
+            <label for="product_price">Precio actual</label>
+            <input
+              type="number"
+              id="product_price"
+              name="product_new_price"
+              [(ngModel)]="product_new_price"
+              class="form-control shadow text-right"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+
         <div class="d-flex justify-content-center">
           <button
             type="button"
@@ -265,51 +271,67 @@
           </button>
         </div>
         <hr />
+
+        <div class="d-flex justify-content-between">
+          <div class="flex-column align-items-center">
+            <h6>Sub Total</h6>
+            <p class="text-right">
+              {{ subTotalPurchaseAmount | currency : "CRC" : "₡" }}
+            </p>
+          </div>
+          <div class="flex-column align-items-center">
+            <h6>IVA</h6>
+            <p class="text-right">
+              {{ totalTaxesAmount | currency : "CRC" : "₡" }}
+            </p>
+          </div>
+          <div class="flex-column align-items-center">
+            <h6>Total</h6>
+            <p class="text-right">
+              {{ totalPurchaseAmount | currency : "CRC" : "₡" }}
+            </p>
+          </div>
+        </div>
         <table class="table">
           <thead>
             <tr>
-              <th scope="col">Cód.</th>
               <th scope="col">Nombre del producto</th>
               <th scope="col">Precio</th>
               <th scope="col">Cantidad</th>
+              <th scope="col">Total</th>
               <th scope="col"></th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let product of productList">
-              <td>{{ product.int_code }}</td>
-              <td>{{ product.name }}</td>
-              <td>{{ product.price }}</td>
-              <td>{{ product.quantity }}</td>
+            <tr
+              *ngFor="let product of productList"
+              [ngClass]="{ 'taxes-row': !product.taxes }"
+            >
+              <td class="text-left">{{ product.name }}</td>
+              <td class="text-right">{{ product.price }}</td>
+              <td class="text-right">{{ product.quantity }}</td>
+              <td class="text-right">
+                {{ product.quantity * product.price | currency : "CRC" : "₡" }}
+              </td>
               <td>
                 <button
                   type="button"
-                  class="btn btn-danger btn-sm clic-on-image"
+                  class="clic-on-image"
                   (click)="removeProduct(product)"
                   data-dismiss="modal"
                 >
-                  Eliminar
+                  <i
+                    class="fa-solid fa-trash clic-on-icon"
+                    style="color: #fa0000; cursor: pointer"
+                  ></i>
                 </button>
               </td>
             </tr>
           </tbody>
         </table>
         <hr />
-        <div class="d-flex justify-content-between">
-          <div class="flex-column align-items-center">
-            <h5>Sub Total</h5>
-            <p>{{ subTotalPurchaseAmount | currency : "CRC" : "₡" }}</p>
-          </div>
-          <div class="flex-column align-items-center">
-            <h5>IVA</h5>
-            <p>{{ totalTaxesAmount | currency : "CRC" : "₡" }}</p>
-          </div>
-          <div class="flex-column align-items-center">
-            <h5>Total</h5>
-            <p>{{ totalPurchaseAmount | currency : "CRC" : "₡" }}</p>
-          </div>
-        </div>
       </div>
+
       <div class="modal-footer">
         <button
           type="button"
