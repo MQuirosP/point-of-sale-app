@@ -374,3 +374,33 @@ button {
 .table-row-odd {
   background-color: #ffffff;
 }
+
+.form-group {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.floating-label {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translate(0, -50%);
+  transition: all 0.3s;
+  opacity: 0.6;
+  font-size: 14px;
+  pointer-events: none;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+}
+
+.floating-label.active {
+  top: 0;
+  left: -3px;
+  transform: translate(0, -100%);
+  font-size: 16px;
+  opacity: 1;
+}
+

@@ -67,6 +67,7 @@ export class LoginService {
       .post<any>(`${this.backendUrl}login/`, loginData)
       .pipe(
         tap((response) => {
+          console.log(response);
           if (response.success === true) {
             const username = response.message.username;
             const name = response.message.name;
@@ -88,8 +89,9 @@ export class LoginService {
         }),
         catchError((error) => {
           this.setLoggedIn(false, '', '');
+          console.log(error);
           this.toastr.error(
-            `Usuario ${this.capitalizeFirstLetter(username)} no registrado.`
+            `Error registrando el usuario ${this.capitalizeFirstLetter(username)}. Valide las credenciales.`
           );
           return of(null);
         })

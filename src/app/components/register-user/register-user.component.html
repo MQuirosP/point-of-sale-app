@@ -16,65 +16,81 @@
       <div class="container col col-md-6 mb-3">
         <div class="card shadow">
           <div class="card-header">
-            <h4>Registrar usuario</h4>
+            <h4 class="text-center">Registrar usuario</h4>
           </div>
-          <form [formGroup]="newUserForm" (ngSubmit)="registerNewUser()"> 
+          <form [formGroup]="newUserForm" (ngSubmit)="registerNewUser()">
             <div class="card-body">
               <div class="form-group">
-                <label for="name" class="">Nombre:</label>
+                <label for="name" class="floating-label">Nombre:</label>
                 <input
                   type="text"
-                  class="form-control shadow"
+                  class="form-control shadow mt-2"
                   autofocus
                   id="name"
                   formControlName="name"
                   autocomplete="off"
+                  (focus)="addFloatingLabelClass('name')"
+                  (blur)="removeFloatingLabelClass('name')"
+                  style="margin-bottom: 30px"
                 />
               </div>
               <div class="form-group">
-                <label for="lastname" class="">Apellidos:</label>
+                <label for="lastname" class="floating-label">Apellidos:</label>
                 <input
                   type="text"
                   class="form-control shadow"
                   id="lastname"
                   formControlName="lastname"
                   autocomplete="off"
+                  (focus)="addFloatingLabelClass('lastname')"
+                  (blur)="removeFloatingLabelClass('lastname')"
+                  style="margin-bottom: 30px"
                 />
               </div>
               <div class="form-group">
-                <label for="username" class="">Usuario:</label>
+                <label for="username" class="floating-label">Usuario:</label>
                 <input
                   type="text"
                   class="form-control shadow"
                   id="username"
                   formControlName="username"
                   autocomplete="off"
+                  (focus)="addFloatingLabelClass('username')"
+                  (blur)="removeFloatingLabelClass('username')"
+                  style="margin-bottom: 30px"
                 />
               </div>
               <div class="form-group">
-                <label for="password" class="">Contraseña:</label>
+                <label for="password" class="floating-label">Contraseña:</label>
                 <input
                   type="password"
                   class="form-control shadow"
                   id="password"
                   formControlName="password"
+                  (focus)="addFloatingLabelClass('password')"
+                  (blur)="removeFloatingLabelClass('password')"
+                  style="margin-bottom: 30px"
                 />
               </div>
               <div class="form-group">
-                <label for="email" class="">Email:</label>
+                <label for="email" class="floating-label">Email:</label>
                 <input
                   type="email"
                   class="form-control shadow"
                   id="email"
                   formControlName="email"
                   autocomplete="off"
+                  (focus)="addFloatingLabelClass('email')"
+                  (blur)="removeFloatingLabelClass('email')"
+                  style="margin-bottom: 30px"
                 />
               </div>
-              <div class="text-center">
+              <div class="card-footer text-center">
                 <button
+                  [disabled]="newUserForm.invalid"
                   type="submit"
                   class="btn btn-primary shadow clic-on-image"
-                  style="cursor: pointer;"
+                  style="cursor: pointer"
                 >
                   Registro
                 </button>

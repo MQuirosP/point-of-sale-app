@@ -78,4 +78,17 @@ export class RegisterUserComponent implements OnInit {
       },
     });
   }
+
+  addFloatingLabelClass(inputId: string) {
+    const label = document.querySelector(`label[for="${inputId}"]`);
+    label?.classList.add('active');
+  }
+  
+  removeFloatingLabelClass(inputId: string) {
+    const label = document.querySelector(`label[for="${inputId}"]`);
+    const input = document.getElementById(inputId) as HTMLInputElement;
+    if (input.value === '') {
+      label?.classList.remove('active');
+    }
+  }
 }
