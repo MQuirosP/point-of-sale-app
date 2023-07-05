@@ -20,11 +20,8 @@ import { ProductCacheService } from 'src/app/services/product-cache.service';
   styleUrls: ['./product-list.component.css'],
   animations: [fadeAnimation],
 })
-
 export class ProductListComponent implements OnInit {
-  @ViewChild('editProductModal', { static: false })
-  editProductModal!: ElementRef;
-  @ViewChild('addProductModal', { static: false }) addProductModal!: ElementRef;
+  @ViewChild('productModal', { static: false }) productModal!: ElementRef;
   @ViewChild('deletePasswordModal', { static: false })
   deletePasswordModal!: ElementRef;
 
@@ -35,49 +32,31 @@ export class ProductListComponent implements OnInit {
   filteredProducts: any[] = [];
   searchTerm: string = '';
   currentSlide: number = 0;
-  // dataLoaded: boolean = false;
 
   showScrollButton: boolean = false;
 
-  editForm: FormGroup;
-
-  newProduct: {
-    code: string;
-    name: string;
-    description: string;
-    purchase_price: number;
-    margin: number;
-    sale_price: number;
-    taxes: boolean;
-    taxPercentage: number;
-  } = {
-    code: '',
-    name: '',
-    description: '',
-    purchase_price: 0,
-    margin: 0,
-    sale_price: 0,
-    taxes: false,
-    taxPercentage: 0,
-  };
+  productForm: FormGroup;
+  modalTitle: string;
+  modalActionLabel: boolean = false;
+  editMode: boolean = false;
+  productInfo: any = {};
 
   password: string = '';
 
   isTaxed: boolean;
-  TAXES: number = 0.13;
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private http: HttpClient,
     private toastr: ToastrService,
-    private formBuilder: FormBuilder,
-    private productCacheService: ProductCacheService,
-  ) {
-    this.editForm = this.formBuilder.group({
+    private formBuilder: FormBuilder
+  ) // private productCacheService: ProductCacheService
+  {
+    this.productForm = this.formBuilder.group({
+      productId: [0],
       int_code: [''],
       name: ['', Validators.required],
       description: ['', Validators.required],
-      quantity: ['', Validators.required],
       purchase_price: ['', Validators.required],
       sale_price: ['', Validators.required],
       taxes: [false],
@@ -88,10 +67,11 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadData();
-    // this.editForm = {};
   }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void {
+    this.refreshProductList();
+  }
 
   @HostListener('window:scroll', ['$event'])
   onWindowScroll() {
@@ -103,15 +83,26 @@ export class ProductListComponent implements OnInit {
     this.showScrollButton = scrollPos > 0;
   }
 
-  toggleTaxes() {
-    this.isTaxed = this.editForm.get('taxes').value;
-    this.calculateTotal(
-      this.editForm.get('purchase_price').value,
-      this.editForm.get('margin').value,
-      this.isTaxed,
-      this.editForm.get('taxPercentage').value,
-      true
-    );
+  // toggleTaxes(): void {
+  //   this.isTaxed = this.productForm.value.taxes;
+  //   this.calculateTotal(true);
+  // }
+
+  toggleTaxPercentage() {
+    if (this.productForm.get('taxes').value) {
+      this.productForm.get('taxPercentage').enable();
+    } else {
+      this.productForm.get('taxPercentage').disable();
+      this.productForm.get('taxPercentage').setValue(0);
+    }
+  }
+
+  isTaxPercentageDisabled() {
+    return !this.productForm.get('taxes').value;
+  }
+  
+  getTaxPercentageValue() {
+    return this.productForm.get('taxes').value ? this.productForm.get('taxPercentage').value : 0;
   }
 
   scrollToTop() {
@@ -159,8 +150,8 @@ export class ProductListComponent implements OnInit {
           this.products = response.message.products.map((product: any) => {
             return { ...product, showIcons: false };
           });
-  
-          this.filteredProducts = [...this.products]; // Actualizar la lista filtrada
+
+          this.filteredProducts = [...this.products];
           this.changeDetectorRef.detectChanges();
         }
       },
@@ -169,24 +160,25 @@ export class ProductListComponent implements OnInit {
       },
     });
   }
-  
+
   filterProducts() {
-    if (this.searchTerm === '') {
+    if (!this.searchTerm) {
       this.filteredProducts = [...this.products];
       return;
     }
+
     const searchTermNormalized = this.searchTerm
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '');
+      ? this.searchTerm.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      : '';
 
     this.filteredProducts = this.products.filter((product: any) => {
       const productNameNormalized = product.name
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '');
+        ? product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        : '';
 
       const productCodeNormalized = product.int_code
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '');
+        ? product.int_code.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        : '';
 
       const searchTermLower = searchTermNormalized.toLowerCase();
 
@@ -195,51 +187,42 @@ export class ProductListComponent implements OnInit {
         productCodeNormalized.toLowerCase().includes(searchTermLower)
       );
     });
+
     this.changeDetectorRef.detectChanges();
   }
 
-  openEditModal(int_code: string) {
-    this.editProductModal.nativeElement.classList.toggle('show');
-    this.editProductModal.nativeElement.style.display = 'block';
+  openProductModal(value: boolean, product_id: string) {
+    let selectedProductId = null;
+    if (value && product_id) {
+      // this.editMode = value;
+      this.modalTitle = value ? 'Edición' : 'Registro';
+      this.modalActionLabel = value;
+      this.changeDetectorRef.detectChanges();
+      this.productModal.nativeElement.classList.toggle('show');
+      this.productModal.nativeElement.style.display = 'block';
+      selectedProductId = product_id;
 
-    this.http.get(`${this.backendUrl}products/int_code/${int_code}`).subscribe({
+      setTimeout(() => {
+        this.getProductInfo(selectedProductId);
+      }, 300);
+    } else {
+      this.modalTitle = value ? 'Edición' : 'Registro';
+      this.modalActionLabel = !value;
+      this.productForm.reset();
+      this.changeDetectorRef.detectChanges();
+      this.productModal.nativeElement.classList.add('show');
+      this.productModal.nativeElement.style.display = 'block';
+    }
+  }
+
+  getProductInfo(product_id: number) {
+    this.http.get(`${this.backendUrl}products/id/${product_id}`).subscribe({
       next: (response: any) => {
-        // console.log(response.message.product);
-        if (
-          response &&
-          response.message &&
-          response.message.product &&
-          response.message.product.int_code &&
-          response.message.product.name &&
-          response.message.product.description &&
-          response.message.product.quantity !== null &&
-          response.message.product.quantity !== undefined &&
-          response.message.product.sale_price &&
-          response.message.product.margin
-        ) {
-          const {
-            int_code,
-            name,
-            description,
-            quantity,
-            purchase_price,
-            sale_price,
-            taxes,
-            margin,
-            taxPercentage,
-          } = response.message.product;
-
-          this.editForm.patchValue({
-            int_code,
-            name,
-            description,
-            quantity,
-            purchase_price,
-            sale_price,
-            taxes,
-            margin,
-            taxPercentage,
-          });
+        if (response.success && response.message && response.message.product) {
+          const product = response.message.product;
+          this.updateProductForm(product);
+          this.productInfo = { ...product };
+          this.toastr.success('Información de producto recuperada con éxito.');
         } else {
           console.log('No se encontró el producto');
           this.toastr.warning('Producto no encontrado.');
@@ -249,6 +232,70 @@ export class ProductListComponent implements OnInit {
         console.log('Error al obtener el producto', error);
         this.toastr.error('Error al obtener el producto.');
       },
+    });
+  }
+
+  private updateProductForm(product: any) {
+    const {
+      productId,
+      int_code,
+      name,
+      description,
+      purchase_price,
+      sale_price,
+      taxes,
+      margin,
+      taxPercentage,
+    } = product;
+
+    this.productForm.patchValue({
+      productId,
+      int_code,
+      name,
+      description,
+      purchase_price,
+      sale_price,
+      taxes,
+      margin,
+      taxPercentage,
+    });
+  }
+
+  editProduct(productId: number) {
+    if (this.productForm.invalid) {
+      this.toastr.error('Por favor, completa todos los campos requeridos');
+      return;
+    }
+
+    const productData = this.extractProductFormData();
+    this.updateProduct(productId, productData);
+  }
+
+  private updateProduct(productId: number, productData: any) {
+    this.http
+      .put(`${this.backendUrl}products/${productId}`, productData)
+      .subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            this.toastr.success('Producto actualizado exitosamente.');
+            this.updateLocalProduct(productId, productData);
+          } else {
+            this.toastr.error('Error al actualizar el producto');
+          }
+          this.refreshProductList();
+        },
+        error: (error: any) => {
+          this.toastr.error('Error al actualizar el producto.', error);
+        },
+      });
+  }
+
+  private updateLocalProduct(productId: number, productData: any) {
+    this.filteredProducts = this.products.map((product) => {
+      if (product.producId === productId) {
+        return productData;
+      }
+      return product;
     });
   }
 
@@ -263,119 +310,96 @@ export class ProductListComponent implements OnInit {
     this.loadData();
   }
 
-  editProduct() {
-    const int_code = this.editForm.get('int_code').value;
-    const formData = this.editForm.getRawValue();
-    this.http
-      .put(`${this.backendUrl}products/${int_code}`, formData)
-      .subscribe({
-        next: (response: any) => {
-          this.toastr.success('Producto modificado exitosamente.');
-          this.refreshProductList();
-          this.closeEditModal();
-          this.searchTerm = '';
-        },
-        error: (error) => {
-          this.toastr.error(
-            `Error al guardar la información del producto. ${error}`
-          );
-          console.log('Error al guardar la información del producto.', error);
-        },
-      });
+  closeProductModal() {
+    this.productModal.nativeElement.classList.remove('show');
+    this.productModal.nativeElement.style.display = 'none';
+    this.searchTerm = '';
+    this.filterProducts();
   }
 
-  closeEditModal() {
-    this.editProductModal.nativeElement.classList.remove('show');
-    this.editProductModal.nativeElement.style.display = 'none';
-  }
-  openAddProductModal() {
-    this.addProductModal.nativeElement.classList.toggle('show');
-    this.addProductModal.nativeElement.style.display = 'block';
-  }
+  createProduct() {
+    if (this.modalActionLabel) {
+      if (this.productForm.invalid) {
+        this.toastr.error('Por favor, completa todos los campos requeridos.');
+        return;
+      }
 
-  closeAddProductModal() {
-    this.addProductModal.nativeElement.classList.remove('show');
-    this.addProductModal.nativeElement.style.display = 'none';
-  }
-
-  addProduct() {
-    if (
-      !this.newProduct.code ||
-      !this.newProduct.name ||
-      !this.newProduct.description ||
-      !this.newProduct.purchase_price ||
-      !this.newProduct.margin
-    ) {
-      this.toastr.warning('Se debe suministrar todos los campos.');
-      return;
+      const productData = this.extractProductFormData();
+      this.saveCustomer(productData);
+    } else {
     }
-    const data = {
-      int_code: this.newProduct.code,
-      name: this.newProduct.name,
-      description: this.newProduct.description,
-      quantity: 0,
-      purchase_price: this.newProduct.purchase_price,
-      sale_price: this.newProduct.sale_price,
-      margin: this.newProduct.margin,
-      taxes: this.newProduct.taxes,
-      taxPercentage: this.newProduct.taxPercentage,
+  }
+
+  private extractProductFormData() {
+    return {
+      int_code: this.productForm.get('int_code').value,
+      name: this.productForm.get('name').value,
+      description: this.productForm.get('description').value,
+      purchase_price: this.productForm.get('purchase_price').value,
+      sale_price: this.productForm.get('sale_price').value,
+      taxes: this.productForm.get('taxes').value,
+      margin: this.productForm.get('margin').value,
+      taxPercentage: this.productForm.get('taxPercentage').value,
     };
+  }
 
-
-    this.http.post(`${this.backendUrl}products/`, data).subscribe({
-      next: (response) => {
-        this.toastr.success(`Producto creado exitosamente ${data.name}.`);
-        this.newProduct.code = '';
-        this.newProduct.name = '';
-        this.newProduct.description = '';
-        this.newProduct.purchase_price = 0;
-        this.newProduct.sale_price = 0;
-        this.newProduct.margin = 0;
-        this.newProduct.taxes = false;
-        this.newProduct.taxPercentage = 0;
-        this.closeAddProductModal();
-        this.refreshProductList();
+  private saveCustomer(productData: any) {
+    this.changeDetectorRef.detectChanges();
+    this.http.post(`${this.backendUrl}products`, productData).subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.toastr.success('Producto guardado exitosamente.'),
+            this.resetProductForm();
+          this.refreshProductList();
+          this.closeProductModal();
+        } else {
+          this.toastr.error('Error al guardar el producto');
+        }
       },
-      error: (error) => {
-        this.toastr.error('Error al crear el producto');
-        console.error('Error al crear el producto.', error);
+      error: (error: any) => {
+        this.toastr.error('Error al guardar el cliente.', error);
       },
     });
   }
 
-  calculateTotal(
-    purchase_price: number,
-    margin: number,
-    taxes: boolean,
-    taxPercentage: number,
-    isEditForm: boolean = false
-  ): void {
+  private resetProductForm() {
+    this.productForm.reset();
+  }
+
+  calculateTotal(isEditForm: boolean = false): void {
+    const purchasePrice = this.productForm.value.purchase_price;
+    const margin = this.productForm.value.margin;
+    const taxes = this.productForm.value.taxes;
+    const taxPercentage = this.productForm.value.taxPercentage;
+
     // Almacenamos el valor anterior de sale_price
-    const oldSalePrice = this.newProduct.sale_price; 
+    const oldSalePrice = this.productForm.value.sale_price;
 
     if (!taxes) {
-      if (!isNaN(purchase_price) && !isNaN(margin)) {
-        const total = purchase_price / (1 - margin / 100);
-        this.newProduct.sale_price = Number(total.toFixed(2));
+      if (!isNaN(purchasePrice) && !isNaN(margin)) {
+        const total = purchasePrice / (1 - margin / 100);
+        this.productForm.patchValue({ sale_price: Number(total.toFixed(2)) });
         if (isEditForm && total !== oldSalePrice) {
           // Verificamos si el valor ha cambiado antes de asignarlo
-          this.editForm.controls['sale_price'].setValue(total.toFixed(2));
+          this.productForm.patchValue({ sale_price: total.toFixed(2) });
         }
       } else {
-        this.newProduct.sale_price = 0;
+        this.productForm.patchValue({ sale_price: 0 });
         if (isEditForm && oldSalePrice !== 0) {
-          this.editForm.controls['sale_price'].setValue(0);
+          this.productForm.patchValue({ sale_price: 0 });
         }
       }
+      this.changeDetectorRef.detectChanges()
     } else {
-      if (!isNaN(purchase_price) && !isNaN(margin)) {
+      if (!isNaN(purchasePrice) && !isNaN(margin)) {
         const total =
-          (purchase_price / (1 - margin / 100)) / (1 - taxPercentage / 100)
-        this.newProduct.sale_price = Number(total.toFixed(2));
+          purchasePrice / (1 - margin / 100) / (1 - taxPercentage / 100);
+        this.productForm.patchValue({ sale_price: Number(total.toFixed(2)) });
         if (isEditForm && total !== oldSalePrice) {
-          this.editForm.controls['sale_price'].setValue(total.toFixed(2));
+          this.productForm.patchValue({ sale_price: Number(total.toFixed(2)) });
         }
       }
+      this.changeDetectorRef.detectChanges();
     }
   }
 
@@ -434,7 +458,7 @@ export class ProductListComponent implements OnInit {
           const product = response.message.product;
           const { int_code, name, description, quantity, sale_price } = product;
 
-          this.editForm.patchValue({
+          this.productForm.patchValue({
             int_code,
             name,
             description,
@@ -459,6 +483,18 @@ export class ProductListComponent implements OnInit {
   }
 
   limitDecimals(field: string): void {
-    this.newProduct[field] = Number(this.newProduct[field].toFixed(2));
+    const fieldValue = this.productForm.value[field];
+    this.productForm.patchValue({ [field]: Number(fieldValue.toFixed(2)) });
   }
+
+  // resetNewProductForm() {
+  //   this.newProduct.code = '';
+  //   this.newProduct.name = '';
+  //   this.newProduct.description = '';
+  //   this.newProduct.purchase_price = 0;
+  //   this.newProduct.sale_price = 0;
+  //   this.newProduct.margin = 0;
+  //   this.newProduct.taxes = false;
+  //   this.newProduct.taxPercentage = 0;
+  // }
 }
