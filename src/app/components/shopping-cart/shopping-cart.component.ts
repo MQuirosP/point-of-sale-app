@@ -40,9 +40,9 @@ export class ShoppingCartComponent {
   // Crear Ventas
   int_code: string = '';
   name: string = '';
-  price: number = 0;
-  selectedProductPrice: number = 0;
-  quantity: number = 0;
+  price: number = 0.00;
+  selectedProductPrice: number = 0.00;
+  quantity: number = 0.00;
 
   // Cálculo de impuestos, sub total y total
   TAXES = 0.13;

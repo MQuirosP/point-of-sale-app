@@ -10,7 +10,7 @@
 </header>
 
 <!-- Plantilla login -->
-<section class="py-4 mb-4" [@fadeAnimation]>
+<section class="py-4 mb-4 align-content-center" [@fadeAnimation]>
   <div class="container mt-5">
     <div
       class="col-md-4 shadow mx-auto bg-white border border-2 border-info"
@@ -38,7 +38,6 @@
               [(ngModel)]="username"
               name="username"
               autocomplete="off"
-              autofocus
               (focus)="addFloatingLabelClass('username')"
               (blur)="removeFloatingLabelClass('username')"
               style="margin-bottom: 35px;"
