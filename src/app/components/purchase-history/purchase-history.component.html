@@ -114,7 +114,7 @@
       </div>
       <div class="modal-body">
         <div class="form-group">
-          <label for="provider_name">Proveedor</label>
+          <label for="provider_name">Proveedor:</label>
           <input
             type="text"
             id="provider_name"
@@ -146,7 +146,7 @@
         </div>
         <div class="form-group form-row">
           <div class="col">
-            <label for="doc_number">Documento</label>
+            <label for="doc_number">Documento:</label>
             <input
               type="text"
               id="doc_number"
@@ -158,7 +158,7 @@
             />
           </div>
           <div class="col">
-            <label for="paymentMethod">Método de pago</label>
+            <label for="paymentMethod">Método de pago:</label>
             <input
               type="text"
               id="paymentMethod"
@@ -171,7 +171,7 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="date">Fecha</label>
+          <label for="date">Fecha:</label>
           <input
             type="text"
             id="date"
@@ -183,7 +183,7 @@
           />
         </div>
         <div class="form-group">
-          <label for="product_name">Nombre del producto</label>
+          <label for="product_name">Nombre del producto:</label>
           <input
             type="text"
             id="product:name"
@@ -192,6 +192,7 @@
             class="form-control shadow"
             (keyup)="searchProducts()"
             autocomplete="off"
+            placeholder="Seleccione producto..."
           />
           <div
             class="suggestions"
@@ -213,20 +214,34 @@
             </ul>
           </div>
         </div>
-        <div class="form-group">
-          <label for="product_quantity">Cantidad</label>
-          <input
-            type="number"
-            id="product_quantity"
-            name="product_quantity"
-            [(ngModel)]="quantity"
-            class="form-control shadow text-right"
-            autocomplete="off"
-          />
+        <div class="form-group form-row">
+          <div class="col">
+            <label for="product_quantity">Cantidad:</label>
+            <input
+              type="number"
+              id="product_quantity"
+              name="product_quantity"
+              [(ngModel)]="quantity"
+              class="form-control shadow text-right"
+              autocomplete="off"
+              step="0.01"
+            />
+          </div>
+          <div class="col">
+            <label for="product_price">Precio actual:</label>
+            <input
+              type="number"
+              id="product_price"
+              name="product_new_price"
+              [(ngModel)]="product_new_price"
+              class="form-control shadow text-right"
+              autocomplete="off"
+            />
+          </div>
         </div>
         <div class="form-group form-row">
           <div class="col">
-            <label for="product_price">Precio anterior</label>
+            <label for="product_price">Precio anterior:</label>
             <label for="" class="form-check-label ml-5">
               <input
                 type="checkbox"
@@ -248,17 +263,7 @@
               disabled="true"
             />
           </div>
-          <div class="col">
-            <label for="product_price">Precio actual</label>
-            <input
-              type="number"
-              id="product_price"
-              name="product_new_price"
-              [(ngModel)]="product_new_price"
-              class="form-control shadow text-right"
-              autocomplete="off"
-            />
-          </div>
+          <div class="col"></div>
         </div>
 
         <div class="d-flex justify-content-center">
@@ -272,21 +277,21 @@
         </div>
         <hr />
 
-        <div class="d-flex justify-content-between">
-          <div class="flex-column align-items-center">
-            <h6>Sub Total</h6>
+        <div class="d-flex justify-content-between row">
+          <div class="col flex-column align-items-center">
+            <h6 class="text-right">Sub Total</h6>
             <p class="text-right">
               {{ subTotalPurchaseAmount | currency : "CRC" : "₡" }}
             </p>
           </div>
-          <div class="flex-column align-items-center">
-            <h6>IVA</h6>
+          <div class=" col flex-column align-items-center">
+            <h6 class="text-right">IVA</h6>
             <p class="text-right">
               {{ totalTaxesAmount | currency : "CRC" : "₡" }}
             </p>
           </div>
-          <div class="flex-column align-items-center">
-            <h6>Total</h6>
+          <div class="col flex-column align-items-center">
+            <h6 class="text-right">Total</h6>
             <p class="text-right">
               {{ totalPurchaseAmount | currency : "CRC" : "₡" }}
             </p>
@@ -295,10 +300,10 @@
         <table class="table">
           <thead>
             <tr>
-              <th scope="col">Nombre del producto</th>
-              <th scope="col">Precio</th>
-              <th scope="col">Cantidad</th>
-              <th scope="col">Total</th>
+              <th class="text-left" scope="col">Producto</th>
+              <th class="text-right" scope="col">Cantidad</th>
+              <th class="text-right" scope="col">Precio</th>
+              <th class="text-right" scope="col">Total</th>
               <th scope="col"></th>
             </tr>
           </thead>
@@ -308,12 +313,12 @@
               [ngClass]="{ 'taxes-row': !product.taxes }"
             >
               <td class="text-left">{{ product.name }}</td>
-              <td class="text-right">{{ product.price }}</td>
-              <td class="text-right">{{ product.quantity }}</td>
+              <td class="text-right">{{ product.quantity | number : '1.2-2' }}</td>
+              <td class="text-right">{{ product.price | currency : "CRC" : "₡" }}</td>
               <td class="text-right">
                 {{ product.quantity * product.price | currency : "CRC" : "₡" }}
               </td>
-              <td>
+              <td class="text-center">
                 <button
                   type="button"
                   class="clic-on-image"

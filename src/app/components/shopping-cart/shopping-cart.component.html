@@ -189,7 +189,7 @@
             class="form-control shadow"
             (keyup)="searchProduct()"
             autocomplete="off"
-            placeholder="Seleccione producto"
+            placeholder="Seleccione producto..."
           />
           <div
             class="suggestions"
@@ -213,7 +213,6 @@
           </div>
         </div>
         <div class="form-group form-row">
-          
           <div class="col">
             <label for="quantity">Cantidad:</label>
             <input
@@ -260,42 +259,52 @@
             Agregar producto
           </button>
         </div>
+        <hr />
 
-        <div class="d-flex justify-content-between mt-2">
-          <div class="flex-column align-items-center">
-            <h6>Sub Total</h6>
-            <p>{{ subTotalSaleAmount | currency : "CRC" : "₡" }}</p>
+        <div class="d-flex justify-content-between row">
+          <div class="col flex-column align-items-center">
+            <h6 class="text-right">Sub Total</h6>
+            <p class="text-right">{{ subTotalSaleAmount | currency : "CRC" : "₡" }}</p>
           </div>
-          <div class="flex-column align-items-center">
-            <h6>IVA</h6>
-            <p>{{ totalTaxesAmount | currency : "CRC" : "₡" }}</p>
+          <div class=" col flex-column align-items-center">
+            <h6 class="text-right">IVA</h6>
+            <p class="text-right">{{ totalTaxesAmount | currency : "CRC" : "₡" }}</p>
           </div>
-          <div class="flex-column align-items-center">
-            <h6>Total</h6>
-            <p>{{ totalSaleAmount | currency : "CRC" : "₡" }}</p>
+          <div class="col flex-column align-items-center">
+            <h6 class="text-right">Total</h6>
+            <p class="text-right">{{ totalSaleAmount | currency : "CRC" : "₡" }}</p>
           </div>
         </div>
         <table class="table">
           <thead>
             <tr>
-              <th scope="col">Producto</th>
-              <th scope="col">Precio</th>
-              <th scope="col">Cantidad</th>
+              <th class="text-left" scope="col">Producto</th>
+              <th class="text-right" scope="col">Cantidad</th>
+              <th class="text-right" scope="col">Precio</th>
+              <th class="text-right" scope="col">Total</th>
               <th scope="col"></th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let product of productList">
-              <td>{{ product.name }}</td>
-              <td>{{ product.price }}</td>
-              <td>{{ product.quantity }}</td>
-              <td>
+            <tr *ngFor="let product of productList"
+            [ngClass]="{ 'taxes-row': !product.taxes }">
+              <td class="text-left">{{ product.name }}</td>
+              <td class="text-right">{{ product.quantity | number : '1.2-2'}}</td>
+              <td class="text-right">{{ product.price | currency : "CRC" : "₡" }}</td>
+              <td class="text-right">
+                {{ product.quantity * product.price | currency : "CRC" : "₡" }}
+              </td>
+              <td class="text-center">
                 <button
                   type="button"
-                  class="btn btn-danger btn-sm shadow clic-on-image"
+                  class="clic-on-image"
                   (click)="removeProduct(product)"
+                  data-dismiss="modal"
                 >
-                  Eliminar
+                  <i
+                    class="fa-solid fa-trash clic-on-icon"
+                    style="color: #fa0000; cursor: pointer"
+                  ></i>
                 </button>
               </td>
             </tr>
