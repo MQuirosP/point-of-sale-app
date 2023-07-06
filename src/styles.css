@@ -133,9 +133,11 @@ body {
   /* background-color: rgb(219, 213, 176); */
   transition: background-color 0.3 ease, transform 0.3s ease-in-out;
 }
+
 .bg-custom:hover {
   /* color: rgb(109, 150, 184); */
-  background-color: #b5f3b5;
+  /* background-color: #b5f3b5; */
+  background-color: #cdffd7;
   transform: scale(1.05);
   cursor: pointer;
   /* text-shadow: 1px 1px 1px rgb(155, 155, 126); */
@@ -407,4 +409,6 @@ button {
 .taxes-row {
   background-color: #f8e8e8;
 }
+
+
 
