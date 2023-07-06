@@ -39,14 +39,15 @@
               >
                 <i class="fas fa-user"></i> Bienvenido {{ user }}
               </a>
-              <div class="dropdown-menu shadow-lg w-auto" style="width: auto;">
+              <div class="dropdown-menu shadow-lg w-auto" style="width: auto">
                 <a
                   data-toggle="modal"
                   data-target="#changePasswordModal"
                   class="dropdown-item"
                   style="cursor: pointer"
                 >
-                  <i class="fa-solid fa-pen-to-square mr-2"></i>Cambiar contraseña
+                  <i class="fa-solid fa-pen-to-square mr-2"></i>Cambiar
+                  contraseña
                 </a>
                 <a routerLink="/options" class="dropdown-item">
                   <i class="fa-solid fa-cog mr-2"></i>Configuración
@@ -110,7 +111,7 @@
   aria-hidden="true"
   #changePasswordModal
 >
-  <div class="modal-dialog" role="document" style="width: 300px;">
+  <div class="modal-dialog" role="document" style="width: 300px">
     <div class="modal-content shadow">
       <div class="modal-header">
         <h5 class="modal-title" id="changePasswordModalLabel">
@@ -123,22 +124,32 @@
           aria-label="Close"
           (click)="resetForm()"
         >
-        <span
-        ><i
-          class="fa-sharp fa-solid fa-circle-xmark"
-          style="color: #f40b0b; cursor: pointer"
-        ></i
-      ></span>
+          <span
+            ><i
+              class="fa-sharp fa-solid fa-circle-xmark"
+              style="color: #f40b0b; cursor: pointer"
+            ></i
+          ></span>
         </button>
       </div>
       <div class="modal-body">
         <form [formGroup]="passwordForm" (ngSubmit)="onSubmit()">
-          <div class="form-group">
-            <label for="currentPassword">Contraseña actual:</label>
+          <div class="form-group" style="margin-top: 15px;">
+            <label
+              for="currentPassword"
+              class="floating-label"
+              [class.active]="
+                currentPasswordTouched ||
+                passwordForm.get('currentPassword').value
+              "
+              >Contraseña actual:</label
+            >
             <input
               type="password"
               class="form-control shadow"
               formControlName="currentPassword"
+              (focus)="currentPasswordTouched = true"
+              (blur)="currentPasswordTouched = false"
             />
             <div
               *ngIf="
@@ -149,17 +160,27 @@
             >
               <div
                 *ngIf="passwordForm.get('currentPassword').hasError('required')"
+                class="error-message"
               >
                 Contraseña actual es requerida.
               </div>
             </div>
           </div>
-          <div class="form-group">
-            <label for="newPassword">Nueva contraseña:</label>
+          <div class="form-group" style="margin-top: 45px;">
+            <label
+              for="newPassword"
+              class="floating-label"
+              [class.active]="
+                newPasswordTouched || passwordForm.get('newPassword').value
+              "
+              >Nueva contraseña:</label
+            >
             <input
               type="password"
               class="form-control shadow"
               formControlName="newPassword"
+              (focus)="newPasswordTouched = true"
+              (blur)="newPasswordTouched = false"
             />
             <div
               *ngIf="
@@ -168,17 +189,28 @@
                   passwordForm.get('newPassword').touched)
               "
             >
-              <div *ngIf="passwordForm.get('newPassword').hasError('required')">
+              <div *ngIf="passwordForm.get('newPassword').hasError('required')"
+              class="error-message">
                 Nueva contraseña es requerida.
               </div>
             </div>
           </div>
-          <div class="form-group">
-            <label for="confirmPassword">Confirmar contraseña:</label>
+          <div class="form-group" style="margin-top: 45px;">
+            <label
+              for="confirmPassword"
+              class="floating-label"
+              [class.active]="
+                confirmPasswordTouched ||
+                passwordForm.get('confirmPassword').value
+              "
+              >Confirmar contraseña:</label
+            >
             <input
               type="password"
               class="form-control shadow"
               formControlName="confirmPassword"
+              (focus)="confirmPasswordTouched = true"
+              (blur)="confirmPasswordTouched = false"
             />
             <div
               *ngIf="
@@ -189,6 +221,7 @@
             >
               <div
                 *ngIf="passwordForm.get('confirmPassword').hasError('required')"
+                class="error-message"
               >
                 Confirmar contraseña es requerida.
               </div>
@@ -203,10 +236,10 @@
               Guardar
             </button>
             <button
-            type="button"
-            class="btn btn-secondary shadow clic-on-image"
-            data-dismiss="modal"
-            (click)="resetForm()"
+              type="button"
+              class="btn btn-secondary shadow clic-on-image"
+              data-dismiss="modal"
+              (click)="resetForm()"
             >
               Cerrar
             </button>

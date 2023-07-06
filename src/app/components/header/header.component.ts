@@ -20,6 +20,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public username: string;
   public name: string;
 
+  currentPasswordTouched = false;
+  newPasswordTouched = false;
+  confirmPasswordTouched = false;
+
   passwordForm: FormGroup;
 
   constructor(
@@ -67,29 +71,35 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (this.passwordForm.invalid) {
       return;
     }
-  
+
     const currentPassword = this.passwordForm.value.currentPassword;
     const newPassword = this.passwordForm.value.newPassword;
     const confirmPassword = this.passwordForm.value.confirmPassword;
-  
+
     if (newPassword !== confirmPassword) {
       this.toastr.error('Las contraseñas no coinciden.');
       return;
     }
-  
-    this.authService.username$.pipe(
-      switchMap((username) => {
-        return this.authService.changePassword(username, currentPassword, newPassword);
-      })
-    ).subscribe({
-      next: () => {
-        this.passwordForm.reset();
-        this.toastr.success('¡La contraseña se ha cambiado exitosamente!');
-      },
-      error: (error) => {
-        this.toastr.error('Error al cambiar la contraseña: ' + error);
-      }
-  });
+
+    this.authService.username$
+      .pipe(
+        switchMap((username) => {
+          return this.authService.changePassword(
+            username,
+            currentPassword,
+            newPassword
+          );
+        })
+      )
+      .subscribe({
+        next: () => {
+          this.passwordForm.reset();
+          this.toastr.success('¡La contraseña se ha cambiado exitosamente!');
+        },
+        error: (error) => {
+          this.toastr.error('Error al cambiar la contraseña: ' + error);
+        },
+      });
   }
 
   capitalizeFirstLetter(value: string): string {
@@ -107,5 +117,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   resetForm() {
     this.passwordForm.reset();
+  }
+
+  addFloatingLabelClass(inputId: string) {
+    const label = document.querySelector(`label[for="${inputId}"]`);
+    label?.classList.add('active');
+  }
+
+  removeFloatingLabelClass(inputId: string) {
+    const label = document.querySelector(`label[for="${inputId}"]`);
+    const input = document.getElementById(inputId) as HTMLInputElement;
+    if (input.value === '') {
+      label?.classList.remove('active');
+    }
   }
 }

@@ -1,13 +1,21 @@
 .dropdown-item {
-    opacity: 0.7;
+  opacity: 0.7;
 }
 
 .dropdown-item:hover {
-    transform: scale(1.06);
-    border: 1px solid white;
-    border-radius: 5px;
-    background-color: rgb(150, 203, 253);
-    opacity: 1;
-    transition: 0.150s ease;
-    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2), -4px -4px 8px rgba(0, 0, 0, 0.2);
+  transform: scale(1.06);
+  border: 1px solid white;
+  border-radius: 5px;
+  background-color: rgb(150, 203, 253);
+  opacity: 1;
+  transition: 0.15s ease;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2), -4px -4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.error-message {
+  /* Establecer estilos para los mensajes de error */
+  position: absolute;
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
 }

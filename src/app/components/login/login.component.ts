@@ -21,7 +21,7 @@ export class LoginComponent {
     this.authService.onLogin(this.username, this.password);
     // this.authService.setLoggedIn(true);
   }
-  addFloatingLabelClass(inputId: string) {
+   addFloatingLabelClass(inputId: string) {
     const label = document.querySelector(`label[for="${inputId}"]`);
     label?.classList.add('active');
   }
