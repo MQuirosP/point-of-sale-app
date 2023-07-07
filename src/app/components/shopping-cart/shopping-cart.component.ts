@@ -295,16 +295,13 @@ export class ShoppingCartComponent {
   }
 
   createSale() {
-    this.getCustomerDetails().subscribe({
-      next: (customer: any) => {
-        const customerFullName = this.getCustomerFullName(customer);
-        const sale = this.buildSaleObject(customer, customerFullName);
-        this.saveSale(sale);
-      },
-      error: () => {
-        this.toastr.error('Error al recuperar el nombre del cliente.');
-      },
-    });
+    if (this.selectedCustomer) {
+      const customerFullName = this.getCustomerFullName(this.selectedCustomer);
+      const sale = this.buildSaleObject(this.selectedCustomer, customerFullName);
+      this.saveSale(sale);
+    } else {
+      this.toastr.error('Debe seleccionar un cliente.');
+    }
   }
   
   getCustomerDetails(): Observable<any> {
@@ -470,12 +467,11 @@ export class ShoppingCartComponent {
 
   selectCustomerSuggestion(customer: any, event: Event) {
     event.preventDefault();
-    this.customer_id = customer.customer_id;
-    this.customer_dni = customer.customer_dni;
-    this.customer_name = customer.customer_name;
+    this.selectedCustomer = customer;
+    this.customer_name = `${customer.customer_name} ${customer.customer_first_lastname} ${customer.customer_second_lastname}`;
     this.customerSuggestionList = [];
   }
-
+  
   selectCustomer(customer: any) {
     this.selectedCustomer = customer;
     this.customer_name = `${customer.customer_name} ${customer.customer_first_lastname} ${customer.customer_second_lastname}`;

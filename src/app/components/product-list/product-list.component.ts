@@ -24,6 +24,8 @@ export class ProductListComponent implements OnInit {
   @ViewChild('productModal', { static: false }) productModal!: ElementRef;
   @ViewChild('deletePasswordModal', { static: false })
   deletePasswordModal!: ElementRef;
+  @ViewChild('codeInput') codeInput: ElementRef;
+  @ViewChild('nameInput') nameInput: ElementRef;
 
   backendUrl: string = environment.apiUrl;
 
@@ -480,4 +482,20 @@ export class ProductListComponent implements OnInit {
     const fieldValue = this.productForm.value[field];
     this.productForm.patchValue({ [field]: Number(fieldValue.toFixed(2)) });
   }
+
+  handleCodeInput(target: EventTarget | null) {
+    const code = (target as HTMLInputElement)?.value;
+    const expectedCodeLength = 20;
+
+    if (code && code.length === expectedCodeLength) {
+      this.nameInput.nativeElement.focus();
+    }
+  }
+
+  disableEnterKey(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+  }
+  
 }
