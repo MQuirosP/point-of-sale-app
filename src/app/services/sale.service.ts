@@ -6,17 +6,17 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class SaleService {
-  private url = environment.apiUrl;
+  private backendUrl = environment.apiUrl;
 
   constructor(
     private http: HttpClient,
   ) { }
 
   createSale(sale: any) {
-    return this.http.post(`${this.url}sales/`, sale);
+    return this.http.post(`${this.backendUrl}sales/`, sale);
   }
 
   cancelSale(docNumber: string) {
-    return this.http.put(`${this.url}sales/${docNumber}`, null);
+    return this.http.put(`${this.backendUrl}sales/${docNumber}`, null);
   }
 }

@@ -30,6 +30,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { SaleService } from './services/sale.service';
 import { PurchaseService } from './services/purchase.service';
 import { ReportsComponent } from './components/reports/reports.component';
+import { ProductCacheService } from './services/product-cache.service';
 
 
 
@@ -74,7 +75,7 @@ import { ReportsComponent } from './components/reports/reports.component';
     SaleService,
     PurchaseService,
     OptionsService,
-    
+    ProductCacheService
   ],
   bootstrap: [AppComponent]
 })

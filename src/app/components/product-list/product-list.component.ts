@@ -11,7 +11,12 @@ import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { fadeAnimation } from 'src/app/fadeAnimation';
 import { ToastrService } from 'ngx-toastr';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ProductCacheService } from 'src/app/services/product-cache.service';
 
 @Component({
@@ -52,8 +57,7 @@ export class ProductListComponent implements OnInit {
     private http: HttpClient,
     private toastr: ToastrService,
     private formBuilder: FormBuilder
-  )
-  {
+  ) {
     this.productForm = this.formBuilder.group({
       productId: [0],
       int_code: [''],
@@ -62,7 +66,10 @@ export class ProductListComponent implements OnInit {
       purchase_price: ['', Validators.required],
       sale_price: ['', Validators.required],
       taxes: [false],
-      taxPercentage: new FormControl({ value: null, disabled: true }, Validators.required),
+      taxPercentage: new FormControl(
+        { value: null, disabled: true },
+        Validators.required
+      ),
       margin: ['', Validators.required],
     });
   }
@@ -87,7 +94,7 @@ export class ProductListComponent implements OnInit {
 
   toggleTaxPercentage() {
     const taxPercentageControl = this.productForm.get('taxPercentage');
-  
+
     if (this.productForm.get('taxes').value) {
       taxPercentageControl?.enable();
     } else {
@@ -99,9 +106,11 @@ export class ProductListComponent implements OnInit {
   isTaxPercentageDisabled() {
     return !this.productForm.get('taxes').value;
   }
-  
+
   getTaxPercentageValue() {
-    return this.productForm.get('taxes').value ? this.productForm.get('taxPercentage').value : 0;
+    return this.productForm.get('taxes').value
+      ? this.productForm.get('taxPercentage').value
+      : 0;
   }
 
   scrollToTop() {
@@ -364,40 +373,66 @@ export class ProductListComponent implements OnInit {
   }
 
   calculateTotal(isEditForm: boolean = false): void {
-    const purchasePrice = this.productForm.value.purchase_price;
-    const margin = this.productForm.value.margin;
-    const taxes = this.productForm.value.taxes;
-    const taxPercentage = this.productForm.value.taxPercentage;
+    const purchasePriceControl = this.productForm.get('purchase_price');
+    const marginControl = this.productForm.get('margin');
+    const taxesControl = this.productForm.get('taxes');
+    const taxPercentageControl = this.productForm.get('taxPercentage');
+    const salePriceControl = this.productForm.get('sale_price');
 
-    // Almacenamos el valor anterior de sale_price
-    const oldSalePrice = this.productForm.value.sale_price;
+    const oldSalePrice = salePriceControl.value;
 
-    if (!taxes) {
-      if (!isNaN(purchasePrice) && !isNaN(margin)) {
-        const total = purchasePrice / (1 - margin / 100);
-        this.productForm.patchValue({ sale_price: Number(total.toFixed(2)) });
-        if (isEditForm && total !== oldSalePrice) {
-          // Verificamos si el valor ha cambiado antes de asignarlo
-          this.productForm.patchValue({ sale_price: total.toFixed(2) });
+    const recalculate = () => {
+      const purchasePrice = purchasePriceControl.value;
+      const margin = marginControl.value;
+      const taxes = taxesControl.value;
+      const taxPercentage = taxPercentageControl.value;
+
+      if (!taxes) {
+        if (!isNaN(purchasePrice) && !isNaN(margin) && margin >= 0) {
+          const total = purchasePrice / (1 - margin / 100);
+          if (!isNaN(total) && total !== Infinity) {
+            salePriceControl.setValue(Number(total.toFixed(2)));
+
+            if (isEditForm && total !== oldSalePrice) {
+              salePriceControl.setValue(parseFloat(total.toFixed(2)));
+            }
+          } else {
+            salePriceControl.setValue(0);
+          }
+        } else {
+          salePriceControl.setValue(0);
         }
       } else {
-        this.productForm.patchValue({ sale_price: 0 });
-        if (isEditForm && oldSalePrice !== 0) {
-          this.productForm.patchValue({ sale_price: 0 });
+        if (
+          !isNaN(purchasePrice) &&
+          !isNaN(margin) &&
+          margin >= 0 &&
+          !isNaN(taxPercentage) &&
+          taxPercentage >= 0
+        ) {
+          const total =
+            purchasePrice / (1 - margin / 100) / (1 - taxPercentage / 100);
+          if (!isNaN(total) && total !== Infinity) {
+            salePriceControl.setValue(Number(total.toFixed(2)));
+
+            if (isEditForm && total !== oldSalePrice) {
+              salePriceControl.setValue(parseFloat(total.toFixed(2)));
+            }
+          } else {
+            salePriceControl.setValue(0);
+          }
+        } else {
+          salePriceControl.setValue(0);
         }
       }
-      this.changeDetectorRef.detectChanges()
-    } else {
-      if (!isNaN(purchasePrice) && !isNaN(margin)) {
-        const total =
-          purchasePrice / (1 - margin / 100) / (1 - taxPercentage / 100);
-        this.productForm.patchValue({ sale_price: Number(total.toFixed(2)) });
-        if (isEditForm && total !== oldSalePrice) {
-          this.productForm.patchValue({ sale_price: Number(total.toFixed(2)) });
-        }
-      }
-      this.changeDetectorRef.detectChanges();
-    }
+    };
+
+    purchasePriceControl.valueChanges.subscribe(recalculate);
+    marginControl.valueChanges.subscribe(recalculate);
+    taxesControl.valueChanges.subscribe(recalculate);
+    taxPercentageControl.valueChanges.subscribe(recalculate);
+
+    recalculate();
   }
 
   deleteProduct(intCode: string) {
@@ -497,5 +532,4 @@ export class ProductListComponent implements OnInit {
       event.preventDefault();
     }
   }
-  
 }

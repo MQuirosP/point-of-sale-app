@@ -85,280 +85,271 @@
 </div>
 
 <!-- Modal para crear compras -->
-<div
-  class="modal fade"
-  id="newPurchaseModal"
-  #newPurchaseModal
-  tabindex="-1"
-  role="dialog"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-dialog-scrollable" role="document">
-    <div class="modal-content shadow">
-      <div class="modal-header">
-        <h5 class="modal-title">Registro de compras</h5>
-        <button
-          type="button"
-          class="close overflow-visible clic-on-image"
-          data-dismiss="modal"
-          aria-label="Close"
-          (click)="closePurchaseModal()"
-        >
-          <span aria-hidden="true"
-            ><i
-              class="fa-sharp fa-solid fa-circle-xmark"
-              style="color: #f40b0b"
-            ></i
-          ></span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label for="provider_name">Proveedor:</label>
-          <input
-            type="text"
-            id="provider_name"
-            name="provider_name"
-            [(ngModel)]="provider_name"
-            class="form-control shadow"
-            (keyup)="searchProviders()"
-            autocomplete="off"
-          />
-          <div
-            class="suggestions"
-            *ngIf="provider_name && providerSuggestionList.length > 0"
+<form [formGroup]="purchaseForm">
+  <div
+    class="modal fade"
+    id="newPurchaseModal"
+    #newPurchaseModal
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+      <div class="modal-content shadow">
+        <div class="modal-header">
+          <h5 class="modal-title">Registro de compras</h5>
+          <button
+            type="button"
+            class="close overflow-visible clic-on-image"
+            data-dismiss="modal"
+            aria-label="Close"
+            (click)="closePurchaseModal()"
           >
-            <ul
-              class="list-inline"
-              *ngIf="provider_name && providerSuggestionList.length > 0"
-            >
-              <li *ngFor="let provider of providerSuggestionList">
-                <a
-                  class="text-decoration-none"
-                  href=""
-                  (click)="selectProviderSuggestion(provider, $event)"
-                >
-                  {{ provider.provider_name }}</a
-                >
-              </li>
-            </ul>
-          </div>
+            <span aria-hidden="true">
+              <i
+                class="fa-sharp fa-solid fa-circle-xmark"
+                style="color: #f40b0b"
+              ></i>
+            </span>
+          </button>
         </div>
-        <div class="form-group form-row">
-          <div class="col">
-            <label for="doc_number">Documento:</label>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="provider_name">Proveedor:</label>
             <input
               type="text"
-              id="doc_number"
-              name="doc_number"
-              [(ngModel)]="doc_number"
+              id="provider_name"
+              formControlName="provider_name"
               class="form-control shadow"
-              autocomplete="off"
-              required="required"
-            />
-          </div>
-          <div class="col">
-            <label for="paymentMethod">Método de pago:</label>
-            <input
-              type="text"
-              id="paymentMethod"
-              name="paymentMethod"
-              [(ngModel)]="paymentMethod"
-              class="form-control shadow"
-              value="contado"
+              (input)="searchProviders()"
               autocomplete="off"
             />
+            <div class="suggestions" *ngIf="providerSuggestionList.length > 0">
+              <ul class="list-inline">
+                <li *ngFor="let provider of providerSuggestionList">
+                  <a
+                    class="text-decoration-none"
+                    href=""
+                    (click)="selectProviderSuggestion(provider, $event)"
+                  >
+                    {{ provider.provider_name }}
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label for="date">Fecha:</label>
-          <input
-            type="text"
-            id="date"
-            name="date"
-            [(ngModel)]="date"
-            class="form-control shadow"
-            autocomplete="off"
-            disabled
-          />
-        </div>
-        <div class="form-group">
-          <label for="product_name">Nombre del producto:</label>
-          <input
-            type="text"
-            id="product:name"
-            name="product_name"
-            [(ngModel)]="product_name"
-            class="form-control shadow"
-            (keyup)="searchProducts()"
-            autocomplete="off"
-            placeholder="Seleccione producto..."
-          />
-          <div
-            class="suggestions"
-            *ngIf="product_name && productSuggestionList.length > 0"
-          >
-            <ul
-              class="list-inline"
-              *ngIf="product_name && productSuggestionList.length > 0"
-            >
-              <li *ngFor="let product of productSuggestionList">
-                <a
-                  class="text-decoration-none"
-                  href=""
-                  (click)="selectProductSuggestion(product, $event)"
-                >
-                  {{ product.name }} - {{ product.purchase_price }}</a
-                >
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="form-group form-row">
-          <div class="col">
-            <label for="product_quantity">Cantidad:</label>
-            <input
-              type="number"
-              id="product_quantity"
-              name="product_quantity"
-              [(ngModel)]="quantity"
-              class="form-control shadow text-right"
-              autocomplete="off"
-              step="0.01"
-            />
-          </div>
-          <div class="col">
-            <label for="product_price">Precio actual:</label>
-            <input
-              type="number"
-              id="product_price"
-              name="product_new_price"
-              [(ngModel)]="product_new_price"
-              class="form-control shadow text-right"
-              autocomplete="off"
-            />
-          </div>
-        </div>
-        <div class="form-group form-row">
-          <div class="col">
-            <label for="product_price">Precio anterior:</label>
-            <label for="" class="form-check-label ml-5">
+          
+          <div class="form-group form-row">
+            <div class="col">
+              <label for="doc_number">Documento:</label>
               <input
-                type="checkbox"
-                class="form-check-input shadow text-right"
-                [(ngModel)]="selectedProductTaxes"
-                [checked]="selectedProductTaxes"
-                disabled="true"
+                type="text"
+                id="doc_number"
+                formControlName="doc_number"
+                class="form-control shadow"
+                autocomplete="off"
+                required="required"
               />
-              {{ selectedProductTaxes ? "Gravado" : "Exento" }}
-            </label>
-            <input
-              type="number"
-              id="product_price"
-              name="product_price"
-              [(ngModel)]="product_price"
-              class="form-control shadow text-right"
-              [value]="selectedProductPrice"
-              autocomplete="off"
-              disabled="true"
-            />
+            </div>
+            <div class="col">
+              <label for="paymentMethod">Método de pago:</label>
+              <input
+                type="text"
+                id="paymentMethod"
+                formControlName="paymentMethod"
+                class="form-control shadow"
+                value="contado"
+                autocomplete="off"
+              />
+            </div>
           </div>
-          <div class="col"></div>
+          <!-- <div class="form-group">
+            <label for="date">Fecha:</label>
+            <input
+              type="date"
+              id="date"
+              formControlName="date"
+              class="form-control shadow"
+              readonly
+            />
+          </div> -->
+          <div class="form-group">
+            <label for="product_name">Nombre del producto:</label>
+            <input
+              type="text"
+              id="product_name"
+              formControlName="product_name"
+              class="form-control shadow"
+              (input)="searchProducts()"
+              autocomplete="off"
+              placeholder="Seleccione producto..."
+            />
+            <div class="suggestions" *ngIf="productSuggestionList.length > 0">
+              <ul class="list-inline">
+                <li *ngFor="let product of productSuggestionList">
+                  <a
+                    class="text-decoration-none"
+                    href=""
+                    (click)="selectProductSuggestion(product, $event)"
+                  >
+                    {{ product.name }} - {{ product.purchase_price }}
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="form-group form-row">
+            <div class="col">
+              <label for="product_price">Precio anterior:</label>
+              <label for="" class="form-check-label ml-5">
+                <input
+                  type="checkbox"
+                  class="form-check-input shadow text-right"
+                  formControlName="selectedProductTaxes"
+                  [checked]="selectedProductTaxes"
+                />
+                {{ selectedProductTaxes ? "Gravado" : "Exento" }}
+              </label>
+              <input
+                type="number"
+                id="product_price"
+                formControlName="product_price"
+                class="form-control shadow text-right"
+                [value]="selectedProductPrice"
+                autocomplete="off"
+                readonly
+              />
+            </div>
+            <div class="col">
+              <label for="product_quantity">Cantidad:</label>
+              <input
+                type="number"
+                id="product_quantity"
+                formControlName="product_quantity"
+                class="form-control shadow text-right"
+                autocomplete="off"
+                step="0.01"
+              />
+            </div>
+          </div>
+          <div class="form-group form-row">
+            
+            <div class="col">
+              <label for="product_price">Precio actual:</label>
+              <input
+              type="number"
+              id="product_new_price"
+              formControlName="product_new_price"
+              class="form-control shadow text-right"
+              autocomplete="off"
+              />
+            </div>
+            <div class="col">
+              
+            </div>
+          </div>
+          
+
+          <div class="d-flex justify-content-center">
+            <button
+              type="button"
+              class="btn btn-primary shadow clic-on-image"
+              (click)="addProduct()"
+            >
+              Agregar producto
+            </button>
+          </div>
+          <hr />
+
+          <div class="d-flex justify-content-between row">
+            <div class="col flex-column align-items-center">
+              <h6 class="text-right">Sub Total</h6>
+              <p class="text-right">
+                {{ subTotalPurchaseAmount | currency : "CRC" : "₡" }}
+              </p>
+            </div>
+            <div class="col flex-column align-items-center">
+              <h6 class="text-right">IVA</h6>
+              <p class="text-right">
+                {{ totalTaxesAmount | currency : "CRC" : "₡" }}
+              </p>
+            </div>
+            <div class="col flex-column align-items-center">
+              <h6 class="text-right">Total</h6>
+              <p class="text-right">
+                {{ totalPurchaseAmount | currency : "CRC" : "₡" }}
+              </p>
+            </div>
+          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th class="text-left" scope="col">Producto</th>
+                <th class="text-right" scope="col">Cantidad</th>
+                <th class="text-right" scope="col">Precio</th>
+                <th class="text-right" scope="col">Total</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let product of productList"
+                [ngClass]="{ 'taxes-row': !product.taxes }"
+              >
+                <td class="text-left">{{ product.name }}</td>
+                <td class="text-right">
+                  {{ product.quantity | number : "1.2-2" }}
+                </td>
+                <td class="text-right">
+                  {{ product.price + product.taxes_amount | currency : "CRC" : "₡" }}
+                </td>
+                <td class="text-right">
+                  {{
+                    product.quantity * (product.price + product.taxes_amount) | currency : "CRC" : "₡"
+                  }}
+                </td>
+                <td class="text-center">
+                  <button
+                    type="button"
+                    class="clic-on-image"
+                    (click)="removeProduct(product)"
+                    data-dismiss="modal"
+                  >
+                    <i
+                      class="fa-solid fa-trash clic-on-icon"
+                      style="color: #fa0000; cursor: pointer"
+                    ></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <hr />
         </div>
 
-        <div class="d-flex justify-content-center">
+        <div class="modal-footer">
           <button
             type="button"
             class="btn btn-primary shadow clic-on-image"
-            (click)="addProduct()"
+            (click)="createPurchase()"
+            data-dismiss="modal"
           >
-            Agregar producto
+            Guardar
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary clic-on-image"
+            data-dismiss="modal"
+            (click)="closePurchaseModal()"
+            data-dismiss="modal"
+          >
+            Cancelar
           </button>
         </div>
-        <hr />
-
-        <div class="d-flex justify-content-between row">
-          <div class="col flex-column align-items-center">
-            <h6 class="text-right">Sub Total</h6>
-            <p class="text-right">
-              {{ subTotalPurchaseAmount | currency : "CRC" : "₡" }}
-            </p>
-          </div>
-          <div class=" col flex-column align-items-center">
-            <h6 class="text-right">IVA</h6>
-            <p class="text-right">
-              {{ totalTaxesAmount | currency : "CRC" : "₡" }}
-            </p>
-          </div>
-          <div class="col flex-column align-items-center">
-            <h6 class="text-right">Total</h6>
-            <p class="text-right">
-              {{ totalPurchaseAmount | currency : "CRC" : "₡" }}
-            </p>
-          </div>
-        </div>
-        <table class="table">
-          <thead>
-            <tr>
-              <th class="text-left" scope="col">Producto</th>
-              <th class="text-right" scope="col">Cantidad</th>
-              <th class="text-right" scope="col">Precio</th>
-              <th class="text-right" scope="col">Total</th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              *ngFor="let product of productList"
-              [ngClass]="{ 'taxes-row': !product.taxes }"
-            >
-              <td class="text-left">{{ product.name }}</td>
-              <td class="text-right">{{ product.quantity | number : '1.2-2' }}</td>
-              <td class="text-right">{{ product.price | currency : "CRC" : "₡" }}</td>
-              <td class="text-right">
-                {{ product.quantity * product.price | currency : "CRC" : "₡" }}
-              </td>
-              <td class="text-center">
-                <button
-                  type="button"
-                  class="clic-on-image"
-                  (click)="removeProduct(product)"
-                  data-dismiss="modal"
-                >
-                  <i
-                    class="fa-solid fa-trash clic-on-icon"
-                    style="color: #fa0000; cursor: pointer"
-                  ></i>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <hr />
-      </div>
-
-      <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-primary shadow clic-on-image"
-          (click)="createPurchase()"
-          data-dismiss="modal"
-        >
-          Guardar
-        </button>
-        <button
-          type="button"
-          class="btn btn-secondary clic-on-image"
-          data-dismiss="modal"
-          (click)="closePurchaseModal()"
-          data-dismiss="modal"
-        >
-          Cancelar
-        </button>
       </div>
     </div>
   </div>
-</div>
+</form>
 
 <!-- Modal para consultar las compras -->
 <div

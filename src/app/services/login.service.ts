@@ -67,7 +67,6 @@ export class LoginService {
       .post<any>(`${this.backendUrl}login/`, loginData)
       .pipe(
         tap((response) => {
-          console.log(response);
           if (response.success === true) {
             const username = response.message.username;
             const name = response.message.name;

@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 
 interface Purchase {
   providerId: number;
-  providerName: string;
+  provider_name: string;
   paymentMethod: string;
   doc_number: string;
   status: string;
@@ -18,8 +18,8 @@ interface Product {
   int_code: number;
   quantity: number;
   price: number;
-  taxes_amount: number;
-  sub_total: number;
+  taxes_amount?: number;
+  sub_total?: number;
 }
 
 @Injectable({

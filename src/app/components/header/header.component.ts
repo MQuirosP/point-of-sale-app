@@ -1,10 +1,11 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { LoginService } from 'src/app/services/login.service';
-import { Observable, Subscription, of, switchMap, throwError } from 'rxjs';
+import { Observable, Subscription, switchMap } from 'rxjs';
 import { fadeAnimation } from 'src/app/fadeAnimation';
 import { OptionsService } from 'src/app/services/optionsService';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { ProductCacheService } from 'src/app/services/product-cache.service';
 
 @Component({
   selector: 'app-header',
@@ -31,7 +32,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private optionsService: OptionsService,
     private cdr: ChangeDetectorRef,
     private formBuilder: FormBuilder,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private productCache: ProductCacheService
   ) {
     this.authService.username$.subscribe((username) => {
       this.username = username;
@@ -109,6 +111,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   onLogout() {
     this.authService.onLogout();
     this.user = '';
+    this.productCache.setCachedProducts([]); // Borrar la caché de productos
   }
 
   createBackup() {

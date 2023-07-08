@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { fadeAnimation } from 'src/app/fadeAnimation';
 import { LoginService } from 'src/app/services/login.service';
+import { ProductCacheService } from 'src/app/services/product-cache.service';
 
 @Component({
   selector: 'app-login',
@@ -15,17 +16,26 @@ export class LoginComponent {
 
   constructor(
     private authService: LoginService,
-    ) {}
+    private productCache: ProductCacheService
+  ) {}
 
   onSubmit() {
     this.authService.onLogin(this.username, this.password);
+    this.loadProductCache();
     // this.authService.setLoggedIn(true);
   }
-   addFloatingLabelClass(inputId: string) {
+
+  private loadProductCache() {
+    const cachedProducts = this.productCache.getCachedProducts();
+    // Realiza las operaciones necesarias con la caché de productos
+    // ...
+  }
+
+  addFloatingLabelClass(inputId: string) {
     const label = document.querySelector(`label[for="${inputId}"]`);
     label?.classList.add('active');
   }
-  
+
   removeFloatingLabelClass(inputId: string) {
     const label = document.querySelector(`label[for="${inputId}"]`);
     const input = document.getElementById(inputId) as HTMLInputElement;
@@ -33,5 +43,4 @@ export class LoginComponent {
       label?.classList.remove('active');
     }
   }
-  
 }
