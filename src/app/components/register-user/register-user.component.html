@@ -24,7 +24,7 @@
                 <label for="name" class="floating-label">Nombre:</label>
                 <input
                   type="text"
-                  class="form-control shadow mt-2"
+                  class="form-control mt-2"
                   autofocus
                   id="name"
                   formControlName="name"
@@ -32,44 +32,60 @@
                   (focus)="addFloatingLabelClass('name')"
                   (blur)="removeFloatingLabelClass('name')"
                   style="margin-bottom: 30px"
+                  [ngClass]="{
+                    'is-valid': newUserForm.get('name').touched && newUserForm.get('name').valid,
+                    'is-invalid': newUserForm.get('name').touched && newUserForm.get('name').invalid
+                  }"
                 />
               </div>
               <div class="form-group">
                 <label for="lastname" class="floating-label">Apellidos:</label>
                 <input
                   type="text"
-                  class="form-control shadow"
+                  class="form-control "
                   id="lastname"
                   formControlName="lastname"
                   autocomplete="off"
                   (focus)="addFloatingLabelClass('lastname')"
                   (blur)="removeFloatingLabelClass('lastname')"
                   style="margin-bottom: 30px"
+                  [ngClass]="{
+                    'is-valid': newUserForm.get('lastname').touched && newUserForm.get('lastname').valid,
+                    'is-invalid': newUserForm.get('lastname').touched && newUserForm.get('lastname').invalid
+                  }"
                 />
               </div>
               <div class="form-group">
                 <label for="username" class="floating-label">Usuario:</label>
                 <input
                   type="text"
-                  class="form-control shadow"
+                  class="form-control "
                   id="username"
                   formControlName="username"
                   autocomplete="off"
                   (focus)="addFloatingLabelClass('username')"
                   (blur)="removeFloatingLabelClass('username')"
                   style="margin-bottom: 30px"
+                  [ngClass]="{
+                    'is-valid': newUserForm.get('username').touched && newUserForm.get('username').valid,
+                    'is-invalid': newUserForm.get('username').touched && newUserForm.get('username').invalid
+                  }"
                 />
               </div>
               <div class="form-group">
                 <label for="password" class="floating-label">Contraseña:</label>
                 <input
                   type="password"
-                  class="form-control shadow"
+                  class="form-control "
                   id="password"
                   formControlName="password"
                   (focus)="addFloatingLabelClass('password')"
                   (blur)="removeFloatingLabelClass('password')"
                   style="margin-bottom: 30px"
+                  [ngClass]="{
+                    'is-valid': newUserForm.get('password').touched && newUserForm.get('password').valid,
+                    'is-invalid': newUserForm.get('password').touched && newUserForm.get('password').invalid
+                  }"
                 />
               </div>
               <div class="form-group">

@@ -177,6 +177,10 @@
               #codeInput
               (input)="handleCodeInput($event.target)"
               (keypress)="disableEnterKey($event)"
+              [ngClass]="{
+                'is-valid': productForm.get('int_code').touched && productForm.get('int_code').valid,
+                'is-invalid': productForm.get('int_code').touched && productForm.get('int_code').invalid
+              }"
             />
           </div>
           <div class="form-group">
@@ -189,6 +193,10 @@
               name="name"
               required
               #nameInput
+              [ngClass]="{
+                'is-valid': productForm.get('name').touched && productForm.get('name').valid,
+                'is-invalid': productForm.get('name').touched && productForm.get('name').invalid
+              }"
             />
           </div>
           <div class="form-group">
@@ -199,6 +207,10 @@
               formControlName="description"
               name="description"
               rows="3"
+              [ngClass]="{
+                'is-valid': productForm.get('description').touched && productForm.get('description').valid,
+                'is-invalid': productForm.get('description').touched && productForm.get('description').invalid
+              }"
             ></textarea>
           </div>
           <div class="form-group form-row">
@@ -214,6 +226,10 @@
                 pattern="^[0-9]+(\.[0-9]{1,2})?$"
                 step="0.01"
                 required
+                [ngClass]="{
+                  'is-valid': productForm.get('purchase_price').touched && productForm.get('purchase_price').valid,
+                  'is-invalid': productForm.get('purchase_price').touched && productForm.get('purchase_price').invalid
+                }"
               />
             </div>
             <div class="col">
@@ -243,6 +259,10 @@
                 required
                 step="0.001"
                 pattern="^[0-9]+(\.[0-9]{1,3})?$"
+                [ngClass]="{
+                  'is-valid': productForm.get('margin').touched && productForm.get('margin').valid,
+                  'is-invalid': productForm.get('margin').touched && productForm.get('margin').invalid
+                }"
               />
             </div>
             <div class="col">
@@ -255,6 +275,10 @@
                   formControlName="taxes"
                   name="taxes"
                   (change)="toggleTaxPercentage(); calculateTotal(true)"
+                  [ngClass]="{
+                    'is-valid': productForm.get('taxes').touched && productForm.get('taxes').valid,
+                    'is-invalid': productForm.get('taxes').touched && productForm.get('taxes').invalid
+                  }"
                 />
                 {{ productForm.get("taxes").value ? "Gravado" : "Exento" }}
               </label>
@@ -280,7 +304,6 @@
               type="button"
               class="btn btn-primary shadow clic-on-image"
               (click)="createProduct()"
-              data-dismiss="modal"
             >
               Guardar
             </button>
@@ -289,7 +312,6 @@
               type="button"
               class="btn btn-primary shadow clic-on-image"
               (click)="editProduct(productForm.get('productId').value)"
-              data-dismiss="modal"
             >
               Editar
             </button>

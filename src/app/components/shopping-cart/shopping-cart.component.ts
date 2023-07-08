@@ -40,9 +40,9 @@ export class ShoppingCartComponent {
   // Crear Ventas
   int_code: string = '';
   name: string = '';
-  price: number = 0.00;
-  selectedProductPrice: number = 0.00;
-  quantity: number = 0.00;
+  price: number = 0.0;
+  selectedProductPrice: number = 0.0;
+  quantity: number = 1;
 
   // Cálculo de impuestos, sub total y total
   TAXES = 0.13;
@@ -52,6 +52,7 @@ export class ShoppingCartComponent {
   totalSaleAmount: number = 0;
 
   // Misceláneos
+  isProductValid: boolean = false;
   productList: any[] = [];
   lastSaleDocNumber: string = '';
   paymentMethod: string = 'contado';
@@ -219,10 +220,20 @@ export class ShoppingCartComponent {
     event.preventDefault();
     this.int_code = suggestion.int_code;
     this.name = suggestion.name;
+    this.isProductValid = true;
     (this.selectedProductTaxes = suggestion.taxes),
       (this.selectedProductPrice = suggestion.sale_price);
     this.productSuggestionList = [];
   }
+
+  isValidQuantity(): boolean {
+    return this.quantity > 0;
+  }
+
+  isValidPaymentMethod(): boolean {
+    return this.paymentMethod.trim() !== '';
+  }
+  
 
   addProduct() {
     if (
@@ -260,7 +271,8 @@ export class ShoppingCartComponent {
     this.calculateTotalSaleAmount();
     this.name = '';
     this.selectedProductPrice = 0;
-    this.quantity = 0;
+    this.isProductValid = false;
+    this.quantity = 1;
     this.selectedProductTaxes = false;
   }
 
@@ -297,23 +309,28 @@ export class ShoppingCartComponent {
   createSale() {
     if (this.selectedCustomer) {
       const customerFullName = this.getCustomerFullName(this.selectedCustomer);
-      const sale = this.buildSaleObject(this.selectedCustomer, customerFullName);
+      const sale = this.buildSaleObject(
+        this.selectedCustomer,
+        customerFullName
+      );
       this.saveSale(sale);
     } else {
       this.toastr.error('Debe seleccionar un cliente.');
     }
   }
-  
+
   getCustomerDetails(): Observable<any> {
-    return this.http.get(`${this.backendUrl}customers/id/${this.customer_id}`)
+    return this.http
+      .get(`${this.backendUrl}customers/id/${this.customer_id}`)
       .pipe(map((response: any) => response?.message?.customer));
   }
-  
+
   getCustomerFullName(customer: any): string {
-    const { customer_name, customer_first_lastname, customer_second_lastname } = customer;
+    const { customer_name, customer_first_lastname, customer_second_lastname } =
+      customer;
     return `${customer_name} ${customer_first_lastname} ${customer_second_lastname}`;
   }
-  
+
   buildSaleObject(customer: any, customerFullName: string): any {
     return {
       customerId: this.customer_id,
@@ -324,7 +341,7 @@ export class ShoppingCartComponent {
       products: this.buildProductList(),
     };
   }
-  
+
   buildProductList(): any[] {
     return this.productList.map((product) => ({
       int_code: product.int_code,
@@ -333,7 +350,7 @@ export class ShoppingCartComponent {
       taxes_amount: product.taxes_amount.toFixed(2),
     }));
   }
-  
+
   saveSale(sale: any) {
     this.saleService.createSale(sale).subscribe({
       next: () => {
@@ -344,7 +361,7 @@ export class ShoppingCartComponent {
       },
     });
   }
-  
+
   handleSaleCreationSuccess() {
     this.toastr.success('La venta ha sido guardada exitosamente.');
     this.date = this.getCurrentDate();
@@ -356,11 +373,12 @@ export class ShoppingCartComponent {
     this.clearSaleFormData();
     this.closeSaleModal();
   }
-  
+
   handleSaleCreationError() {
-    this.toastr.error('Ocurrió un error al guardar la venta. Por favor inténtalo nuevamente.');
+    this.toastr.error(
+      'Ocurrió un error al guardar la venta. Por favor inténtalo nuevamente.'
+    );
   }
-  
 
   private clearSaleFormData() {
     this.name = '';
@@ -471,7 +489,7 @@ export class ShoppingCartComponent {
     this.customer_name = `${customer.customer_name} ${customer.customer_first_lastname} ${customer.customer_second_lastname}`;
     this.customerSuggestionList = [];
   }
-  
+
   selectCustomer(customer: any) {
     this.selectedCustomer = customer;
     this.customer_name = `${customer.customer_name} ${customer.customer_first_lastname} ${customer.customer_second_lastname}`;

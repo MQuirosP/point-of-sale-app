@@ -96,6 +96,8 @@ export class PurchaseHistoryComponent {
   provider_name: string = '';
   providersList: any[] = [];
   providerSuggestionList: any[] = [];
+  isProviderValid: boolean = false;
+
 
   @ViewChild('newPurchaseModal', { static: false })
   newPurchaseModal!: ElementRef;
@@ -136,7 +138,7 @@ export class PurchaseHistoryComponent {
       ],
       product_name: ['', Validators.required],
       product_price: ['', Validators.required],
-      product_new_price: [''],
+      product_new_price: ['', Validators.required],
       selectedProductTaxes: new FormControl({
         value: this.selectedProductTaxes,
         disabled: true,
@@ -408,6 +410,7 @@ export class PurchaseHistoryComponent {
         this.subTotalPurchaseAmount = 0;
         this.totalTaxesAmount = 0;
         this.totalPurchaseAmount = 0;
+        this.isProviderValid = false;
       },
       error: (error) => {
         console.log('Error al crear la compra', error.error.error);
@@ -497,6 +500,8 @@ export class PurchaseHistoryComponent {
     event.preventDefault();
     this.purchaseForm.get('provider_name').setValue(provider.provider_name);
     this.provider_id = provider.provider_id;
+    this.provider_name = provider.provider_name
+    this.isProviderValid = true;
     this.providerSuggestionList = [];
   }
 }

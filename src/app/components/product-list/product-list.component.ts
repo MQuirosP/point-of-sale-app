@@ -331,7 +331,7 @@ export class ProductListComponent implements OnInit {
       }
 
       const productData = this.extractProductFormData();
-      this.saveCustomer(productData);
+      this.saveProduct(productData);
     } else {
     }
   }
@@ -343,13 +343,14 @@ export class ProductListComponent implements OnInit {
       description: this.productForm.get('description').value,
       purchase_price: this.productForm.get('purchase_price').value,
       sale_price: this.productForm.get('sale_price').value,
+      quantity: 0,
       taxes: this.productForm.get('taxes').value,
       margin: this.productForm.get('margin').value,
       taxPercentage: this.productForm.get('taxPercentage').value,
     };
   }
 
-  private saveCustomer(productData: any) {
+  private saveProduct(productData: any) {
     this.changeDetectorRef.detectChanges();
     this.http.post(`${this.backendUrl}products`, productData).subscribe({
       next: (response: any) => {

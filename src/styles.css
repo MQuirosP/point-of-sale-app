@@ -410,5 +410,16 @@ button {
   background-color: #f8e8e8;
 }
 
+.quantity-input {
+  padding-right: 2rem; /* Ajusta el valor según tus necesidades */
+}
+
+.is-valid {
+  box-shadow: 5px 5px 10px rgba(0, 255, 0, 0.2), -5px -5px -10px rgba(0, 255, 0, 0.2);
+}
+
+.is-invalid {
+  box-shadow: 5px 5px 10px rgba(255, 0, 0, 0.5), -5px -5px -10px rgba(255, 0, 0, 0.5);
+}
 
 

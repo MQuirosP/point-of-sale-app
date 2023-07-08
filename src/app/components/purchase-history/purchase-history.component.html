@@ -123,6 +123,14 @@
               class="form-control shadow"
               (input)="searchProviders()"
               autocomplete="off"
+              [ngClass]="{
+                'is-valid':
+                  purchaseForm.get('provider_name').touched &&
+                  purchaseForm.get('provider_name').valid,
+                'is-invalid':
+                  purchaseForm.get('provider_name').touched &&
+                  purchaseForm.get('provider_name').invalid
+              }"
             />
             <div class="suggestions" *ngIf="providerSuggestionList.length > 0">
               <ul class="list-inline">
@@ -149,6 +157,14 @@
                 class="form-control shadow"
                 autocomplete="off"
                 required="required"
+                [ngClass]="{
+                  'is-valid':
+                    purchaseForm.get('doc_number').touched &&
+                    purchaseForm.get('doc_number').valid,
+                  'is-invalid':
+                    purchaseForm.get('doc_number').touched &&
+                    purchaseForm.get('doc_number').invalid
+                }"
               />
             </div>
             <div class="col">
@@ -157,7 +173,7 @@
                 id="paymentMethod"
                 formControlName="paymentMethod"
                 class="form-control shadow"
-                style="padding-top: 5px;"
+                style="padding-top: 5px"
               >
                 <option value="contado" selected>Contado</option>
                 <option value="credito">Crédito</option>
@@ -174,6 +190,14 @@
               (input)="searchProducts()"
               autocomplete="off"
               placeholder="Seleccione producto..."
+              [ngClass]="{
+                'is-valid':
+                  purchaseForm.get('product_name').touched &&
+                  purchaseForm.get('product_name').valid,
+                'is-invalid':
+                  purchaseForm.get('product_name').touched &&
+                  purchaseForm.get('product_name').invalid
+              }"
             />
             <div class="suggestions" *ngIf="productSuggestionList.length > 0">
               <ul class="list-inline">
@@ -220,18 +244,35 @@
                 class="form-control shadow text-right"
                 autocomplete="off"
                 step="0.01"
+                [ngClass]="{
+                  'is-valid':
+                    purchaseForm.get('product_quantity').touched &&
+                    purchaseForm.get('product_quantity').valid,
+                  'is-invalid':
+                    purchaseForm.get('product_quantity').touched &&
+                    purchaseForm.get('product_quantity').invalid
+                }"
               />
             </div>
           </div>
           <div class="form-group form-row">
             <div class="col">
-              <label for="product_price">Precio actual:</label>
+              <label for="product_new_price">Precio actual:</label>
               <input
                 type="number"
                 id="product_new_price"
                 formControlName="product_new_price"
                 class="form-control shadow text-right"
                 autocomplete="off"
+                step="0.01"
+                [ngClass]="{
+                  'is-valid':
+                    purchaseForm.get('product_new_price').touched &&
+                    purchaseForm.get('product_quantity').valid,
+                  'is-invalid':
+                    purchaseForm.get('product_new_price').touched &&
+                    purchaseForm.get('product_new_price').invalid
+                }"
               />
             </div>
             <div class="col"></div>
