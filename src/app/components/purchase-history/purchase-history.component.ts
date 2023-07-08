@@ -110,7 +110,7 @@ export class PurchaseHistoryComponent {
     private toastr: ToastrService,
     private purchaseService: PurchaseService,
     private formBuilder: FormBuilder,
-    private productCache: ProductCacheService,
+    private productCache: ProductCacheService
   ) {
     this.date = this.getCurrentDate();
     this.selectedDate = this.calendar.getToday();
@@ -126,7 +126,10 @@ export class PurchaseHistoryComponent {
     this.purchaseForm = this.formBuilder.group({
       provider_name: ['', Validators.required],
       doc_number: ['', Validators.required],
-      paymentMethod: ['contado', Validators.required],
+      paymentMethod: [
+        'contado',
+        [Validators.required, Validators.pattern('^(contado|credito)$')],
+      ],
       date: [
         { value: this.getCurrentDate(), disabled: true },
         Validators.required,
@@ -175,7 +178,9 @@ export class PurchaseHistoryComponent {
       return;
     }
     this.http
-      .get<ApiPurchaseResponse>(`${this.backendUrl}purchases/date/${selectedDate}`)
+      .get<ApiPurchaseResponse>(
+        `${this.backendUrl}purchases/date/${selectedDate}`
+      )
       .subscribe({
         next: (response) => {
           if (response.message.Purchases.length === 0) {
@@ -246,7 +251,9 @@ export class PurchaseHistoryComponent {
 
     const productIntCode = this.int_code;
     const cachedProducts = this.productCache.getCachedProducts();
-    const productFromCache = cachedProducts.find((product: Product) => product.int_code === productIntCode);
+    const productFromCache = cachedProducts.find(
+      (product: Product) => product.int_code === productIntCode
+    );
 
     if (!productFromCache) {
       this.toastr.error('El producto no se encuentra en la caché.');
@@ -277,7 +284,6 @@ export class PurchaseHistoryComponent {
 
     product.taxes_amount = taxesAmount;
     product.sub_total = subTotal;
-    console.log(product);
     this.productList.push(product);
     this.calculateTotalPurchaseAmount();
     this.purchaseForm.get('product_name')?.reset();
@@ -292,15 +298,15 @@ export class PurchaseHistoryComponent {
       (subTotal, product) => subTotal + product.sub_total,
       0
     );
-  
+
     this.totalTaxesAmount = this.productList.reduce(
       (taxesTotal, product) => taxesTotal + product.taxes_amount,
       0
     );
-  
-    this.totalPurchaseAmount = this.subTotalPurchaseAmount + this.totalTaxesAmount;
+
+    this.totalPurchaseAmount =
+      this.subTotalPurchaseAmount + this.totalTaxesAmount;
   }
-  
 
   removeProduct(product: any) {
     const index = this.productList.indexOf(product);
@@ -310,62 +316,77 @@ export class PurchaseHistoryComponent {
     }
   }
 
-  createPurchase() {
+  async createPurchase() {
     if (!this.validatePurchaseData()) {
       return;
     }
+    try {
+      const validDocument = await this.purchaseService.checkPurchaseDocNumber(
+        this.purchaseForm.get('doc_number').value
+      );
+      if (validDocument) {
+        this.toastr.error('Documento ya fue registrado anteriormente');
+        return;
+      } else {
+        const updateProductPrices$ = this.updateProductPrices();
 
-    const updateProductPrices$ = this.updateProductPrices();
-
-    updateProductPrices$.subscribe({
-      next: () => {
-        this.toastr.success(
-          'Precios de compra actualizados para los productos.'
-        );
-        this.savePurchase();
-      },
-      error: (error) => {
-        console.log('Error al actualizar los precios de compra.', error);
-        this.toastr.error(
-          'Ocurrió un error al actualizar los precios de compra. Por favor inténtalo nuevamente.'
-        );
-      },
-    });
+        updateProductPrices$.subscribe({
+          next: () => {
+            this.toastr.success(
+              'Precios de compra actualizados para los productos.'
+            );
+            this.savePurchase();
+          },
+          error: (error) => {
+            console.log('Error al actualizar los precios de compra.', error);
+            this.toastr.error(
+              'Ocurrió un error al actualizar los precios de compra. Por favor inténtalo nuevamente.'
+            );
+          },
+        });
+      }
+    } catch (error) {}
   }
 
   private validatePurchaseData(): boolean {
     const docNumber = this.purchaseForm.get('doc_number')?.value;
-  
+
     if (!docNumber) {
       this.toastr.error('Por favor ingresa un número de documento.');
       return false;
     }
-  
+
     if (this.productList.length === 0) {
       this.toastr.error('Agrega al menos un producto a la lista.');
       return false;
     }
-  
+
     // Aquí se pueden realizar más validaciones
-  
+
     return true;
   }
-  
 
   private updateProductPrices(): Observable<any> {
     const updateRequests = this.productList.map((product) => {
-      const cachedProduct = this.productCache.getProductByIntCode(product.int_code);
+      const cachedProduct = this.productCache.getProductByIntCode(
+        product.int_code
+      );
       if (!cachedProduct) {
         // El producto no está en la caché, manejar el error o la lógica apropiada
-        return throwError(`Product with int_code ${product.int_code} not found in cache.`);
+        return throwError(
+          `Product with int_code ${product.int_code} not found in cache.`
+        );
       }
-  
+
       const data = {
         purchase_price: product.price,
       };
-      return this.http.put(`${this.backendUrl}products/${cachedProduct.productId}`, data);
+      return this.http.put(
+        `${this.backendUrl}products/${cachedProduct.productId}`,
+        data
+      );
     });
-  
+
     return forkJoin(updateRequests);
   }
 
@@ -373,7 +394,7 @@ export class PurchaseHistoryComponent {
     const purchase: Purchase = {
       providerId: this.provider_id,
       provider_name: this.purchaseForm.get('provider_name').value,
-      paymentMethod: this.paymentMethod,
+      paymentMethod: this.purchaseForm.get('paymentMethod').value,
       doc_number: this.purchaseForm.get('doc_number').value,
       status: 'aceptado',
       sub_total: this.subTotalPurchaseAmount,
@@ -389,19 +410,18 @@ export class PurchaseHistoryComponent {
         this.totalPurchaseAmount = 0;
       },
       error: (error) => {
-        console.log('Error al crear la compra', error);
+        console.log('Error al crear la compra', error.error.error);
         this.toastr.error(
-          'Ocurrió un error al crear la compra. Por favor inténtalo nuevamente.'
+          'Ocurrió un error al crear la compra. Por favor inténtalo nuevamente.',
+          error.error.error
         );
       },
     });
   }
 
   resetForm() {
-    this.provider_id = null;
-    this.provider_name = '';
-    this.paymentMethod = '';
-    this.doc_number = '';
+    this.purchaseForm.get('provider_name')?.reset();
+    this.purchaseForm.get('doc_number')?.reset();
     this.productList = [];
   }
 

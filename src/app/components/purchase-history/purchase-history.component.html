@@ -138,7 +138,7 @@
               </ul>
             </div>
           </div>
-          
+
           <div class="form-group form-row">
             <div class="col">
               <label for="doc_number">Documento:</label>
@@ -153,26 +153,17 @@
             </div>
             <div class="col">
               <label for="paymentMethod">Método de pago:</label>
-              <input
-                type="text"
+              <select
                 id="paymentMethod"
                 formControlName="paymentMethod"
                 class="form-control shadow"
-                value="contado"
-                autocomplete="off"
-              />
+                style="padding-top: 5px;"
+              >
+                <option value="contado" selected>Contado</option>
+                <option value="credito">Crédito</option>
+              </select>
             </div>
           </div>
-          <!-- <div class="form-group">
-            <label for="date">Fecha:</label>
-            <input
-              type="date"
-              id="date"
-              formControlName="date"
-              class="form-control shadow"
-              readonly
-            />
-          </div> -->
           <div class="form-group">
             <label for="product_name">Nombre del producto:</label>
             <input
@@ -233,22 +224,18 @@
             </div>
           </div>
           <div class="form-group form-row">
-            
             <div class="col">
               <label for="product_price">Precio actual:</label>
               <input
-              type="number"
-              id="product_new_price"
-              formControlName="product_new_price"
-              class="form-control shadow text-right"
-              autocomplete="off"
+                type="number"
+                id="product_new_price"
+                formControlName="product_new_price"
+                class="form-control shadow text-right"
+                autocomplete="off"
               />
             </div>
-            <div class="col">
-              
-            </div>
+            <div class="col"></div>
           </div>
-          
 
           <div class="d-flex justify-content-center">
             <button
@@ -301,11 +288,15 @@
                   {{ product.quantity | number : "1.2-2" }}
                 </td>
                 <td class="text-right">
-                  {{ product.price + product.taxes_amount | currency : "CRC" : "₡" }}
+                  {{
+                    product.price + product.taxes_amount
+                      | currency : "CRC" : "₡"
+                  }}
                 </td>
                 <td class="text-right">
                   {{
-                    product.quantity * (product.price + product.taxes_amount) | currency : "CRC" : "₡"
+                    product.quantity * (product.price + product.taxes_amount)
+                      | currency : "CRC" : "₡"
                   }}
                 </td>
                 <td class="text-center">
@@ -332,7 +323,6 @@
             type="button"
             class="btn btn-primary shadow clic-on-image"
             (click)="createPurchase()"
-            data-dismiss="modal"
           >
             Guardar
           </button>
