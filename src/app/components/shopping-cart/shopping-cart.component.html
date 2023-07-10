@@ -462,7 +462,7 @@
                   sale.status === 'aceptado' && isCurrentDate(sale.createdAt)
                 "
                 class="btn btn-danger clic-on-image"
-                (click)="cancelSale(sale.doc_number)"
+                (click)="cancelSale(sale.doc_number); toggleSaleDetails(sale)"
               >
                 Anular
               </button>

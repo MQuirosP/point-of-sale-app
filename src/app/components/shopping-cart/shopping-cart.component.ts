@@ -17,7 +17,7 @@ import { fadeAnimation } from 'src/app/fadeAnimation';
 import { ToastrService } from 'ngx-toastr';
 import { TicketService } from 'src/app/services/ticket.service';
 import { SaleService } from 'src/app/services/sale.service';
-import { Observable, map } from 'rxjs';
+import { Observable, Subscription, map } from 'rxjs';
 // import * as moment from 'moment';
 
 interface ApiSaleResponse {
@@ -72,6 +72,8 @@ export class ShoppingCartComponent {
   customersList: any[] = [];
   customerSuggestionList: any[] = [];
 
+  private showNewSaleModalSubscription: Subscription;
+
   @ViewChild('newSaleModal', { static: false }) newSaleModal!: ElementRef;
   @ViewChild('saleHistoryModal', { static: false })
   saleHistoryModal!: ElementRef;
@@ -92,7 +94,7 @@ export class ShoppingCartComponent {
   }
 
   ngOnInit() {
-    this.modalService.showNewSaleModal.subscribe((show: boolean) => {
+    this.showNewSaleModalSubscription = this.modalService.showNewSaleModal.subscribe((show: boolean) => {
       if (show) {
         this.openSaleModal();
       }
@@ -105,10 +107,19 @@ export class ShoppingCartComponent {
     this.date = this.getCurrentDate();
   }
 
-  openSaleModal() {
-    this.newSaleModal.nativeElement.classList.toggle('show');
-    this.newSaleModal.nativeElement.style.display = 'block';
+  ngOnDestroy() {
+    if (this.showNewSaleModalSubscription) {
+      this.showNewSaleModalSubscription.unsubscribe();
+    }
   }
+
+  openSaleModal() {
+    if (this.newSaleModal?.nativeElement) {
+      this.newSaleModal.nativeElement.classList.toggle('show');
+      this.newSaleModal.nativeElement.style.display = 'block';
+    }
+  }
+  
 
   closeSaleModal() {
     this.newSaleModal.nativeElement.classList.remove('show');
@@ -466,7 +477,7 @@ export class ShoppingCartComponent {
   cancelSale(doc_number: string) {
     this.saleService.cancelSale(doc_number).subscribe({
       next: (response: any) => {
-        this.toastr.success('Venta anulada exitosamente.');
+        this.toastr.success(`Venta #${doc_number} anulada exitosamente.`);
 
         const canceledSale = this.sales.find(
           (sale) => sale.doc_number === doc_number
