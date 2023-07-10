@@ -295,11 +295,11 @@
         <table class="table">
           <thead>
             <tr>
-              <th class="text-left shoppingcart-table-titles" scope="col" style="width: 35%;">Producto</th>
+              <th class="text-left shoppingcart-table-titles" scope="col" style="width: 30%;">Producto</th>
               <th class="text-right" scope="col" style="width: 10%;">Cant.</th>
               <th class="text-right" scope="col" style="width: 25%;">Precio</th>
-              <th class="text-right" scope="col" style="width: 30%;">Total</th>
-              <th scope="col"></th>
+              <th class="text-right" scope="col" style="width: 25%;">Total</th>
+              <th class="" scope="col" style="width: 10%;"></th>
             </tr>
           </thead>
           <tbody>
@@ -319,7 +319,13 @@
                 />
               </td>
               <td class="text-right shoppingcart-list-item">
-                {{ product.price | number : "1.2-2" }}
+                <input
+                  class="custom-input text-right shoppingcart-list-item"
+                  type="number"
+                  [(ngModel)]="product.price"
+                  (change)="updateProduct(product)"
+                  min="1"
+                />
               </td>
               <td class="text-right shoppingcart-list-item">
                 {{ product.price * product.quantity | number : "1.2-2" }}
@@ -330,10 +336,11 @@
                   class="clic-on-image"
                   (click)="removeProduct(product)"
                   data-dismiss="modal"
+                  style="line-height: 1;"
                 >
                   <i
                     class="fa-solid fa-trash clic-on-icon"
-                    style="color: #fa0000; cursor: pointer"
+                    style="color: #fa0000; cursor: pointer;font-size: 10px;"
                   ></i>
                 </button>
               </td>

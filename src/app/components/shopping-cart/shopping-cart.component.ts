@@ -263,22 +263,27 @@ export class ShoppingCartComponent {
   }
 
   addProduct() {
-    if (!this.int_code || !this.name || !this.selectedProductPrice || !this.quantity) {
+    if (
+      !this.int_code ||
+      !this.name ||
+      !this.selectedProductPrice ||
+      !this.quantity
+    ) {
       this.toastr.warning('Se deben suministrar todos los campos.');
       return;
     }
-  
+
     // event.preventDefault();
-  
+
     let taxesAmount = 0;
     let subTotal = 0;
-  
+
     this.http
       .get(`${this.backendUrl}products/int_code/${this.int_code}`)
       .subscribe({
         next: (response: any) => {
           this.TAXES = response.message.product.taxPercentage / 100;
-  
+
           if (this.selectedProductTaxes) {
             const priceWithoutTaxes =
               this.selectedProductPrice * (1 - this.TAXES);
@@ -286,28 +291,29 @@ export class ShoppingCartComponent {
             taxesAmount = taxes * this.quantity;
             subTotal = priceWithoutTaxes * this.quantity;
           }
-  
+
           const product = {
             int_code: this.int_code,
             name: this.name,
             price: this.selectedProductPrice,
-            quantity: this.quantity.toFixed(2),
+            quantity: this.quantity,
             taxPercentage: this.TAXES,
             taxes: this.selectedProductTaxes,
             taxes_amount: taxesAmount,
             sub_total: subTotal,
           };
-  
+
           const existingProductIndex = this.productList.findIndex(
             (p) => p.int_code === this.int_code
           );
-  
+
           if (existingProductIndex !== -1) {
             const existingProduct = this.productList[existingProductIndex];
             existingProduct.quantity += product.quantity;
             existingProduct.taxes_amount += product.taxes_amount;
             existingProduct.sub_total += product.sub_total;
-            existingProduct.total = existingProduct.sub_total + existingProduct.taxes_amount;
+            existingProduct.total =
+              existingProduct.sub_total + existingProduct.taxes_amount;
           } else {
             this.productList.push(product);
           }
@@ -385,8 +391,8 @@ export class ShoppingCartComponent {
     return this.productList.map((product) => ({
       int_code: product.int_code,
       quantity: product.quantity,
-      sub_total: product.sub_total.toFixed(2),
-      taxes_amount: product.taxes_amount.toFixed(2),
+      sub_total: product.sub_total,
+      taxes_amount: product.taxes_amount,
     }));
   }
 
@@ -444,19 +450,16 @@ export class ShoppingCartComponent {
   }
 
   updateProduct(product: any) {
-    const newQuantity = product.quantity.toFixed(2);
+    const newQuantity = product.quantity;
     const priceWithoutTaxes = product.price * (1 - product.taxPercentage);
     const taxes = product.price - priceWithoutTaxes;
-  
+
     product.quantity = newQuantity;
     product.sub_total = priceWithoutTaxes * newQuantity;
     product.taxes_amount = taxes * newQuantity;
     product.total = product.sub_total + product.taxes_amount;
-  
     this.calculateTotalSaleAmount();
   }
-  
-  
 
   cancelSale(doc_number: string) {
     this.saleService.cancelSale(doc_number).subscribe({
