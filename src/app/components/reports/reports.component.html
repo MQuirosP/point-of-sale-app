@@ -63,7 +63,7 @@
             <div class="card-body">
               <fieldset class="row">
                 <legend class="text-center" style="font-size: 18px">
-                  Reportes de ventas generales
+                  Reporte general y detallado de ventas por rango de fechas
                 </legend>
                 <div class="col-12 text-center">
                   <a
@@ -91,7 +91,7 @@
             <div class="card-body">
               <fieldset class="row">
                 <legend class="text-center" style="font-size: 18px">
-                  Reportes de compras generales
+                  Reporte general y detallado de compras por rango de fechas
                 </legend>
                 <div class="col-12 text-center">
                   <a
@@ -140,7 +140,7 @@
               <input
                 type="date"
                 class="form-control input-group-text shadow shadow-lg"
-                id="startDate"
+                id="salesStartDate"
                 name="startDate"
                 [(ngModel)]="startDate"
                 ngbDatepicker
@@ -153,7 +153,7 @@
               <input
                 type="date"
                 class="form-control input-group-text shadow"
-                id="endDate"
+                id="salesEndDate"
                 name="endDate"
                 [(ngModel)]="endDate"
                 ngbDatepicker
@@ -219,7 +219,7 @@
               <input
                 type="date"
                 class="form-control input-group-text shadow"
-                id="startDate"
+                id="purchasesStartDate"
                 name="startDate"
                 [(ngModel)]="startDate"
                 ngbDatepicker
@@ -232,7 +232,7 @@
               <input
                 type="date"
                 class="form-control input-group-text shadow"
-                id="endDate"
+                id="purchasesEndDate"
                 name="endDate"
                 [(ngModel)]="endDate"
                 ngbDatepicker

@@ -27,9 +27,13 @@ export class ReportsComponent {
 
   getDate() {
     const startDateInput = <HTMLInputElement>(
-      document.getElementById('startDate')
+      (document.getElementById('salesStartDate') ||
+        document.getElementById('purchasesStartDate'))
     );
-    const endDateInput = <HTMLInputElement>document.getElementById('endDate');
+    const endDateInput = <HTMLInputElement>(
+      (document.getElementById('salesEndDate') ||
+        document.getElementById('purchasesEndDate'))
+    );
     const startDateParts = startDateInput.value.split('-');
     const endDateParts = endDateInput.value.split('-');
 

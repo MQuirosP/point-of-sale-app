@@ -44,14 +44,14 @@
           >
             <div class="carousel-inner" style="height: 130px">
               <div
-                *ngFor="let producto of filteredProducts; let i = index"
+                *ngFor="let product of filteredProducts; let i = index"
                 class="carousel-item pt-2"
                 [class.active]="i === 0"
               >
-                <h5 class="">{{ producto.name }}</h5>
+                <h5 class="">{{ product.name }}</h5>
                 <p>
-                  {{ producto.sale_price | currency : "CRC" : "₡" : "1.2-2" }}
-                  {{ producto.description }}
+                  {{ product.sale_price | currency : "CRC" : "₡" : "1.2-2" }}
+                  {{ product.description }}
                 </p>
               </div>
             </div>
