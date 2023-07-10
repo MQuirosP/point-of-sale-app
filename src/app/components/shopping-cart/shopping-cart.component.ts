@@ -351,7 +351,7 @@ export class ShoppingCartComponent {
     }
   }
 
-  createSale() {
+  createSale(event: Event) {
     if (this.selectedCustomer) {
       const customerFullName = this.getCustomerFullName(this.selectedCustomer);
       const sale = this.buildSaleObject(
@@ -360,7 +360,9 @@ export class ShoppingCartComponent {
       );
       this.saveSale(sale);
     } else {
+      event.stopPropagation();
       this.toastr.error('Debe seleccionar un cliente.');
+      return;
     }
   }
 

@@ -32,6 +32,7 @@
       >
         <a
           class="text-decoration-none"
+          (click)="openSaleModal()"
           data-toggle="modal"
           data-target="#newSaleModal"
         >
@@ -295,11 +296,17 @@
         <table class="table">
           <thead>
             <tr>
-              <th class="text-left shoppingcart-table-titles" scope="col" style="width: 30%;">Producto</th>
-              <th class="text-right" scope="col" style="width: 10%;">Cant.</th>
-              <th class="text-right" scope="col" style="width: 25%;">Precio</th>
-              <th class="text-right" scope="col" style="width: 25%;">Total</th>
-              <th class="" scope="col" style="width: 10%;"></th>
+              <th
+                class="text-left shoppingcart-table-titles"
+                scope="col"
+                style="width: 30%"
+              >
+                Producto
+              </th>
+              <th class="text-right" scope="col" style="width: 10%">Cant.</th>
+              <th class="text-right" scope="col" style="width: 25%">Precio</th>
+              <th class="text-right" scope="col" style="width: 25%">Total</th>
+              <th class="" scope="col" style="width: 10%"></th>
             </tr>
           </thead>
           <tbody>
@@ -307,7 +314,9 @@
               *ngFor="let product of productList"
               [ngClass]="{ 'taxes-row': !product.taxes }"
             >
-              <td class="text-left shoppingcart-list-item">{{ product.name }}</td>
+              <td class="text-left shoppingcart-list-item">
+                {{ product.name }}
+              </td>
               <td class="text-right">
                 <input
                   class="custom-input text-right shoppingcart-list-item"
@@ -319,13 +328,7 @@
                 />
               </td>
               <td class="text-right shoppingcart-list-item">
-                <input
-                  class="custom-input text-right shoppingcart-list-item"
-                  type="number"
-                  [(ngModel)]="product.price"
-                  (change)="updateProduct(product)"
-                  min="1"
-                />
+                {{ product.price | number : "1.2-2" }}
               </td>
               <td class="text-right shoppingcart-list-item">
                 {{ product.price * product.quantity | number : "1.2-2" }}
@@ -336,11 +339,11 @@
                   class="clic-on-image"
                   (click)="removeProduct(product)"
                   data-dismiss="modal"
-                  style="line-height: 1;"
+                  style="line-height: 1"
                 >
                   <i
                     class="fa-solid fa-trash clic-on-icon"
-                    style="color: #fa0000; cursor: pointer;font-size: 10px;"
+                    style="color: #fa0000; cursor: pointer; font-size: 10px"
                   ></i>
                 </button>
               </td>
@@ -352,7 +355,7 @@
         <button
           type="button"
           class="btn btn-primary shadow clic-on-image"
-          (click)="createSale()"
+          (click)="createSale($event);"
           data-dismiss="modal"
         >
           Guardar venta
