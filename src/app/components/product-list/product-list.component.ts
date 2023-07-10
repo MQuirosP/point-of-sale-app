@@ -210,6 +210,7 @@ export class ProductListComponent implements OnInit {
 
       setTimeout(() => {
         this.getProductInfo(selectedProductId);
+        this.calculateTotal(true);
       }, 300);
     } else {
       this.modalTitle = value ? 'Edición' : 'Registro';

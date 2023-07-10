@@ -45,7 +45,7 @@ export class ShoppingCartComponent {
   quantity: number = 1;
 
   // Cálculo de impuestos, sub total y total
-  TAXES = 0.13;
+  TAXES: number = 0;
   selectedProductTaxes: boolean;
   subTotalSaleAmount: number = 0;
   totalTaxesAmount: number = 0;
@@ -75,6 +75,7 @@ export class ShoppingCartComponent {
   @ViewChild('newSaleModal', { static: false }) newSaleModal!: ElementRef;
   @ViewChild('saleHistoryModal', { static: false })
   saleHistoryModal!: ElementRef;
+  @ViewChild('nameInput') nameInput!: ElementRef;
 
   constructor(
     private http: HttpClient,
@@ -213,17 +214,44 @@ export class ShoppingCartComponent {
       }
     );
 
+    // Auto-seleccionar el producto si hay una sola sugerencia
+    if (this.productSuggestionList.length === 1) {
+      const suggestion = this.productSuggestionList[0];
+      this.selectSuggestion(suggestion, null);
+    }
+
     this.changeDetectorRef.detectChanges();
   }
 
+  handleBarcodeInput(event: Event) {
+    const inputValue = (event.target as HTMLInputElement).value.trim();
+
+    if (inputValue) {
+      const matchingProduct = this.filteredProducts.find((product: any) => {
+        return product.int_code === inputValue;
+      });
+
+      if (matchingProduct) {
+        this.selectSuggestion(matchingProduct, null);
+        this.addProduct();
+      }
+    }
+  }
+
   selectSuggestion(suggestion: any, event: Event) {
-    event.preventDefault();
+    if (event) {
+      event.preventDefault();
+    }
     this.int_code = suggestion.int_code;
     this.name = suggestion.name;
     this.isProductValid = true;
-    (this.selectedProductTaxes = suggestion.taxes),
-      (this.selectedProductPrice = suggestion.sale_price);
+    this.selectedProductTaxes = suggestion.taxes;
+    this.selectedProductPrice = suggestion.sale_price;
     this.productSuggestionList = [];
+
+    setTimeout(() => {
+      this.nameInput.nativeElement.focus();
+    }, 0);
   }
 
   isValidQuantity(): boolean {
@@ -233,66 +261,77 @@ export class ShoppingCartComponent {
   isValidPaymentMethod(): boolean {
     return this.paymentMethod.trim() !== '';
   }
-  
 
   addProduct() {
-    if (
-      !this.int_code ||
-      !this.name ||
-      !this.selectedProductPrice ||
-      !this.quantity
-    ) {
-      this.toastr.warning('Se debe suministrar todos los campos.');
+    if (!this.int_code || !this.name || !this.selectedProductPrice || !this.quantity) {
+      this.toastr.warning('Se deben suministrar todos los campos.');
       return;
     }
-
+  
+    // event.preventDefault();
+  
     let taxesAmount = 0;
-    let subTotal = this.selectedProductPrice * this.quantity;
-
-    if (this.selectedProductTaxes) {
-      const priceWithoutTaxes = this.selectedProductPrice / (1 + this.TAXES);
-      const taxes = this.selectedProductPrice - priceWithoutTaxes;
-      taxesAmount = taxes * this.quantity;
-      subTotal = priceWithoutTaxes * this.quantity;
-    }
-
-    const product = {
-      int_code: this.int_code,
-      name: this.name,
-      price: this.selectedProductPrice,
-      quantity: this.quantity,
-      taxes: this.selectedProductTaxes,
-      taxes_amount: taxesAmount,
-      sub_total: subTotal,
-    };
-
-    // console.log(product);
-    this.productList.push(product);
-    this.calculateTotalSaleAmount();
-    this.name = '';
-    this.selectedProductPrice = 0;
-    this.isProductValid = false;
-    this.quantity = 1;
-    this.selectedProductTaxes = false;
+    let subTotal = 0;
+  
+    this.http
+      .get(`${this.backendUrl}products/int_code/${this.int_code}`)
+      .subscribe({
+        next: (response: any) => {
+          this.TAXES = response.message.product.taxPercentage / 100;
+  
+          if (this.selectedProductTaxes) {
+            const priceWithoutTaxes =
+              this.selectedProductPrice * (1 - this.TAXES);
+            const taxes = this.selectedProductPrice - priceWithoutTaxes;
+            taxesAmount = taxes * this.quantity;
+            subTotal = priceWithoutTaxes * this.quantity;
+          }
+  
+          const product = {
+            int_code: this.int_code,
+            name: this.name,
+            price: this.selectedProductPrice,
+            quantity: this.quantity.toFixed(2),
+            taxPercentage: this.TAXES,
+            taxes: this.selectedProductTaxes,
+            taxes_amount: taxesAmount,
+            sub_total: subTotal,
+          };
+  
+          const existingProductIndex = this.productList.findIndex(
+            (p) => p.int_code === this.int_code
+          );
+  
+          if (existingProductIndex !== -1) {
+            const existingProduct = this.productList[existingProductIndex];
+            existingProduct.quantity += product.quantity;
+            existingProduct.taxes_amount += product.taxes_amount;
+            existingProduct.sub_total += product.sub_total;
+            existingProduct.total = existingProduct.sub_total + existingProduct.taxes_amount;
+          } else {
+            this.productList.push(product);
+          }
+          this.calculateTotalSaleAmount();
+          this.clearProductForm();
+          setTimeout(() => {
+            this.nameInput.nativeElement.focus();
+          }, 0);
+        },
+        error: (response: any) => {
+          this.toastr.error(
+            'No se pudo recuperar la información de impuestos del producto.'
+          );
+        },
+      });
   }
 
   private calculateTotalSaleAmount() {
     this.subTotalSaleAmount = this.productList.reduce((subTotal, product) => {
-      if (!product.taxes) {
-        return this.subTotalSaleAmount + product.price * product.quantity;
-      } else {
-        const priceWithoutTaxes = product.price / (1 + this.TAXES);
-        return this.subTotalSaleAmount + priceWithoutTaxes * product.quantity;
-      }
+      return subTotal + product.sub_total;
     }, 0);
 
     this.totalTaxesAmount = this.productList.reduce((taxesTotal, product) => {
-      if (product.taxes) {
-        const taxes = product.price - product.price / (1 + this.TAXES);
-        return taxesTotal + taxes * product.quantity;
-      } else {
-        return taxesTotal;
-      }
+      return taxesTotal + product.taxes_amount;
     }, 0);
 
     this.totalSaleAmount = this.subTotalSaleAmount + this.totalTaxesAmount;
@@ -381,15 +420,43 @@ export class ShoppingCartComponent {
   }
 
   private clearSaleFormData() {
+    this.customer_name = '';
     this.name = '';
     this.price = 0;
-    this.quantity = 0;
+    this.quantity = 1;
     this.productList = [];
     this.totalSaleAmount = 0;
     this.subTotalSaleAmount = 0;
     this.totalTaxesAmount = 0;
     this.totalSaleAmount = 0;
+    this.selectedProductTaxes = false;
+    this.selectedProductPrice = 0;
+    this.TAXES = 0;
   }
+
+  private clearProductForm() {
+    this.name = '';
+    this.selectedProductPrice = 0;
+    this.isProductValid = false;
+    this.quantity = 1;
+    this.TAXES = 0;
+    this.selectedProductTaxes = false;
+  }
+
+  updateProduct(product: any) {
+    const newQuantity = product.quantity.toFixed(2);
+    const priceWithoutTaxes = product.price * (1 - product.taxPercentage);
+    const taxes = product.price - priceWithoutTaxes;
+  
+    product.quantity = newQuantity;
+    product.sub_total = priceWithoutTaxes * newQuantity;
+    product.taxes_amount = taxes * newQuantity;
+    product.total = product.sub_total + product.taxes_amount;
+  
+    this.calculateTotalSaleAmount();
+  }
+  
+  
 
   cancelSale(doc_number: string) {
     this.saleService.cancelSale(doc_number).subscribe({

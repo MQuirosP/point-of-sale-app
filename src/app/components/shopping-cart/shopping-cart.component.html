@@ -182,7 +182,6 @@
             />
           </div>
         </div>
-
         <div class="form-group">
           <label for="name">Nombre del producto:</label>
           <input
@@ -192,12 +191,15 @@
             [(ngModel)]="name"
             class="form-control shadow"
             (keyup)="searchProduct()"
+            (keydown.enter)="addProduct()"
+            (input)="handleBarcodeInput($event)"
             autocomplete="off"
             placeholder="Seleccione producto..."
             [ngClass]="{
               'is-valid': name && isProductValid,
               'is-invalid': name && !isProductValid
             }"
+            #nameInput
           />
           <div
             class="suggestions"
@@ -293,10 +295,10 @@
         <table class="table">
           <thead>
             <tr>
-              <th class="text-left" scope="col">Producto</th>
-              <th class="text-right" scope="col">Cantidad</th>
-              <th class="text-right" scope="col">Precio</th>
-              <th class="text-right" scope="col">Total</th>
+              <th class="text-left shoppingcart-table-titles" scope="col" style="width: 35%;">Producto</th>
+              <th class="text-right" scope="col" style="width: 10%;">Cant.</th>
+              <th class="text-right" scope="col" style="width: 25%;">Precio</th>
+              <th class="text-right" scope="col" style="width: 30%;">Total</th>
               <th scope="col"></th>
             </tr>
           </thead>
@@ -305,15 +307,22 @@
               *ngFor="let product of productList"
               [ngClass]="{ 'taxes-row': !product.taxes }"
             >
-              <td class="text-left">{{ product.name }}</td>
+              <td class="text-left shoppingcart-list-item">{{ product.name }}</td>
               <td class="text-right">
-                {{ product.quantity | number : "1.2-2" }}
+                <input
+                  class="custom-input text-right shoppingcart-list-item"
+                  type="number"
+                  [(ngModel)]="product.quantity"
+                  (change)="updateProduct(product)"
+                  min="1"
+                  step="0.01"
+                />
               </td>
-              <td class="text-right">
-                {{ product.price | currency : "CRC" : "₡" }}
+              <td class="text-right shoppingcart-list-item">
+                {{ product.price | number : "1.2-2" }}
               </td>
-              <td class="text-right">
-                {{ product.quantity * product.price | currency : "CRC" : "₡" }}
+              <td class="text-right shoppingcart-list-item">
+                {{ product.price * product.quantity | number : "1.2-2" }}
               </td>
               <td class="text-center">
                 <button
