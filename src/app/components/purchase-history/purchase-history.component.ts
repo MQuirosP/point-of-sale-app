@@ -457,7 +457,7 @@ export class PurchaseHistoryComponent {
     };
     this.purchaseService.createPurchase(purchase).subscribe({
       next: () => {
-        this.toastr.success('Compra creada exitosamente.');
+        this.toastr.success('Compra registrada exitosamente.');
         this.resetForm();
         this.subTotalPurchaseAmount = 0;
         this.totalTaxesAmount = 0;
