@@ -191,16 +191,12 @@
               autocomplete="off"
               placeholder="Seleccione producto..."
               [ngClass]="{
-                'is-valid':
-                  purchaseForm.get('product_name').touched &&
-                  purchaseForm.get('product_name').valid,
-                'is-invalid':
-                  purchaseForm.get('product_name').touched &&
-                  purchaseForm.get('product_name').invalid
+                'is-valid': purchaseForm.get('product_name').touched && purchaseForm.get('product_name').valid,
+                'is-invalid': purchaseForm.get('product_name').touched && purchaseForm.get('product_name').invalid
               }"
               [value]="selectedProduct ? selectedProduct.name : ''"
             />
-
+          
             <div class="suggestions" *ngIf="productSuggestionList.length > 0 && purchaseForm.get('product_name').value">
               <ul class="list-inline">
                 <li *ngFor="let product of productSuggestionList">
@@ -247,16 +243,14 @@
                 autocomplete="off"
                 step="0.01"
                 [ngClass]="{
-                  'is-valid':
-                    purchaseForm.get('product_quantity').touched &&
-                    purchaseForm.get('product_quantity').valid,
-                  'is-invalid':
-                    purchaseForm.get('product_quantity').touched &&
-                    purchaseForm.get('product_quantity').invalid
+                  'is-valid': purchaseForm.get('product_quantity').touched && purchaseForm.get('product_quantity').valid,
+                  'is-invalid': purchaseForm.get('product_quantity').touched && purchaseForm.get('product_quantity').invalid
                 }"
+                #productQuantityInput
               />
             </div>
           </div>
+          
           <div class="form-group form-row">
             <div class="col">
               <label for="product_new_price">Precio actual:</label>
@@ -312,19 +306,20 @@
             </div>
           </div>
           <table class="table">
-            <thead>
+            <thead class="product-detail-table-titles">
               <tr>
-                <th class="text-left" scope="col">Producto</th>
-                <th class="text-right" scope="col">Cantidad</th>
-                <th class="text-right" scope="col">Precio</th>
-                <th class="text-right" scope="col">Total</th>
-                <th scope="col"></th>
+                <th class="text-left" scope="col" style="width: 30%;">Producto</th>
+                <th class="text-right" scope="col" style="width: 10%;">Cant.</th>
+                <th class="text-right" scope="col" style="width: 25%;">Precio</th>
+                <th class="text-right" scope="col" style="width: 25%;">Total</th>
+                <th scope="col" style="width: 10%;"></th>
               </tr>
             </thead>
             <tbody>
               <tr
                 *ngFor="let product of productList"
                 [ngClass]="{ 'taxes-row': !product.taxes }"
+                class="product-detail-list-item"
               >
                 <td class="text-left">{{ product.name }}</td>
                 <td class="text-right">

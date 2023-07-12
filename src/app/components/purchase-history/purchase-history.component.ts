@@ -102,7 +102,8 @@ export class PurchaseHistoryComponent {
   newPurchaseModal!: ElementRef;
   @ViewChild('purchaseHistoryModal', { static: false })
   purchaseHistoryModal!: ElementRef;
-  
+  @ViewChild('productQuantityInput')
+  productQuantityInput: ElementRef<HTMLInputElement>;
 
   constructor(
     private http: HttpClient,
@@ -206,7 +207,9 @@ export class PurchaseHistoryComponent {
   }
 
   searchProducts() {
-    const searchTerm = this.purchaseForm.get('product_name').value.toLowerCase();
+    const searchTerm = this.purchaseForm
+      .get('product_name')
+      .value.toLowerCase();
     this.http.get(`${this.backendUrl}products`).subscribe({
       next: (response: any) => {
         const products = response?.message?.products;
@@ -214,28 +217,30 @@ export class PurchaseHistoryComponent {
           const searchTermNormalized = searchTerm
             ? searchTerm.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
             : '';
-  
+
           const searchPattern = searchTermNormalized
             .toLowerCase()
             .replace(/\*/g, '.*');
-  
+
           const regex = new RegExp(searchPattern);
-  
+
           this.productSuggestionList = products.filter((product: any) => {
             const productNameNormalized = product.name
               ? product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
               : '';
-  
+
             const productCodeNormalized = product.int_code
-              ? product.int_code.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+              ? product.int_code
+                  .normalize('NFD')
+                  .replace(/[\u0300-\u036f]/g, '')
               : '';
-  
+
             return (
               regex.test(productNameNormalized.toLowerCase()) ||
               regex.test(productCodeNormalized.toLowerCase())
             );
           });
-  
+
           // Auto-seleccionar el producto si hay una sola sugerencia
           if (this.productSuggestionList.length === 1) {
             const suggestion = this.productSuggestionList[0];
@@ -248,7 +253,7 @@ export class PurchaseHistoryComponent {
           this.productSuggestionList = [];
           this.selectedProduct = null;
         }
-  
+
         // Verificar si el campo de entrada está vacío y borrar la selección
         if (searchTerm === '') {
           this.selectedProduct = null;
@@ -267,7 +272,7 @@ export class PurchaseHistoryComponent {
       },
     });
   }
-  
+
   selectProductSuggestion(product: any, event: Event) {
     if (event) {
       event.preventDefault();
@@ -279,8 +284,10 @@ export class PurchaseHistoryComponent {
     this.selectedProductPrice = product.purchase_price;
     this.productSuggestionList = [];
     this.selectedProduct = product;
+    setTimeout(() => {
+      this.productQuantityInput.nativeElement.focus();
+    }, 0);
   }
-  
 
   addProduct() {
     const productName = this.purchaseForm.get('product_name');
