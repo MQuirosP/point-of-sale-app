@@ -198,8 +198,10 @@
                   purchaseForm.get('product_name').touched &&
                   purchaseForm.get('product_name').invalid
               }"
+              [value]="selectedProduct ? selectedProduct.name : ''"
             />
-            <div class="suggestions" *ngIf="productSuggestionList.length > 0">
+
+            <div class="suggestions" *ngIf="productSuggestionList.length > 0 && purchaseForm.get('product_name').value">
               <ul class="list-inline">
                 <li *ngFor="let product of productSuggestionList">
                   <a

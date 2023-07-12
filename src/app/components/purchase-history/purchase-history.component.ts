@@ -73,7 +73,7 @@ export class PurchaseHistoryComponent {
   product_name: string = '';
   selectedProductPrice: number = 0;
   selectedProductTaxes: boolean;
-  // quantity: number = 0;
+  selectedProduct: any;
   productList: any[] = [];
 
   subTotalPurchaseAmount: number = 0;
@@ -98,11 +98,11 @@ export class PurchaseHistoryComponent {
   providerSuggestionList: any[] = [];
   isProviderValid: boolean = false;
 
-
   @ViewChild('newPurchaseModal', { static: false })
   newPurchaseModal!: ElementRef;
   @ViewChild('purchaseHistoryModal', { static: false })
   purchaseHistoryModal!: ElementRef;
+  
 
   constructor(
     private http: HttpClient,
@@ -206,18 +206,59 @@ export class PurchaseHistoryComponent {
   }
 
   searchProducts() {
-    const searchTerm = this.purchaseForm
-      .get('product_name')
-      .value.toLowerCase();
+    const searchTerm = this.purchaseForm.get('product_name').value.toLowerCase();
     this.http.get(`${this.backendUrl}products`).subscribe({
       next: (response: any) => {
         const products = response?.message?.products;
         if (Array.isArray(products) && products.length > 0) {
-          this.productSuggestionList = products.filter((product: any) =>
-            product.name.toLowerCase().includes(searchTerm)
-          );
+          const searchTermNormalized = searchTerm
+            ? searchTerm.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+            : '';
+  
+          const searchPattern = searchTermNormalized
+            .toLowerCase()
+            .replace(/\*/g, '.*');
+  
+          const regex = new RegExp(searchPattern);
+  
+          this.productSuggestionList = products.filter((product: any) => {
+            const productNameNormalized = product.name
+              ? product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+              : '';
+  
+            const productCodeNormalized = product.int_code
+              ? product.int_code.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+              : '';
+  
+            return (
+              regex.test(productNameNormalized.toLowerCase()) ||
+              regex.test(productCodeNormalized.toLowerCase())
+            );
+          });
+  
+          // Auto-seleccionar el producto si hay una sola sugerencia
+          if (this.productSuggestionList.length === 1) {
+            const suggestion = this.productSuggestionList[0];
+            this.selectProductSuggestion(suggestion, null);
+            this.selectedProduct = suggestion;
+          } else {
+            this.selectedProduct = null;
+          }
         } else {
           this.productSuggestionList = [];
+          this.selectedProduct = null;
+        }
+  
+        // Verificar si el campo de entrada está vacío y borrar la selección
+        if (searchTerm === '') {
+          this.selectedProduct = null;
+          this.selectedProductTaxes = null;
+          this.selectedProductPrice = null;
+        } else {
+          // Actualizar el precio solo cuando se selecciona un producto
+          if (this.selectedProduct) {
+            this.selectedProductPrice = this.selectedProduct.purchase_price;
+          }
         }
       },
       error: (error: any) => {
@@ -226,16 +267,20 @@ export class PurchaseHistoryComponent {
       },
     });
   }
-
+  
   selectProductSuggestion(product: any, event: Event) {
-    event.preventDefault();
+    if (event) {
+      event.preventDefault();
+    }
     this.purchaseForm.get('product_name').setValue(product.name);
     this.int_code = product.int_code;
     this.product_name = product.name;
     this.selectedProductTaxes = product.taxes;
     this.selectedProductPrice = product.purchase_price;
     this.productSuggestionList = [];
+    this.selectedProduct = product;
   }
+  
 
   addProduct() {
     const productName = this.purchaseForm.get('product_name');
@@ -462,6 +507,21 @@ export class PurchaseHistoryComponent {
 
   filterPurchasesByDate() {
     if (this.selectedDate) {
+      const selectedDate = new Date(
+        this.selectedDate.year,
+        this.selectedDate.month - 1,
+        this.selectedDate.day
+      );
+      const currentDate = new Date();
+
+      if (selectedDate > currentDate) {
+        this.toastr.warning(
+          'La fecha seleccionada es posterior a la fecha actual.'
+        );
+        this.selectedDate = this.calendar.getToday();
+        return;
+      }
+
       const selectedDateString = this.dateParser.format(this.selectedDate);
       this.getPurchasesHistory(selectedDateString);
     } else {
@@ -500,7 +560,7 @@ export class PurchaseHistoryComponent {
     event.preventDefault();
     this.purchaseForm.get('provider_name').setValue(provider.provider_name);
     this.provider_id = provider.provider_id;
-    this.provider_name = provider.provider_name
+    this.provider_name = provider.provider_name;
     this.isProviderValid = true;
     this.providerSuggestionList = [];
   }

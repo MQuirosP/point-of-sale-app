@@ -94,11 +94,12 @@ export class ShoppingCartComponent {
   }
 
   ngOnInit() {
-    this.showNewSaleModalSubscription = this.modalService.showNewSaleModal.subscribe((show: boolean) => {
-      if (show) {
-        this.openSaleModal();
-      }
-    });
+    this.showNewSaleModalSubscription =
+      this.modalService.showNewSaleModal.subscribe((show: boolean) => {
+        if (show) {
+          this.openSaleModal();
+        }
+      });
     this.selectedDate = this.calendar.getToday();
     this.getProductList();
   }
@@ -119,7 +120,6 @@ export class ShoppingCartComponent {
       this.newSaleModal.nativeElement.style.display = 'block';
     }
   }
-  
 
   closeSaleModal() {
     this.newSaleModal.nativeElement.classList.remove('show');
@@ -201,40 +201,40 @@ export class ShoppingCartComponent {
       this.productSuggestionList = [...this.filteredProducts];
       return;
     }
-  
+
     const searchTermNormalized = this.name
       ? this.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
       : '';
-  
+
     const searchPattern = searchTermNormalized
       .toLowerCase()
       .replace(/\*/g, '.*'); // Reemplazar asteriscos por .* para representar cualquier cantidad de caracteres
-  
+
     const regex = new RegExp(searchPattern);
-  
+
     this.productSuggestionList = this.filteredProducts.filter(
       (product: any) => {
         const productNameNormalized = product.name
           ? product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
           : '';
-  
+
         const productCodeNormalized = product.int_code
           ? product.int_code.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
           : '';
-  
+
         return (
           regex.test(productNameNormalized.toLowerCase()) ||
           regex.test(productCodeNormalized.toLowerCase())
         );
       }
     );
-  
+
     // Auto-seleccionar el producto si hay una sola sugerencia
     if (this.productSuggestionList.length === 1) {
       const suggestion = this.productSuggestionList[0];
       this.selectSuggestion(suggestion, null);
     }
-  
+
     this.changeDetectorRef.detectChanges();
   }
 
@@ -274,7 +274,6 @@ export class ShoppingCartComponent {
 
   //   this.changeDetectorRef.detectChanges();
   // }
-  
 
   handleBarcodeInput(event: Event) {
     const inputValue = (event.target as HTMLInputElement).value.trim();
@@ -559,6 +558,21 @@ export class ShoppingCartComponent {
 
   filterSalesByDate() {
     if (this.selectedDate) {
+      const selectedDate = new Date(
+        this.selectedDate.year,
+        this.selectedDate.month - 1,
+        this.selectedDate.day
+      );
+      const currentDate = new Date();
+
+      if (selectedDate > currentDate) {
+        this.toastr.warning(
+          'La fecha seleccionada es posterior a la fecha actual.'
+        );
+        this.selectedDate = this.calendar.getToday();
+        return;
+      }
+
       const selectedDateString = this.dateParser.format(this.selectedDate);
       this.getSalesHistory(selectedDateString);
     } else {
