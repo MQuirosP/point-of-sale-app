@@ -317,6 +317,7 @@ export class PurchaseHistoryComponent {
     const taxPercent = productFromCache.taxPercentage;
     const productId = productFromCache.productId;
 
+    console.log(taxPercent, productId);
     const product: Product = {
       productId: productId,
       int_code: this.int_code,
@@ -327,39 +328,40 @@ export class PurchaseHistoryComponent {
     };
 
     let taxesAmount = 0;
-    let subTotal = product.price * product.quantity;
+    let subTotal = 0;
 
     if (product.taxes) {
       const priceWithTaxes = product.price / (1 - taxPercent / 100);
+      console.log(priceWithTaxes);
       const taxesPerItem = priceWithTaxes - product.price;
+      console.log(taxesPerItem);
       taxesAmount = taxesPerItem * product.quantity;
       subTotal = product.price * product.quantity;
     }
 
     product.taxes_amount = taxesAmount;
     product.sub_total = subTotal;
+    console.log(product);
     this.productList.push(product);
     this.calculateTotalPurchaseAmount();
     this.purchaseForm.get('product_name')?.reset();
     this.purchaseForm.get('product_new_price')?.reset();
     this.purchaseForm.get('product_quantity')?.reset();
+    
     this.selectedProductPrice = 0;
     this.selectedProductTaxes = false;
   }
 
   private calculateTotalPurchaseAmount() {
-    this.subTotalPurchaseAmount = this.productList.reduce(
-      (subTotal, product) => subTotal + product.sub_total,
-      0
-    );
+    this.subTotalPurchaseAmount = this.productList.reduce((subTotal, product) => {
+      return subTotal + product.sub_total;
+    }, 0);
 
-    this.totalTaxesAmount = this.productList.reduce(
-      (taxesTotal, product) => taxesTotal + product.taxes_amount,
-      0
-    );
+    this.totalTaxesAmount = this.productList.reduce((taxesTotal, product) => {
+      return taxesTotal + product.taxes_amount;
+    }, 0);
 
-    this.totalPurchaseAmount =
-      this.subTotalPurchaseAmount + this.totalTaxesAmount;
+    this.totalPurchaseAmount = this.subTotalPurchaseAmount + this.totalTaxesAmount;
   }
 
   removeProduct(product: any) {
