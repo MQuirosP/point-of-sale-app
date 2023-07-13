@@ -109,7 +109,7 @@ export class PurchaseHistoryComponent {
     private http: HttpClient,
     private modalService: ModalService,
     private calendar: NgbCalendar,
-    private dateParser: NgbDateParserFormatter,
+    private dateFormatter: NgbDateParserFormatter,
     private toastr: ToastrService,
     private purchaseService: PurchaseService,
     private formBuilder: FormBuilder,
@@ -151,6 +151,11 @@ export class PurchaseHistoryComponent {
   ngAfterViewInit() {
     this.date = this.getCurrentDate();
     // this.searchProviders();
+  }
+
+  getCurrentDateString(): string {
+    const currentDate = this.calendar.getToday();
+    return this.dateFormatter.format(currentDate);
   }
 
   openPurchaseModal() {
@@ -531,7 +536,7 @@ export class PurchaseHistoryComponent {
         return;
       }
 
-      const selectedDateString = this.dateParser.format(this.selectedDate);
+      const selectedDateString = this.dateFormatter.format(this.selectedDate);
       this.getPurchasesHistory(selectedDateString);
     } else {
       const currentDate = this.getCurrentDate();

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgbCalendar, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { fadeAnimation } from 'src/app/fadeAnimation';
 import { ReportsService } from 'src/app/services/reports.service';
 
@@ -16,13 +16,23 @@ export class ReportsComponent {
 
   constructor(
     private reportService: ReportsService,
-    private calendar: NgbCalendar
+    private calendar: NgbCalendar,
+    private dateFormatter: NgbDateParserFormatter
   ) {}
 
   ngOnInit() {
     this.currentDate = this.calendar.getToday();
     this.startDate = this.calendar.getToday();
     this.endDate = this.calendar.getToday();
+  }
+
+  getCurrentDate(): NgbDateStruct {
+    return this.calendar.getToday();
+  }
+
+  getCurrentDateString(): string {
+    const currentDate = this.calendar.getToday();
+    return this.dateFormatter.format(currentDate);
   }
 
   getDate() {

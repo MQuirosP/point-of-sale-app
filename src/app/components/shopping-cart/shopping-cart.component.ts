@@ -87,7 +87,8 @@ export class ShoppingCartComponent {
     private dateParser: NgbDateParserFormatter,
     private toastr: ToastrService,
     private ticketService: TicketService,
-    private saleService: SaleService
+    private saleService: SaleService,
+    private dateFormatter: NgbDateParserFormatter
   ) {
     this.date = this.getCurrentDate();
     this.selectedDate = this.calendar.getToday();
@@ -112,6 +113,11 @@ export class ShoppingCartComponent {
     if (this.showNewSaleModalSubscription) {
       this.showNewSaleModalSubscription.unsubscribe();
     }
+  }
+
+  getCurrentDateString(): string {
+    const currentDate = this.calendar.getToday();
+    return this.dateFormatter.format(currentDate);
   }
 
   openSaleModal() {
