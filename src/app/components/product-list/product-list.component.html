@@ -50,18 +50,21 @@
       <div class="table-responsive">
         <table class="table">
           <thead>
-            <tr>
+            <tr class="product-detail-table-titles">
               <th class="text-left">Código</th>
               <th class="text-left">Producto</th>
-              <th class="text-right">Cant. disponible</th>
-              <th class="text-right">Precio de compra</th>
-              <th class="text-right">Precio de venta</th>
+              <th class="text-right">Disponible</th>
+              <th class="text-right">P. compra</th>
+              <th class="text-right">Margen (%)</th>
+              <th class="text-right">IVA (%)</th>
+              <th class="text-right">P. venta</th>
             </tr>
           </thead>
           <tbody>
             <tr
               *ngFor="let product of filteredProducts; let even = even"
               [ngClass]="{ 'table-row-even': even, 'table-row-odd': !even }"
+              class="product-detail-list-item"
             >
               <td class="product-code">
                 {{ product.int_code }}
@@ -113,6 +116,8 @@
               <td class="text-right">
                 {{ product.purchase_price | currency : "CRC" : "₡" }}
               </td>
+              <td class="text-right">{{ product.margin | number : "1.2-2"}} %</td>
+              <td class="text-right"> {{ product.taxPercentage | number : "1.1-1" }} %</td>
               <td class="text-right price-cell">
                 {{ product.sale_price | currency : "CRC" : "₡" }}
               </td>
