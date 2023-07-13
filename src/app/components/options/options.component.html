@@ -49,14 +49,14 @@
         <div class="container">
           <div class="card shadow">
             <div class="card-header text-center">
-              <h3 class="h4">Editar configuración</h3>
+              <h3 class="h4">Registro de usuarios</h3>
             </div>
             <div class="card-body" style="margin-bottom: 14px">
               <fieldset class="row">
                 <legend class="text-center" style="font-size: 18px">
-                  Permitir Registro de Usuarios
+                  Activar el registro de usuarios.
                 </legend>
-                <div class="container col-2">
+                <div class="container text-center">
                   <label for="" class="form-check-label">
                     <input
                       type="checkbox"
@@ -65,7 +65,7 @@
                       [(ngModel)]="activateRegister"
                       [checked]="activateRegister"
                     />
-                    {{ activateRegister ? "Sí" : "No" }}
+                    {{ activateRegister ? "Activado" : "Desactivado" }}
                   </label>
                 </div>
               </fieldset>

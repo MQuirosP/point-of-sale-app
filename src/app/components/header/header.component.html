@@ -26,6 +26,22 @@
               >Inicio</a
             >
           </li>
+          <li class="nav-item px-2 nav-link">
+            <a
+              routerLink="/product-list"
+              class="nav-link"
+              routerLinkActive="router-link-active"
+              >Productos</a
+            >
+          </li>
+          <li class="nav-item px-2 nav-link">
+            <a
+              routerLink="/reports"
+              class="nav-link"
+              routerLinkActive="router-link-active"
+              >Reportes</a
+            >
+          </li>
         </ul>
       </div>
       <div class="navbar-nav ml-auto">
@@ -146,6 +162,7 @@
             >
             <input
               type="password"
+              id="currentPassword"
               class="form-control shadow"
               formControlName="currentPassword"
               (focus)="currentPasswordTouched = true"
@@ -177,6 +194,7 @@
             >
             <input
               type="password"
+              id="newPassword"
               class="form-control shadow"
               formControlName="newPassword"
               (focus)="newPasswordTouched = true"
@@ -207,6 +225,7 @@
             >
             <input
               type="password"
+              id="confirmPassword"
               class="form-control shadow"
               formControlName="confirmPassword"
               (focus)="confirmPasswordTouched = true"
