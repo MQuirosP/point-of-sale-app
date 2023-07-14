@@ -62,8 +62,6 @@ export class PurchaseService {
       });
     });
   }
-  
-  
 
   cancelPurchase(docNumber: string): Observable<any> {
     const url = `${this.backendUrl}purchases/${docNumber}`;

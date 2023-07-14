@@ -268,7 +268,9 @@ export class PurchaseHistoryComponent {
         } else {
           // Actualizar el precio solo cuando se selecciona un producto
           if (this.selectedProduct) {
-            this.selectedProductPrice = this.selectedProduct.purchase_price;
+            this.selectedProductPrice =
+              this.selectedProduct.purchase_price *
+              (1 - this.selectedProduct.taxPercentage / 100);
           }
         }
       },
@@ -323,7 +325,7 @@ export class PurchaseHistoryComponent {
     const taxPercent = productFromCache.taxPercentage;
     const productId = productFromCache.productId;
 
-    console.log(taxPercent, productId);
+    // console.log(taxPercent, productId);
     const product: Product = {
       productId: productId,
       int_code: this.int_code,
@@ -345,27 +347,31 @@ export class PurchaseHistoryComponent {
 
     product.taxes_amount = taxesAmount;
     product.sub_total = subTotal;
-    console.log(product);
+    // console.log(product);
     this.productList.push(product);
     this.calculateTotalPurchaseAmount();
     this.purchaseForm.get('product_name')?.reset();
     this.purchaseForm.get('product_new_price')?.reset();
     this.purchaseForm.get('product_quantity')?.reset();
-    
+
     this.selectedProductPrice = 0;
     this.selectedProductTaxes = false;
   }
 
   private calculateTotalPurchaseAmount() {
-    this.subTotalPurchaseAmount = this.productList.reduce((subTotal, product) => {
-      return subTotal + product.sub_total;
-    }, 0);
+    this.subTotalPurchaseAmount = this.productList.reduce(
+      (subTotal, product) => {
+        return subTotal + product.sub_total;
+      },
+      0
+    );
 
     this.totalTaxesAmount = this.productList.reduce((taxesTotal, product) => {
       return taxesTotal + product.taxes_amount;
     }, 0);
 
-    this.totalPurchaseAmount = this.subTotalPurchaseAmount + this.totalTaxesAmount;
+    this.totalPurchaseAmount =
+      this.subTotalPurchaseAmount + this.totalTaxesAmount;
   }
 
   removeProduct(product: any) {
@@ -433,7 +439,12 @@ export class PurchaseHistoryComponent {
       );
       if (!cachedProduct) {
         // El producto no está en la caché, manejar el error o la lógica apropiada
-        return throwError(() => new Error(`Product with int_code ${product.int_code} not found in cache.`))
+        return throwError(
+          () =>
+            new Error(
+              `Product with int_code ${product.int_code} not found in cache.`
+            )
+        );
         // return throwError(
         //   `Product with int_code ${product.int_code} not found in cache.`
         // );

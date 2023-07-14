@@ -191,13 +191,23 @@
               autocomplete="off"
               placeholder="Seleccione producto..."
               [ngClass]="{
-                'is-valid': purchaseForm.get('product_name').touched && purchaseForm.get('product_name').valid,
-                'is-invalid': purchaseForm.get('product_name').touched && purchaseForm.get('product_name').invalid
+                'is-valid':
+                  purchaseForm.get('product_name').touched &&
+                  purchaseForm.get('product_name').valid,
+                'is-invalid':
+                  purchaseForm.get('product_name').touched &&
+                  purchaseForm.get('product_name').invalid
               }"
               [value]="selectedProduct ? selectedProduct.name : ''"
             />
-          
-            <div class="suggestions" *ngIf="productSuggestionList.length > 0 && purchaseForm.get('product_name').value">
+
+            <div
+              class="suggestions"
+              *ngIf="
+                productSuggestionList.length > 0 &&
+                purchaseForm.get('product_name').value
+              "
+            >
               <ul class="list-inline">
                 <li *ngFor="let product of productSuggestionList">
                   <a
@@ -243,14 +253,18 @@
                 autocomplete="off"
                 step="0.01"
                 [ngClass]="{
-                  'is-valid': purchaseForm.get('product_quantity').touched && purchaseForm.get('product_quantity').valid,
-                  'is-invalid': purchaseForm.get('product_quantity').touched && purchaseForm.get('product_quantity').invalid
+                  'is-valid':
+                    purchaseForm.get('product_quantity').touched &&
+                    purchaseForm.get('product_quantity').valid,
+                  'is-invalid':
+                    purchaseForm.get('product_quantity').touched &&
+                    purchaseForm.get('product_quantity').invalid
                 }"
                 #productQuantityInput
               />
             </div>
           </div>
-          
+
           <div class="form-group form-row">
             <div class="col">
               <label for="product_new_price">Precio actual:</label>
@@ -308,11 +322,15 @@
           <table class="table">
             <thead class="product-detail-table-titles">
               <tr>
-                <th class="text-left" scope="col" style="width: 30%;">Producto</th>
-                <th class="text-right" scope="col" style="width: 10%;">Cant.</th>
-                <th class="text-right" scope="col" style="width: 25%;">Precio</th>
-                <th class="text-right" scope="col" style="width: 25%;">Total</th>
-                <th scope="col" style="width: 10%;"></th>
+                <th class="text-left" scope="col" style="width: 30%">
+                  Producto
+                </th>
+                <th class="text-right" scope="col" style="width: 10%">Cant.</th>
+                <th class="text-right" scope="col" style="width: 25%">
+                  Precio
+                </th>
+                <th class="text-right" scope="col" style="width: 25%">Total</th>
+                <th scope="col" style="width: 10%"></th>
               </tr>
             </thead>
             <tbody>
@@ -327,13 +345,13 @@
                 </td>
                 <td class="text-right">
                   {{
-                    (product.sub_total + product.taxes_amount) / product.quantity
-                      | currency : "CRC" : "₡"
+                    (product.sub_total + product.taxes_amount) /
+                      product.quantity | currency : "CRC" : "₡"
                   }}
                 </td>
                 <td class="text-right">
                   {{
-                    (product.sub_total + product.taxes_amount)
+                    product.sub_total + product.taxes_amount
                       | currency : "CRC" : "₡"
                   }}
                 </td>
@@ -479,11 +497,11 @@
                   <tr *ngFor="let item of purchase.purchaseItems">
                     <td class="text-left">{{ item.int_code }}</td>
                     <td class="text-left">{{ item.name }}</td>
-                    <td class="text-right">{{ item.quantity | number : "1.2-2" }}</td>
                     <td class="text-right">
-                      {{
-                        item.total | currency : "CRC" : "₡" : "1.2-2"
-                      }}
+                      {{ item.quantity | number : "1.2-2" }}
+                    </td>
+                    <td class="text-right">
+                      {{ item.total | currency : "CRC" : "₡" : "1.2-2" }}
                     </td>
                   </tr>
                 </tbody>
