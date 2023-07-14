@@ -178,6 +178,7 @@ export class PurchaseHistoryComponent {
   closePurchaseHistoryModal() {
     this.purchaseHistoryModal.nativeElement.classList.remove('show');
     this.purchaseHistoryModal.nativeElement.style.display = 'none';
+    this.selectedDate = this.calendar.getToday();
   }
 
   getPurchasesHistory(selectedDate: string) {
@@ -337,9 +338,7 @@ export class PurchaseHistoryComponent {
 
     if (product.taxes) {
       const priceWithTaxes = product.price / (1 - taxPercent / 100);
-      console.log(priceWithTaxes);
       const taxesPerItem = priceWithTaxes - product.price;
-      console.log(taxesPerItem);
       taxesAmount = taxesPerItem * product.quantity;
       subTotal = product.price * product.quantity;
     }
@@ -434,13 +433,14 @@ export class PurchaseHistoryComponent {
       );
       if (!cachedProduct) {
         // El producto no está en la caché, manejar el error o la lógica apropiada
-        return throwError(
-          `Product with int_code ${product.int_code} not found in cache.`
-        );
+        return throwError(() => new Error(`Product with int_code ${product.int_code} not found in cache.`))
+        // return throwError(
+        //   `Product with int_code ${product.int_code} not found in cache.`
+        // );
       }
 
       const data = {
-        purchase_price: product.price,
+        purchase_price: product.price + product.taxes_amount,
       };
       return this.http.put(
         `${this.backendUrl}products/${cachedProduct.productId}`,

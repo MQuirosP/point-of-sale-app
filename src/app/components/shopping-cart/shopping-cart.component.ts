@@ -143,6 +143,7 @@ export class ShoppingCartComponent {
   closeSaleHistoryModal() {
     this.saleHistoryModal.nativeElement.classList.remove('show');
     this.saleHistoryModal.nativeElement.style.display = 'none';
+    this.selectedDate = this.calendar.getToday();
   }
 
   getSalesHistory(selectedDate: string) {

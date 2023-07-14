@@ -471,18 +471,18 @@
               </button>
               <table class="table">
                 <thead>
-                  <th>Cód.</th>
-                  <th>Producto</th>
-                  <th>Cant.</th>
-                  <th>Total</th>
+                  <th class="text-left">Cód.</th>
+                  <th class="text-left">Producto</th>
+                  <th class="text-right">Cant.</th>
+                  <th class="text-right">Total</th>
                 </thead>
                 <tbody>
                   <tr *ngFor="let item of sale.saleItems">
-                    <td>{{ item.int_code }}</td>
-                    <td>{{ item.name }}</td>
-                    <td>{{ item.quantity }}</td>
-                    <td>
-                      {{ item.sale_price | currency : "CRC" : "₡" : "1.2-2" }}
+                    <td class="text-left">{{ item.int_code }}</td>
+                    <td class="text-left">{{ item.name }}</td>
+                    <td class="text-right">{{ item.quantity | number : "1.2-2" }}</td>
+                    <td class="text-right">
+                      {{ item.total | currency : "CRC" : "₡" : "1.2-2" }}
                     </td>
                   </tr>
                 </tbody>

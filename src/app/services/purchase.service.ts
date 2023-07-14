@@ -46,7 +46,7 @@ export class PurchaseService {
       this.http.get<Purchase>(`${this.backendUrl}purchases/doc_number/${purchase}`).subscribe({
         next: (response: any) => {
           if (response.success) {
-            console.log(response);
+            // console.log(response);
             resolve(true); // Documento encontrado en la base de datos
           } else {
             resolve(false); // Documento no encontrado en la base de datos
