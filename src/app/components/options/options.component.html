@@ -9,7 +9,6 @@
   </div>
 </header>
 
-<!-- Seccion de botones opciones -->
 <div class="container">
   <section id="actions" class="py-4 bg-transparent" [@fadeAnimation]>
     <div class="container">
@@ -21,9 +20,10 @@
             routerLink="/"
             role="button"
             class="btn btn-warning border border-warning shadow clic-on-image ml-4"
-            style="width: 110px;"
+            style="width: 110px; margin-right: 10px;"
           >
-            <i class="fas fa-arrow-left"></i> Volver
+            <i class="fas fa-arrow-left"></i>
+            <span class="d-none d-md-inline">Volver</span>
           </a>
 
           <a
@@ -31,9 +31,10 @@
             type="submit"
             (click)="saveRegisterStatus()"
             class="btn btn-success border border-success shadow clic-on-image mr-5"
-            style="width: 110px;"
+            style="width: 110px"
           >
-            <i class="fas fa-check"></i> Guardar
+            <i class="fas fa-check"></i>
+            <span class="d-none d-md-inline">Guardar</span>
           </a>
         </div>
       </div>
@@ -679,5 +680,3 @@
     </div>
   </div>
 </div>
-
-
