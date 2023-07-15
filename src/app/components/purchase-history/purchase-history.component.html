@@ -480,9 +480,9 @@
                 >
               </p>
               <button
-                *ngIf="purchase.status === 'aceptado'"
+                *ngIf="purchase.status === 'aceptado' && isCurrentDate(purchase.createdAt)"
                 class="btn btn-danger shadow clic-on-image"
-                (click)="cancelPurchase(purchase.doc_number)"
+                (click)="cancelPurchase(purchase.doc_number); togglePurchaseDetails(purchase)"
               >
                 Anular
               </button>

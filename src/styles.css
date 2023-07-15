@@ -436,4 +436,7 @@ button {
   font-size: 14px;
 }
 
+.date-input {
+  cursor: pointer;
+}
 

@@ -333,7 +333,7 @@ export class ShoppingCartComponent {
     }
 
     // event.preventDefault();
-
+    // let productData = {};
     let taxesAmount = 0;
     let subTotal = 0;
 
@@ -341,14 +341,17 @@ export class ShoppingCartComponent {
       .get(`${this.backendUrl}products/int_code/${this.int_code}`)
       .subscribe({
         next: (response: any) => {
-          this.TAXES = response.message.product.taxPercentage / 100;
-
+          const productData = response.message.product;
           if (this.selectedProductTaxes) {
-            const priceWithoutTaxes =
-              this.selectedProductPrice * (1 - this.TAXES);
-            const taxes = this.selectedProductPrice - priceWithoutTaxes;
-            taxesAmount = taxes * this.quantity;
-            subTotal = priceWithoutTaxes * this.quantity;
+            taxesAmount = (productData.purchase_price / (1 - productData.taxPercentage / 100) - productData.purchase_price);
+            subTotal = productData.sale_price - taxesAmount;
+          }
+
+          if (this.quantity > productData.quantity) {
+            this.toastr.error(
+              `Stock de producto ${productData.name} inferior al digitado.`
+            );
+            return;
           }
 
           const product = {
@@ -358,8 +361,8 @@ export class ShoppingCartComponent {
             quantity: this.quantity,
             taxPercentage: this.TAXES,
             taxes: this.selectedProductTaxes,
-            taxes_amount: taxesAmount,
-            sub_total: subTotal,
+            taxes_amount: taxesAmount * this.quantity,
+            sub_total: subTotal * this.quantity,
           };
 
           const existingProductIndex = this.productList.findIndex(
@@ -511,15 +514,29 @@ export class ShoppingCartComponent {
   }
 
   updateProduct(product: any) {
-    const newQuantity = product.quantity;
-    const priceWithoutTaxes = product.price * (1 - product.taxPercentage);
-    const taxes = product.price - priceWithoutTaxes;
+    const foundProduct = this.productList.find(
+      (p: any) => p.int_code === product.int_code
+    );
 
-    product.quantity = newQuantity;
-    product.sub_total = priceWithoutTaxes * newQuantity;
-    product.taxes_amount = taxes * newQuantity;
-    product.total = product.sub_total + product.taxes_amount;
-    this.calculateTotalSaleAmount();
+    if (foundProduct) {
+      this.http
+        .get(`${this.backendUrl}products/int_code/${product.int_code}`, {})
+        .subscribe({
+          next: (response: any) => {
+            const productData = response.message.product;
+
+            foundProduct.taxes_amount =
+              (productData.sale_price - productData.purchase_price) *
+              product.quantity;
+            foundProduct.sub_total =
+              productData.purchase_price * product.quantity;
+            foundProduct.total =
+              foundProduct.sub_total + foundProduct.taxes_amount;
+
+            this.calculateTotalSaleAmount();
+          },
+        });
+    }
   }
 
   cancelSale(doc_number: string) {

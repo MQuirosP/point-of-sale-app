@@ -210,7 +210,7 @@ export class ProductListComponent implements OnInit {
 
       setTimeout(() => {
         this.getProductInfo(selectedProductId);
-        this.calculateTotal(true);
+        // this.calculateTotal(true);
       }, 300);
     } else {
       this.modalTitle = value ? 'Edición' : 'Registro';
@@ -344,7 +344,6 @@ export class ProductListComponent implements OnInit {
       description: this.productForm.get('description').value,
       purchase_price: this.productForm.get('purchase_price').value,
       sale_price: this.productForm.get('sale_price').value,
-      quantity: 0,
       taxes: this.productForm.get('taxes').value,
       margin: this.productForm.get('margin').value,
       taxPercentage: this.productForm.get('taxPercentage').value,

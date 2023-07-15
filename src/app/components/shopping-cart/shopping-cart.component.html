@@ -320,20 +320,21 @@
                 {{ product.name }}
               </td>
               <td class="text-right">
-                <input
+                <!-- <input
                   class="custom-input text-right"
                   type="number"
                   [(ngModel)]="product.quantity"
                   (change)="updateProduct(product)"
                   min="1"
                   step="0.01"
-                />
+                /> -->
+                {{ product.quantity }}
               </td>
               <td class="text-right">
-                {{ product.price | currency : "CRC" : "₡" }}
+                {{ product.sub_total + product.taxes_amount| currency : "CRC" : "₡" }}
               </td>
               <td class="text-right">
-                {{ product.price * product.quantity | currency : "CRC" : "₡" }}
+                {{ product.sub_total + product.taxes_amount | currency : "CRC" : "₡" }}
               </td>
               <td class="text-center">
                 <button

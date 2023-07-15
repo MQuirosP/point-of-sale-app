@@ -181,6 +181,17 @@ export class PurchaseHistoryComponent {
     this.selectedDate = this.calendar.getToday();
   }
 
+  isCurrentDate(createdAt: string): boolean {
+    const saleDate = new Date(createdAt);
+    const currentDate = new Date();
+    // Compara solo el año, mes y día para ignorar la hora exacta
+    return (
+      saleDate.getFullYear() === currentDate.getFullYear() &&
+      saleDate.getMonth() === currentDate.getMonth() &&
+      saleDate.getDate() === currentDate.getDate()
+    );
+  }
+
   getPurchasesHistory(selectedDate: string) {
     if (!selectedDate) {
       console.log('Fecha no especificada', selectedDate);
@@ -269,8 +280,7 @@ export class PurchaseHistoryComponent {
           // Actualizar el precio solo cuando se selecciona un producto
           if (this.selectedProduct) {
             this.selectedProductPrice =
-              this.selectedProduct.purchase_price *
-              (1 - this.selectedProduct.taxPercentage / 100);
+              this.selectedProduct.purchase_price;
           }
         }
       },
@@ -451,8 +461,9 @@ export class PurchaseHistoryComponent {
       }
 
       const data = {
-        purchase_price: product.price + product.taxes_amount,
+        purchase_price: product.price,
       };
+      console.log(data);
       return this.http.put(
         `${this.backendUrl}products/${cachedProduct.productId}`,
         data
