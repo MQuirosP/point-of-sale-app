@@ -134,4 +134,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
       label?.classList.remove('active');
     }
   }
+
+  getUserRole(): string {
+    return localStorage.getItem('role');
+  }
 }

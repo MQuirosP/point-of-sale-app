@@ -69,6 +69,7 @@
                   <i class="fa-solid fa-cog mr-2"></i>Configuración
                 </a>
                 <a
+                *ngIf="getUserRole() === 'administrator'"
                   class="dropdown-item"
                   (click)="createBackup()"
                   style="cursor: pointer"

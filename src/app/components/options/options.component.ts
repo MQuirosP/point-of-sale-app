@@ -933,6 +933,18 @@ export class OptionsComponent implements OnInit {
               if (response.success) {
                 this.toastr.success('Cambio de contraseña exitoso.');
                 this.resetPasswordForm.reset()
+                setTimeout(() => {
+                  const modal = document.getElementById('resetPasswordModal');
+                  if (modal) {
+                    modal.classList.remove('show');
+                    modal.setAttribute('aria-hidden', 'true');
+                    modal.style.display = 'none';
+                    const modalBackdrop = document.getElementsByClassName('modal')[0];
+                    if (modalBackdrop) {
+                      modalBackdrop.parentNode.removeChild(modalBackdrop);
+                    }
+                  }
+                }, 500);
                 this.closeResetPasswordModal();
               } else {
                 this.toastr.error('No fue posible cambiar la contraseña.');

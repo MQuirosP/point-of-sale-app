@@ -964,15 +964,17 @@
             </div>
             <div class="col">
               <label for="resetButton">Contraseña:</label>
-              <button
-                type="button"
-                class="btn btn-primary shadow clic-on-image"
-                data-toggle="modal"
-                data-target="#resetPasswordModal"
-                (click)="openResetPasswordModal()"
-              >
-                Restablecer Contraseña
-              </button>
+              <div class="text-center">
+                <button
+                  type="button"
+                  class="btn btn-primary shadow clic-on-image"
+                  data-toggle="modal"
+                  data-target="#resetPasswordModal"
+                  (click)="openResetPasswordModal()"
+                >
+                  Restablecer Contraseña
+                </button>
+              </div>
             </div>
           </div>
           <div class="form-group">
@@ -1061,7 +1063,7 @@
   aria-labelledby="resetPasswordModalLabel"
   aria-hidden="true"
 >
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog" role="document" style="width: 300px;">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="resetPasswordModalLabel">
@@ -1076,7 +1078,7 @@
         >
           <span aria-hidden="true"
             ><i
-              class="fa-sharp fa-solid fa-circle-xmark"
+              class="fa-sharp fa-solid fa-circle-xmark clic-on-image"
               style="color: #f40b0b"
             ></i
           ></span>
@@ -1126,7 +1128,14 @@
             />
           </div>
           <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-dismiss="modal"
+              (click)="resetPassword(this.userForm.get('username').value)"
+            >
+              Guardar
+            </button>
             <button
               type="button"
               class="btn btn-secondary"
