@@ -33,6 +33,8 @@ export class OptionsComponent implements OnInit {
   usersListModal!: ElementRef;
   @ViewChild('usersInfoModal', { static: false })
   usersInfoModal!: ElementRef;
+  @ViewChild('resetPasswordModal', { static: false })
+  resetPasswordModal!: ElementRef;
 
   // Variables generales
   activateRegister: boolean | any;
@@ -67,6 +69,8 @@ export class OptionsComponent implements OnInit {
   selectedUser: any;
   userInfo: any = {};
   userForm: FormGroup;
+  resetPasswordForm: FormGroup;
+  superUser: string = 'admin';
 
   constructor(
     private optionService: OptionsService,
@@ -106,6 +110,11 @@ export class OptionsComponent implements OnInit {
       role: ['user', Validators.required],
       status: ['pending', Validators.required],
     });
+
+    this.resetPasswordForm = this.formBuilder.group({
+      newPassword: ['', [Validators.required]],
+      confirmPassword: ['', [Validators.required]],
+    });
   }
 
   ngOnInit() {
@@ -123,7 +132,10 @@ export class OptionsComponent implements OnInit {
   getUserRole(): string {
     return localStorage.getItem('role');
   }
-  
+
+  getUser(): string {
+    return localStorage.getItem('username');
+  }
 
   saveRegisterStatus() {
     this.optionService.changeRegisterStatus(this.activateRegister).subscribe({
@@ -626,7 +638,7 @@ export class OptionsComponent implements OnInit {
     });
   }
 
-  // De aquí en adelante todo es usuarios
+  // DE AQUÍ EN ADELANTE EXCLUSIVAMENTE USUARIOS
   openUsersListModal() {
     this.usersListModal.nativeElement.classList.toggle('show');
     this.usersListModal.nativeElement.style.display = 'block';
@@ -668,8 +680,8 @@ export class OptionsComponent implements OnInit {
   getUserList() {
     this.http.get(`${this.backendUrl}users`).subscribe({
       next: (response: any) => {
-        if (response.success && response.message.Usuarios) {
-          this.users = response.message.Usuarios.map((user: any) => {
+        if (response.success && response.message.Users) {
+          this.users = response.message.Users.map((user: any) => {
             return { ...user, showIcons: false };
           });
         }
@@ -800,18 +812,32 @@ export class OptionsComponent implements OnInit {
   }
 
   private updateUser(userId: number, userData: any) {
-    this.http.put(`${this.backendUrl}users/${userId}`, userData).subscribe({
+    this.http.get(`${this.backendUrl}users/id/${userId}`).subscribe({
       next: (response: any) => {
-        if (response.success) {
-          this.toastr.success('Usuario actualizado exitosamente.');
-          this.updateLocalUser(userId, userData);
+        if (response.message.User.username === this.superUser) {
+          this.toastr.warning('Usuario administrador no puede ser modificado.');
+          return;
         } else {
-          this.toastr.error('Error al actualizar el usuario.');
+          this.http
+            .put(`${this.backendUrl}users/${userId}`, userData)
+            .subscribe({
+              next: (response: any) => {
+                if (response.success) {
+                  this.toastr.success('Usuario actualizado exitosamente.');
+                  this.updateLocalUser(userId, userData);
+                } else {
+                  this.toastr.error('Error al actualizar el usuario.');
+                }
+                this.refreshUsersList();
+              },
+              error: (error: any) => {
+                this.toastr.error('Error al actualizar el usuario.', error);
+              },
+            });
         }
-        this.getUserList();
       },
       error: (error: any) => {
-        this.toastr.error('Error al actualizar el usuario.', error);
+        this.toastr.error('Error al intentar recuperar el usuario.');
       },
     });
   }
@@ -826,17 +852,30 @@ export class OptionsComponent implements OnInit {
   }
 
   deleteUser(id: number) {
-    this.http.delete(`${this.backendUrl}users/${id}`).subscribe({
+    this.http.get(`${this.backendUrl}users/id/${id}`).subscribe({
       next: (response: any) => {
-        if (response.success) {
-          this.toastr.success('Usuario eliminado exitosamente.');
+        console.log(response);
+        if (response.message.User.username === this.superUser) {
+          this.toastr.warning('Usuario administrador no puede ser eliminado.');
+          return;
         } else {
-          this.toastr.error('Error al eliminar el usuario.');
+          this.http.delete(`${this.backendUrl}users/${id}`).subscribe({
+            next: (response: any) => {
+              if (response.success) {
+                this.toastr.success('Usuario eliminado exitosamente.');
+              } else {
+                this.toastr.error('Error al eliminar el usuario.');
+              }
+              this.refreshUsersList();
+            },
+            error: (error: any) => {
+              this.toastr.error('Error al eliminar el usuario.', error);
+            },
+          });
         }
-        this.refreshUsersList();
       },
       error: (error: any) => {
-        this.toastr.error('Error al eliminar el usuario.', error);
+        this.toastr.error('Error al recuperar el usuario');
       },
     });
   }
@@ -845,7 +884,7 @@ export class OptionsComponent implements OnInit {
     this.http.get(`${this.backendUrl}users`).subscribe({
       next: (response: any) => {
         if (response.success) {
-          this.users = response.message.users.map((user: any) => {
+          this.users = response.message.Users.map((user: any) => {
             return { ...user, showIcons: false };
           });
           this.filteredUsers = [...this.users];
@@ -857,5 +896,57 @@ export class OptionsComponent implements OnInit {
         this.toastr.error('Error actualizando la lista de usuarios.');
       },
     });
+  }
+
+  openResetPasswordModal() {
+    this.resetPasswordModal.nativeElement.classList.toggle('show');
+    this.resetPasswordModal.nativeElement.style.display = 'block';
+  }
+
+  closeResetPasswordModal() {
+    this.resetPasswordModal.nativeElement.classList.remove('show');
+    this.resetPasswordModal.nativeElement.style.display = 'none';
+  }
+
+  resetPassword(username: string) {
+
+    if (username === this.superUser) {
+      this.toastr.warning(`No tiene permisos para cambiar la contraseña al usuario.`)
+      return;
+    } else {
+      if (this.resetPasswordForm.valid) {
+        const newPassword = this.resetPasswordForm.get('newPassword').value;
+        const confirmPassword =
+          this.resetPasswordForm.get('confirmPassword').value;
+  
+        if (newPassword !== confirmPassword) {
+          this.toastr.error('Las contraseñas no coinciden.');
+          return;
+        }
+  
+        const passwordData = { newPassword: newPassword };
+  
+        this.http
+          .put(`${this.backendUrl}users/reset-password/${username}`, passwordData)
+          .subscribe({
+            next: (response: any) => {
+              if (response.success) {
+                this.toastr.success('Cambio de contraseña exitoso.');
+                this.resetPasswordForm.reset()
+                this.closeResetPasswordModal();
+              } else {
+                this.toastr.error('No fue posible cambiar la contraseña.');
+              }
+            },
+            error: (error: any) => {
+              this.toastr.error('Error al contactar con el servidor', error);
+            },
+          });
+      } else {
+        // Marcar los campos del formulario como tocados para mostrar los estilos de error
+        this.resetPasswordForm.markAllAsTouched();
+      }
+    }
+    
   }
 }

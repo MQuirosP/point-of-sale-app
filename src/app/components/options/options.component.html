@@ -61,7 +61,7 @@
                 <div class="container text-center">
                   <label for="" class="form-check-label">
                     <input
-                    *ngIf="getUserRole() !== 'user'"
+                      *ngIf="getUserRole() !== 'user'"
                       type="checkbox"
                       class="form-check-input"
                       name="activateRegister"
@@ -165,6 +165,37 @@
           </div>
         </div>
       </section>
+    </div>
+  </div>
+  <div class="row" *ngIf="getUserRole() !== 'user'">
+    <div class="col-12 col-md-4" style="margin-top: 100px">
+      <!-- <section id="configuracion" [@fadeAnimation]>
+        <div class="container">
+          <div class="card shadow">
+            <div class="card-header text-center">
+              <h3 class="h4">Mis usuarios</h3>
+            </div>
+            <div class="card-body" style="margin-bottom: 14px">
+              <fieldset class="row">
+                <legend class="text-center" style="font-size: 18px">
+                  Mantenimiento de usuarios
+                </legend>
+                <div class="col-12 text-center">
+                  <a
+                    role="button"
+                    class="btn btn-primary shadow clic-on-image"
+                    data-toggle="modal"
+                    data-target="#usersListModal"
+                    (click)="openUsersListModal()"
+                  >
+                    Abrir lista
+                  </a>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+      </section> -->
     </div>
   </div>
 </div>
@@ -804,7 +835,14 @@
                           style="color: #1100fa; cursor: pointer"
                         ></i>
                       </a>
-                      <a class="text-left" (click)="deleteUser(user.userId)">
+                      <a
+                        class="text-left"
+                        (click)="deleteUser(user.userId)"
+                        *ngIf="
+                          getUser() !== user.username &&
+                          getUserRole() === 'administrator'
+                        "
+                      >
                         <i
                           class="fa-solid fa-trash clic-on-icon"
                           style="color: #fa0000; cursor: pointer"
@@ -896,7 +934,7 @@
               />
             </div>
             <div class="col">
-              <label for="lastname">Apellido:</label>
+              <label for="lastname">Apellidos:</label>
               <input
                 type="text"
                 class="form-control shadow"
@@ -909,18 +947,33 @@
               />
             </div>
           </div>
-          <div class="form-group">
-            <label for="username">Nombre de usuario:</label>
-            <input
-              type="text"
-              class="form-control shadow"
-              id="username"
-              formControlName="username"
-              placeholder="Nombre de usuario"
-              [value]="userForm.get('username').value"
-              required
-              [autocomplete]="false"
-            />
+          <div class="row form-group">
+            <div class="col">
+              <label for="username">Nombre de usuario:</label>
+              <input
+                type="text"
+                class="form-control shadow"
+                id="username"
+                formControlName="username"
+                placeholder="Nombre de usuario"
+                [value]="userForm.get('username').value"
+                required
+                [autocomplete]="false"
+                readonly
+              />
+            </div>
+            <div class="col">
+              <label for="resetButton">Contraseña:</label>
+              <button
+                type="button"
+                class="btn btn-primary shadow clic-on-image"
+                data-toggle="modal"
+                data-target="#resetPasswordModal"
+                (click)="openResetPasswordModal()"
+              >
+                Restablecer Contraseña
+              </button>
+            </div>
           </div>
           <div class="form-group">
             <label for="email">Email:</label>
@@ -988,6 +1041,97 @@
               class="btn btn-secondary clic-on-image ml-2"
               data-dismiss="modal"
               (click)="closeUserInfoModal()"
+            >
+              Cerrar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para el reset de contraseña -->
+<div
+  class="modal fade"
+  id="resetPasswordModal"
+  #resetPasswordModal
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="resetPasswordModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="resetPasswordModalLabel">
+          Restablecer Contraseña
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          (click)="closeResetPasswordModal()"
+        >
+          <span aria-hidden="true"
+            ><i
+              class="fa-sharp fa-solid fa-circle-xmark"
+              style="color: #f40b0b"
+            ></i
+          ></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form
+          [formGroup]="resetPasswordForm"
+          (ngSubmit)="resetPassword(this.userForm.get('username').value)"
+        >
+          <div class="form-group">
+            <label for="newPassword">Contraseña Nueva</label>
+            <input
+              type="password"
+              class="form-control"
+              id="newPassword-reset"
+              formControlName="newPassword"
+              placeholder="Ingresa tu nueva contraseña"
+              required
+              [ngClass]="{
+                'is-valid':
+                  resetPasswordForm.get('newPassword').touched &&
+                  resetPasswordForm.get('newPassword').valid,
+                'is-invalid':
+                  resetPasswordForm.get('newPassword').touched &&
+                  resetPasswordForm.get('newPassword').invalid
+              }"
+            />
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">Confirmar Contraseña</label>
+            <input
+              type="password"
+              class="form-control"
+              id="confirmPassword-reset"
+              formControlName="confirmPassword"
+              placeholder="Confirma tu contraseña"
+              required
+              [ngClass]="{
+                'is-valid':
+                  resetPasswordForm.get('confirmPassword').touched &&
+                  resetPasswordForm.get('confirmPassword').valid,
+                'is-invalid':
+                  resetPasswordForm.get('confirmPassword').touched &&
+                  resetPasswordForm.get('confirmPassword').invalid
+              }"
+            />
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+              (click)="closeResetPasswordModal()"
             >
               Cerrar
             </button>
