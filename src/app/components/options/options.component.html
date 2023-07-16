@@ -928,7 +928,6 @@
                 id="name"
                 formControlName="name"
                 placeholder="Nombre"
-                [value]="userForm.get('name').value"
                 required
                 [autocomplete]="false"
               />
@@ -941,7 +940,6 @@
                 id="lastname"
                 formControlName="lastname"
                 placeholder="Apellido"
-                [value]="userForm.get('lastname').value"
                 required
                 [autocomplete]="false"
               />
@@ -1055,7 +1053,7 @@
 
 <!-- Modal para el reset de contraseña -->
 <div
-  class="modal fade"
+  class="modal fade mt-5"
   id="resetPasswordModal"
   #resetPasswordModal
   tabindex="-1"
@@ -1093,7 +1091,7 @@
             <label for="newPassword">Contraseña Nueva</label>
             <input
               type="password"
-              class="form-control"
+              class="form-control shadow"
               id="newPassword-reset"
               formControlName="newPassword"
               placeholder="Ingresa tu nueva contraseña"
@@ -1112,7 +1110,7 @@
             <label for="confirmPassword">Confirmar Contraseña</label>
             <input
               type="password"
-              class="form-control"
+              class="form-control shadow"
               id="confirmPassword-reset"
               formControlName="confirmPassword"
               placeholder="Confirma tu contraseña"
@@ -1130,7 +1128,7 @@
           <div class="modal-footer">
             <button
               type="button"
-              class="btn btn-primary"
+              class="btn btn-primary shadow clic-on-image"
               data-dismiss="modal"
               (click)="resetPassword(this.userForm.get('username').value)"
             >
@@ -1138,7 +1136,7 @@
             </button>
             <button
               type="button"
-              class="btn btn-secondary"
+              class="btn btn-secondary shadow clic-on-image"
               data-dismiss="modal"
               (click)="closeResetPasswordModal()"
             >

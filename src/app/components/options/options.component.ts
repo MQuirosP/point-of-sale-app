@@ -724,9 +724,10 @@ export class OptionsComponent implements OnInit {
   getUserInfo(userId: number) {
     this.http.get(`${this.backendUrl}users/id/${userId}`).subscribe({
       next: (response: any) => {
-        // console.log(response);
         if (response.message.User) {
           const user = response.message.User;
+          user.name = this.capitalizeFirstLetter(user.name);
+          user.lastname = this.capitalizeFirstLetter(user.lastname);
           this.updateUserForm(user);
           this.userInfo = { ...user };
           this.toastr.success('Información de usuario recuperada con éxito.');
@@ -738,6 +739,17 @@ export class OptionsComponent implements OnInit {
         this.toastr.error('Error al obtener el usuario.');
       },
     });
+  }
+
+  capitalizeFirstLetter(value: string): string {
+    if (value && value.length > 0) {
+      const names = value.split(' ');
+      const capitalizedNames = names.map((n) => {
+        return n.charAt(0).toUpperCase() + n.slice(1);
+      });
+      return capitalizedNames.join(' ');
+    }
+    return value;
   }
 
   private updateUserForm(user: any) {
@@ -909,37 +921,42 @@ export class OptionsComponent implements OnInit {
   }
 
   resetPassword(username: string) {
-
     if (username === this.superUser) {
-      this.toastr.warning(`No tiene permisos para cambiar la contraseña al usuario.`)
+      this.toastr.warning(
+        `No tiene permisos para cambiar la contraseña al usuario.`
+      );
       return;
     } else {
       if (this.resetPasswordForm.valid) {
         const newPassword = this.resetPasswordForm.get('newPassword').value;
         const confirmPassword =
           this.resetPasswordForm.get('confirmPassword').value;
-  
+
         if (newPassword !== confirmPassword) {
           this.toastr.error('Las contraseñas no coinciden.');
           return;
         }
-  
+
         const passwordData = { newPassword: newPassword };
-  
+
         this.http
-          .put(`${this.backendUrl}users/reset-password/${username}`, passwordData)
+          .put(
+            `${this.backendUrl}users/reset-password/${username}`,
+            passwordData
+          )
           .subscribe({
             next: (response: any) => {
               if (response.success) {
                 this.toastr.success('Cambio de contraseña exitoso.');
-                this.resetPasswordForm.reset()
+                this.resetPasswordForm.reset();
                 setTimeout(() => {
                   const modal = document.getElementById('resetPasswordModal');
                   if (modal) {
                     modal.classList.remove('show');
                     modal.setAttribute('aria-hidden', 'true');
                     modal.style.display = 'none';
-                    const modalBackdrop = document.getElementsByClassName('modal')[0];
+                    const modalBackdrop =
+                      document.getElementsByClassName('modal')[0];
                     if (modalBackdrop) {
                       modalBackdrop.parentNode.removeChild(modalBackdrop);
                     }
@@ -959,6 +976,5 @@ export class OptionsComponent implements OnInit {
         this.resetPasswordForm.markAllAsTouched();
       }
     }
-    
   }
 }
