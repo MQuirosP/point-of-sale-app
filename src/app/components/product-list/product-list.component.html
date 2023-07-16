@@ -99,6 +99,7 @@
                   </a>
                   <a
                     class=""
+                    *ngIf="getUserRole() !== 'user'"
                     data-toggle="modal"
                     data-target="#deletePasswordModal"
                     (click)="openPasswordModal(product.int_code)"
@@ -329,7 +330,7 @@
 
           <div class="modal-footer">
             <button
-              *ngIf="this.editMode === false"
+              *ngIf="this.editMode === false && getUserRole() !== 'user'"
               type="button"
               class="btn btn-primary shadow clic-on-image"
               (click)="createProduct()"
@@ -338,7 +339,7 @@
               Guardar
             </button>
             <button
-              *ngIf="this.editMode === true"
+              *ngIf="this.editMode === true && getUserRole() !== 'user'"
               type="button"
               class="btn btn-primary shadow clic-on-image"
               (click)="editProduct(productForm.get('productId').value)"

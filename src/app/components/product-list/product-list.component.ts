@@ -92,6 +92,11 @@ export class ProductListComponent implements OnInit {
     this.showScrollButton = scrollPos > 0;
   }
 
+  getUserRole(): string {
+    return localStorage.getItem('role');
+  }
+  
+
   toggleTaxPercentage() {
     const taxPercentageControl = this.productForm.get('taxPercentage');
 

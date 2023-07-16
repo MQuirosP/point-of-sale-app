@@ -29,6 +29,10 @@ export class OptionsComponent implements OnInit {
   customerListModal!: ElementRef;
   @ViewChild('customerInfoModal', { static: false })
   customerInfoModal!: ElementRef;
+  @ViewChild('usersListModal', { static: false })
+  usersListModal!: ElementRef;
+  @ViewChild('usersInfoModal', { static: false })
+  usersInfoModal!: ElementRef;
 
   // Variables generales
   activateRegister: boolean | any;
@@ -55,6 +59,14 @@ export class OptionsComponent implements OnInit {
   selectedProvider: any;
   providerInfo: any = {};
   providerForm: FormGroup;
+
+  // Variables Gestion de Usuarios
+  users: any[] = [];
+  filteredUsers: any[] = [];
+  searchTermUser: string = '';
+  selectedUser: any;
+  userInfo: any = {};
+  userForm: FormGroup;
 
   constructor(
     private optionService: OptionsService,
@@ -84,6 +96,16 @@ export class OptionsComponent implements OnInit {
       provider_email: ['', Validators.required],
       provider_dni: ['', Validators.required],
     });
+
+    this.userForm = this.formBuilder.group({
+      userId: [0],
+      name: ['', Validators.required],
+      lastname: ['', Validators.required],
+      username: ['', Validators.required],
+      email: [''],
+      role: ['user', Validators.required],
+      status: ['pending', Validators.required],
+    });
   }
 
   ngOnInit() {
@@ -94,7 +116,14 @@ export class OptionsComponent implements OnInit {
     this.getCustomerList();
     this.filterCustomers();
     this.filterProviders();
+    this.getUserList();
+    this.filterUsers();
   }
+
+  getUserRole(): string {
+    return localStorage.getItem('role');
+  }
+  
 
   saveRegisterStatus() {
     this.optionService.changeRegisterStatus(this.activateRegister).subscribe({
@@ -112,7 +141,6 @@ export class OptionsComponent implements OnInit {
   }
 
   getCustomerList() {
-
     this.http.get(`${this.backendUrl}customers`).subscribe({
       next: (response: any) => {
         if (response.success && response.message.customers.length > 0) {
@@ -173,7 +201,7 @@ export class OptionsComponent implements OnInit {
       },
     });
   }
-  
+
   private updateCustomerForm(customer: any) {
     const {
       customer_id,
@@ -185,7 +213,7 @@ export class OptionsComponent implements OnInit {
       customer_address,
       customer_dni,
     } = customer;
-  
+
     this.customerForm.patchValue({
       customer_id,
       customer_name,
@@ -197,7 +225,6 @@ export class OptionsComponent implements OnInit {
       customer_dni,
     });
   }
-  
 
   openCustomerInfoModal(value: any, customer_id: string) {
     let selectedCustomerId = null;
@@ -243,26 +270,28 @@ export class OptionsComponent implements OnInit {
         this.toastr.error('Por favor, completa todos los campos requeridos.');
         return;
       }
-  
+
       const customerData = this.extractCustomerFormData();
       this.saveCustomer(customerData);
     } else {
-
     }
   }
-  
+
   private extractCustomerFormData() {
     return {
       customer_name: this.customerForm.get('customer_name').value,
-      customer_first_lastname: this.customerForm.get('customer_first_lastname').value,
-      customer_second_lastname: this.customerForm.get('customer_second_lastname').value,
+      customer_first_lastname: this.customerForm.get('customer_first_lastname')
+        .value,
+      customer_second_lastname: this.customerForm.get(
+        'customer_second_lastname'
+      ).value,
       customer_email: this.customerForm.get('customer_email').value,
       customer_phone: this.customerForm.get('customer_phone').value,
       customer_address: this.customerForm.get('customer_address').value,
       customer_dni: this.customerForm.get('customer_dni').value,
     };
   }
-  
+
   private saveCustomer(customerData: any) {
     this.changeDetectorRef.detectChanges();
     this.http.post(`${this.backendUrl}customers`, customerData).subscribe({
@@ -281,7 +310,7 @@ export class OptionsComponent implements OnInit {
       },
     });
   }
-  
+
   private resetCustomerForm() {
     this.customerForm.reset();
   }
@@ -291,13 +320,14 @@ export class OptionsComponent implements OnInit {
       this.toastr.error('Por favor, completa todos los campos requeridos.');
       return;
     }
-  
+
     const customerData = this.extractCustomerFormData();
     this.updateCustomer(customerId, customerData);
   }
-  
+
   private updateCustomer(customerId: number, customerData: any) {
-    this.http.put(`${this.backendUrl}customers/${customerId}`, customerData)
+    this.http
+      .put(`${this.backendUrl}customers/${customerId}`, customerData)
       .subscribe({
         next: (response: any) => {
           if (response.success) {
@@ -313,7 +343,7 @@ export class OptionsComponent implements OnInit {
         },
       });
   }
-  
+
   private updateLocalCustomer(customerId: number, customerData: any) {
     this.filteredCustomers = this.customers.map((customer) => {
       if (customer.customer_id === customerId) {
@@ -419,7 +449,7 @@ export class OptionsComponent implements OnInit {
       },
     });
   }
-  
+
   private updateProviderForm(provider: any) {
     const {
       provider_id,
@@ -429,7 +459,7 @@ export class OptionsComponent implements OnInit {
       provider_phone,
       provider_dni,
     } = provider;
-  
+
     this.providerForm.patchValue({
       provider_id,
       provider_name,
@@ -484,14 +514,13 @@ export class OptionsComponent implements OnInit {
         this.toastr.error('Por favor, completa todos los campos requeridos.');
         return;
       }
-  
+
       const providerData = this.extractProviderFormData();
       this.saveProvider(providerData);
     } else {
-
     }
   }
-  
+
   private extractProviderFormData() {
     return {
       provider_name: this.providerForm.get('provider_name').value,
@@ -501,7 +530,7 @@ export class OptionsComponent implements OnInit {
       provider_dni: this.providerForm.get('provider_dni').value,
     };
   }
-  
+
   private saveProvider(providerData: any) {
     this.changeDetectorRef.detectChanges();
     this.http.post(`${this.backendUrl}providers`, providerData).subscribe({
@@ -520,7 +549,7 @@ export class OptionsComponent implements OnInit {
       },
     });
   }
-  
+
   private resetProviderForm() {
     this.providerForm.reset();
   }
@@ -530,13 +559,14 @@ export class OptionsComponent implements OnInit {
       this.toastr.error('Por favor, completa todos los campos requeridos.');
       return;
     }
-  
+
     const providerData = this.extractProviderFormData();
     this.updateProvider(providerId, providerData);
   }
-  
+
   private updateProvider(providerId: number, providerData: any) {
-    this.http.put(`${this.backendUrl}providers/${providerId}`, providerData)
+    this.http
+      .put(`${this.backendUrl}providers/${providerId}`, providerData)
       .subscribe({
         next: (response: any) => {
           if (response.success) {
@@ -552,7 +582,7 @@ export class OptionsComponent implements OnInit {
         },
       });
   }
-  
+
   private updateLocalProvider(providerId: number, providerData: any) {
     this.filteredProviders = this.providers.map((provider) => {
       if (provider.provider_id === providerId) {
@@ -567,7 +597,6 @@ export class OptionsComponent implements OnInit {
       next: (response: any) => {
         if (response.success) {
           this.toastr.success('Proveedor eliminado exitosamente.');
-          
         } else {
           this.toastr.error('Error al eliminar el proveedor.');
         }
@@ -584,7 +613,7 @@ export class OptionsComponent implements OnInit {
       next: (response: any) => {
         if (response.success) {
           this.providers = response.message.providers.map((provider: any) => {
-            return { ...provider, showIcons: false}
+            return { ...provider, showIcons: false };
           });
           this.filteredProviders = [...this.providers];
           this.toastr.success('Lista de proveedores actualizada.');
@@ -596,5 +625,237 @@ export class OptionsComponent implements OnInit {
       },
     });
   }
-}
 
+  // De aquí en adelante todo es usuarios
+  openUsersListModal() {
+    this.usersListModal.nativeElement.classList.toggle('show');
+    this.usersListModal.nativeElement.style.display = 'block';
+  }
+
+  closeUsersListModal() {
+    this.usersListModal.nativeElement.classList.remove('show');
+    this.usersListModal.nativeElement.style.display = 'none';
+  }
+
+  openUserInfoModal(value: any, userId: string) {
+    let selectedUserId = null;
+    if (value === true && userId) {
+      this.modalTitle = value ? 'Edición' : 'Registro';
+      this.modalActionLabel = value;
+      this.changeDetectorRef.detectChanges();
+      this.usersInfoModal.nativeElement.classList.toggle('show');
+      this.usersInfoModal.nativeElement.style.display = 'block';
+      selectedUserId = userId;
+      setTimeout(() => {
+        this.getUserInfo(selectedUserId);
+      }, 300);
+    } else {
+      this.modalTitle = value ? 'Edición' : 'Registro';
+      this.modalActionLabel = !value;
+      this.changeDetectorRef.detectChanges();
+      this.usersInfoModal.nativeElement.classList.toggle('show');
+      this.usersInfoModal.nativeElement.style.display = 'block';
+    }
+  }
+
+  closeUserInfoModal() {
+    this.usersInfoModal.nativeElement.classList.remove('show');
+    this.usersInfoModal.nativeElement.style.display = 'none';
+    this.userForm.reset();
+    this.userInfo = {};
+  }
+
+  getUserList() {
+    this.http.get(`${this.backendUrl}users`).subscribe({
+      next: (response: any) => {
+        if (response.success && response.message.Usuarios) {
+          this.users = response.message.Usuarios.map((user: any) => {
+            return { ...user, showIcons: false };
+          });
+        }
+        this.filteredUsers = [...this.users];
+      },
+      error: (error) => {
+        this.toastr.error('Error al obtener usuarios.', error);
+      },
+    });
+  }
+
+  filterUsers() {
+    if (!this.searchTermUser || this.searchTermUser === '') {
+      this.filteredUsers = [...this.users];
+      return;
+    }
+    const searchTermNormalized = this.searchTermUser
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+
+    this.filteredUsers = this.users.filter((user: any) => {
+      const userNameNormalized = user.name
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+
+      const userLastnameNormalized = user.lastname
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+
+      const searchTermLower = searchTermNormalized.toLowerCase();
+
+      return (
+        userNameNormalized.toLowerCase().includes(searchTermLower) ||
+        userLastnameNormalized.toLowerCase().includes(searchTermLower)
+      );
+    });
+    this.changeDetectorRef.detectChanges();
+  }
+
+  getUserInfo(userId: number) {
+    this.http.get(`${this.backendUrl}users/id/${userId}`).subscribe({
+      next: (response: any) => {
+        // console.log(response);
+        if (response.message.User) {
+          const user = response.message.User;
+          this.updateUserForm(user);
+          this.userInfo = { ...user };
+          this.toastr.success('Información de usuario recuperada con éxito.');
+        } else {
+          this.toastr.warning('Usuario no encontrado.');
+        }
+      },
+      error: (error: any) => {
+        this.toastr.error('Error al obtener el usuario.');
+      },
+    });
+  }
+
+  private updateUserForm(user: any) {
+    const { userId, name, lastname, username, email, role, status } = user;
+
+    this.userForm.patchValue({
+      userId,
+      name,
+      lastname,
+      username,
+      email,
+      role,
+      status,
+    });
+  }
+
+  createUser() {
+    if (this.modalActionLabel) {
+      if (this.userForm.invalid) {
+        this.toastr.error('Por favor, completa todos los campos requeridos.');
+        return;
+      }
+
+      const userData = this.extractUserFormData();
+      this.saveUser(userData);
+    } else {
+    }
+  }
+
+  private extractUserFormData() {
+    return {
+      name: this.userForm.get('name').value,
+      lastname: this.userForm.get('lastname').value,
+      username: this.userForm.get('username').value,
+      email: this.userForm.get('email').value,
+      role: this.userForm.get('role').value,
+      status: this.userForm.get('status').value,
+    };
+  }
+
+  private saveUser(userData: any) {
+    this.changeDetectorRef.detectChanges();
+    this.http.post(`${this.backendUrl}users`, userData).subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.toastr.success('Usuario guardado exitosamente.');
+          this.resetUserForm();
+          this.refreshUsersList();
+          this.closeUserInfoModal();
+        } else {
+          this.toastr.error('Error al guardar el usuario.');
+        }
+      },
+      error: (error: any) => {
+        this.toastr.error('Error al guardar el usuario.', error);
+      },
+    });
+  }
+
+  private resetUserForm() {
+    this.userForm.reset();
+  }
+
+  editUser(userId: number) {
+    if (this.userForm.invalid) {
+      this.toastr.error('Por favor, completa todos los campos requeridos.');
+      return;
+    }
+
+    const userData = this.extractUserFormData();
+    this.updateUser(userId, userData);
+  }
+
+  private updateUser(userId: number, userData: any) {
+    this.http.put(`${this.backendUrl}users/${userId}`, userData).subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.toastr.success('Usuario actualizado exitosamente.');
+          this.updateLocalUser(userId, userData);
+        } else {
+          this.toastr.error('Error al actualizar el usuario.');
+        }
+        this.getUserList();
+      },
+      error: (error: any) => {
+        this.toastr.error('Error al actualizar el usuario.', error);
+      },
+    });
+  }
+
+  private updateLocalUser(userId: number, userData: any) {
+    this.filteredUsers = this.users.map((user) => {
+      if (user.userId === userId) {
+        return userData;
+      }
+      return user;
+    });
+  }
+
+  deleteUser(id: number) {
+    this.http.delete(`${this.backendUrl}users/${id}`).subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.toastr.success('Usuario eliminado exitosamente.');
+        } else {
+          this.toastr.error('Error al eliminar el usuario.');
+        }
+        this.refreshUsersList();
+      },
+      error: (error: any) => {
+        this.toastr.error('Error al eliminar el usuario.', error);
+      },
+    });
+  }
+
+  refreshUsersList() {
+    this.http.get(`${this.backendUrl}users`).subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.users = response.message.users.map((user: any) => {
+            return { ...user, showIcons: false };
+          });
+          this.filteredUsers = [...this.users];
+          this.toastr.success('Lista de usuarios actualizada.');
+        } else {
+        }
+      },
+      error: (error: any) => {
+        this.toastr.error('Error actualizando la lista de usuarios.');
+      },
+    });
+  }
+}

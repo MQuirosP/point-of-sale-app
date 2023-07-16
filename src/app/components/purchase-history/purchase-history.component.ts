@@ -153,6 +153,11 @@ export class PurchaseHistoryComponent {
     // this.searchProviders();
   }
 
+  getUserRole(): string {
+    return localStorage.getItem('role');
+  }
+  
+
   getCurrentDateString(): string {
     const currentDate = this.calendar.getToday();
     return this.dateFormatter.format(currentDate);

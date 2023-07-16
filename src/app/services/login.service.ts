@@ -33,7 +33,7 @@ export class LoginService {
     private http: HttpClient,
     private router: Router,
     private cookieService: CookieService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
   ) {
     this.checkLoggedIn();
 
@@ -67,12 +67,13 @@ export class LoginService {
       .post<any>(`${this.backendUrl}login/`, loginData)
       .pipe(
         tap((response) => {
-          if (response.success === true) {
-            const username = response.message.username;
-            const name = response.message.name;
+          if (response.success === true && response.message.status === 'active') {
+            const { username, name, role, status } = response.message;
             localStorage.setItem('token', response.message.token);
             localStorage.setItem('username', username);
             localStorage.setItem('name', name);
+            localStorage.setItem('role', role); // Guardar la propiedad 'role'
+            localStorage.setItem('status', status); // Guardar la propiedad 'status'
             this.cookieService.set(this.COOKIE_Name, name);
             this.setLoggedIn(true, username, name);
             this.toastr.success(
@@ -81,6 +82,13 @@ export class LoginService {
             setTimeout(() => {
               this.router.navigate(['/home']);
             }, 500);
+          } else if (response.success === true && response.message.status === 'suspended') {
+            this.toastr.error('Usuario está suspendido.')
+            this.setLoggedIn(false, '', '');
+          }else if (response.success === true && response.message.status === 'pending') {
+            this.toastr.error('Usuario ya está registrado pero está pendiente de aceptación por parte del administrador.')
+            this.setLoggedIn(false, '', '');
+            
           } else {
             this.setLoggedIn(false, '', '');
             this.toastr.error('Credenciales inválidas.');
@@ -90,7 +98,9 @@ export class LoginService {
           this.setLoggedIn(false, '', '');
           console.log(error);
           this.toastr.error(
-            `Error registrando el usuario ${this.capitalizeFirstLetter(username)}. Valide las credenciales.`
+            `Error registrando el usuario ${this.capitalizeFirstLetter(
+              username
+            )}. Valide las credenciales.`
           );
           return of(null);
         })
@@ -125,6 +135,8 @@ export class LoginService {
           localStorage.removeItem('token');
           localStorage.removeItem('username');
           localStorage.removeItem('name');
+          localStorage.removeItem('role');
+          localStorage.removeItem('status');
           this.setLoggedIn(false, '', '');
           this.cookieService.delete(this.COOKIE_Name);
           this.toastr.success('Sesión cerrada exitosamente.');
@@ -190,34 +202,33 @@ export class LoginService {
     newPassword: string
   ): Observable<any> {
     const token = localStorage.getItem('token');
-  
+
     if (!token) {
       return throwError(() => new Error('No se ha iniciado sesión.'));
     }
-  
+
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + token,
     });
-  
+
     const passwordData = {
       username: localStorage.getItem('username'),
       currentPassword: currentPassword,
       newPassword: newPassword,
     };
-  
+
     return this.http
-      .post<any>(
-        `${this.backendUrl}${username}changePassword/`,
-        passwordData,
-        { headers }
-      )
+      .post<any>(`${this.backendUrl}${username}changePassword/`, passwordData, {
+        headers,
+      })
       .pipe(
         tap(() => {
           // Aquí podemos realizar cualquier acción adicional después de cambiar la contraseña
         }),
         catchError((error) => {
-          const errorMessage = error.error.error || 'Error al cambiar la contraseña.';
+          const errorMessage =
+            error.error.error || 'Error al cambiar la contraseña.';
           return throwError(() => new Error(errorMessage));
         })
       );

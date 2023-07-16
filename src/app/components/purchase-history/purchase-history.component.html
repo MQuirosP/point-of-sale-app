@@ -376,6 +376,7 @@
 
         <div class="modal-footer">
           <button
+            *ngIf="getUserRole() !== 'user'"
             type="button"
             class="btn btn-primary shadow clic-on-image"
             (click)="createPurchase()"
@@ -480,9 +481,16 @@
                 >
               </p>
               <button
-                *ngIf="purchase.status === 'aceptado' && isCurrentDate(purchase.createdAt)"
+                *ngIf="
+                  purchase.status === 'aceptado' &&
+                  isCurrentDate(purchase.createdAt) &&
+                  getUserRole() !== 'user'
+                "
                 class="btn btn-danger shadow clic-on-image"
-                (click)="cancelPurchase(purchase.doc_number); togglePurchaseDetails(purchase)"
+                (click)="
+                  cancelPurchase(purchase.doc_number);
+                  togglePurchaseDetails(purchase)
+                "
               >
                 Anular
               </button>

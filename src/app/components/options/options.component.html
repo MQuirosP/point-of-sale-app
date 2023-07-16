@@ -9,6 +9,7 @@
   </div>
 </header>
 
+<!-- Botones -->
 <div class="container">
   <section id="actions" class="py-4 bg-transparent" [@fadeAnimation]>
     <div class="container">
@@ -20,7 +21,7 @@
             routerLink="/"
             role="button"
             class="btn btn-warning border border-warning shadow clic-on-image ml-4"
-            style="width: 110px; margin-right: 10px;"
+            style="width: 110px; margin-right: 10px"
           >
             <i class="fas fa-arrow-left"></i>
             <span class="d-none d-md-inline">Volver</span>
@@ -42,7 +43,7 @@
   </section>
 </div>
 
-<!-- Opción para activar/desactivar registro de usuarios, listados clientes y proveedores -->
+<!-- Tarjetas registro de usuarios, Proveedores y clientes -->
 <div class="container">
   <div class="row">
     <div class="col-12 col-md-4 mt-3">
@@ -60,6 +61,7 @@
                 <div class="container text-center">
                   <label for="" class="form-check-label">
                     <input
+                    *ngIf="getUserRole() !== 'user'"
                       type="checkbox"
                       class="form-check-input"
                       name="activateRegister"
@@ -134,6 +136,37 @@
       </section>
     </div>
   </div>
+  <div class="row" *ngIf="getUserRole() !== 'user'">
+    <div class="col-12 col-md-4 mt-3">
+      <section id="configuracion" [@fadeAnimation]>
+        <div class="container">
+          <div class="card shadow">
+            <div class="card-header text-center">
+              <h3 class="h4">Mis usuarios</h3>
+            </div>
+            <div class="card-body" style="margin-bottom: 14px">
+              <fieldset class="row">
+                <legend class="text-center" style="font-size: 18px">
+                  Mantenimiento de usuarios
+                </legend>
+                <div class="col-12 text-center">
+                  <a
+                    role="button"
+                    class="btn btn-primary shadow clic-on-image"
+                    data-toggle="modal"
+                    data-target="#usersListModal"
+                    (click)="openUsersListModal()"
+                  >
+                    Abrir lista
+                  </a>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
 </div>
 
 <!-- Modal para listado de proveedores -->
@@ -171,7 +204,7 @@
           <label for="search">Buscar proveedor:</label>
           <input
             type="text"
-            id="search"
+            id="providerSearch"
             [(ngModel)]="searchTermProvider"
             (ngModelChange)="filterProviders()"
             class="form-control shadow"
@@ -220,6 +253,7 @@
                         ></i>
                       </a>
                       <a
+                        *ngIf="getUserRole() !== 'user'"
                         class="text-left"
                         (click)="deleteProvider(provider.provider_id)"
                       >
@@ -244,6 +278,7 @@
       </div>
       <div class="modal-footer">
         <button
+          *ngIf="getUserRole() !== 'user'"
           type="button"
           class="btn btn-primary shadow clic-on-image"
           data-toggle="modal"
@@ -372,7 +407,7 @@
               Guardar
             </button>
             <button
-              *ngIf="this.editMode === true"
+              *ngIf="this.editMode === true && getUserRole() !== 'user'"
               type="submit"
               class="btn btn-primary shadow clic-on-image"
               (click)="editProvider(providerForm.get('provider_id').value)"
@@ -430,7 +465,7 @@
           <label for="search">Buscar cliente:</label>
           <input
             type="text"
-            id="search"
+            id="customerSearch"
             [(ngModel)]="searchTermCustomer"
             (ngModelChange)="filterCustomers()"
             class="form-control shadow"
@@ -480,6 +515,7 @@
                         ></i>
                       </a>
                       <a
+                        *ngIf="getUserRole() !== 'user'"
                         class="text-left"
                         (click)="deleteCustomer(customer.customer_id)"
                       >
@@ -559,50 +595,67 @@
       <div class="modal-body">
         <!-- Formulario de registro de clientes -->
         <form [formGroup]="customerForm">
-          <div class="form-group">
-            <label for="customer_name">Nombre:</label>
-            <input
-              type="text"
-              class="form-control"
-              id="customer_name"
-              formControlName="customer_name"
-              placeholder="Nombre del cliente"
-              [value]="customerForm.get('customer_name').value"
-              required
-              [autocomplete]="false"
-            />
+          <div class="row form-group">
+            <div class="col">
+              <label for="customer_name">Nombre:</label>
+              <input
+                type="text"
+                class="form-control shadow"
+                id="customer_name"
+                formControlName="customer_name"
+                placeholder="Nombre del cliente"
+                [value]="customerForm.get('customer_name').value"
+                required
+                [autocomplete]="false"
+              />
+            </div>
+            <div class="col">
+              <label for="customer_first_lastname">Primer Apellido:</label>
+              <input
+                type="text"
+                class="form-control shadow"
+                id="customer_first_lastname"
+                formControlName="customer_first_lastname"
+                placeholder="Primer apellido"
+                [value]="customerForm.get('customer_first_lastname').value"
+                required
+                [autocomplete]="false"
+              />
+            </div>
           </div>
-          <div class="form-group">
-            <label for="customer_first_lastname">Primer Apellido:</label>
-            <input
-              type="text"
-              class="form-control"
-              id="customer_first_lastname"
-              formControlName="customer_first_lastname"
-              placeholder="Primer apellido"
-              [value]="customerForm.get('customer_first_lastname').value"
-              required
-              [autocomplete]="false"
-            />
-          </div>
-          <div class="form-group">
-            <label for="customer_second_lastname">Segundo Apellido:</label>
-            <input
-              type="text"
-              class="form-control"
-              id="customer_second_lastname"
-              formControlName="customer_second_lastname"
-              placeholder="Segundo apellido"
-              [value]="customerForm.get('customer_second_lastname').value"
-              required
-              [autocomplete]="false"
-            />
+          <div class="row form-group">
+            <div class="col">
+              <label for="customer_second_lastname">Segundo Apellido:</label>
+              <input
+                type="text"
+                class="form-control shadow"
+                id="customer_second_lastname"
+                formControlName="customer_second_lastname"
+                placeholder="Segundo apellido"
+                [value]="customerForm.get('customer_second_lastname').value"
+                required
+                [autocomplete]="false"
+              />
+            </div>
+            <div class="col">
+              <label for="customer_dni">Cédula:</label>
+              <input
+                type="text"
+                class="form-control shadow"
+                id="customer_dni"
+                formControlName="customer_dni"
+                placeholder="DNI del cliente"
+                [value]="customerForm.get('customer_dni').value"
+                required
+                [autocomplete]="false"
+              />
+            </div>
           </div>
           <div class="form-group">
             <label for="customer_address">Dirección:</label>
             <input
               type="text"
-              class="form-control"
+              class="form-control shadow"
               id="customer_address"
               formControlName="customer_address"
               placeholder="Dirección"
@@ -614,7 +667,7 @@
             <label for="customer_phone">Teléfono:</label>
             <input
               type="tel"
-              class="form-control"
+              class="form-control shadow"
               id="customer_phone"
               formControlName="customer_phone"
               placeholder="Teléfono del cliente"
@@ -626,7 +679,7 @@
             <label for="customer_email">Email:</label>
             <input
               type="email"
-              class="form-control"
+              class="form-control shadow"
               id="email"
               formControlName="customer_email"
               placeholder="Email del cliente"
@@ -634,24 +687,11 @@
               [autocomplete]="false"
             />
           </div>
-          <div class="form-group">
-            <label for="customer_dni">DNI:</label>
-            <input
-              type="text"
-              class="form-control"
-              id="customer_dni"
-              formControlName="customer_dni"
-              placeholder="DNI del cliente"
-              [value]="customerForm.get('customer_dni').value"
-              required
-              [autocomplete]="false"
-            />
-          </div>
           <div class="modal-footer">
             <button
               *ngIf="this.editMode === false"
               type="submit"
-              class="btn btn-primary clic-on-image"
+              class="btn btn-primary shadow clic-on-image"
               (click)="createCustomer()"
               data-dismiss="modal"
             >
@@ -660,7 +700,7 @@
             <button
               *ngIf="this.editMode === true"
               type="submit"
-              class="btn btn-primary clic-on-image"
+              class="btn btn-primary shadow clic-on-image"
               data-dismiss="modal"
               (click)="editCustomer(customerForm.get('customer_id').value)"
             >
@@ -668,9 +708,286 @@
             </button>
             <button
               type="button"
-              class="btn btn-secondary clic-on-image ml-2"
+              class="btn btn-secondary shadow clic-on-image ml-2"
               data-dismiss="modal"
               (click)="closeCustomerInfoModal()"
+            >
+              Cerrar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para el listado de usuarios -->
+<div
+  class="modal fade"
+  id="usersListModal"
+  #usersListModal
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="usersListModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content shadow">
+      <div class="modal-header">
+        <h5 class="modal-title">Mantenimiento de usuarios</h5>
+        <button
+          type="button"
+          class="close clic-on-image"
+          data-dismiss="modal"
+          (click)="closeUsersListModal()"
+          aria-label="Cerrar"
+        >
+          <span aria-hidden="true"
+            ><i
+              class="fa-sharp fa-solid fa-circle-xmark"
+              style="color: #f40b0b"
+            ></i
+          ></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Contenido del modal -->
+        <div class="container pt-2 pb-2">
+          <label for="search">Buscar usuario:</label>
+          <input
+            type="text"
+            id="userSearch"
+            [(ngModel)]="searchTermUser"
+            (ngModelChange)="filterUsers()"
+            class="form-control shadow"
+            placeholder="Ingresa tu búsqueda aquí..."
+            [autocomplete]="false"
+          />
+        </div>
+        <div class="w-100">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="width: 40%">Usuario</th>
+                  <th style="width: 30%">Rol</th>
+                  <th style="width: 30%">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of filteredUsers">
+                  <td class="bg-transparent">
+                    <span
+                      class="product-name"
+                      style="cursor: pointer"
+                      (click)="user.showIcons = !user.showIcons"
+                      tabindex="0"
+                    >
+                      {{ user.username }}
+                    </span>
+                    <div
+                      class="product-icons text-left"
+                      [ngClass]="{ 'show-icons': user.showIcons }"
+                    >
+                      <a
+                        class="ml-2 mr-3"
+                        role="button"
+                        data-toggle="modal"
+                        data-target="#usersInfoModal"
+                        (click)="
+                          openUserInfoModal(true, user.userId);
+                          this.editMode = true
+                        "
+                      >
+                        <i
+                          class="fa-solid fa-pen-to-square clic-on-icon"
+                          style="color: #1100fa; cursor: pointer"
+                        ></i>
+                      </a>
+                      <a class="text-left" (click)="deleteUser(user.userId)">
+                        <i
+                          class="fa-solid fa-trash clic-on-icon"
+                          style="color: #fa0000; cursor: pointer"
+                        ></i>
+                      </a>
+                    </div>
+                  </td>
+                  <td class="text-left">
+                    {{ user.role }}
+                  </td>
+                  <td class="text-left">
+                    {{ user.status }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!-- <button
+          type="button"
+          class="btn btn-primary clic-on-image"
+          data-toggle="modal"
+          data-target="#userInfoModal"
+          (click)="openUserInfoModal(false, ''); this.editMode = false"
+        >
+          Nuevo
+        </button> -->
+        <button
+          type="button"
+          class="btn btn-secondary clic-on-image"
+          data-dismiss="modal"
+          (click)="closeUsersListModal()"
+        >
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para edicion de usuarios -->
+<div
+  class="modal fade"
+  id="usersInfoModal"
+  #usersInfoModal
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="userInfoModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content shadow">
+      <div class="modal-header">
+        <h5 class="modal-title" id="userInfoModalLabel">
+          {{ modalTitle }} de usuarios
+        </h5>
+        <button
+          type="button"
+          class="close clic-on-image"
+          data-dismiss="modal"
+          aria-label="Close"
+          (click)="closeUserInfoModal()"
+        >
+          <span aria-hidden="true"
+            ><i
+              class="fa-sharp fa-solid fa-circle-xmark"
+              style="color: #f40b0b"
+            ></i
+          ></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Formulario de registro de usuarios -->
+        <form [formGroup]="userForm">
+          <div class="row form-group">
+            <div class="col">
+              <label for="name">Nombre:</label>
+              <input
+                type="text"
+                class="form-control shadow"
+                id="name"
+                formControlName="name"
+                placeholder="Nombre"
+                [value]="userForm.get('name').value"
+                required
+                [autocomplete]="false"
+              />
+            </div>
+            <div class="col">
+              <label for="lastname">Apellido:</label>
+              <input
+                type="text"
+                class="form-control shadow"
+                id="lastname"
+                formControlName="lastname"
+                placeholder="Apellido"
+                [value]="userForm.get('lastname').value"
+                required
+                [autocomplete]="false"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="username">Nombre de usuario:</label>
+            <input
+              type="text"
+              class="form-control shadow"
+              id="username"
+              formControlName="username"
+              placeholder="Nombre de usuario"
+              [value]="userForm.get('username').value"
+              required
+              [autocomplete]="false"
+            />
+          </div>
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input
+              type="email"
+              class="form-control shadow"
+              id="userEmail"
+              formControlName="email"
+              placeholder="Email"
+              [value]="userForm.get('email').value"
+              required
+              [autocomplete]="false"
+            />
+          </div>
+          <div class="row form-group">
+            <div class="col">
+              <label for="role">Rol:</label>
+              <select
+                class="form-control shadow"
+                id="role"
+                formControlName="role"
+                required
+                style="padding: 0 0 0 10px"
+              >
+                <option value="administrator">Administrador</option>
+                <option value="user">Usuario</option>
+              </select>
+            </div>
+            <div class="col">
+              <label for="status">Estado:</label>
+              <select
+                class="form-control shadow"
+                id="status"
+                formControlName="status"
+                required
+                style="padding: 0 0 0 10px"
+              >
+                <option value="active">Activo</option>
+                <option value="suspended">Suspendido</option>
+                <option value="pending">Pendiente</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <!-- <button
+              *ngIf="!editMode"
+              type="submit"
+              class="btn btn-primary clic-on-image"
+              (click)="createUser()"
+              data-dismiss="modal"
+            >
+              Guardar
+            </button> -->
+            <button
+              *ngIf="editMode"
+              type="submit"
+              class="btn btn-primary clic-on-image"
+              data-dismiss="modal"
+              (click)="editUser(userForm.get('userId').value)"
+            >
+              Editar
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary clic-on-image ml-2"
+              data-dismiss="modal"
+              (click)="closeUserInfoModal()"
             >
               Cerrar
             </button>
