@@ -517,8 +517,7 @@ export class PurchaseHistoryComponent {
   cancelPurchase(doc_number: string) {
     this.purchaseService.cancelPurchase(doc_number).subscribe({
       next: (response: any) => {
-        // console.log('Compra anulada exitosamente', response);
-        this.toastr.success('Compra anulada exitosamente.');
+        this.toastr.success(`Compra #${doc_number} anulada exitosamente.`)
 
         const canceledPurchase = this.purchases.find(
           (purchase) => purchase.doc_number === doc_number
@@ -528,7 +527,6 @@ export class PurchaseHistoryComponent {
         }
       },
       error: (error: any) => {
-        // console.log('Error anulando documento', error);
         this.toastr.error('No se pudo anular el documento.');
       },
     });
