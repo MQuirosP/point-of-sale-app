@@ -1,5 +1,4 @@
 import { OptionsService } from './services/optionsService';
-import { Subscription } from 'rxjs';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -7,9 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { ProductListComponent } from './components/product-list/product-list.component';
-import { PurchaseHistoryComponent } from './components/purchase-history/purchase-history.component';
-import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { LoginComponent } from './components/login/login.component';
 import { OptionsComponent } from './components/options/options.component';
 import { MainBoardComponent } from './components/main-board/main-board.component';
@@ -20,7 +16,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DigitalWatchComponent } from './components/digital-watch/digital-watch.component'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalService } from './services/modalService';
-import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.component';
 import { BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import { LoginService } from './services/login.service';
 import { RegisterUserComponent } from './components/register-user/register-user.component';
@@ -32,6 +27,10 @@ import { PurchaseService } from './services/purchase.service';
 import { ReportsComponent } from './components/reports/reports.component';
 import { ProductCacheService } from './services/product-cache.service';
 
+import { Subscription } from 'rxjs';
+import { PurchaseHistoryComponent } from './components/purchase-history/purchase-history.component';
+import { ProductListComponent } from './components/product-list/product-list.component';
+import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.component';
 
 
 @NgModule({
@@ -39,11 +38,7 @@ import { ProductCacheService } from './services/product-cache.service';
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    ProductListComponent,
-    PurchaseHistoryComponent,
-    UserProfileComponent,
     LoginComponent,
-    ShoppingCartComponent,
     OptionsComponent,
     MainBoardComponent,
     NotFoundComponent,
