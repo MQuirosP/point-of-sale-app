@@ -514,30 +514,26 @@ export class ShoppingCartComponent {
   }
 
   updateProduct(product: any) {
-    const foundProduct = this.productList.find(
-      (p: any) => p.int_code === product.int_code
-    );
-
+    const foundProduct = this.productList.find((p: any) => p.int_code === product.int_code);
+  
     if (foundProduct) {
-      this.http
-        .get(`${this.backendUrl}products/int_code/${product.int_code}`, {})
-        .subscribe({
-          next: (response: any) => {
-            const productData = response.message.product;
-
-            foundProduct.taxes_amount =
-              (productData.sale_price - productData.purchase_price) *
-              product.quantity;
-            foundProduct.sub_total =
-              productData.purchase_price * product.quantity;
-            foundProduct.total =
-              foundProduct.sub_total + foundProduct.taxes_amount;
-
-            this.calculateTotalSaleAmount();
-          },
-        });
+      this.http.get(`${this.backendUrl}products/int_code/${product.int_code}`, {}).subscribe({
+        next: (response: any) => {
+          const productData = response.message.product;
+  
+          const taxesAmount = (productData.purchase_price / (1 - productData.taxPercentage / 100) - productData.purchase_price);
+          const subTotal = productData.sale_price - taxesAmount;
+  
+          foundProduct.taxes_amount = taxesAmount * product.quantity;
+          foundProduct.sub_total = subTotal * product.quantity;
+          foundProduct.total = foundProduct.sub_total + foundProduct.taxes_amount;
+  
+          this.calculateTotalSaleAmount();
+        },
+      });
     }
   }
+  
 
   cancelSale(doc_number: string) {
     this.saleService.cancelSale(doc_number).subscribe({
