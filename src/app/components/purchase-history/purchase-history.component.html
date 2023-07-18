@@ -16,7 +16,7 @@
     type="text"
     id="search"
     name="search"
-    class="form-control shadow"
+    class="form-control"
     placeholder="Ingresa tu búsqueda aquí..."
     autocomplete="off"
   />
@@ -120,7 +120,7 @@
               type="text"
               id="provider_name"
               formControlName="provider_name"
-              class="form-control shadow"
+              class="form-control"
               (input)="searchProviders()"
               autocomplete="off"
               [ngClass]="{
@@ -154,7 +154,7 @@
                 type="text"
                 id="doc_number"
                 formControlName="doc_number"
-                class="form-control shadow"
+                class="form-control"
                 autocomplete="off"
                 required="required"
                 [ngClass]="{
@@ -172,7 +172,7 @@
               <select
                 id="paymentMethod"
                 formControlName="paymentMethod"
-                class="form-control shadow"
+                class="form-control"
                 style="padding-top: 5px"
               >
                 <option value="contado" selected>Contado</option>
@@ -186,7 +186,7 @@
               type="text"
               id="product_name"
               formControlName="product_name"
-              class="form-control shadow"
+              class="form-control"
               (input)="searchProducts()"
               autocomplete="off"
               placeholder="Seleccione producto..."
@@ -237,7 +237,7 @@
                 type="number"
                 id="product_price"
                 formControlName="product_price"
-                class="form-control shadow text-right"
+                class="form-control text-right"
                 [value]="selectedProductPrice"
                 autocomplete="off"
                 readonly
@@ -249,7 +249,7 @@
                 type="number"
                 id="product_quantity"
                 formControlName="product_quantity"
-                class="form-control shadow text-right"
+                class="form-control text-right"
                 autocomplete="off"
                 step="0.01"
                 [ngClass]="{
@@ -272,7 +272,7 @@
                 type="number"
                 id="product_new_price"
                 formControlName="product_new_price"
-                class="form-control shadow text-right"
+                class="form-control text-right"
                 autocomplete="off"
                 step="0.01"
                 [ngClass]="{
@@ -431,7 +431,7 @@
         >
           <input
             type="date"
-            class="form-control input-group-text shadow"
+            class="form-control input-group-text"
             [(ngModel)]="selectedDate"
             (ngModelChange)="filterPurchasesByDate()"
             ngbDatepicker

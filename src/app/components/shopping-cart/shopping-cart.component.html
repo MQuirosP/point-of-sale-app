@@ -16,7 +16,7 @@
     type="text"
     id="search"
     name="search"
-    class="form-control shadow"
+    class="form-control"
     placeholder="Ingresa tu búsqueda aquí..."
     autocomplete="off"
     disabled
@@ -122,7 +122,7 @@
             id="customer_name"
             name="customer_name"
             [(ngModel)]="customer_name"
-            class="form-control shadow"
+            class="form-control"
             (keyup)="searchCustomers()"
             autocomplete="off"
             [ngClass]="{
@@ -161,7 +161,7 @@
               id="paymentMethod"
               name="paymentMethod"
               [(ngModel)]="paymentMethod"
-              class="form-control shadow"
+              class="form-control"
               value="contado"
               autocomplete="off"
               [ngClass]="{
@@ -177,7 +177,7 @@
               id="date"
               name="date"
               [(ngModel)]="date"
-              class="form-control shadow"
+              class="form-control"
               autocomplete="off"
               disabled="true"
             />
@@ -190,7 +190,7 @@
             id="name"
             name="name"
             [(ngModel)]="name"
-            class="form-control shadow"
+            class="form-control"
             (keyup)="searchProduct()"
             (keydown.enter)="addProduct()"
             (input)="handleBarcodeInput($event)"
@@ -228,7 +228,7 @@
               id="quantity"
               name="quantity"
               [(ngModel)]="quantity"
-              class="form-control shadow text-right quantity-input"
+              class="form-control text-right quantity-input"
               autocomplete="off"
               [value]="1"
               step="0.01"
@@ -256,7 +256,7 @@
               id="price"
               name="price"
               [(ngModel)]="price"
-              class="form-control shadow text-right"
+              class="form-control text-right"
               [value]="selectedProductPrice"
               autocomplete="off"
               disabled="true"
@@ -409,7 +409,7 @@
         >
           <input
             type="date"
-            class="form-control input-group-text shadow"
+            class="form-control input-group-text"
             [(ngModel)]="selectedDate"
             (ngModelChange)="filterSalesByDate()"
             ngbDatepicker

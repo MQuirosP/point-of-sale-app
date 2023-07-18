@@ -168,6 +168,7 @@
               formControlName="currentPassword"
               (focus)="currentPasswordTouched = true"
               (blur)="currentPasswordTouched = false"
+              autocomplete="false"
             />
             <div
               *ngIf="
@@ -200,6 +201,7 @@
               formControlName="newPassword"
               (focus)="newPasswordTouched = true"
               (blur)="newPasswordTouched = false"
+              autocomplete="false"
             />
             <div
               *ngIf="

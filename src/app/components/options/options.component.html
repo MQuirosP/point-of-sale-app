@@ -20,7 +20,7 @@
           <a
             routerLink="/"
             role="button"
-            class="btn btn-warning border border-warning shadow clic-on-image ml-4"
+            class="btn btn-warning border border-warning clic-on-image ml-4"
             style="width: 110px; margin-right: 10px"
           >
             <i class="fas fa-arrow-left"></i>
@@ -31,7 +31,7 @@
             role="button"
             type="submit"
             (click)="saveRegisterStatus()"
-            class="btn btn-success border border-success shadow clic-on-image mr-5"
+            class="btn btn-success border border-success clic-on-image mr-5"
             style="width: 110px"
           >
             <i class="fas fa-check"></i>
@@ -49,7 +49,7 @@
     <div class="col-12 col-md-4 mt-3">
       <section id="configuracion" [@fadeAnimation]>
         <div class="container">
-          <div class="card shadow">
+          <div class="card">
             <div class="card-header text-center">
               <h3 class="h4">Registro de usuarios</h3>
             </div>
@@ -80,7 +80,7 @@
     <div class="col-12 col-md-4 mt-3">
       <section id="proveedores" [@fadeAnimation]>
         <div class="container">
-          <div class="card shadow">
+          <div class="card">
             <div class="card-header text-center">
               <h3 class="h4">Mis proveedores</h3>
             </div>
@@ -92,7 +92,7 @@
                 <div class="col-12 text-center">
                   <a
                     role="button"
-                    class="btn btn-primary shadow clic-on-image"
+                    class="btn btn-primary clic-on-image"
                     data-toggle="modal"
                     data-target="#providerListModal"
                     (click)="openProviderListModal()"
@@ -109,7 +109,7 @@
     <div class="col-12 col-md-4 mt-3">
       <section [@fadeAnimation]>
         <div class="container">
-          <div class="card shadow">
+          <div class="card">
             <div class="card-header text-center">
               <h3 class="h4">Mis clientes</h3>
             </div>
@@ -121,7 +121,7 @@
                 <div class="col-12 text-center">
                   <a
                     role="button"
-                    class="btn btn-primary shadow clic-on-image"
+                    class="btn btn-primary clic-on-image"
                     data-toggle="modal"
                     data-target="#customerListModal"
                     (click)="openCustomerListModal()"
@@ -140,7 +140,7 @@
     <div class="col-12 col-md-4 mt-3">
       <section id="configuracion" [@fadeAnimation]>
         <div class="container">
-          <div class="card shadow">
+          <div class="card">
             <div class="card-header text-center">
               <h3 class="h4">Mis usuarios</h3>
             </div>
@@ -152,7 +152,7 @@
                 <div class="col-12 text-center">
                   <a
                     role="button"
-                    class="btn btn-primary shadow clic-on-image"
+                    class="btn btn-primary clic-on-image"
                     data-toggle="modal"
                     data-target="#usersListModal"
                     (click)="openUsersListModal()"
@@ -171,7 +171,7 @@
     <div class="col-12 col-md-4" style="margin-top: 100px">
       <!-- <section id="configuracion" [@fadeAnimation]>
         <div class="container">
-          <div class="card shadow">
+          <div class="card">
             <div class="card-header text-center">
               <h3 class="h4">Mis usuarios</h3>
             </div>
@@ -183,7 +183,7 @@
                 <div class="col-12 text-center">
                   <a
                     role="button"
-                    class="btn btn-primary shadow clic-on-image"
+                    class="btn btn-primary clic-on-image"
                     data-toggle="modal"
                     data-target="#usersListModal"
                     (click)="openUsersListModal()"
@@ -211,7 +211,7 @@
   aria-hidden="true"
 >
   <div class="modal-dialog modal-dialog-scrollable" role="document">
-    <div class="modal-content shadow">
+    <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Mantenimiento de proveedores</h5>
         <button
@@ -238,9 +238,9 @@
             id="providerSearch"
             [(ngModel)]="searchTermProvider"
             (ngModelChange)="filterProviders()"
-            class="form-control shadow"
+            class="form-control"
             placeholder="Ingresa tu búsqueda aquí..."
-            [autocomplete]="false"
+            autocomplete="new-password"
           />
         </div>
         <div class="w-100">
@@ -311,7 +311,7 @@
         <button
           *ngIf="getUserRole() !== 'user'"
           type="button"
-          class="btn btn-primary shadow clic-on-image"
+          class="btn btn-primary clic-on-image"
           data-toggle="modal"
           data-target="#providerInfoModal"
           (click)="openProviderInfoModal(false, ''); this.editMode = false"
@@ -320,7 +320,7 @@
         </button>
         <button
           type="button"
-          class="btn btn-secondary shadow clic-on-image"
+          class="btn btn-secondary clic-on-image"
           data-dismiss="modal"
           (click)="closeProviderListModal()"
         >
@@ -342,7 +342,7 @@
   aria-hidden="true"
 >
   <div class="modal-dialog modal-dialog-scrollable" role="document">
-    <div class="modal-content shadow">
+    <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="providerInfoModalLabel">
           {{ modalTitle }} de proveedores
@@ -364,12 +364,12 @@
       </div>
       <div class="modal-body">
         <!-- Formulario de registro de proveedores -->
-        <form [formGroup]="providerForm">
+        <form [formGroup]="providerForm" autocomplete="new-password" role="presentation">
           <div class="form-group">
             <label for="provider_name">Nombre:</label>
             <input
               type="text"
-              class="form-control shadow"
+              class="form-control"
               id="provider_name"
               formControlName="provider_name"
               placeholder="Nombre del proveedor"
@@ -382,14 +382,14 @@
                   providerForm.get('provider_name').invalid
               }"
               required
-              [autocomplete]="false"
+              autocomplete="new-password"
             />
           </div>
           <div class="form-group">
             <label for="provider_address">Dirección:</label>
             <input
               type="text"
-              class="form-control shadow"
+              class="form-control"
               id="provider_address"
               formControlName="provider_address"
               placeholder="Dirección del proveedor"
@@ -401,14 +401,14 @@
                   providerForm.get('provider_address').touched &&
                   providerForm.get('provider_address').invalid
               }"
-              [autocomplete]="false"
+              autocomplete="new-password"
             />
           </div>
           <div class="form-group">
             <label for="provider_phone">Teléfono:</label>
             <input
               type="text"
-              class="form-control shadow"
+              class="form-control"
               id="provider_phone"
               formControlName="provider_phone"
               placeholder="Teléfono del proveedor"
@@ -420,14 +420,14 @@
                   providerForm.get('provider_phone').touched &&
                   providerForm.get('provider_phone').invalid
               }"
-              [autocomplete]="false"
+              autocomplete="new-password"
             />
           </div>
           <div class="form-group">
             <label for="provider_email">Email:</label>
             <input
               type="email"
-              class="form-control shadow"
+              class="form-control"
               id="provider_email"
               formControlName="provider_email"
               placeholder="Email del proveedor"
@@ -439,14 +439,14 @@
                   providerForm.get('provider_email').touched &&
                   providerForm.get('provider_email').invalid
               }"
-              [autocomplete]="false"
+              autocomplete="new-password"
             />
           </div>
           <div class="form-group">
             <label for="provider_dni">DNI:</label>
             <input
               type="text"
-              class="form-control shadow"
+              class="form-control"
               id="provider_dni"
               formControlName="provider_dni"
               placeholder="DNI del proveedor"
@@ -459,14 +459,14 @@
                   providerForm.get('provider_dni').invalid
               }"
               required
-              [autocomplete]="false"
+              autocomplete="new-password"
             />
           </div>
           <div class="modal-footer">
             <button
               *ngIf="this.editMode === false"
               type="submit"
-              class="btn btn-primary shadow clic-on-image"
+              class="btn btn-primary clic-on-image"
               (click)="createProvider()"
               data-dismiss="modal"
             >
@@ -475,7 +475,7 @@
             <button
               *ngIf="this.editMode === true && getUserRole() !== 'user'"
               type="submit"
-              class="btn btn-primary shadow clic-on-image"
+              class="btn btn-primary clic-on-image"
               (click)="editProvider(providerForm.get('provider_id').value)"
               data-dismiss="modal"
             >
@@ -507,7 +507,7 @@
   aria-hidden="true"
 >
   <div class="modal-dialog modal-dialog-scrollable" role="document">
-    <div class="modal-content shadow">
+    <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Mantenimiento de clientes</h5>
         <button
@@ -534,9 +534,9 @@
             id="customerSearch"
             [(ngModel)]="searchTermCustomer"
             (ngModelChange)="filterCustomers()"
-            class="form-control shadow"
+            class="form-control"
             placeholder="Ingresa tu búsqueda aquí..."
-            [autocomplete]="false"
+            autocomplete="new-password"
           />
         </div>
         <div class="w-100">
@@ -638,7 +638,7 @@
   aria-hidden="true"
 >
   <div class="modal-dialog modal-dialog-scrollable" role="document">
-    <div class="modal-content shadow">
+    <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="customerInfoModalLabel">
           {{ modalTitle }} de clientes
@@ -666,7 +666,7 @@
               <label for="customer_name">Nombre:</label>
               <input
                 type="text"
-                class="form-control shadow"
+                class="form-control"
                 id="customer_name"
                 formControlName="customer_name"
                 placeholder="Nombre del cliente"
@@ -679,14 +679,14 @@
                     customerForm.get('customer_name').invalid
                 }"
                 required
-                [autocomplete]="false"
+                autocomplete="new-password"
               />
             </div>
             <div class="col">
               <label for="customer_first_lastname">Primer Apellido:</label>
               <input
                 type="text"
-                class="form-control shadow"
+                class="form-control"
                 id="customer_first_lastname"
                 formControlName="customer_first_lastname"
                 placeholder="Primer apellido"
@@ -699,7 +699,7 @@
                     customerForm.get('customer_first_lastname').invalid
                 }"
                 required
-                [autocomplete]="false"
+                autocomplete="new-password"
               />
             </div>
           </div>
@@ -708,7 +708,7 @@
               <label for="customer_second_lastname">Segundo Apellido:</label>
               <input
                 type="text"
-                class="form-control shadow"
+                class="form-control"
                 id="customer_second_lastname"
                 formControlName="customer_second_lastname"
                 placeholder="Segundo apellido"
@@ -721,14 +721,14 @@
                     customerForm.get('customer_second_lastname').invalid
                 }"
                 required
-                [autocomplete]="false"
+                autocomplete="new-password"
               />
             </div>
             <div class="col">
               <label for="customer_dni">Cédula:</label>
               <input
                 type="text"
-                class="form-control shadow"
+                class="form-control"
                 id="customer_dni"
                 formControlName="customer_dni"
                 placeholder="DNI del cliente"
@@ -741,7 +741,7 @@
                     customerForm.get('customer_dni').invalid
                 }"
                 required
-                [autocomplete]="false"
+                autocomplete="new-password"
               />
             </div>
           </div>
@@ -749,7 +749,7 @@
             <label for="customer_address">Dirección:</label>
             <input
               type="text"
-              class="form-control shadow"
+              class="form-control"
               id="customer_address"
               formControlName="customer_address"
               placeholder="Dirección"
@@ -761,14 +761,14 @@
                   customerForm.get('customer_address').touched &&
                   customerForm.get('customer_address').invalid
               }"
-              [autocomplete]="false"
+              autocomplete="new-password"
             />
           </div>
           <div class="form-group">
             <label for="customer_phone">Teléfono:</label>
             <input
               type="tel"
-              class="form-control shadow"
+              class="form-control"
               id="customer_phone"
               formControlName="customer_phone"
               placeholder="Teléfono del cliente"
@@ -780,14 +780,14 @@
                   customerForm.get('customer_phone').touched &&
                   customerForm.get('customer_phone').invalid
               }"
-              [autocomplete]="false"
+              autocomplete="new-password"
             />
           </div>
           <div class="form-group">
             <label for="customer_email">Email:</label>
             <input
               type="email"
-              class="form-control shadow"
+              class="form-control"
               id="email"
               formControlName="customer_email"
               placeholder="Email del cliente"
@@ -799,14 +799,14 @@
                   customerForm.get('customer_email').touched &&
                   customerForm.get('customer_email').invalid
               }"
-              [autocomplete]="false"
+              autocomplete="new-password"
             />
           </div>
           <div class="modal-footer">
             <button
               *ngIf="this.editMode === false"
               type="submit"
-              class="btn btn-primary shadow clic-on-image"
+              class="btn btn-primary clic-on-image"
               (click)="createCustomer()"
               data-dismiss="modal"
             >
@@ -815,7 +815,7 @@
             <button
               *ngIf="this.editMode === true"
               type="submit"
-              class="btn btn-primary shadow clic-on-image"
+              class="btn btn-primary clic-on-image"
               data-dismiss="modal"
               (click)="editCustomer(customerForm.get('customer_id').value)"
             >
@@ -823,7 +823,7 @@
             </button>
             <button
               type="button"
-              class="btn btn-secondary shadow clic-on-image ml-2"
+              class="btn btn-secondary clic-on-image ml-2"
               data-dismiss="modal"
               (click)="closeCustomerInfoModal()"
             >
@@ -847,7 +847,7 @@
   aria-hidden="true"
 >
   <div class="modal-dialog modal-dialog-scrollable" role="document">
-    <div class="modal-content shadow">
+    <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Mantenimiento de usuarios</h5>
         <button
@@ -874,9 +874,9 @@
             id="userSearch"
             [(ngModel)]="searchTermUser"
             (ngModelChange)="filterUsers()"
-            class="form-control shadow"
+            class="form-control"
             placeholder="Ingresa tu búsqueda aquí..."
-            [autocomplete]="false"
+            autocomplete="new-password"
           />
         </div>
         <div class="w-100">
@@ -980,7 +980,7 @@
   aria-hidden="true"
 >
   <div class="modal-dialog modal-dialog-scrollable" role="document">
-    <div class="modal-content shadow">
+    <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="userInfoModalLabel">
           {{ modalTitle }} de usuarios
@@ -1008,24 +1008,24 @@
               <label for="name">Nombre:</label>
               <input
                 type="text"
-                class="form-control shadow"
+                class="form-control"
                 id="name"
                 formControlName="name"
                 placeholder="Nombre"
                 required
-                [autocomplete]="false"
+                autocomplete="new-password"
               />
             </div>
             <div class="col">
               <label for="lastname">Apellidos:</label>
               <input
                 type="text"
-                class="form-control shadow"
+                class="form-control"
                 id="lastname"
                 formControlName="lastname"
                 placeholder="Apellido"
                 required
-                [autocomplete]="false"
+                autocomplete="new-password"
               />
             </div>
           </div>
@@ -1034,13 +1034,13 @@
               <label for="username">Nombre de usuario:</label>
               <input
                 type="text"
-                class="form-control shadow"
+                class="form-control"
                 id="username"
                 formControlName="username"
                 placeholder="Nombre de usuario"
                 [value]="userForm.get('username').value"
                 required
-                [autocomplete]="false"
+                autocomplete="new-password"
                 readonly
               />
             </div>
@@ -1049,7 +1049,7 @@
               <div class="text-center">
                 <button
                   type="button"
-                  class="btn btn-primary shadow clic-on-image"
+                  class="btn btn-primary clic-on-image"
                   data-toggle="modal"
                   data-target="#resetPasswordModal"
                   (click)="openResetPasswordModal()"
@@ -1063,20 +1063,20 @@
             <label for="email">Email:</label>
             <input
               type="email"
-              class="form-control shadow"
+              class="form-control"
               id="userEmail"
               formControlName="email"
               placeholder="Email"
               [value]="userForm.get('email').value"
               required
-              [autocomplete]="false"
+              autocomplete="new-password"
             />
           </div>
           <div class="row form-group">
             <div class="col">
               <label for="role">Rol:</label>
               <select
-                class="form-control shadow"
+                class="form-control"
                 id="role"
                 formControlName="role"
                 required
@@ -1089,7 +1089,7 @@
             <div class="col">
               <label for="status">Estado:</label>
               <select
-                class="form-control shadow"
+                class="form-control"
                 id="status"
                 formControlName="status"
                 required
@@ -1175,7 +1175,7 @@
             <label for="newPassword">Contraseña Nueva</label>
             <input
               type="password"
-              class="form-control shadow"
+              class="form-control"
               id="newPassword-reset"
               formControlName="newPassword"
               placeholder="Ingresa tu nueva contraseña"
@@ -1194,7 +1194,7 @@
             <label for="confirmPassword">Confirmar Contraseña</label>
             <input
               type="password"
-              class="form-control shadow"
+              class="form-control"
               id="confirmPassword-reset"
               formControlName="confirmPassword"
               placeholder="Confirma tu contraseña"
@@ -1212,7 +1212,7 @@
           <div class="modal-footer">
             <button
               type="button"
-              class="btn btn-primary shadow clic-on-image"
+              class="btn btn-primary clic-on-image"
               data-dismiss="modal"
               (click)="resetPassword(this.userForm.get('username').value)"
             >
@@ -1220,7 +1220,7 @@
             </button>
             <button
               type="button"
-              class="btn btn-secondary shadow clic-on-image"
+              class="btn btn-secondary clic-on-image"
               data-dismiss="modal"
               (click)="closeResetPasswordModal()"
             >

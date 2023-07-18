@@ -17,7 +17,7 @@
     id="search"
     [(ngModel)]="searchTerm"
     (ngModelChange)="filterProducts()"
-    class="form-control shadow"
+    class="form-control"
     placeholder="Ingresa tu búsqueda aquí..."
     autocomplete="off"
   />
@@ -175,7 +175,7 @@
             <label for="int_code">Código:</label>
             <input
               type="text"
-              class="form-control shadow"
+              class="form-control"
               id="int_code"
               formControlName="int_code"
               name="int_code"
@@ -197,7 +197,7 @@
             <label for="productName">Nombre:</label>
             <input
               type="text"
-              class="form-control shadow"
+              class="form-control"
               id="productName"
               formControlName="name"
               name="name"
@@ -216,7 +216,7 @@
           <div class="form-group">
             <label for="productDescription">Descripción:</label>
             <textarea
-              class="form-control shadow"
+              class="form-control"
               id="productDescription"
               formControlName="description"
               name="description"
@@ -236,7 +236,7 @@
               <label for="purchase_price">Precio de compra:</label>
               <input
                 type="number"
-                class="form-control shadow text-right"
+                class="form-control text-right"
                 id="purchase_price"
                 formControlName="purchase_price"
                 name="purchase_price"
@@ -258,7 +258,7 @@
               <label for="sale_price">Precio de venta:</label>
               <input
                 type="number"
-                class="form-control shadow text-right"
+                class="form-control text-right"
                 id="sale_price"
                 formControlName="sale_price"
                 name="sale_price"
@@ -273,7 +273,7 @@
               <label for="productMargin">Margen de ganancia (%):</label>
               <input
                 type="number"
-                class="form-control shadow text-right"
+                class="form-control text-right"
                 id="productMargin"
                 formControlName="margin"
                 name="margin"
@@ -306,7 +306,7 @@
               </label>
               <input
                 type="number"
-                class="form-control shadow text-right"
+                class="form-control text-right"
                 id="taxPercentage"
                 formControlName="taxPercentage"
                 name="taxPercentage"
@@ -393,7 +393,7 @@
             <input
               type="text"
               id="deleteProduct"
-              class="form-control shadow"
+              class="form-control"
               name="name"
               [value]="productForm.get('name').value"
               autocomplete="off"
@@ -402,7 +402,7 @@
             <input
               type="password"
               id="password"
-              class="form-control shadow"
+              class="form-control"
               name="password"
               [(ngModel)]="password"
               autocomplete="off"
