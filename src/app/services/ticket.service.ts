@@ -14,6 +14,7 @@ interface SaleItem {
 interface SaleData {
   doc_number: string;
   customer_name: string;
+  paymentMethod: string;
   createdAt: string;
   sub_total: number;
   taxes_amount: number;
@@ -25,7 +26,7 @@ interface SaleData {
   providedIn: 'root',
 })
 export class TicketService {
-  separator: string = '-'.repeat(48);
+  separator: string = '-'.repeat(54);
   backendUrl = `${environment.apiUrl}`;
 
   constructor(private http: HttpClient) {}
@@ -34,6 +35,7 @@ export class TicketService {
     const {
       doc_number,
       customer_name,
+      paymentMethod,
       createdAt,
       sub_total,
       taxes_amount,
@@ -42,7 +44,7 @@ export class TicketService {
     } = ticketData;
 
     const lineHeight = 5; // Espacio vertical ocupado por cada línea
-    const headerHeight = 40; // Espacio vertical ocupado por el encabezado
+    const headerHeight = 42; // Espacio vertical ocupado por el encabezado
     const itemHeight = saleItems.length * 3 * lineHeight; // Espacio vertical ocupado por los artículos
     const footerHeight = 25; // Espacio vertical ocupado por el pie de página
     const totalHeight = 20; // Espacio vertical ocupado por el total
@@ -56,9 +58,10 @@ export class TicketService {
   const marginLeft = 1; // Margen izquierdo en mm
 
   doc.setFontSize(14);
-  doc.text('Verdulería Sol', marginLeft + 20, 10, { align: 'center' });
+  doc.text('Verdulería Sol', marginLeft + 25, 10, { align: 'center' });
   doc.setFontSize(8);
   doc.text('Margarita Quirós Pizarro', marginLeft + 25, 13, { align: 'center' });
+  doc.setFontSize(6);
   doc.text('céd. 6-0331-0720', marginLeft + 25, 16, { align: 'center' });
   doc.setFontSize(8);
   doc.text('Tiquete de Venta', marginLeft, 22);
@@ -67,16 +70,19 @@ export class TicketService {
 
   doc.setFontSize(8);
   doc.text(`Fecha: ${createdAt}`, marginLeft, 30);
-  doc.text(`Cliente: ${customer_name}`, marginLeft, 35);
+  doc.text(`Cliente: ${customer_name}`, marginLeft, 34);
+  doc.setFontSize(7);
+  doc.text(`Forma de pago: ${paymentMethod}`, marginLeft, 37);
+  doc.setFontSize(8);
   doc.text(
     `${this.separator}`,
-    marginLeft + 1,
-    37
+    marginLeft - 2,
+    39
   );
   let y = 42;
 
   saleItems.forEach((item: SaleItem, index: number) => {
-    doc.setFontSize(10);
+    doc.setFontSize(9);
     doc.text(`${item.name}`, marginLeft, y);
     y += 3;
     doc.setFontSize(8);
@@ -101,7 +107,7 @@ export class TicketService {
 
   doc.text(
     `${this.separator}`,
-    marginLeft + 1,
+    marginLeft - 2,
     y
   );
   y += 5;
@@ -168,6 +174,7 @@ export class TicketService {
             const ticketData: SaleData = {
               doc_number: saleData.doc_number,
               customer_name: saleData.customer_name,
+              paymentMethod: saleData.paymentMethod,
               createdAt: saleData.createdAt,
               sub_total: saleData.sub_total,
               taxes_amount: saleData.taxes_amount,

@@ -30,32 +30,43 @@
       <div
         class="card shadow card-height border col-md-8 mt-4 customShadow bg-custom clic-on-image"
       >
-        <a
-          class="text-decoration-none"
-          (click)="openSaleModal()"
-          data-toggle="modal"
-          data-target="#newSaleModal"
-        >
-          <div class="card-body">
-            <h5 class="card-title">Crear venta</h5>
+        <div class="card-body">
+          <div class="d-flex">
+            <a
+              class="text-decoration-none"
+              (click)="openSaleModal()"
+              data-toggle="modal"
+              data-target="#newSaleModal"
+            >
+              <h5 class="card-title">Crear venta</h5>
+              <img
+                src="../../../assets/shoppingcart.gif"
+                alt=""
+                class="svg"
+                style="transform: scaleX(-1)"
+              />
+            </a>
           </div>
-        </a>
+        </div>
       </div>
     </div>
     <div class="col-md-6 d-flex justify-content-center">
       <div
         class="card shadow card-height border col-md-8 mt-4 customShadow bg-custom clic-on-image"
       >
-        <a
-          class="text-decoration-none"
-          data-toggle="modal"
-          data-target="#saleHistoryModal"
-          (click)="getSalesHistory(getCurrentDate())"
-        >
-          <div class="card-body">
-            <h5 class="card-title">Mi historial</h5>
-          </div>
-        </a>
+        <div class="d-flex">
+          <a
+            class="text-decoration-none"
+            data-toggle="modal"
+            data-target="#saleHistoryModal"
+            (click)="getSalesHistory(getCurrentDate())"
+          >
+            <div class="card-body">
+              <h5 class="card-title">Mi historial</h5>
+              <img src="../../../assets/list.gif" alt="" class="svg" />
+            </div>
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -64,23 +75,28 @@
       <div
         class="card shadow card-height col-md-8 border customShadow mt-4 bg-custom clic-on-image"
       >
-        <a routerLink="/product-list" class="text-decoration-none">
-          <div class="card-body">
-            <h5 class="card-title">Mis productos</h5>
-          </div>
-        </a>
+        <div>
+          <a routerLink="/product-list" class="text-decoration-none">
+            <div class="card-body">
+              <h5 class="card-title">Mis productos</h5>
+              <img src="../../../assets/book.gif" alt="" class="svg" />
+            </div>
+          </a>
+        </div>
       </div>
     </div>
     <div class="col-md-6 d-flex justify-content-center">
       <div
         class="card shadow card-height col-md-8 border customShadow mt-4 bg-custom clic-on-image"
       >
-        <a routerLink="/reports" class="text-decoration-none">
-          <div class="card-body">
-            <h5 class="card-title">Mis reportes</h5>
-            <!-- Contenido para la opción "Mis reportes" -->
-          </div>
-        </a>
+        <div class="d-flex">
+          <a routerLink="/reports" class="text-decoration-none">
+            <div class="card-body">
+              <h5 class="card-title">Mis reportes</h5>
+              <img src="../../../assets/reports.gif" alt="" class="svg" />
+            </div>
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -96,7 +112,7 @@
   aria-hidden="true"
 >
   <div class="modal-dialog modal-dialog-scrollable shadow" role="document">
-    <div class="modal-content shadow">
+    <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Registro de ventas</h5>
         <button
@@ -156,20 +172,22 @@
         <div class="form-group form-row">
           <div class="col">
             <label for="paymentMethod">Método de pago:</label>
-            <input
-              type="text"
+            <select
               id="paymentMethod"
               name="paymentMethod"
               [(ngModel)]="paymentMethod"
               class="form-control"
-              value="contado"
               autocomplete="off"
-              [ngClass]="{
-                'is-valid': isValidPaymentMethod(),
-                'is-invalid': !isValidPaymentMethod()
-              }"
-            />
+              style="padding: 0 10px 0 10px"
+            >
+              <option value="contado">Contado</option>
+              <option value="crédito">Crédito</option>
+              <option value="sinpe">Sinpe</option>
+              <option value="tarjeta">Tarjeta</option>
+              <option value="transferencia">Transferencia</option>
+            </select>
           </div>
+
           <div class="col">
             <label for="date">Fecha:</label>
             <input
@@ -297,13 +315,7 @@
         <table class="table">
           <thead class="product-detail-table-titles">
             <tr>
-              <th
-                class="text-left"
-                scope="col"
-                style="width: 30%"
-              >
-                Producto
-              </th>
+              <th class="text-left" scope="col" style="width: 30%">Producto</th>
               <th class="text-right" scope="col" style="width: 10%">Cant.</th>
               <th class="text-right" scope="col" style="width: 25%">Precio</th>
               <th class="text-right" scope="col" style="width: 25%">Total</th>
@@ -331,10 +343,16 @@
                 <!-- {{ product.quantity }} -->
               </td>
               <td class="text-right">
-                {{ (product.sub_total + product.taxes_amount) / product.quantity| currency : "CRC" : "₡" }}
+                {{
+                  (product.sub_total + product.taxes_amount) / product.quantity
+                    | currency : "CRC" : "₡"
+                }}
               </td>
               <td class="text-right">
-                {{ product.sub_total + product.taxes_amount | currency : "CRC" : "₡" }}
+                {{
+                  product.sub_total + product.taxes_amount
+                    | currency : "CRC" : "₡"
+                }}
               </td>
               <td class="text-center">
                 <button
@@ -358,7 +376,7 @@
         <button
           type="button"
           class="btn btn-primary shadow clic-on-image"
-          (click)="createSale($event);"
+          (click)="createSale($event)"
           data-dismiss="modal"
         >
           Guardar venta
@@ -481,7 +499,9 @@
                   <tr *ngFor="let item of sale.saleItems">
                     <td class="text-left">{{ item.int_code }}</td>
                     <td class="text-left">{{ item.name }}</td>
-                    <td class="text-right">{{ item.quantity | number : "1.2-2" }}</td>
+                    <td class="text-right">
+                      {{ item.quantity | number : "1.2-2" }}
+                    </td>
                     <td class="text-right">
                       {{ item.total | currency : "CRC" : "₡" : "1.2-2" }}
                     </td>

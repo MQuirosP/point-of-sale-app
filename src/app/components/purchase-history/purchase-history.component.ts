@@ -468,7 +468,6 @@ export class PurchaseHistoryComponent {
       const data = {
         purchase_price: product.price,
       };
-      console.log(data);
       return this.http.put(
         `${this.backendUrl}products/${cachedProduct.productId}`,
         data

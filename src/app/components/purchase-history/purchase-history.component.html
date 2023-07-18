@@ -29,31 +29,42 @@
       <div
         class="card shadow card-height border col-md-8 mt-4 customShadow bg-custom clic-on-image"
       >
-        <a
-          data-toggle="modal"
-          data-target="#newPurchaseModal"
-          class="text-decoration-none"
-        >
-          <div class="card-body">
-            <h5 class="card-title">Crear compra</h5>
-          </div>
-        </a>
+        <div class="d-flex">
+          <a
+            data-toggle="modal"
+            data-target="#newPurchaseModal"
+            class="text-decoration-none"
+          >
+            <div class="card-body">
+              <h5 class="card-title">Crear compra</h5>
+              <img
+                src="../../../assets/shoppingcart.gif"
+                alt=""
+                class="svg"
+                style="transform: scaleX(-1)"
+              />
+            </div>
+          </a>
+        </div>
       </div>
     </div>
     <div class="col-md-6 d-flex justify-content-center">
       <div
         class="card shadow card-height border col-md-8 mt-4 customShadow bg-custom clic-on-image"
       >
-        <a
-          data-toggle="modal"
-          data-target="#purchaseHistoryModal"
-          (click)="getPurchasesHistory(getCurrentDate())"
-          class="text-decoration-none"
-        >
-          <div class="card-body">
-            <h5 class="card-title">Mi historial</h5>
-          </div>
-        </a>
+        <div class="d-flex">
+          <a
+            data-toggle="modal"
+            data-target="#purchaseHistoryModal"
+            (click)="getPurchasesHistory(getCurrentDate())"
+            class="text-decoration-none"
+          >
+            <div class="card-body">
+              <h5 class="card-title">Mi historial</h5>
+              <img src="../../../assets/list.gif" alt="" class="svg" />
+            </div>
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -62,23 +73,28 @@
       <div
         class="card shadow card-height border col-md-8 mt-4 customShadow bg-custom clic-on-image"
       >
-        <a routerLink="/product-list" class="text-decoration-none">
-          <div class="card-body">
-            <h5 class="card-title">Mis productos</h5>
-          </div>
-        </a>
+        <div class="d-flex">
+          <a routerLink="/product-list" class="text-decoration-none">
+            <div class="card-body">
+              <h5 class="card-title">Mis productos</h5>
+              <img src="../../../assets/book.gif" alt="" class="svg" />
+            </div>
+          </a>
+        </div>
       </div>
     </div>
     <div class="col-md-6 d-flex justify-content-center">
       <div
         class="card shadow card-height border col-md-8 mt-4 customShadow bg-custom clic-on-image"
       >
-        <a routerLink="/reports" class="text-decoration-none">
-          <div class="card-body">
-            <h5 class="card-title">Mis reportes</h5>
-            <!-- Contenido para la opción "Mis reportes" -->
-          </div>
-        </a>
+        <div class="d-flex">
+          <a routerLink="/reports" class="text-decoration-none">
+            <div class="card-body">
+              <h5 class="card-title">Mis reportes</h5>
+              <img src="../../../assets/reports.gif" alt="" class="svg" />
+            </div>
+          </a>
+        </div>
       </div>
     </div>
   </div>

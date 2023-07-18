@@ -161,6 +161,23 @@ body {
   transition: transform 0.2s;
 }
 
+.clic-on-main-image:hover {
+  transform: scale(1);
+  transition: transform 0.2s;
+}
+
+.clic-on-main-image:active {
+  transform: scale(0.95);
+  transition: transform 0.2s;
+  box-shadow: inset 3px 3px 3px darkgray;
+  background-color: #b4f5b4;
+}
+
+.custom-image-shadow{
+  border-radius: 10px;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
 .suggestions {
   position: absolute;
   z-index: 999;
@@ -250,6 +267,7 @@ button {
 .clic-on-icon:hover {
   transform: scale(1.3);
   transition: transform 0.3s ease-in-out;
+  
 }
 
 .clic-on-icon:active {
@@ -440,3 +458,10 @@ button {
   cursor: pointer;
 }
 
+.svg {
+  height: 100px;
+  object-fit:scale-down;
+  position: absolute;
+  right: 30px;
+  bottom: 10px;
+}
