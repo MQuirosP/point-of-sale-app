@@ -117,8 +117,12 @@
               <td class="text-right">
                 {{ product.purchase_price | currency : "CRC" : "₡" }}
               </td>
-              <td class="text-right">{{ product.margin | number : "1.2-2"}} %</td>
-              <td class="text-right"> {{ product.taxPercentage | number : "1.1-1" }} %</td>
+              <td class="text-right">
+                {{ product.margin | number : "1.2-2" }} %
+              </td>
+              <td class="text-right">
+                {{ product.taxPercentage | number : "1.1-1" }} %
+              </td>
               <td class="text-right price-cell">
                 {{ product.sale_price | currency : "CRC" : "₡" }}
               </td>
@@ -371,20 +375,26 @@
   aria-labelledby="deletePasswordModalLabel"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-dialog-centered" role="document">
+  <div
+    class="modal-dialog modal-dialog-centered"
+    role="document"
+    style="width: 300px"
+  >
     <div class="modal-content shadow">
       <div class="modal-header">
-        <h2 class="modal-title">Eliminar producto</h2>
-        <span
+        <h5 class="modal-title">Eliminar producto</h5>
+        <button
           class="close clic-on-image"
           (click)="closePasswordModal()"
           data-dismiss="modal"
-          aria-hidden="true"
-          ><i
-            class="fa-sharp fa-solid fa-circle-xmark"
-            style="color: #f40b0b; cursor: pointer"
-          ></i
-        ></span>
+        >
+          <span aria-hidden="true"
+            ><i
+              class="fa-sharp fa-solid fa-circle-xmark"
+              style="color: #f40b0b; cursor: pointer"
+            ></i
+          ></span>
+        </button>
       </div>
       <div class="modal-body">
         <form>
