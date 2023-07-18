@@ -373,7 +373,14 @@
               id="provider_name"
               formControlName="provider_name"
               placeholder="Nombre del proveedor"
-              [value]="providerForm.get('provider_name').value"
+              [ngClass]="{
+                'is-valid':
+                  providerForm.get('provider_name').touched &&
+                  providerForm.get('provider_name').valid,
+                'is-invalid':
+                  providerForm.get('provider_name').touched &&
+                  providerForm.get('provider_name').invalid
+              }"
               required
               [autocomplete]="false"
             />
@@ -386,7 +393,14 @@
               id="provider_address"
               formControlName="provider_address"
               placeholder="Dirección del proveedor"
-              [value]="providerForm.get('provider_address').value"
+              [ngClass]="{
+                'is-valid':
+                  providerForm.get('provider_address').touched &&
+                  providerForm.get('provider_address').valid,
+                'is-invalid':
+                  providerForm.get('provider_address').touched &&
+                  providerForm.get('provider_address').invalid
+              }"
               [autocomplete]="false"
             />
           </div>
@@ -398,7 +412,14 @@
               id="provider_phone"
               formControlName="provider_phone"
               placeholder="Teléfono del proveedor"
-              [value]="providerForm.get('provider_phone')"
+              [ngClass]="{
+                'is-valid':
+                  providerForm.get('provider_phone').touched &&
+                  providerForm.get('provider_phone').valid,
+                'is-invalid':
+                  providerForm.get('provider_phone').touched &&
+                  providerForm.get('provider_phone').invalid
+              }"
               [autocomplete]="false"
             />
           </div>
@@ -410,7 +431,14 @@
               id="provider_email"
               formControlName="provider_email"
               placeholder="Email del proveedor"
-              [value]="providerForm.get('provider_email').value"
+              [ngClass]="{
+                'is-valid':
+                  providerForm.get('provider_email').touched &&
+                  providerForm.get('provider_email').valid,
+                'is-invalid':
+                  providerForm.get('provider_email').touched &&
+                  providerForm.get('provider_email').invalid
+              }"
               [autocomplete]="false"
             />
           </div>
@@ -422,7 +450,14 @@
               id="provider_dni"
               formControlName="provider_dni"
               placeholder="DNI del proveedor"
-              [value]="providerForm.get('provider_dni').value"
+              [ngClass]="{
+                'is-valid':
+                  providerForm.get('provider_dni').touched &&
+                  providerForm.get('provider_dni').valid,
+                'is-invalid':
+                  providerForm.get('provider_dni').touched &&
+                  providerForm.get('provider_dni').invalid
+              }"
               required
               [autocomplete]="false"
             />
@@ -635,7 +670,14 @@
                 id="customer_name"
                 formControlName="customer_name"
                 placeholder="Nombre del cliente"
-                [value]="customerForm.get('customer_name').value"
+                [ngClass]="{
+                  'is-valid':
+                    customerForm.get('customer_name').touched &&
+                    customerForm.get('customer_name').valid,
+                  'is-invalid':
+                    customerForm.get('customer_name').touched &&
+                    customerForm.get('customer_name').invalid
+                }"
                 required
                 [autocomplete]="false"
               />
@@ -648,7 +690,14 @@
                 id="customer_first_lastname"
                 formControlName="customer_first_lastname"
                 placeholder="Primer apellido"
-                [value]="customerForm.get('customer_first_lastname').value"
+                [ngClass]="{
+                  'is-valid':
+                    customerForm.get('customer_first_lastname').touched &&
+                    customerForm.get('customer_first_lastname').valid,
+                  'is-invalid':
+                    customerForm.get('customer_first_lastname').touched &&
+                    customerForm.get('customer_first_lastname').invalid
+                }"
                 required
                 [autocomplete]="false"
               />
@@ -663,7 +712,14 @@
                 id="customer_second_lastname"
                 formControlName="customer_second_lastname"
                 placeholder="Segundo apellido"
-                [value]="customerForm.get('customer_second_lastname').value"
+                [ngClass]="{
+                  'is-valid':
+                    customerForm.get('customer_second_lastname').touched &&
+                    customerForm.get('customer_second_lastname').valid,
+                  'is-invalid':
+                    customerForm.get('customer_second_lastname').touched &&
+                    customerForm.get('customer_second_lastname').invalid
+                }"
                 required
                 [autocomplete]="false"
               />
@@ -676,7 +732,14 @@
                 id="customer_dni"
                 formControlName="customer_dni"
                 placeholder="DNI del cliente"
-                [value]="customerForm.get('customer_dni').value"
+                [ngClass]="{
+                  'is-valid':
+                    customerForm.get('customer_dni').touched &&
+                    customerForm.get('customer_dni').valid,
+                  'is-invalid':
+                    customerForm.get('customer_dni').touched &&
+                    customerForm.get('customer_dni').invalid
+                }"
                 required
                 [autocomplete]="false"
               />
@@ -690,7 +753,14 @@
               id="customer_address"
               formControlName="customer_address"
               placeholder="Dirección"
-              [value]="customerForm.get('customer_address').value"
+              [ngClass]="{
+                'is-valid':
+                  customerForm.get('customer_address').touched &&
+                  customerForm.get('customer_address').valid,
+                'is-invalid':
+                  customerForm.get('customer_address').touched &&
+                  customerForm.get('customer_address').invalid
+              }"
               [autocomplete]="false"
             />
           </div>
@@ -702,7 +772,14 @@
               id="customer_phone"
               formControlName="customer_phone"
               placeholder="Teléfono del cliente"
-              [value]="customerForm.get('customer_phone').value"
+              [ngClass]="{
+                'is-valid':
+                  customerForm.get('customer_phone').touched &&
+                  customerForm.get('customer_phone').valid,
+                'is-invalid':
+                  customerForm.get('customer_phone').touched &&
+                  customerForm.get('customer_phone').invalid
+              }"
               [autocomplete]="false"
             />
           </div>
@@ -714,7 +791,14 @@
               id="email"
               formControlName="customer_email"
               placeholder="Email del cliente"
-              [value]="customerForm.get('customer_email').value"
+              [ngClass]="{
+                'is-valid':
+                  customerForm.get('customer_email').touched &&
+                  customerForm.get('customer_email').valid,
+                'is-invalid':
+                  customerForm.get('customer_email').touched &&
+                  customerForm.get('customer_email').invalid
+              }"
               [autocomplete]="false"
             />
           </div>
@@ -1061,7 +1145,7 @@
   aria-labelledby="resetPasswordModalLabel"
   aria-hidden="true"
 >
-  <div class="modal-dialog" role="document" style="width: 300px;">
+  <div class="modal-dialog" role="document" style="width: 300px">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="resetPasswordModalLabel">
