@@ -258,72 +258,80 @@ export class PurchaseHistoryComponent {
   }
 
   searchProducts() {
-    const searchTerm = this.purchaseForm
-      .get('product_name')
-      .value.toLowerCase();
-    this.http.get(`${this.backendUrl}products`).subscribe({
-      next: (response: any) => {
-        const products = response?.message?.products;
-        if (Array.isArray(products) && products.length > 0) {
-          const searchTermNormalized = searchTerm
-            ? searchTerm.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-            : '';
-
-          const searchPattern = searchTermNormalized
-            .toLowerCase()
-            .replace(/\*/g, '.*');
-
-          const regex = new RegExp(searchPattern);
-
-          this.productSuggestionList = products.filter((product: any) => {
-            const productNameNormalized = product.name
-              ? product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    const productNameControl = this.purchaseForm.get('product_name');
+  
+    // Verificar si productNameControl y productNameControl.value no son nulos
+    if (productNameControl && productNameControl.value !== null) {
+      const searchTerm = productNameControl.value.toLowerCase();
+      this.http.get(`${this.backendUrl}products`).subscribe({
+        next: (response: any) => {
+          const products = response?.message?.products;
+          if (Array.isArray(products) && products.length > 0) {
+            const searchTermNormalized = searchTerm
+              ? searchTerm.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
               : '';
-
-            const productCodeNormalized = product.int_code
-              ? product.int_code
-                  .normalize('NFD')
-                  .replace(/[\u0300-\u036f]/g, '')
-              : '';
-
-            return (
-              regex.test(productNameNormalized.toLowerCase()) ||
-              regex.test(productCodeNormalized.toLowerCase())
-            );
-          });
-
-          // Auto-seleccionar el producto si hay una sola sugerencia
-          if (this.productSuggestionList.length === 1) {
-            const suggestion = this.productSuggestionList[0];
-            this.selectProductSuggestion(suggestion, null);
-            this.selectedProduct = suggestion;
+  
+            const searchPattern = searchTermNormalized
+              .toLowerCase()
+              .replace(/\*/g, '.*');
+  
+            const regex = new RegExp(searchPattern);
+  
+            this.productSuggestionList = products.filter((product: any) => {
+              const productNameNormalized = product.name
+                ? product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                : '';
+  
+              const productCodeNormalized = product.int_code
+                ? product.int_code
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '')
+                : '';
+  
+              return (
+                regex.test(productNameNormalized.toLowerCase()) ||
+                regex.test(productCodeNormalized.toLowerCase())
+              );
+            });
+  
+            // Auto-seleccionar el producto si hay una sola sugerencia
+            if (this.productSuggestionList.length === 1) {
+              const suggestion = this.productSuggestionList[0];
+              this.selectProductSuggestion(suggestion, null);
+              this.selectedProduct = suggestion;
+            } else {
+              this.selectedProduct = null;
+            }
           } else {
+            this.productSuggestionList = [];
             this.selectedProduct = null;
           }
-        } else {
-          this.productSuggestionList = [];
-          this.selectedProduct = null;
-        }
-
-        // Verificar si el campo de entrada está vacío y borrar la selección
-        if (searchTerm === '') {
-          this.selectedProduct = null;
-          this.selectedProductTaxes = null;
-          this.selectedProductPrice = null;
-        } else {
-          // Actualizar el precio solo cuando se selecciona un producto
-          if (this.selectedProduct) {
-            this.selectedProductPrice =
-              this.selectedProduct.purchase_price;
+  
+          // Verificar si el campo de entrada está vacío y borrar la selección
+          if (searchTerm === '') {
+            this.selectedProduct = null;
+            this.selectedProductTaxes = null;
+            this.selectedProductPrice = null;
+          } else {
+            // Actualizar el precio solo cuando se selecciona un producto
+            if (this.selectedProduct) {
+              this.selectedProductPrice =
+                this.selectedProduct.purchase_price;
+            }
           }
-        }
-      },
-      error: (error: any) => {
-        console.log('Error al recuperar productos');
-        this.toastr.error('Error al recuperar productos.');
-      },
-    });
+        },
+        error: (error: any) => {
+          console.log('Error al recuperar productos');
+          this.toastr.error('Error al recuperar productos.');
+        },
+      });
+    } else {
+      // Si productNameControl o productNameControl.value es nulo, restablecer la lista y selección
+      this.productSuggestionList = [];
+      this.selectedProduct = null;
+    }
   }
+  
 
   selectProductSuggestion(product: any, event: Event) {
     if (event) {
@@ -339,6 +347,21 @@ export class PurchaseHistoryComponent {
     setTimeout(() => {
       this.productQuantityInput.nativeElement.focus();
     }, 0);
+  }
+
+  handleBarcodeInput(event: Event) {
+    const inputValue = (event.target as HTMLInputElement).value.trim();
+
+    if (inputValue) {
+      const matchingProduct = this.productSuggestionList.find((product: any) => {
+        return product.int_code === inputValue;
+      });
+
+      if (matchingProduct) {
+        this.selectProductSuggestion(matchingProduct, null);
+        this.addProduct();
+      }
+    }
   }
 
   addProduct() {

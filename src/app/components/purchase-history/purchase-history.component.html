@@ -209,7 +209,8 @@
                   id="product_name"
                   formControlName="product_name"
                   class="form-control"
-                  (input)="searchProducts()"
+                  (keyup)="searchProducts()"
+                  (input)="handleBarcodeInput($event)"
                   autocomplete="off"
                   #productNameInput
                   placeholder="Seleccione producto..."
