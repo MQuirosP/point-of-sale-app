@@ -332,7 +332,13 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let product of productList">
+                  <tr
+                    *ngFor="let product of productList; let even = even"
+                    [ngClass]="{
+                      'table-row-even': even,
+                      'table-row-odd': !even
+                    }"
+                  >
                     <td
                       class="text-left product-detail-table-content"
                       style="width: 120px"
@@ -393,22 +399,22 @@
             </div>
           </div>
         </div>
-        <div class="row mt-2" style="width: 350px">
-          <div class="col flex-column align-items-center">
-            <h6 class="text-right">Sub Total</h6>
-            <p class="text-right">
+        <div class="row mt-2 total-box">
+          <div class="col flex-column align-items-center" style="width: 100px;">
+            <h6 class="text-right total-box-titles">Sub Total</h6>
+            <p class="text-right total-invoice">
               {{ subTotalSaleAmount | currency : "CRC" : "₡" }}
             </p>
           </div>
-          <div class="col flex-column align-items-center">
-            <h6 class="text-right">IVA</h6>
-            <p class="text-right">
+          <div class="col flex-column align-items-center" style="width: 100px;">
+            <h6 class="text-right total-box-titles">I.V.A.</h6>
+            <p class="text-right total-invoice">
               {{ totalTaxesAmount | currency : "CRC" : "₡" }}
             </p>
           </div>
-          <div class="col flex-column align-items-center">
-            <h6 class="text-right">Total</h6>
-            <p class="text-right">
+          <div class="col flex-column align-items-center" style="width: 100px;">
+            <h6 class="text-right total-box-titles">Total</h6>
+            <p class="text-right total-invoice">
               {{ totalSaleAmount | currency : "CRC" : "₡" }}
             </p>
           </div>
