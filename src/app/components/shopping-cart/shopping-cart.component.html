@@ -301,34 +301,51 @@
                 margin-top: -17px;
               "
             >
-              <table class="table">
-                <thead class="product-detail-table-titles">
+              <table class="table" style="table-layout: fixed">
+                <thead>
                   <tr>
-                    <th class="text-left" scope="col" style="width: 30%">
+                    <th
+                      class="text-left product-detail-list-title"
+                      style="width: 120px"
+                    >
                       Producto
                     </th>
-                    <th class="text-right" scope="col" style="width: 10%">
+                    <th
+                      class="text-right product-detail-list-title"
+                      style="width: 50px"
+                    >
                       Cant.
                     </th>
-                    <th class="text-right" scope="col" style="width: 25%">
+                    <th
+                      class="text-right product-detail-list-title"
+                      style="width: 60px"
+                    >
                       Precio
                     </th>
-                    <th class="text-right" scope="col" style="width: 25%">
+                    <th
+                      class="text-right product-detail-list-title"
+                      style="width: 60px"
+                    >
                       Total
                     </th>
-                    <th class="" scope="col" style="width: 7%"></th>
+                    <th style="width: 50px"></th>
                   </tr>
                 </thead>
-                <tbody [@slideInOut]="productList.length > 0 ? 'in' : 'out'">
-                  <tr
-                    *ngFor="let product of productList"
-                    [ngClass]="{ 'taxes-row': !product.taxes }"
-                    class="product-detail-list-item"
-                  >
-                    <td class="text-left">{{ product.name }}</td>
-                    <td class="text-right">
+                <tbody>
+                  <tr *ngFor="let product of productList">
+                    <td
+                      class="text-left product-detail-table-content"
+                      style="width: 120px"
+                    >
+                      {{ product.name }}
+                    </td>
+                    <td
+                      class="text-right product-detail-table-content"
+                      style="width: 50px"
+                    >
                       <input
-                        class="custom-input text-right"
+                        class="custom-input text-right product-detail-table-content"
+                        style="width: 30px; padding: 0 !important"
                         type="number"
                         [(ngModel)]="product.quantity"
                         (change)="updateProduct(product)"
@@ -336,24 +353,29 @@
                         step="0.01"
                       />
                     </td>
-                    <td class="text-right">
+                    <td
+                      class="text-right product-detail-table-content"
+                      style="width: 70px"
+                    >
                       {{
                         (product.sub_total + product.taxes_amount) /
                           product.quantity | currency : "CRC" : "₡"
                       }}
                     </td>
-                    <td class="text-right">
+                    <td
+                      class="text-right product-detail-table-content"
+                      style="width: 70px"
+                    >
                       {{
                         product.sub_total + product.taxes_amount
                           | currency : "CRC" : "₡"
                       }}
                     </td>
-                    <td class="text-center">
+                    <td style="width: 50px; padding-top: 2px">
                       <button
                         type="button"
                         class="clic-on-image"
                         (click)="removeProduct(product)"
-                        style="line-height: 1"
                       >
                         <i
                           class="fa-solid fa-trash clic-on-icon"

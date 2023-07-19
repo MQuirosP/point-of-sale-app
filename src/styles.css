@@ -447,17 +447,20 @@ button {
 }
 
 .custom-input {
-  width: 50px;
+  /* width: 50px; */
   text-align: center;
   border: none;
 }
 
-.product-detail-list-item {
-  font-size: 10px;
+.product-detail-list-title {
+  font-size: 14px;
 }
 
-.product-detail-table-titles {
-  font-size: 14px;
+.product-detail-table-content {
+  font-size: 11px;
+  padding: 0 !important;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
 }
 
 .date-input {
