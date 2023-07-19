@@ -313,14 +313,14 @@
                   />
                 </div>
                 <div class="col">
-                  <div class="d-flex justify-content-end">
+                  <div class="d-flex justify-content-center">
                     <button
                       type="button"
                       class="btn btn-primary shadow clic-on-image"
                       style="margin-top: 32px"
                       (click)="addProduct()"
                     >
-                      Agregar producto
+                      Agregar
                     </button>
                   </div>
                 </div>
@@ -428,7 +428,7 @@
             </div>
             <div class="row total-box">
               <div class="col flex-column align-items-center">
-                <h6 class="text-right total-box-titles">Sub Total</h6>
+                <h6 class="text-center total-box-titles">SubTotal</h6>
                 <p class="text-center total-invoice">
                   {{ subTotalPurchaseAmount | currency : "CRC" : "₡" }}
                 </p>

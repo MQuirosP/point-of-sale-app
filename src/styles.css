@@ -54,6 +54,33 @@ body {
   background-color: #f0f0f0;
 }
 
+@media (max-width: 767px) {
+  #navbarCollapse {
+    position: fixed;
+    top: 40px;
+    right: 0px;
+    /* background-color: black; */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    max-height: auto;
+    overflow-y: auto;
+    border-radius: 0 0 0 5px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  #navbarCollapse {
+     position: fixed;
+    top: 0px;
+    right: 0px;
+    background-color: black;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+  }
+}
+
 #pie-pagina {
   box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.85);
   -webkit-box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.85);
