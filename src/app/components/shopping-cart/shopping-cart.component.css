@@ -1,0 +1,18 @@
+.product-detail-table {
+  display: none;
+}
+
+.product-detail-table.show {
+  display: block;
+  animation: slide-in-right 0.5s ease-in-out;
+}
+
+@keyframes slide-in-right {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}

@@ -18,6 +18,7 @@ import { ToastrService } from 'ngx-toastr';
 import { TicketService } from 'src/app/services/ticket.service';
 import { SaleService } from 'src/app/services/sale.service';
 import { Observable, Subscription, map } from 'rxjs';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 // import * as moment from 'moment';
 
 interface ApiSaleResponse {
@@ -31,7 +32,20 @@ interface ApiSaleResponse {
   selector: 'app-shopping-cart',
   templateUrl: './shopping-cart.component.html',
   styleUrls: ['./shopping-cart.component.css'],
-  animations: [fadeAnimation],
+  animations: [
+    trigger('slideInOut', [
+      state('in', style({
+        transform: 'translateX(0)',
+        opacity: 1
+      })),
+      state('out', style({
+        transform: 'translateX(100%)',
+        opacity: 0
+      })),
+      transition('in => out', animate('200ms ease-out')),
+      transition('out => in', animate('200ms ease-in'))
+    ]), fadeAnimation,
+  ]
 })
 export class ShoppingCartComponent {
   selectedDate: NgbDateStruct;
