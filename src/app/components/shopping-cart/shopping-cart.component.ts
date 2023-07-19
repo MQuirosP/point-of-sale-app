@@ -32,8 +32,20 @@ interface ApiSaleResponse {
   selector: 'app-shopping-cart',
   templateUrl: './shopping-cart.component.html',
   styleUrls: ['./shopping-cart.component.css'],
-  animations: [
+  animations: [ fadeAnimation,
     trigger('slideInOut', [
+      state('in', style({
+        transform: 'translateX(0)',
+        opacity: 1
+      })),
+      state('out', style({
+        transform: 'translateX(-100%)',
+        opacity: 0
+      })),
+      transition('in => out', animate('200ms ease-out')),
+      transition('out => in', animate('200ms ease-in'))
+    ]),
+    trigger('slideOut', [
       state('in', style({
         transform: 'translateX(0)',
         opacity: 1
@@ -44,7 +56,7 @@ interface ApiSaleResponse {
       })),
       transition('in => out', animate('200ms ease-out')),
       transition('out => in', animate('200ms ease-in'))
-    ]), fadeAnimation,
+    ])
   ]
 })
 export class ShoppingCartComponent {
@@ -88,11 +100,12 @@ export class ShoppingCartComponent {
 
   private showNewSaleModalSubscription: Subscription;
 
+  
   @ViewChild('newSaleModal', { static: false }) newSaleModal!: ElementRef;
   @ViewChild('saleHistoryModal', { static: false })
   saleHistoryModal!: ElementRef;
   @ViewChild('nameInput') nameInput!: ElementRef;
-
+  
   constructor(
     private http: HttpClient,
     private modalService: ModalService,
@@ -377,6 +390,7 @@ export class ShoppingCartComponent {
             taxes: this.selectedProductTaxes,
             taxes_amount: taxesAmount * this.quantity,
             sub_total: subTotal * this.quantity,
+            isNew: true,
           };
 
           const existingProductIndex = this.productList.findIndex(
@@ -392,6 +406,7 @@ export class ShoppingCartComponent {
               existingProduct.sub_total + existingProduct.taxes_amount;
           } else {
             this.productList.push(product);
+            product.isNew = false; // Desactivar la animación para la fila recién agregada
           }
           this.calculateTotalSaleAmount();
           this.clearProductForm();
@@ -420,12 +435,19 @@ export class ShoppingCartComponent {
   }
 
   removeProduct(product: any) {
-    const index = this.productList.indexOf(product);
-    if (index !== -1) {
-      this.productList.splice(index, 1);
-      this.calculateTotalSaleAmount();
-    }
+    if (product.isRemoved) return;
+  
+    product.isRemoved = true;
+    
+    setTimeout(() => {
+      const index = this.productList.indexOf(product);
+      if (index !== -1) {
+        this.productList.splice(index, 1);
+        this.calculateTotalSaleAmount();
+      }
+    }, 200);
   }
+  
 
   createSale(event: Event) {
     if (this.selectedCustomer) {

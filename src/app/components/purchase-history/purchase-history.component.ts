@@ -19,6 +19,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ProductCacheService } from 'src/app/services/product-cache.service';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 interface ApiPurchaseResponse {
   success: boolean;
@@ -54,13 +55,40 @@ interface Product {
   taxes: boolean;
   taxes_amount?: number;
   sub_total?: number;
+  isNew?: boolean;
+  isRemoved?: boolean;
 }
 
 @Component({
   selector: 'app-purchase-history',
   templateUrl: './purchase-history.component.html',
   styleUrls: ['./purchase-history.component.css'],
-  animations: [fadeAnimation],
+  animations: [ fadeAnimation,
+    trigger('slideInOut', [
+      state('in', style({
+        transform: 'translateX(0)',
+        opacity: 1
+      })),
+      state('out', style({
+        transform: 'translateX(-100%)',
+        opacity: 0
+      })),
+      transition('in => out', animate('200ms ease-out')),
+      transition('out => in', animate('200ms ease-in'))
+    ]),
+    trigger('slideOut', [
+      state('in', style({
+        transform: 'translateX(0)',
+        opacity: 1
+      })),
+      state('out', style({
+        transform: 'translateX(100%)',
+        opacity: 0
+      })),
+      transition('in => out', animate('200ms ease-out')),
+      transition('out => in', animate('200ms ease-in'))
+    ])
+  ]
 })
 export class PurchaseHistoryComponent {
   selectedDate: NgbDateStruct | any;
@@ -104,6 +132,7 @@ export class PurchaseHistoryComponent {
   purchaseHistoryModal!: ElementRef;
   @ViewChild('productQuantityInput')
   productQuantityInput: ElementRef<HTMLInputElement>;
+  @ViewChild('productNameInput') productNameInput!: ElementRef;
 
   constructor(
     private http: HttpClient,
@@ -348,6 +377,7 @@ export class PurchaseHistoryComponent {
       price: this.purchaseForm.get('product_new_price')?.value,
       quantity: this.purchaseForm.get('product_quantity')?.value,
       taxes: this.selectedProductTaxes,
+      isNew: true,
     };
 
     let taxesAmount = 0;
@@ -364,7 +394,9 @@ export class PurchaseHistoryComponent {
     product.sub_total = subTotal;
     // console.log(product);
     this.productList.push(product);
+    product.isNew = false;
     this.calculateTotalPurchaseAmount();
+    this.productNameInput.nativeElement.focus();
     this.purchaseForm.get('product_name')?.reset();
     this.purchaseForm.get('product_new_price')?.reset();
     this.purchaseForm.get('product_quantity')?.reset();
@@ -390,15 +422,29 @@ export class PurchaseHistoryComponent {
   }
 
   removeProduct(product: any) {
+    if (product.isRemoved) return;
+
+    product.isRemoved = true;
+
+    setTimeout(() => {
+      
+      if (index !== -1) {
+        this.productList.splice(index, 1);
+        this.calculateTotalPurchaseAmount();
+      }
+    }, 200)
     const index = this.productList.indexOf(product);
-    if (index !== -1) {
-      this.productList.splice(index, 1);
-      this.calculateTotalPurchaseAmount();
-    }
   }
 
-  async createPurchase() {
-    if (!this.validatePurchaseData()) {
+  async createPurchase(event: Event) {
+    const providerName = this.purchaseForm.get('provider_name');
+
+    if (providerName.invalid) {
+      this.toastr.warning('Seleccione un proveedor.');
+      event.stopPropagation();
+    }
+    if (!this.validatePurchaseData(event)) {
+      event.stopPropagation();
       return;
     }
     try {
@@ -416,7 +462,13 @@ export class PurchaseHistoryComponent {
             this.toastr.success(
               'Precios de compra actualizados para los productos.'
             );
-            this.savePurchase();
+            if (this.productList.length === 0) {
+              this.toastr.warning('No hay productos agregados.')
+              event.stopPropagation();
+            } else {
+              this.savePurchase();
+            }
+
           },
           error: (error) => {
             console.log('Error al actualizar los precios de compra.', error);
@@ -429,16 +481,18 @@ export class PurchaseHistoryComponent {
     } catch (error) {}
   }
 
-  private validatePurchaseData(): boolean {
+  private validatePurchaseData(event: Event): boolean {
     const docNumber = this.purchaseForm.get('doc_number')?.value;
 
     if (!docNumber) {
       this.toastr.error('Por favor ingresa un número de documento.');
+      event.stopPropagation();
       return false;
     }
 
     if (this.productList.length === 0) {
       this.toastr.error('Agrega al menos un producto a la lista.');
+      event.stopPropagation();
       return false;
     }
 
@@ -492,6 +546,7 @@ export class PurchaseHistoryComponent {
       next: () => {
         this.toastr.success('Compra registrada exitosamente.');
         this.resetForm();
+        this.closePurchaseModal();
         this.subTotalPurchaseAmount = 0;
         this.totalTaxesAmount = 0;
         this.totalPurchaseAmount = 0;

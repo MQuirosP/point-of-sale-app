@@ -110,292 +110,349 @@
     role="dialog"
     aria-hidden="true"
   >
-    <div class="modal-dialog modal-dialog-scrollable" role="document">
-      <div class="modal-content shadow">
+    <div
+      class="modal-dialog modal-dialog-centered modal-lg shadow"
+      role="document"
+    >
+      <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Registro de compras</h5>
           <button
             type="button"
-            class="close overflow-visible clic-on-image"
+            class="close overflow-visible clic-on-close"
             data-dismiss="modal"
             aria-label="Close"
+            style="position: absolute; right: 20px; top: 20px"
             (click)="closePurchaseModal()"
           >
             <span aria-hidden="true">
-              <i
-                class="fa-sharp fa-solid fa-circle-xmark"
-                style="color: #f40b0b"
-              ></i>
+              <i class="fa fa-times-circle" style="color: white"></i>
             </span>
           </button>
         </div>
         <div class="modal-body">
-          <div class="form-group">
-            <label for="provider_name">Proveedor:</label>
-            <input
-              type="text"
-              id="provider_name"
-              formControlName="provider_name"
-              class="form-control"
-              (input)="searchProviders()"
-              autocomplete="off"
-              [ngClass]="{
-                'is-valid':
-                  purchaseForm.get('provider_name').touched &&
-                  purchaseForm.get('provider_name').valid,
-                'is-invalid':
-                  purchaseForm.get('provider_name').touched &&
-                  purchaseForm.get('provider_name').invalid
-              }"
-            />
-            <div class="suggestions" *ngIf="providerSuggestionList.length > 0">
-              <ul class="list-inline">
-                <li *ngFor="let provider of providerSuggestionList">
-                  <a
-                    class="text-decoration-none"
-                    href=""
-                    (click)="selectProviderSuggestion(provider, $event)"
-                  >
-                    {{ provider.provider_name }}
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="form-group form-row">
-            <div class="col">
-              <label for="doc_number">Documento:</label>
-              <input
-                type="text"
-                id="doc_number"
-                formControlName="doc_number"
-                class="form-control"
-                autocomplete="off"
-                required="required"
-                [ngClass]="{
-                  'is-valid':
-                    purchaseForm.get('doc_number').touched &&
-                    purchaseForm.get('doc_number').valid,
-                  'is-invalid':
-                    purchaseForm.get('doc_number').touched &&
-                    purchaseForm.get('doc_number').invalid
-                }"
-              />
-            </div>
-            <div class="col">
-              <label for="paymentMethod">Método de pago:</label>
-              <select
-                id="paymentMethod"
-                formControlName="paymentMethod"
-                class="form-control"
-                style="padding-top: 5px"
-              >
-                <option value="contado" selected>Contado</option>
-                <option value="credito">Crédito</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="product_name">Nombre del producto:</label>
-            <input
-              type="text"
-              id="product_name"
-              formControlName="product_name"
-              class="form-control"
-              (input)="searchProducts()"
-              autocomplete="off"
-              placeholder="Seleccione producto..."
-              [ngClass]="{
-                'is-valid':
-                  purchaseForm.get('product_name').touched &&
-                  purchaseForm.get('product_name').valid,
-                'is-invalid':
-                  purchaseForm.get('product_name').touched &&
-                  purchaseForm.get('product_name').invalid
-              }"
-              [value]="selectedProduct ? selectedProduct.name : ''"
-            />
-
-            <div
-              class="suggestions"
-              *ngIf="
-                productSuggestionList.length > 0 &&
-                purchaseForm.get('product_name').value
-              "
-            >
-              <ul class="list-inline">
-                <li *ngFor="let product of productSuggestionList">
-                  <a
-                    class="text-decoration-none"
-                    href=""
-                    (click)="selectProductSuggestion(product, $event)"
-                  >
-                    {{ product.name }} - {{ product.purchase_price }}
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="form-group form-row">
-            <div class="col">
-              <label for="product_price">Precio anterior:</label>
-              <label for="" class="form-check-label ml-5">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="provider_name">Proveedor:</label>
                 <input
-                  type="checkbox"
-                  class="form-check-input shadow text-right"
-                  formControlName="selectedProductTaxes"
-                  [checked]="selectedProductTaxes"
+                  type="text"
+                  id="provider_name"
+                  formControlName="provider_name"
+                  class="form-control"
+                  (input)="searchProviders()"
+                  autocomplete="off"
+                  [ngClass]="{
+                    'is-valid':
+                      purchaseForm.get('provider_name').touched &&
+                      purchaseForm.get('provider_name').valid,
+                    'is-invalid':
+                      purchaseForm.get('provider_name').touched &&
+                      purchaseForm.get('provider_name').invalid
+                  }"
                 />
-                {{ selectedProductTaxes ? "Gravado" : "Exento" }}
-              </label>
-              <input
-                type="number"
-                id="product_price"
-                formControlName="product_price"
-                class="form-control text-right"
-                [value]="selectedProductPrice"
-                autocomplete="off"
-                readonly
-              />
-            </div>
-            <div class="col">
-              <label for="product_quantity">Cantidad:</label>
-              <input
-                type="number"
-                id="product_quantity"
-                formControlName="product_quantity"
-                class="form-control text-right"
-                autocomplete="off"
-                step="0.01"
-                [ngClass]="{
-                  'is-valid':
-                    purchaseForm.get('product_quantity').touched &&
-                    purchaseForm.get('product_quantity').valid,
-                  'is-invalid':
-                    purchaseForm.get('product_quantity').touched &&
-                    purchaseForm.get('product_quantity').invalid
-                }"
-                #productQuantityInput
-              />
-            </div>
-          </div>
+                <div
+                  class="suggestions"
+                  *ngIf="providerSuggestionList.length > 0"
+                >
+                  <ul class="list-inline">
+                    <li *ngFor="let provider of providerSuggestionList">
+                      <a
+                        class="text-decoration-none"
+                        href=""
+                        (click)="selectProviderSuggestion(provider, $event)"
+                      >
+                        {{ provider.provider_name }}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
 
-          <div class="form-group form-row">
-            <div class="col">
-              <label for="product_new_price">Precio actual:</label>
-              <input
-                type="number"
-                id="product_new_price"
-                formControlName="product_new_price"
-                class="form-control text-right"
-                autocomplete="off"
-                step="0.01"
-                [ngClass]="{
-                  'is-valid':
-                    purchaseForm.get('product_new_price').touched &&
-                    purchaseForm.get('product_quantity').valid,
-                  'is-invalid':
-                    purchaseForm.get('product_new_price').touched &&
-                    purchaseForm.get('product_new_price').invalid
-                }"
-              />
-            </div>
-            <div class="col"></div>
-          </div>
-
-          <div class="d-flex justify-content-center">
-            <button
-              type="button"
-              class="btn btn-primary shadow clic-on-image"
-              (click)="addProduct()"
-            >
-              Agregar producto
-            </button>
-          </div>
-          <hr />
-
-          <div class="d-flex justify-content-between row">
-            <div class="col flex-column align-items-center">
-              <h6 class="text-right">Sub Total</h6>
-              <p class="text-right">
-                {{ subTotalPurchaseAmount | currency : "CRC" : "₡" }}
-              </p>
-            </div>
-            <div class="col flex-column align-items-center">
-              <h6 class="text-right">IVA</h6>
-              <p class="text-right">
-                {{ totalTaxesAmount | currency : "CRC" : "₡" }}
-              </p>
-            </div>
-            <div class="col flex-column align-items-center">
-              <h6 class="text-right">Total</h6>
-              <p class="text-right">
-                {{ totalPurchaseAmount | currency : "CRC" : "₡" }}
-              </p>
-            </div>
-          </div>
-          <table class="table">
-            <thead class="product-detail-table-titles">
-              <tr>
-                <th class="text-left" scope="col" style="width: 30%">
-                  Producto
-                </th>
-                <th class="text-right" scope="col" style="width: 10%">Cant.</th>
-                <th class="text-right" scope="col" style="width: 25%">
-                  Precio
-                </th>
-                <th class="text-right" scope="col" style="width: 25%">Total</th>
-                <th scope="col" style="width: 10%"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                *ngFor="let product of productList"
-                [ngClass]="{ 'taxes-row': !product.taxes }"
-                class="product-detail-list-item"
-              >
-                <td class="text-left">{{ product.name }}</td>
-                <td class="text-right">
-                  {{ product.quantity | number : "1.2-2" }}
-                </td>
-                <td class="text-right">
-                  {{
-                    (product.sub_total + product.taxes_amount) /
-                      product.quantity | currency : "CRC" : "₡"
-                  }}
-                </td>
-                <td class="text-right">
-                  {{
-                    product.sub_total + product.taxes_amount
-                      | currency : "CRC" : "₡"
-                  }}
-                </td>
-                <td class="text-center">
-                  <button
-                    type="button"
-                    class="clic-on-image"
-                    (click)="removeProduct(product)"
-                    data-dismiss="modal"
+              <div class="form-group form-row">
+                <div class="col">
+                  <label for="doc_number">Documento:</label>
+                  <input
+                    type="text"
+                    id="doc_number"
+                    formControlName="doc_number"
+                    class="form-control"
+                    autocomplete="off"
+                    required="required"
+                    [ngClass]="{
+                      'is-valid':
+                        purchaseForm.get('doc_number').touched &&
+                        purchaseForm.get('doc_number').valid,
+                      'is-invalid':
+                        purchaseForm.get('doc_number').touched &&
+                        purchaseForm.get('doc_number').invalid
+                    }"
+                  />
+                </div>
+                <div class="col">
+                  <label for="paymentMethod">Método de pago:</label>
+                  <select
+                    id="paymentMethod"
+                    formControlName="paymentMethod"
+                    class="form-control"
+                    style="padding-top: 5px"
                   >
-                    <i
-                      class="fa-solid fa-trash clic-on-icon"
-                      style="color: #fa0000; cursor: pointer"
-                    ></i>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <hr />
-        </div>
+                    <option value="contado" selected>Contado</option>
+                    <option value="credito">Crédito</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="product_name">Nombre del producto:</label>
+                <input
+                  type="text"
+                  id="product_name"
+                  formControlName="product_name"
+                  class="form-control"
+                  (input)="searchProducts()"
+                  autocomplete="off"
+                  #productNameInput
+                  placeholder="Seleccione producto..."
+                  [ngClass]="{
+                    'is-valid':
+                      purchaseForm.get('product_name').touched &&
+                      purchaseForm.get('product_name').valid,
+                    'is-invalid':
+                      purchaseForm.get('product_name').touched &&
+                      purchaseForm.get('product_name').invalid
+                  }"
+                  [value]="selectedProduct ? selectedProduct.name : ''"
+                />
 
+                <div
+                  class="suggestions"
+                  *ngIf="
+                    productSuggestionList.length > 0 &&
+                    purchaseForm.get('product_name').value
+                  "
+                >
+                  <ul class="list-inline">
+                    <li *ngFor="let product of productSuggestionList">
+                      <a
+                        class="text-decoration-none"
+                        href=""
+                        (click)="selectProductSuggestion(product, $event)"
+                      >
+                        {{ product.name }} - {{ product.purchase_price }}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="form-group form-row">
+                <div class="col">
+                  <label for="product_price">Precio:</label>
+                  <label for="" class="form-check-label ml-5">
+                    <input
+                      type="checkbox"
+                      class="form-check-input shadow"
+                      formControlName="selectedProductTaxes"
+                      [checked]="selectedProductTaxes"
+                    />
+                    {{ selectedProductTaxes ? "Gravado" : "Exento" }}
+                  </label>
+                  <input
+                    type="number"
+                    id="product_price"
+                    formControlName="product_price"
+                    class="form-control text-right"
+                    [value]="selectedProductPrice"
+                    autocomplete="off"
+                    readonly
+                  />
+                </div>
+                <div class="col">
+                  <label for="product_quantity">Cantidad:</label>
+                  <input
+                    type="number"
+                    id="product_quantity"
+                    formControlName="product_quantity"
+                    class="form-control text-right"
+                    autocomplete="off"
+                    step="0.01"
+                    [ngClass]="{
+                      'is-valid':
+                        purchaseForm.get('product_quantity').touched &&
+                        purchaseForm.get('product_quantity').valid,
+                      'is-invalid':
+                        purchaseForm.get('product_quantity').touched &&
+                        purchaseForm.get('product_quantity').invalid
+                    }"
+                    #productQuantityInput
+                  />
+                </div>
+              </div>
+
+              <div
+                class="form-group form-row"
+                style="margin-top: 10px !important"
+              >
+                <div class="col">
+                  <label for="product_new_price">Precio actual:</label>
+                  <input
+                    type="number"
+                    id="product_new_price"
+                    formControlName="product_new_price"
+                    class="form-control text-right"
+                    autocomplete="off"
+                    step="0.01"
+                    [ngClass]="{
+                      'is-valid':
+                        purchaseForm.get('product_new_price').touched &&
+                        purchaseForm.get('product_quantity').valid,
+                      'is-invalid':
+                        purchaseForm.get('product_new_price').touched &&
+                        purchaseForm.get('product_new_price').invalid
+                    }"
+                  />
+                </div>
+                <div class="col">
+                  <div class="d-flex justify-content-end">
+                    <button
+                      type="button"
+                      class="btn btn-primary shadow clic-on-image"
+                      style="margin-top: 32px"
+                      (click)="addProduct()"
+                    >
+                      Agregar producto
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div
+                class="table-container"
+                style="
+                  max-height: 400px;
+                  overflow-y: visible;
+                  overflow-x: hidden;
+                  margin-top: -17px;
+                "
+              >
+                <table class="table" style="table-layout: fixed">
+                  <thead>
+                    <tr>
+                      <th
+                        class="text-left product-detail-list-title"
+                        scope="col"
+                        style="width: 30%"
+                      >
+                        Producto
+                      </th>
+                      <th
+                        class="text-right product-detail-list-title"
+                        scope="col"
+                        style="width: 10%"
+                      >
+                        Cant.
+                      </th>
+                      <th
+                        class="text-right product-detail-list-title"
+                        scope="col"
+                        style="width: 25%"
+                      >
+                        Precio
+                      </th>
+                      <th
+                        class="text-right product-detail-list-title"
+                        scope="col"
+                        style="width: 25%"
+                      >
+                        Total
+                      </th>
+                      <th scope="col" style="width: 10%"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="let product of productList; let even = even"
+                      [ngClass]="{ 'taxes-row': !product.taxes }"
+                      [ngClass]="{
+                        'table-row-even': even,
+                        'table-row-odd': !even,
+                        'animated-row': product.isNew || product.isRemoved
+                      }"
+                      [@slideInOut]="product.isNew ? 'in' : 'out'"
+                      [@slideOut]="product.isRemoved ? 'out' : 'in'"
+                      (@slideInOut.done)="product.isNew = true"
+                      (@slideInOut.done)="product.isRemoved = false"
+                      class="product-detail-list-item"
+                    >
+                      <td class="text-left product-detail-table-content">
+                        {{ product.name }}
+                      </td>
+                      <td class="text-right product-detail-table-content">
+                        {{ product.quantity | number : "1.2-2" }}
+                      </td>
+                      <td class="text-right product-detail-table-content">
+                        {{
+                          (product.sub_total + product.taxes_amount) /
+                            product.quantity | currency : "CRC" : "₡"
+                        }}
+                      </td>
+                      <td class="text-right product-detail-table-content">
+                        {{
+                          product.sub_total + product.taxes_amount
+                            | currency : "CRC" : "₡"
+                        }}
+                      </td>
+                      <td style="width: 50px; padding-top: 2px">
+                        <button
+                          type="button"
+                          class="clic-on-image"
+                          (click)="removeProduct(product)"
+                        >
+                          <i
+                            class="fa-solid fa-trash clic-on-close"
+                            style="
+                              color: #fa0000;
+                              cursor: pointer;
+                              font-size: 10px;
+                            "
+                          ></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            
+            </div>
+            <div class="row total-box">
+              <div class="col flex-column align-items-center">
+                <h6 class="text-right total-box-titles">Sub Total</h6>
+                <p class="text-center total-invoice">
+                  {{ subTotalPurchaseAmount | currency : "CRC" : "₡" }}
+                </p>
+              </div>
+              <div class="col flex-column align-items-center">
+                <h6 class="text-center total-box-titles">IVA</h6>
+                <p class="text-center total-invoice">
+                  {{ totalTaxesAmount | currency : "CRC" : "₡" }}
+                </p>
+              </div>
+              <div class="col flex-column align-items-center">
+                <h6 class="text-center total-box-titles">Total</h6>
+                <p class="text-center total-invoice">
+                  {{ totalPurchaseAmount | currency : "CRC" : "₡" }}
+                </p>
+              </div>
+          </div>
+        </div>
         <div class="modal-footer">
           <button
             *ngIf="getUserRole() !== 'user'"
             type="button"
             class="btn btn-primary shadow clic-on-image"
-            (click)="createPurchase()"
+            (click)="createPurchase($event)"
+            data-dismiss="modal"
           >
             Guardar
           </button>
@@ -430,13 +487,13 @@
         <h5 class="modal-title">Historial de compras</h5>
         <button
           type="button"
-          class="close overflow-visible clic-on-image"
+          class="close overflow-visible clic-on-close"
           data-dismiss="modal"
           aria-label="Close"
           (click)="closePurchaseHistoryModal()"
         >
           <span aria-hidden="true"
-            ><i class="fa fa-times-circle" style="color: #f40b0b"></i
+            ><i class="fa fa-times-circle" style="color: white"></i
           ></span>
         </button>
       </div>
@@ -475,12 +532,10 @@
                 Fact. {{ purchase.doc_number }}
               </h6>
               <p class="doc-number">{{ purchase.createdAt }}</p>
-              <!-- Agrega aquí otros campos resumidos que desees mostrar -->
-              <!-- Utiliza algún icono o flecha para indicar que se puede expandir/colapsar -->
             </div>
             <div *ngIf="purchase.showDetails" class="sale-details">
               <p>Estado: {{ purchase.status }}</p>
-              <p>Cliente: {{ purchase.provider_name }}</p>
+              <p>Proveedor: {{ purchase.provider_name }}</p>
               <p>Fecha de creación: {{ purchase.createdAt | date }}</p>
               <p class="text-right">
                 Sub Total:

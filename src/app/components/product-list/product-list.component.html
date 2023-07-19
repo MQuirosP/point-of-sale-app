@@ -33,7 +33,7 @@
     class="modal-content modal-dialog-scrollable shadow"
     style="max-width: 100%; margin: 0 auto; margin-bottom: 120px"
   >
-    <div class="modal-header">
+    <div class="modal-header" style="background-color: white !important; color: black;">
       <div class="d-flex justify-content-between align-items-center">
         <h4 class="h4">Lista de productos</h4>
         <button
@@ -161,14 +161,14 @@
         <button
           type="button"
           aria-label="Close"
-          class="close clic-on-image"
+          class="close clic-on-close"
           data-dismiss="modal"
           (click)="closeProductModal()"
         >
           <span aria-hidden="true">
             <i
-              class="fa-sharp fa-solid fa-circle-xmark"
-              style="color: #f40b0b"
+              class="fa fa-times-circle"
+              style="color: white"
             ></i>
           </span>
         </button>
@@ -384,14 +384,14 @@
       <div class="modal-header">
         <h5 class="modal-title">Eliminar producto</h5>
         <button
-          class="close clic-on-image"
+          class="close clic-on-close"
           (click)="closePasswordModal()"
           data-dismiss="modal"
         >
           <span aria-hidden="true"
             ><i
-              class="fa-sharp fa-solid fa-circle-xmark"
-              style="color: #f40b0b; cursor: pointer"
+              class="fa fa-times-circle"
+              style="color: white; cursor: pointer"
             ></i
           ></span>
         </button>

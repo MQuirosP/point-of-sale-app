@@ -111,23 +111,23 @@
   role="dialog"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-lg shadow" role="document">
+  <div
+    class="modal-dialog modal-dialog-scrollable modal-lg shadow"
+    role="document"
+  >
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Registro de ventas</h5>
         <button
           type="button"
-          class="close overflow-visible clic-on-image"
+          class="close overflow-visible clic-on-close"
           data-dismiss="modal"
           aria-label="Close"
           style="position: absolute; right: 20px; top: 20px"
           (click)="closeSaleModal()"
         >
           <span aria-hidden="true">
-            <i
-              class="fa-sharp fa-solid fa-circle-xmark"
-              style="color: #f40b0b"
-            ></i>
+            <i class="fa fa-times-circle" style="color: #ffffff"></i>
           </span>
         </button>
       </div>
@@ -306,7 +306,7 @@
                   <tr>
                     <th
                       class="text-left product-detail-list-title"
-                      style="width: 120px;"
+                      style="width: 120px"
                     >
                       Producto
                     </th>
@@ -331,13 +331,18 @@
                     <th style="width: 50px"></th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody [class.d-none]="productList.length === 0">
                   <tr
                     *ngFor="let product of productList; let even = even"
                     [ngClass]="{
                       'table-row-even': even,
-                      'table-row-odd': !even
+                      'table-row-odd': !even,
+                      'animated-row': product.isNew || product.isRemoved
                     }"
+                    [@slideInOut]="product.isNew ? 'in' : 'out'"
+                    [@slideOut]="product.isRemoved ? 'out' : 'in'"
+                    (@slideInOut.done)="product.isNew = true"
+                    (@slideInOut.done)="product.isRemoved = false"
                   >
                     <td
                       class="text-left product-detail-table-content"
@@ -384,7 +389,7 @@
                         (click)="removeProduct(product)"
                       >
                         <i
-                          class="fa-solid fa-trash clic-on-icon"
+                          class="fa-solid fa-trash clic-on-close"
                           style="
                             color: #fa0000;
                             cursor: pointer;
@@ -399,8 +404,8 @@
             </div>
           </div>
         </div>
-        <div class=" mt-2">
-          <div class=" row total-box">
+        <div class="mt-2">
+          <div class="row total-box">
             <div class="col flex-column align-items-center">
               <h6 class="text-center total-box-titles">SubTotal</h6>
               <p class="text-center total-invoice">
@@ -465,13 +470,13 @@
         <h5 class="modal-title">Historial de ventas</h5>
         <button
           type="button"
-          class="close overflow-visible clic-on-image"
+          class="close overflow-visible clic-on-close"
           data-dismiss="modal"
           aria-label="Close"
           (click)="closeSaleHistoryModal()"
         >
           <span aria-hidden="true"
-            ><i class="fa fa-times-circle" style="color: #f40b0b"></i
+            ><i class="fa fa-times-circle" style="color: white"></i
           ></span>
         </button>
       </div>
