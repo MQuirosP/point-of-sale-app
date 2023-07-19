@@ -306,7 +306,7 @@
                   <tr>
                     <th
                       class="text-left product-detail-list-title"
-                      style="width: 120px"
+                      style="width: 120px;"
                     >
                       Producto
                     </th>
@@ -399,24 +399,31 @@
             </div>
           </div>
         </div>
-        <div class="row mt-2 total-box">
-          <div class="col flex-column align-items-center" style="width: 100px;">
-            <h6 class="text-right total-box-titles">Sub Total</h6>
-            <p class="text-right total-invoice">
-              {{ subTotalSaleAmount | currency : "CRC" : "₡" }}
-            </p>
-          </div>
-          <div class="col flex-column align-items-center" style="width: 100px;">
-            <h6 class="text-right total-box-titles">I.V.A.</h6>
-            <p class="text-right total-invoice">
-              {{ totalTaxesAmount | currency : "CRC" : "₡" }}
-            </p>
-          </div>
-          <div class="col flex-column align-items-center" style="width: 100px;">
-            <h6 class="text-right total-box-titles">Total</h6>
-            <p class="text-right total-invoice">
-              {{ totalSaleAmount | currency : "CRC" : "₡" }}
-            </p>
+        <div class=" mt-2">
+          <div class=" row total-box">
+            <div class="col flex-column align-items-center">
+              <h6 class="text-center total-box-titles">SubTotal</h6>
+              <p class="text-center total-invoice">
+                {{ subTotalSaleAmount | currency : "CRC" : "₡" }}
+              </p>
+            </div>
+            <div class="col flex-column align-items-center">
+              <h6 class="text-center total-box-titles">I.V.A.</h6>
+              <p class="text-center total-invoice">
+                {{ totalTaxesAmount | currency : "CRC" : "₡" }}
+              </p>
+            </div>
+            <div class="col flex-column align-items-center">
+              <h6
+                class="text-center total-box-titles"
+                style="padding-right: 0 !important"
+              >
+                Total
+              </h6>
+              <p class="text-center total-invoice">
+                {{ totalSaleAmount | currency : "CRC" : "₡" : "1.2-2" }}
+              </p>
+            </div>
           </div>
         </div>
       </div>

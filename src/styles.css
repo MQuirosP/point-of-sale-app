@@ -462,6 +462,7 @@ button {
   padding: 0 !important;
   padding-top: 10px !important;
   padding-bottom: 10px !important;
+  padding-left: 3px !important;
 }
 
 .date-input {
@@ -480,15 +481,16 @@ button {
 .total-invoice {
   color: red;
   font-weight: bold;
-  font-size: larger;
-  text-shadow: 2px 2px 2px rgb(110, 88, 88);
+  font-size: 1.05em;
+  /* text-shadow: 2px 2px 2px rgb(110, 88, 88); */
 }
 
 .total-box {
-  width: 350px;
+  width: 100%;
+  max-width: 350px;
   background-color: rgb(208, 212, 212);
   padding-top: 10px;
-  margin-left: 5px;
+  margin: 0.5% 1%;
   border-radius: 10px;
   border: 1px solid darkgray;
   box-shadow: 
@@ -498,9 +500,10 @@ button {
     0 0 30px rgba(0, 0, 0, 0.1);
 }
 
-
 .total-box-titles {
-  font-size: 20px;
-  text-shadow: 2px 2px 2px rgb(110, 88, 88);
+  font-size: 1.05rem;
+  /* text-shadow: 2px 2px 2px rgb(110, 88, 88); */
+  text-align: center;
 }
+
 

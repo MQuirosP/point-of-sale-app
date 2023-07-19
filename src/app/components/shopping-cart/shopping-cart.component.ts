@@ -434,7 +434,12 @@ export class ShoppingCartComponent {
         this.selectedCustomer,
         customerFullName
       );
-      this.saveSale(sale);
+      if (this.productList.length === 0) {
+        this.toastr.warning('No hay productos agregados.')
+        event.stopPropagation();
+      } else {
+        this.saveSale(sale);
+      }
     } else {
       event.stopPropagation();
       this.toastr.error('Debe seleccionar un cliente.');
