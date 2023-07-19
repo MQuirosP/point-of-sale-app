@@ -123,25 +123,23 @@ body {
   box-shadow: 5px 5px 5px rgb(56, 55, 55);
   transform: scale(1.05);
   transition: box-shadow 0.3s ease, transform 0.3s ease;
-
-  /* text-shadow: 1px 1px 2px rgb(20, 19, 19); */
 }
 
 .bg-custom {
   background-color: rgb(242, 243, 206);
-  /* background-color: rgb(249, 250, 184); */
-  /* background-color: rgb(219, 213, 176); */
   transition: background-color 0.3 ease, transform 0.3s ease-in-out;
 }
 
 .bg-custom:hover {
-  /* color: rgb(109, 150, 184); */
-  /* background-color: #b5f3b5; */
   background-color: #cdffd7;
   transform: scale(1.05);
   cursor: pointer;
-  /* text-shadow: 1px 1px 1px rgb(155, 155, 126); */
-  text-shadow: 1px 1px 1px lightgoldenrodyellow;
+}
+
+.front-panel-image {
+  /* margin: 20px; */
+  width: 120px;
+  height: 90px;
 }
 
 .my-clic:hover {
@@ -161,6 +159,10 @@ body {
   transition: transform 0.2s;
 }
 
+.clic-on-main-image {
+  padding: 10px;
+}
+
 .clic-on-main-image:hover {
   transform: scale(1);
   transition: transform 0.2s;
@@ -176,6 +178,10 @@ body {
 .custom-image-shadow{
   border-radius: 10px;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.my-title:hover{
+  text-shadow: 2px 2px 2px darkgray;
 }
 
 .suggestions {
@@ -460,6 +466,7 @@ button {
 
 .svg {
   height: 100px;
+  padding: 5px;
   object-fit:scale-down;
   position: absolute;
   right: 30px;

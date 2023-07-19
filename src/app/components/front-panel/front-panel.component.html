@@ -28,7 +28,7 @@
   <!-- Cinta superior de tarjetas -->
   <div class="row">
     <div class="col-md-4">
-      <div class="card shadow card-height border mt-4 bg-custom customShadow">
+      <div class="card card-height border shadow mt-4 bg-custom customShadow">
         <!-- Primer tarjeta, carrusel de productos -->
         <div
           *ngIf="
@@ -48,11 +48,43 @@
                 class="carousel-item pt-2"
                 [class.active]="i === 0"
               >
-                <h5 class="">{{ product.name }}</h5>
-                <p>
-                  {{ product.sale_price | currency : "CRC" : "₡" : "1.2-2" }}
-                  {{ product.description }}
-                </p>
+                <div class="row">
+                  <div class="col-7 text-left" style="align-items: center; margin: auto 0;">
+                    <h4
+                      class=""
+                      style="
+                        font-size: 1.3rem;
+                        text-shadow: 2px 2px 2px darkgray;
+                      "
+                    >
+                      {{ product.name }}
+                    </h4>
+                  </div>
+                  <div class="col-5">
+                    <h5
+                      class="text-right mr-1"
+                      style="
+                        font-size: 1.3rem;
+                        text-shadow: 2px 2px 2px darkgray;
+                      "
+                    >
+                      Precio:
+                    </h5>
+                    <p
+                      class="text-right mr-1"
+                      style="
+                        font-size: 1.5rem;
+                        font-weight: bold;
+                        color: rgb(235, 11, 11);
+                        text-shadow: 2px 2px 2px darkgray;
+                      "
+                    >
+                      {{
+                        product.sale_price | currency : "CRC" : "₡" : "1.0-0"
+                      }}°°
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
             <div
@@ -110,17 +142,15 @@
     <!-- Segunda tarjeta, Mis Ventas -->
     <div class="col-md-4">
       <div
-        class="card shadow card-height border p-3 bg-custom customShadow mt-4"
+        class="card card-height border shadow p-1 bg-custom customShadow mt-4"
       >
-        <h3>Mis ventas</h3>
+        <h4>Mis ventas</h4>
         <div>
           <a routerLink="/shopping-cart">
             <img
               src="../../../assets/cashier-machine.png"
               alt="Ventas"
-              width="50%"
-              height="70px"
-              class="custom-image-shadow clic-on-main-image"
+              class="front-panel-image custom-image-shadow clic-on-main-image"
             />
           </a>
         </div>
@@ -129,17 +159,15 @@
     <!-- Tercera tarjeta, Mis Compras -->
     <div class="col-md-4">
       <div
-        class="card shadow card-height border p-3 bg-custom customShadow mt-4"
+        class="card card-height border shadow p-1 bg-custom customShadow mt-4"
       >
-        <h3>Mis compras</h3>
+        <h4>Mis compras</h4>
         <div>
           <a routerLink="/purchase-history">
             <img
               src="../../../assets/seller.png"
               alt="Compras"
-              width="50%"
-              height="70px"
-              class="custom-image-shadow clic-on-main-image"
+              class="front-panel-image custom-image-shadow clic-on-main-image"
             />
           </a>
         </div>
@@ -152,7 +180,7 @@
     <div class="col-md-4">
       <div class="mt-4 d-none d-md-block">
         <app-digital-watch
-          class="shadow card-height"
+          class="card-height"
           style="background-color: transparent; width: 100%; height: 100%"
         ></app-digital-watch>
       </div>
@@ -164,7 +192,7 @@
           <img
             src="../../../assets/verduleria-sol.webp"
             alt=""
-            class="card shadow card-height border customShadow clic-on-image"
+            class="card card-height border shadow customShadow clic-on-image"
             style="
               border-radius: 10px;
               width: 100%;
@@ -184,6 +212,6 @@
 <!-- Resultado no coincidente búsqueda de productos -->
 <ng-template #noMatchesMessage>
   <div class="text-center mt-4">
-    <h4 class="strong">Producto no coincide</h4>
+    <h4 class="strong" style="text-shadow: 2px 2px 2px darkgray;">No hay coincidencias, intente de nuevo por favor.</h4>
   </div>
 </ng-template>
