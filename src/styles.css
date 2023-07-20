@@ -186,15 +186,15 @@ body {
   transition: transform 0.2s;
 }
 
-.clic-on-close:hover {
+/* .clic-on-close:hover {
   transform: scale(1.05);
   transition: transform 0.2s ease-in-out;
-}
+} */
 
-.clic-on-close:active {
+/* .clic-on-close:active {
   transform: scale(0.95);
   transition: transform 0.2 ease-in-out;
-}
+} */
 
 .clic-on-main-image {
   padding: 10px;
