@@ -222,7 +222,7 @@ export class ProductListComponent implements OnInit {
       this.modalActionLabel = !value;
       this.productForm.reset();
       this.changeDetectorRef.detectChanges();
-      this.productModal.nativeElement.classList.add('show');
+      this.productModal.nativeElement.classList.toggle('show');
       this.productModal.nativeElement.style.display = 'block';
     }
   }
