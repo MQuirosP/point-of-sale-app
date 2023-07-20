@@ -518,7 +518,9 @@ button {
 .total-invoice {
   color: red;
   font-weight: bold;
-  font-size: 1.05em;
+  font-size: 14px;
+  font-family:monospace;
+  /* letter-spacing: 0.9px; */
   /* text-shadow: 2px 2px 2px rgb(110, 88, 88); */
 }
 
