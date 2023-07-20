@@ -450,8 +450,9 @@ export class ShoppingCartComponent {
   
 
   createSale(event: Event) {
+    console.log(this.selectedCustomer);
     if (this.selectedCustomer) {
-      const customerFullName = this.getCustomerFullName(this.selectedCustomer);
+      const customerFullName = this.selectedCustomer;
       const sale = this.buildSaleObject(
         this.selectedCustomer,
         customerFullName
@@ -473,12 +474,6 @@ export class ShoppingCartComponent {
     return this.http
       .get(`${this.backendUrl}customers/id/${this.customer_id}`)
       .pipe(map((response: any) => response?.message?.customer));
-  }
-
-  getCustomerFullName(customer: any): string {
-    const { customer_name, customer_first_lastname, customer_second_lastname } =
-      customer;
-    return `${customer_name} ${customer_first_lastname} ${customer_second_lastname}`;
   }
 
   buildSaleObject(customer: any, customerFullName: string): any {
@@ -656,22 +651,11 @@ export class ShoppingCartComponent {
       next: (response: any) => {
         const customers = response?.message?.customers;
         if (Array.isArray(customers) && customers.length > 0) {
-          this.customerSuggestionList = customers
-            .filter(
-              (customer: any) =>
-                customer.customer_name.toLowerCase().includes(searchTerm) ||
-                customer.customer_dni.toLowerCase().includes(searchTerm) ||
-                customer.customer_first_lastname
-                  .toLowerCase()
-                  .includes(searchTerm)
-            )
-            .map((customer: any) => ({
-              customer_id: customer.customer_id,
-              customer_dni: customer.customer_dni,
-              customer_name: customer.customer_name,
-              customer_first_lastname: customer.customer_first_lastname,
-              customer_second_lastname: customer.customer_second_lastname,
-            }));
+          this.customerSuggestionList = customers.filter((customer: any) =>
+            customer.customer_name.toLowerCase().includes(searchTerm) ||
+            customer.customer_dni.toLowerCase().includes(searchTerm) ||
+            customer.customer_first_lastname.toLowerCase().includes(searchTerm)
+          );
         } else {
           this.customerSuggestionList = [];
         }
@@ -682,16 +666,18 @@ export class ShoppingCartComponent {
       },
     });
   }
-
-  selectCustomerSuggestion(customer: any, event: Event) {
-    event.preventDefault();
-    this.selectedCustomer = customer;
-    this.customer_name = `${customer.customer_name} ${customer.customer_first_lastname} ${customer.customer_second_lastname}`;
-    this.customerSuggestionList = [];
-  }
-
+  
   selectCustomer(customer: any) {
-    this.selectedCustomer = customer;
-    this.customer_name = `${customer.customer_name} ${customer.customer_first_lastname} ${customer.customer_second_lastname}`;
+    if (customer) {
+      this.selectedCustomer = customer;
+      this.customer_name = `${customer.customer_name} ${customer.customer_first_lastname} ${customer.customer_second_lastname}`;
+      this.customerSuggestionList = [];
+    }
   }
+  
+  formatOption(customer: any): string {
+    // Función para formatear el nombre del cliente
+    return `${customer.customer_name} ${customer.customer_first_lastname} ${customer.customer_second_lastname}`;
+  }
+  
 }

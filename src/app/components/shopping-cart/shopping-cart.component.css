@@ -1,18 +1,5 @@
-.product-detail-table {
-  display: none;
-}
-
-.product-detail-table.show {
-  display: block;
-  animation: slide-in-right 0.5s ease-in-out;
-}
-
-@keyframes slide-in-right {
-  0% {
-    transform: translateX(-100%);
+input::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    display: none;
+    visibility: hidden;
   }
-
-  100% {
-    transform: translateX(0);
-  }
-}

@@ -651,9 +651,7 @@ export class PurchaseHistoryComponent {
   }
 
   searchProviders() {
-    const searchTerm = this.purchaseForm
-      .get('provider_name')
-      .value.toLowerCase();
+    const searchTerm = this.purchaseForm.get('provider_name').value.toLowerCase();
     this.http.get(`${this.backendUrl}providers`).subscribe({
       next: (response: any) => {
         const providers = response?.message?.providers;
@@ -672,12 +670,18 @@ export class PurchaseHistoryComponent {
     });
   }
 
-  selectProviderSuggestion(provider: any, event: Event) {
-    event.preventDefault();
-    this.purchaseForm.get('provider_name').setValue(provider.provider_name);
-    this.provider_id = provider.provider_id;
-    this.provider_name = provider.provider_name;
-    this.isProviderValid = true;
-    this.providerSuggestionList = [];
+  selectProviderSuggestion(selectedValue: string) {
+    this.purchaseForm.get('provider_name').setValue(selectedValue);
+
+    const selectedProvider = this.providerSuggestionList.find(
+      (provider) => provider.provider_name === selectedValue
+    );
+
+    if (selectedProvider) {
+      this.provider_id = selectedProvider.provider_id;
+      this.provider_name = selectedProvider.provider_name;
+      this.isProviderValid = true;
+      this.providerSuggestionList = [];
+    }
   }
 }

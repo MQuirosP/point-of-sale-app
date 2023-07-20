@@ -33,7 +33,10 @@
     class="modal-content modal-dialog-scrollable shadow"
     style="max-width: 100%; margin: 0 auto; margin-bottom: 120px"
   >
-    <div class="modal-header" style="background-color: white !important; color: black;">
+    <div
+      class="modal-header"
+      style="background-color: white !important; color: black"
+    >
       <div class="d-flex justify-content-between align-items-center">
         <h4 class="h4">Lista de productos</h4>
         <button
@@ -152,7 +155,11 @@
   aria-labelledby="productModalLabel"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-dialog-centered" role="document" style="width: 500px;">
+  <div
+    class="modal-dialog modal-dialog-centered"
+    role="document"
+    style="width: 500px"
+  >
     <div class="modal-content shadow">
       <div class="modal-header">
         <h5 class="modal-title" id="productModalLabel">
@@ -166,10 +173,7 @@
           (click)="closeProductModal()"
         >
           <span aria-hidden="true">
-            <i
-              class="fa fa-times-circle"
-              style="color: white"
-            ></i>
+            <i class="fa fa-times-circle" style="color: white"></i>
           </span>
         </button>
       </div>
@@ -337,7 +341,7 @@
               *ngIf="this.editMode === false && getUserRole() !== 'user'"
               type="button"
               class="btn btn-primary shadow clic-on-image"
-              (click)="createProduct()"
+              (click)="createProduct($event)"
               data-dismiss="modal"
             >
               Guardar

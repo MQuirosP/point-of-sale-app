@@ -136,37 +136,24 @@
             <div class="form-group">
               <label for="customer_name">Cliente:</label>
               <input
-                type="text"
+                type="search"
                 id="customer_name"
                 name="customer_name"
-                [(ngModel)]="customer_name"
+                [(ngModel)]="selectedCustomer"
                 class="form-control"
-                (keyup)="searchCustomers()"
-                autocomplete="off"
+                (focus)="searchCustomers()"
                 [ngClass]="{
-                  'is-valid': customer_name && selectedCustomer,
-                  'is-invalid': customer_name && !selectedCustomer
+                  'is-valid': selectedCustomer,
+                  'is-invalid': !selectedCustomer
                 }"
-              />
-              <div *ngIf="selectedCustomer"></div>
-              <div
-                class="suggestions"
-                *ngIf="customer_name && customerSuggestionList.length > 0"
+                placeholder="Seleccione cliente..."
+                list="customerOptions"
               >
-                <ul class="list-inline">
-                  <li *ngFor="let customer of customerSuggestionList">
-                    <a
-                      class="text-decoration-none"
-                      href=""
-                      (click)="selectCustomerSuggestion(customer, $event)"
-                    >
-                      {{ customer.customer_name }}
-                      {{ customer.customer_first_lastname }}
-                      {{ customer.customer_second_lastname }}</a
-                    >
-                  </li>
-                </ul>
-              </div>
+              <datalist id="customerOptions">
+                <option *ngFor="let customer of customerSuggestionList" [ngValue]="customer">
+                  {{ formatOption(customer) }}
+                </option>
+              </datalist>
             </div>
             <div class="form-group form-row">
               <div class="col">
@@ -516,37 +503,58 @@
               <p class="doc-number">{{ sale.createdAt }}</p>
             </div>
             <div *ngIf="sale.showDetails" class="sale-details">
-              <p>Estado: {{ sale.status }}</p>
-              <p>Cliente: {{ sale.customer_name }}</p>
-              <p>Fecha de creación: {{ sale.createdAt | date }}</p>
-              <p class="text-right">
-                Sub Total:
-                {{ sale.sub_total | currency : "CRC" : "₡" : "1.2-2" }}
-              </p>
-              <p class="text-right">
-                IVA: {{ sale.taxes_amount | currency : "CRC" : "₡" : "1.2-2" }}
-              </p>
-              <p class="text-right">
-                <b
-                  >Total: {{ sale.total | currency : "CRC" : "₡" : "1.2-2" }}</b
+              <div class="row">
+                <div class="col">
+                  <p>Estado: {{ sale.status }}</p>
+                </div>
+                <div class="col">
+                  <p class="text-right">
+                    Sub Total:
+                    {{ sale.sub_total | currency : "CRC" : "₡" : "1.2-2" }}
+                  </p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <p>Cliente: {{ sale.customer_name }}</p>
+                </div>
+                <div class="col">
+                  <p class="text-right">
+                    IVA: {{ sale.taxes_amount | currency : "CRC" : "₡" : "1.2-2" }}
+                  </p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <p>Fecha de creación: {{ sale.createdAt | date }}</p>
+                </div>
+                <div class="col">
+                  <p class="text-right">
+                    <b
+                      >Total: {{ sale.total | currency : "CRC" : "₡" : "1.2-2" }}</b
+                    >
+                  </p>
+                </div>
+              </div>
+
+              <div class="mb-2">
+                <button
+                  *ngIf="
+                    sale.status === 'aceptado' && isCurrentDate(sale.createdAt)
+                  "
+                  class="btn btn-danger clic-on-image"
+                  (click)="cancelSale(sale.doc_number); toggleSaleDetails(sale)"
                 >
-              </p>
-              <button
-                *ngIf="sale.status === 'aceptado'"
-                class="btn btn-primary mr-2 clic-on-image"
-                (click)="generateTicket(sale.doc_number)"
-              >
-                Reimprimir
-              </button>
-              <button
-                *ngIf="
-                  sale.status === 'aceptado' && isCurrentDate(sale.createdAt)
-                "
-                class="btn btn-danger clic-on-image"
-                (click)="cancelSale(sale.doc_number); toggleSaleDetails(sale)"
-              >
-                Anular
-              </button>
+                  Anular
+                </button>
+                <button
+                  *ngIf="sale.status === 'aceptado'"
+                  class="btn btn-primary mr-2 clic-on-image"
+                  (click)="generateTicket(sale.doc_number)"
+                >
+                  Reimprimir
+                </button>
+              </div>
               <table class="table">
                 <thead>
                   <th class="text-left">Cód.</th>

@@ -136,38 +136,27 @@
               <div class="form-group">
                 <label for="provider_name">Proveedor:</label>
                 <input
-                  type="text"
+                  type="search"
+                  role="combobox"
                   id="provider_name"
                   formControlName="provider_name"
                   class="form-control"
-                  (input)="searchProviders()"
                   autocomplete="off"
                   [ngClass]="{
-                    'is-valid':
-                      purchaseForm.get('provider_name').touched &&
-                      purchaseForm.get('provider_name').valid,
-                    'is-invalid':
-                      purchaseForm.get('provider_name').touched &&
-                      purchaseForm.get('provider_name').invalid
+                    'is-valid': purchaseForm.get('provider_name').touched && purchaseForm.get('provider_name').valid,
+                    'is-invalid': purchaseForm.get('provider_name').touched && purchaseForm.get('provider_name').invalid
                   }"
+                  placeholder="Seleccione proveedor..."
+                  (focus)="searchProviders()"
+                  list="providerOptions"
                 />
-                <div
-                  class="suggestions"
-                  *ngIf="providerSuggestionList.length > 0"
-                >
-                  <ul class="list-inline">
-                    <li *ngFor="let provider of providerSuggestionList">
-                      <a
-                        class="text-decoration-none"
-                        href=""
-                        (click)="selectProviderSuggestion(provider, $event)"
-                      >
-                        {{ provider.provider_name }}
-                      </a>
-                    </li>
-                  </ul>
-                </div>
+                <datalist id="providerOptions" role="listbox">
+                  <option *ngFor="let provider of providerSuggestionList" [value]="provider.provider_name">
+                    {{ provider.provider_name }}
+                  </option>
+                </datalist>
               </div>
+
 
               <div class="form-group form-row">
                 <div class="col">
@@ -534,37 +523,57 @@
               <p class="doc-number">{{ purchase.createdAt }}</p>
             </div>
             <div *ngIf="purchase.showDetails" class="sale-details">
-              <p>Estado: {{ purchase.status }}</p>
-              <p>Proveedor: {{ purchase.provider_name }}</p>
-              <p>Fecha de creación: {{ purchase.createdAt | date }}</p>
-              <p class="text-right">
-                Sub Total:
-                {{ purchase.sub_total | currency : "CRC" : "₡" : "1.2-2" }}
-              </p>
-              <p class="text-right">
-                IVA:
-                {{ purchase.taxes_amount | currency : "CRC" : "₡" : "1.2-2" }}
-              </p>
-              <p class="text-right">
-                <b
-                  >Total:
-                  {{ purchase.total | currency : "CRC" : "₡" : "1.2-2" }}</b
+              <div class="row">
+                <div class="col">
+                  <p>Estado: {{ purchase.status }}</p>
+                </div>
+                <div class="col">
+                  <p class="text-right">
+                    Sub Total:
+                    {{ purchase.sub_total | currency : "CRC" : "₡" : "1.2-2" }}
+                  </p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <p>Proveedor: {{ purchase.provider_name }}</p>
+                </div>
+                <div class="col">
+                  <p class="text-right">
+                    IVA:
+                    {{ purchase.taxes_amount | currency : "CRC" : "₡" : "1.2-2" }}
+                  </p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <p>Fecha de creación: {{ purchase.createdAt | date }}</p>
+                </div>
+                <div class="col">
+                  <p class="text-right">
+                    <b
+                      >Total:
+                      {{ purchase.total | currency : "CRC" : "₡" : "1.2-2" }}</b
+                    >
+                  </p>
+                </div>
+              </div>
+              <div class="mb-2">
+                <button
+                  *ngIf="
+                    purchase.status === 'aceptado' &&
+                    isCurrentDate(purchase.createdAt) &&
+                    getUserRole() !== 'user'
+                  "
+                  class="btn btn-danger shadow clic-on-image"
+                  (click)="
+                    cancelPurchase(purchase.doc_number);
+                    togglePurchaseDetails(purchase)
+                  "
                 >
-              </p>
-              <button
-                *ngIf="
-                  purchase.status === 'aceptado' &&
-                  isCurrentDate(purchase.createdAt) &&
-                  getUserRole() !== 'user'
-                "
-                class="btn btn-danger shadow clic-on-image"
-                (click)="
-                  cancelPurchase(purchase.doc_number);
-                  togglePurchaseDetails(purchase)
-                "
-              >
-                Anular
-              </button>
+                  Anular
+                </button>
+              </div>
               <table class="table">
                 <thead>
                   <th class="text-left">Cód.</th>
