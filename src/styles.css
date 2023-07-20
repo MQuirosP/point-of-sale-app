@@ -550,3 +550,10 @@ button {
   color: white;
 }
 
+.datalist-no-arrow::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  display: none;
+  visibility: hidden;
+}
+
+

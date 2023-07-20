@@ -140,7 +140,7 @@
                 id="customer_name"
                 name="customer_name"
                 [(ngModel)]="selectedCustomer"
-                class="form-control"
+                class="form-control datalist-no-arrow"
                 (focus)="searchCustomers()"
                 [ngClass]="{
                   'is-valid': selectedCustomer,
@@ -190,14 +190,14 @@
             <div class="form-group">
               <label for="name">Nombre del producto:</label>
               <input
-                type="text"
+                type="search"
                 id="name"
                 name="name"
                 [(ngModel)]="name"
                 class="form-control"
                 (keyup)="searchProduct()"
                 (keydown.enter)="addProduct()"
-                (input)="handleBarcodeInput($event)"
+                (focus)="handleBarcodeInput($event)"
                 autocomplete="off"
                 placeholder="Seleccione producto..."
                 [ngClass]="{
@@ -205,8 +205,14 @@
                   'is-invalid': name && !isProductValid
                 }"
                 #nameInput
+                list="suggestionOptions"
               />
-              <div
+              <datalist id="suggestionOptions">
+                <option *ngFor="let suggestion of productSuggestionList" [ngValue]="suggestion">
+                  {{ suggestion.name }}
+                </option>
+              </datalist>
+              <!-- <div
                 class="suggestions"
                 *ngIf="name && productSuggestionList.length > 0"
               >
@@ -222,7 +228,7 @@
                     </a>
                   </li>
                 </ul>
-              </div>
+              </div> -->
             </div>
             <div class="form-group form-row">
               <div class="col">
@@ -542,14 +548,14 @@
                   *ngIf="
                     sale.status === 'aceptado' && isCurrentDate(sale.createdAt)
                   "
-                  class="btn btn-danger clic-on-image"
+                  class="btn btn-danger clic-on-image mr-2"
                   (click)="cancelSale(sale.doc_number); toggleSaleDetails(sale)"
                 >
                   Anular
                 </button>
                 <button
                   *ngIf="sale.status === 'aceptado'"
-                  class="btn btn-primary mr-2 clic-on-image"
+                  class="btn btn-primary clic-on-image"
                   (click)="generateTicket(sale.doc_number)"
                 >
                   Reimprimir
