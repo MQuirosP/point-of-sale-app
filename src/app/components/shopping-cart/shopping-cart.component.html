@@ -30,14 +30,13 @@
       <div
         class="card shadow card-height border col-md-8 mt-4 customShadow bg-custom clic-on-image"
       >
-        <div class="card-body">
-          <div class="d-flex">
-            <a
-              class="text-decoration-none"
-              (click)="openSaleModal()"
-              data-toggle="modal"
-              data-target="#newSaleModal"
-            >
+        <div class="d-flex">
+          <a
+            class="text-decoration-none"
+            data-toggle="modal"
+            data-target="#newSaleModal"
+          >
+            <div class="card-body">
               <h5 class="card-title">Crear venta</h5>
               <img
                 src="../../../assets/shoppingcart.gif"
@@ -45,8 +44,8 @@
                 class="svg"
                 style="transform: scaleX(-1)"
               />
-            </a>
-          </div>
+            </div>
+          </a>
         </div>
       </div>
     </div>
@@ -75,7 +74,7 @@
       <div
         class="card shadow card-height col-md-8 border customShadow mt-4 bg-custom clic-on-image"
       >
-        <div>
+        <div class="d-flex">
           <a routerLink="/product-list" class="text-decoration-none">
             <div class="card-body">
               <h5 class="card-title">Mis productos</h5>
@@ -112,7 +111,7 @@
   aria-hidden="true"
 >
   <div
-    class="modal-dialog modal-dialog-scrollable modal-lg shadow"
+    class="modal-dialog modal-dialog-centered modal-lg shadow"
     role="document"
   >
     <div class="modal-content">
@@ -120,7 +119,7 @@
         <h5 class="modal-title">Registro de ventas</h5>
         <button
           type="button"
-          class="close overflow-visible clic-on-close"
+          class="close overflow-visible"
           data-dismiss="modal"
           aria-label="Close"
           style="position: absolute; right: 20px; top: 20px"
@@ -389,7 +388,7 @@
                         (click)="removeProduct(product)"
                       >
                         <i
-                          class="fa-solid fa-trash clic-on-close"
+                          class="fa-solid fa-trash"
                           style="
                             color: #fa0000;
                             cursor: pointer;
@@ -470,7 +469,7 @@
         <h5 class="modal-title">Historial de ventas</h5>
         <button
           type="button"
-          class="close overflow-visible clic-on-close"
+          class="close overflow-visible"
           data-dismiss="modal"
           aria-label="Close"
           (click)="closeSaleHistoryModal()"
