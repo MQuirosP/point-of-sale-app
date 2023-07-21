@@ -1,6 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import {
   NgbCalendar,
@@ -19,7 +18,13 @@ import {
   Validators,
 } from '@angular/forms';
 import { ProductCacheService } from 'src/app/services/product-cache.service';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 
 interface ApiPurchaseResponse {
   success: boolean;
@@ -63,36 +68,50 @@ interface Product {
   selector: 'app-purchase-history',
   templateUrl: './purchase-history.component.html',
   styleUrls: ['./purchase-history.component.css'],
-  animations: [ fadeAnimation,
+  animations: [
+    fadeAnimation,
     trigger('slideInOut', [
-      state('in', style({
-        transform: 'translateX(0)',
-        opacity: 1
-      })),
-      state('out', style({
-        transform: 'translateX(-100%)',
-        opacity: 0
-      })),
+      state(
+        'in',
+        style({
+          transform: 'translateX(0)',
+          opacity: 1,
+        })
+      ),
+      state(
+        'out',
+        style({
+          transform: 'translateX(-100%)',
+          opacity: 0,
+        })
+      ),
       transition('in => out', animate('200ms ease-out')),
-      transition('out => in', animate('200ms ease-in'))
+      transition('out => in', animate('200ms ease-in')),
     ]),
     trigger('slideOut', [
-      state('in', style({
-        transform: 'translateX(0)',
-        opacity: 1
-      })),
-      state('out', style({
-        transform: 'translateX(100%)',
-        opacity: 0
-      })),
+      state(
+        'in',
+        style({
+          transform: 'translateX(0)',
+          opacity: 1,
+        })
+      ),
+      state(
+        'out',
+        style({
+          transform: 'translateX(100%)',
+          opacity: 0,
+        })
+      ),
       transition('in => out', animate('200ms ease-out')),
-      transition('out => in', animate('200ms ease-in'))
-    ])
-  ]
+      transition('out => in', animate('200ms ease-in')),
+    ]),
+  ],
 })
 export class PurchaseHistoryComponent {
   selectedDate: NgbDateStruct | any;
   purchaseForm: FormGroup;
+  providerForm: FormGroup;
 
   backendUrl: string = environment.apiUrl;
 
@@ -133,6 +152,7 @@ export class PurchaseHistoryComponent {
   @ViewChild('productQuantityInput')
   productQuantityInput: ElementRef<HTMLInputElement>;
   @ViewChild('productNameInput') productNameInput!: ElementRef;
+  selectedProvider: any;
 
   constructor(
     private http: HttpClient,
@@ -175,17 +195,16 @@ export class PurchaseHistoryComponent {
       }),
       product_quantity: ['', [Validators.required, Validators.min(0.01)]],
     });
+    this.fetchProviders();
   }
 
   ngAfterViewInit() {
     this.date = this.getCurrentDate();
-    // this.searchProviders();
   }
 
   getUserRole(): string {
     return localStorage.getItem('role');
   }
-  
 
   getCurrentDateString(): string {
     const currentDate = this.calendar.getToday();
@@ -257,12 +276,11 @@ export class PurchaseHistoryComponent {
       });
   }
 
-  searchProducts() {
-    const productNameControl = this.purchaseForm.get('product_name');
-  
-    // Verificar si productNameControl y productNameControl.value no son nulos
+  searchProduct() {
+    const productNameControl = this.purchaseForm.get('product_name').value;
+
     if (productNameControl && productNameControl.value !== null) {
-      const searchTerm = productNameControl.value.toLowerCase();
+      const searchTerm = productNameControl.toLowerCase();
       this.http.get(`${this.backendUrl}products`).subscribe({
         next: (response: any) => {
           const products = response?.message?.products;
@@ -270,31 +288,30 @@ export class PurchaseHistoryComponent {
             const searchTermNormalized = searchTerm
               ? searchTerm.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
               : '';
-  
+
             const searchPattern = searchTermNormalized
               .toLowerCase()
               .replace(/\*/g, '.*');
-  
+
             const regex = new RegExp(searchPattern);
-  
+
             this.productSuggestionList = products.filter((product: any) => {
               const productNameNormalized = product.name
                 ? product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
                 : '';
-  
+
               const productCodeNormalized = product.int_code
                 ? product.int_code
                     .normalize('NFD')
                     .replace(/[\u0300-\u036f]/g, '')
                 : '';
-  
+
               return (
                 regex.test(productNameNormalized.toLowerCase()) ||
                 regex.test(productCodeNormalized.toLowerCase())
               );
             });
-  
-            // Auto-seleccionar el producto si hay una sola sugerencia
+
             if (this.productSuggestionList.length === 1) {
               const suggestion = this.productSuggestionList[0];
               this.selectProductSuggestion(suggestion, null);
@@ -306,17 +323,14 @@ export class PurchaseHistoryComponent {
             this.productSuggestionList = [];
             this.selectedProduct = null;
           }
-  
-          // Verificar si el campo de entrada está vacío y borrar la selección
+
           if (searchTerm === '') {
             this.selectedProduct = null;
             this.selectedProductTaxes = null;
             this.selectedProductPrice = null;
           } else {
-            // Actualizar el precio solo cuando se selecciona un producto
             if (this.selectedProduct) {
-              this.selectedProductPrice =
-                this.selectedProduct.purchase_price;
+              this.selectedProductPrice = this.selectedProduct.purchase_price;
             }
           }
         },
@@ -326,12 +340,10 @@ export class PurchaseHistoryComponent {
         },
       });
     } else {
-      // Si productNameControl o productNameControl.value es nulo, restablecer la lista y selección
       this.productSuggestionList = [];
       this.selectedProduct = null;
     }
   }
-  
 
   selectProductSuggestion(product: any, event: Event) {
     if (event) {
@@ -342,8 +354,8 @@ export class PurchaseHistoryComponent {
     this.product_name = product.name;
     this.selectedProductTaxes = product.taxes;
     this.selectedProductPrice = product.purchase_price;
-    this.productSuggestionList = [];
     this.selectedProduct = product;
+    this.productSuggestionList = [];
     setTimeout(() => {
       this.productQuantityInput.nativeElement.focus();
     }, 0);
@@ -353,13 +365,15 @@ export class PurchaseHistoryComponent {
     const inputValue = (event.target as HTMLInputElement).value.trim();
 
     if (inputValue) {
-      const matchingProduct = this.productSuggestionList.find((product: any) => {
-        return product.int_code === inputValue;
-      });
+      const matchingProduct = this.productSuggestionList.find(
+        (product: any) => {
+          return product.int_code === inputValue;
+        }
+      );
 
       if (matchingProduct) {
         this.selectProductSuggestion(matchingProduct, null);
-        this.addProduct();
+        // this.addProduct();
       }
     }
   }
@@ -450,12 +464,11 @@ export class PurchaseHistoryComponent {
     product.isRemoved = true;
 
     setTimeout(() => {
-      
       if (index !== -1) {
         this.productList.splice(index, 1);
         this.calculateTotalPurchaseAmount();
       }
-    }, 200)
+    }, 200);
     const index = this.productList.indexOf(product);
   }
 
@@ -486,12 +499,11 @@ export class PurchaseHistoryComponent {
               'Precios de compra actualizados para los productos.'
             );
             if (this.productList.length === 0) {
-              this.toastr.warning('No hay productos agregados.')
+              this.toastr.warning('No hay productos agregados.');
               event.stopPropagation();
             } else {
               this.savePurchase();
             }
-
           },
           error: (error) => {
             console.log('Error al actualizar los precios de compra.', error);
@@ -586,15 +598,15 @@ export class PurchaseHistoryComponent {
   }
 
   resetForm() {
-    this.purchaseForm.get('provider_name')?.reset();
-    this.purchaseForm.get('doc_number')?.reset();
+    this.purchaseForm.reset();
     this.productList = [];
+    this.providerSuggestionList = [];
   }
 
   cancelPurchase(doc_number: string) {
     this.purchaseService.cancelPurchase(doc_number).subscribe({
       next: (response: any) => {
-        this.toastr.success(`Compra #${doc_number} anulada exitosamente.`)
+        this.toastr.success(`Compra #${doc_number} anulada exitosamente.`);
 
         const canceledPurchase = this.purchases.find(
           (purchase) => purchase.doc_number === doc_number
@@ -650,17 +662,14 @@ export class PurchaseHistoryComponent {
     purchase.showDetails = !purchase.showDetails;
   }
 
-  searchProviders() {
-    const searchTerm = this.purchaseForm.get('provider_name').value.toLowerCase();
+  fetchProviders() {
     this.http.get(`${this.backendUrl}providers`).subscribe({
       next: (response: any) => {
         const providers = response?.message?.providers;
         if (Array.isArray(providers) && providers.length > 0) {
-          this.providerSuggestionList = providers.filter((provider: any) =>
-            provider.provider_name.toLowerCase().includes(searchTerm)
-          );
+          this.providersList = providers;
         } else {
-          this.providerSuggestionList = [];
+          this.providersList = [];
         }
       },
       error: (error: any) => {
@@ -670,18 +679,37 @@ export class PurchaseHistoryComponent {
     });
   }
 
-  selectProviderSuggestion(selectedValue: string) {
-    this.purchaseForm.get('provider_name').setValue(selectedValue);
-
-    const selectedProvider = this.providerSuggestionList.find(
-      (provider) => provider.provider_name === selectedValue
-    );
-
-    if (selectedProvider) {
-      this.provider_id = selectedProvider.provider_id;
-      this.provider_name = selectedProvider.provider_name;
-      this.isProviderValid = true;
+  searchProviders(event: Event) {
+    const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
+    if (Array.isArray(this.providersList) && this.providersList.length > 0) {
+      this.providerSuggestionList = this.providersList.filter(
+        (provider: any) =>
+          provider.provider_name.toLowerCase().includes(searchTerm) ||
+          provider.provider_dni.toLowerCase().includes(searchTerm)
+      );
+    } else {
       this.providerSuggestionList = [];
     }
+  
+    if (this.providerSuggestionList.length === 1) {
+      const suggestion = this.providerSuggestionList[0];
+      this.selectedProvider = suggestion;
+      this.provider_id = suggestion.provider_id;
+      this.providerSuggestionList = []; // Limpiar la lista de sugerencias de proveedores
+      (document.getElementById('provider_name') as HTMLInputElement).value =
+        this.formatOption(suggestion); // Establecer el valor en el input
+    } else {
+      this.provider_id = null;
+    }
   }
+  
+  formatOption(provider: any): string {
+    return `${provider.provider_name}`;
+  }
+
+  onDropdownOpen() {
+    // Abre el dropdown al hacer clic en el input
+    this.providerForm.get('provider_name').enable();
+  }
+  
 }

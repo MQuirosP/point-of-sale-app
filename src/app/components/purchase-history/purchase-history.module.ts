@@ -1,3 +1,4 @@
+import { NgSelectModule } from '@ng-select/ng-select';
 import { PurchaseHistoryComponent } from './purchase-history.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -14,6 +15,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     NgbModule,
     ReactiveFormsModule,
+    NgSelectModule,
   ],
 })
 export class PurchaseHistoryModule {}

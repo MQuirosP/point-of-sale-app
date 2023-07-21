@@ -143,21 +143,27 @@
                   class="form-control datalist-no-arrow"
                   autocomplete="off"
                   [ngClass]="{
-                    'is-valid': purchaseForm.get('provider_name').touched && purchaseForm.get('provider_name').valid,
-                    'is-invalid': purchaseForm.get('provider_name').touched && purchaseForm.get('provider_name').invalid
+                    'is-valid':
+                      purchaseForm.get('provider_name').touched &&
+                      purchaseForm.get('provider_name').valid,
+                    'is-invalid':
+                      purchaseForm.get('provider_name').touched &&
+                      purchaseForm.get('provider_name').invalid
                   }"
                   placeholder="Seleccione proveedor..."
-                  (focus)="searchProviders()"
+                  (input)="searchProviders($event)"
+                  
                   list="providerOptions"
                 />
                 <datalist id="providerOptions" role="listbox">
-                  <option *ngFor="let provider of providerSuggestionList" [value]="provider.provider_name">
-                    {{ provider.provider_name }}
+                  <option
+                    *ngFor="let provider of providerSuggestionList"
+                    [value]="formatOption(provider)"
+                  >
+                    {{ formatOption(provider) }}
                   </option>
                 </datalist>
               </div>
-
-
               <div class="form-group form-row">
                 <div class="col">
                   <label for="doc_number">Documento:</label>
@@ -194,11 +200,11 @@
               <div class="form-group">
                 <label for="product_name">Nombre del producto:</label>
                 <input
-                  type="text"
+                  type="search"
                   id="product_name"
                   formControlName="product_name"
-                  class="form-control"
-                  (keyup)="searchProducts()"
+                  class="form-control datalist-no-arrow"
+                  (keyup)="searchProduct()"
                   (focus)="handleBarcodeInput($event)"
                   autocomplete="off"
                   #productNameInput
@@ -215,7 +221,10 @@
                   list="suggestionOptions"
                 />
                 <datalist id="suggestionOptions">
-                  <option *ngFor="let suggestion of productSuggestionList" [ngValue]="suggestion">
+                  <option
+                    *ngFor="let suggestion of productSuggestionList"
+                    [ngValue]="suggestion"
+                  >
                     {{ suggestion.name }}
                   </option>
                 </datalist>
@@ -547,7 +556,9 @@
                 <div class="col">
                   <p class="text-right">
                     IVA:
-                    {{ purchase.taxes_amount | currency : "CRC" : "₡" : "1.2-2" }}
+                    {{
+                      purchase.taxes_amount | currency : "CRC" : "₡" : "1.2-2"
+                    }}
                   </p>
                 </div>
               </div>

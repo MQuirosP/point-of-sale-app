@@ -26,6 +26,7 @@ import { SaleService } from './services/sale.service';
 import { PurchaseService } from './services/purchase.service';
 import { ReportsComponent } from './components/reports/reports.component';
 import { ProductCacheService } from './services/product-cache.service';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 import { Subscription } from 'rxjs';
 import { PurchaseHistoryComponent } from './components/purchase-history/purchase-history.component';
@@ -60,7 +61,7 @@ import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.
       positionClass: 'toast-top-right',
       preventDuplicates: true,
     }),
-    ReactiveFormsModule,
+    ReactiveFormsModule, NgSelectModule,
   ],
   providers: [
     ModalService,

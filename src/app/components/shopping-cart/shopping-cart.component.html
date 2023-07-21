@@ -19,7 +19,7 @@
     class="form-control"
     placeholder="Ingresa tu búsqueda aquí..."
     autocomplete="off"
-    disabled
+    readonly
   />
 </div>
 
@@ -102,349 +102,339 @@
 </div>
 
 <!-- Modal para crear ventas -->
-<div
-  class="modal fade"
-  id="newSaleModal"
-  #newSaleModal
-  tabindex="-1"
-  role="dialog"
-  aria-hidden="true"
->
+<form [formGroup]="saleForm">
   <div
-    class="modal-dialog modal-dialog-centered modal-lg shadow"
-    role="document"
+    class="modal fade"
+    id="newSaleModal"
+    #newSaleModal
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
   >
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Registro de ventas</h5>
-        <button
-          type="button"
-          class="close overflow-visible"
-          data-dismiss="modal"
-          aria-label="Close"
-          style="position: absolute; right: 20px; top: 20px"
-          (click)="closeSaleModal()"
-        >
-          <span aria-hidden="true">
-            <i class="fa fa-times-circle" style="color: #ffffff"></i>
-          </span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="customer_name">Cliente:</label>
-              <input
-                type="search"
-                id="customer_name"
-                name="customer_name"
-                [(ngModel)]="selectedCustomer"
-                class="form-control datalist-no-arrow"
-                (focus)="searchCustomers()"
-                [ngClass]="{
-                  'is-valid': selectedCustomer,
-                  'is-invalid': !selectedCustomer
-                }"
-                placeholder="Seleccione cliente..."
-                list="customerOptions"
-              >
-              <datalist id="customerOptions">
-                <option *ngFor="let customer of customerSuggestionList" [ngValue]="customer">
-                  {{ formatOption(customer) }}
-                </option>
-              </datalist>
-            </div>
-            <div class="form-group form-row">
-              <div class="col">
-                <label for="paymentMethod">Método de pago:</label>
-                <select
-                  id="paymentMethod"
-                  name="paymentMethod"
-                  [(ngModel)]="paymentMethod"
-                  class="form-control"
-                  autocomplete="off"
-                  style="padding: 0 10px 0 10px"
-                >
-                  <option value="contado">Contado</option>
-                  <option value="crédito">Crédito</option>
-                  <option value="sinpe">Sinpe</option>
-                  <option value="tarjeta">Tarjeta</option>
-                  <option value="transferencia">Transferencia</option>
-                </select>
-              </div>
-
-              <div class="col">
-                <label for="date">Fecha:</label>
+    <div
+      class="modal-dialog modal-dialog-centered modal-lg shadow"
+      role="document"
+    >
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Registro de ventas</h5>
+          <button
+            type="button"
+            class="close overflow-visible"
+            data-dismiss="modal"
+            aria-label="Close"
+            style="position: absolute; right: 20px; top: 20px"
+            (click)="closeSaleModal()"
+          >
+            <span aria-hidden="true">
+              <i class="fa fa-times-circle" style="color: #ffffff"></i>
+            </span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="customer_name">Cliente:</label>
                 <input
-                  type="text"
-                  id="date"
-                  name="date"
-                  [(ngModel)]="date"
-                  class="form-control"
+                  type="search"
+                  role="combobox"
+                  id="customer_name"
+                  formControlName="customer_name"
+                  class="form-control datalist-no-arrow"
                   autocomplete="off"
-                  disabled="true"
-                />
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="name">Nombre del producto:</label>
-              <input
-                type="search"
-                id="name"
-                name="name"
-                [(ngModel)]="name"
-                class="form-control"
-                (keyup)="searchProduct()"
-                (keydown.enter)="addProduct()"
-                (focus)="handleBarcodeInput($event)"
-                autocomplete="off"
-                placeholder="Seleccione producto..."
-                [ngClass]="{
-                  'is-valid': name && isProductValid,
-                  'is-invalid': name && !isProductValid
-                }"
-                #nameInput
-                list="suggestionOptions"
-              />
-              <datalist id="suggestionOptions">
-                <option *ngFor="let suggestion of productSuggestionList" [ngValue]="suggestion">
-                  {{ suggestion.name }}
-                </option>
-              </datalist>
-              <!-- <div
-                class="suggestions"
-                *ngIf="name && productSuggestionList.length > 0"
-              >
-                <ul class="list-inline">
-                  <li *ngFor="let suggestion of productSuggestionList">
-                    <a
-                      class="text-decoration-none"
-                      href=""
-                      (click)="selectSuggestion(suggestion, $event)"
-                    >
-                      {{ suggestion.name }} -
-                      {{ suggestion.sale_price | currency : "CRC" : "₡" }}
-                    </a>
-                  </li>
-                </ul>
-              </div> -->
-            </div>
-            <div class="form-group form-row">
-              <div class="col">
-                <label for="quantity">Cantidad:</label>
-                <input
-                  type="number"
-                  id="quantity"
-                  name="quantity"
-                  [(ngModel)]="quantity"
-                  class="form-control text-right quantity-input"
-                  autocomplete="off"
-                  [value]="1"
-                  step="0.01"
                   [ngClass]="{
-                    'is-valid': isValidQuantity(),
-                    'is-invalid': !isValidQuantity()
+                    'is-valid':
+                      saleForm.get('customer_name').touched &&
+                      saleForm.get('customer_name').valid,
+                    'is-invalid':
+                      saleForm.get('customer_name').touched &&
+                      saleForm.get('customer_name').invalid,
                   }"
+                  placeholder="Seleccione cliente..."
+                  (input)="searchCustomers($event)"
+                  list="customerOptions"
                 />
-              </div>
-              <div class="col">
-                <label for="price">Precio:</label>
-                <label for="taxes" class="form-check-label ml-5">
-                  <input
-                    type="checkbox"
-                    id="taxes"
-                    class="form-check-input shadow"
-                    [(ngModel)]="selectedProductTaxes"
-                    [checked]="selectedProductTaxes"
-                    disabled
-                  />
-                  {{ selectedProductTaxes ? "Gravado" : "Exento" }}
-                </label>
-                <input
-                  type="number"
-                  id="price"
-                  name="price"
-                  [(ngModel)]="price"
-                  class="form-control text-right"
-                  [value]="selectedProductPrice"
-                  autocomplete="off"
-                  disabled="true"
-                />
-              </div>
-            </div>
-            <div class="d-flex justify-content-center">
-              <button
-                type="button"
-                class="btn btn-primary shadow clic-on-image mb-3"
-                (click)="addProduct()"
-              >
-                Agregar
-              </button>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div
-              class="table-container"
-              style="
-                max-height: 400px;
-                overflow-y: visible;
-                overflow-x: hidden;
-                margin-top: -17px;
-              "
-            >
-              <table class="table" style="table-layout: fixed">
-                <thead>
-                  <tr>
-                    <th
-                      class="text-left product-detail-list-title"
-                      style="width: 120px"
-                    >
-                      Producto
-                    </th>
-                    <th
-                      class="text-right product-detail-list-title"
-                      style="width: 50px"
-                    >
-                      Cant.
-                    </th>
-                    <th
-                      class="text-right product-detail-list-title"
-                      style="width: 60px"
-                    >
-                      Precio
-                    </th>
-                    <th
-                      class="text-right product-detail-list-title"
-                      style="width: 60px"
-                    >
-                      Total
-                    </th>
-                    <th style="width: 50px"></th>
-                  </tr>
-                </thead>
-                <tbody [class.d-none]="productList.length === 0">
-                  <tr
-                    *ngFor="let product of productList; let even = even"
-                    [ngClass]="{
-                      'table-row-even': even,
-                      'table-row-odd': !even,
-                      'animated-row': product.isNew || product.isRemoved
-                    }"
-                    [@slideInOut]="product.isNew ? 'in' : 'out'"
-                    [@slideOut]="product.isRemoved ? 'out' : 'in'"
-                    (@slideInOut.done)="product.isNew = true"
-                    (@slideInOut.done)="product.isRemoved = false"
+                <datalist id="customerOptions" role="listbox">
+                  <option
+                    *ngFor="let customer of customerSuggestionList"
+                    [value]="formatOption(customer)"
                   >
-                    <td
-                      class="text-left product-detail-table-content"
-                      style="width: 120px"
-                    >
-                      {{ product.name }}
-                    </td>
-                    <td
-                      class="text-right product-detail-table-content"
-                      style="width: 50px"
-                    >
-                      <input
-                        class="custom-input text-right product-detail-table-content"
-                        style="width: 30px; padding: 0 !important"
-                        type="number"
-                        [(ngModel)]="product.quantity"
-                        (change)="updateProduct(product)"
-                        min="1"
-                        step="0.01"
-                      />
-                    </td>
-                    <td
-                      class="text-right product-detail-table-content"
-                      style="width: 70px"
-                    >
-                      {{
-                        (product.sub_total + product.taxes_amount) /
-                          product.quantity | currency : "CRC" : "₡"
-                      }}
-                    </td>
-                    <td
-                      class="text-right product-detail-table-content"
-                      style="width: 70px"
-                    >
-                      {{
-                        product.sub_total + product.taxes_amount
-                          | currency : "CRC" : "₡"
-                      }}
-                    </td>
-                    <td style="width: 50px; padding-top: 2px">
-                      <button
-                        type="button"
-                        class="clic-on-image"
-                        (click)="removeProduct(product)"
-                      >
-                        <i
-                          class="fa-solid fa-trash"
-                          style="
-                            color: #fa0000;
-                            cursor: pointer;
-                            font-size: 10px;
-                          "
-                        ></i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+                    {{ formatOption(customer) }}
+                  </option>
+                </datalist>
+              </div>
+              <div class="form-group form-row">
+                <div class="col">
+                  <label for="paymentMethod">Método de pago:</label>
+                  <select
+                    id="paymentMethod"
+                    formControlName="paymentMethod"
+                    class="form-control"
+                    autocomplete="off"
+                    style="padding: 0 10px 0 10px"
+                  >
+                    <option value="contado">Contado</option>
+                    <option value="crédito">Crédito</option>
+                    <option value="sinpe">Sinpe</option>
+                    <option value="tarjeta">Tarjeta</option>
+                    <option value="transferencia">Transferencia</option>
+                  </select>
+                </div>
+
+                <div class="col">
+                  <label for="date">Fecha:</label>
+                  <input
+                    type="text"
+                    id="date"
+                    formControlName="date"
+                    class="form-control"
+                    autocomplete="off"
+                    readonly
+                  />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="product_name">Nombre del producto:</label>
+                <input
+                  type="search"
+                  id="product_name"
+                  formControlName="product_name"
+                  class="form-control datalist-no-arrow"
+                  (keyup)="searchProduct()"
+                  (keydown.enter)="addProduct()"
+                  (focus)="handleBarcodeInput($event)"
+                  autocomplete="off"
+                  placeholder="Seleccione producto..."
+                  [ngClass]="{
+                    'is-valid':
+                      saleForm.get('product_name').touched &&
+                      saleForm.get('product_name').valid,
+                    'is-invalid':
+                      saleForm.get('product_name').touched &&
+                      saleForm.get('product_name').invalid
+                  }"
+                  #nameInput
+                  list="suggestionOptions"
+                />
+                <datalist id="suggestionOptions">
+                  <option
+                    *ngFor="let suggestion of productSuggestionList"
+                    [ngValue]="suggestion"
+                  >
+                    {{ suggestion.name }}
+                  </option>
+                </datalist>
+              </div>
+              <div class="form-group form-row">
+                <div class="col">
+                  <label for="product_quantity">Cantidad:</label>
+                  <input
+                    type="number"
+                    id="product_quantity"
+                    formControlName="product_quantity"
+                    class="form-control text-right quantity-input"
+                    autocomplete="off"
+                    step="0.01"
+                    [ngClass]="{
+                      'is-valid': isValidQuantity(),
+                      'is-invalid': !isValidQuantity()
+                    }"
+                  />
+                </div>
+                <div class="col">
+                  <label for="product_price">Precio:</label>
+                  <label for="product_taxes" class="form-check-label ml-5">
+                    <input
+                      type="checkbox"
+                      id="product_taxes"
+                      class="form-check-input shadow"
+                      formControlName="product_taxes"
+                      [checked]="selectedProductTaxes"
+                      readonly
+                    />
+                    {{ selectedProductTaxes ? "Gravado" : "Exento" }}
+                  </label>
+                  <input
+                    type="number"
+                    id="price"
+                    formControlName="product_price"
+                    class="form-control text-right"
+                    autocomplete="off"
+                    readonly
+                  />
+                </div>
+              </div>
+              <div class="d-flex justify-content-center">
+                <button
+                  type="button"
+                  class="btn btn-primary shadow clic-on-image mb-3"
+                  (click)="addProduct()"
+                >
+                  Agregar
+                </button>
+              </div>
             </div>
-          </div>
-        </div>
-        <div class="mt-2">
-          <div class="row total-box">
-            <div class="col flex-column align-items-center">
-              <h6 class="text-center total-box-titles">Sub Total</h6>
-              <p class="text-center total-invoice">
-                {{ subTotalSaleAmount | currency : "CRC" : "₡" }}
-              </p>
-            </div>
-            <div class="col flex-column align-items-center">
-              <h6 class="text-center total-box-titles">I.V.A.</h6>
-              <p class="text-center total-invoice">
-                {{ totalTaxesAmount | currency : "CRC" : "₡" }}
-              </p>
-            </div>
-            <div class="col flex-column align-items-center">
-              <h6
-                class="text-center total-box-titles"
-                style="padding-right: 0 !important"
+            <div class="col-md-6">
+              <div
+                class="table-container"
+                style="
+                  max-height: 400px;
+                  overflow-y: visible;
+                  overflow-x: hidden;
+                  margin-top: -17px;
+                "
               >
-                Total
-              </h6>
-              <p class="text-center total-invoice">
-                {{ totalSaleAmount | currency : "CRC" : "₡" : "1.2-2" }}
-              </p>
+                <table class="table" style="table-layout: fixed">
+                  <thead>
+                    <tr>
+                      <th
+                        class="text-left product-detail-list-title"
+                        style="width: 120px"
+                      >
+                        Producto
+                      </th>
+                      <th
+                        class="text-right product-detail-list-title"
+                        style="width: 50px"
+                      >
+                        Cant.
+                      </th>
+                      <th
+                        class="text-right product-detail-list-title"
+                        style="width: 60px"
+                      >
+                        Precio
+                      </th>
+                      <th
+                        class="text-right product-detail-list-title"
+                        style="width: 60px"
+                      >
+                        Total
+                      </th>
+                      <th style="width: 50px"></th>
+                    </tr>
+                  </thead>
+                  <tbody [class.d-none]="productList.length === 0">
+                    <tr
+                      *ngFor="let product of productList; let even = even"
+                      [ngClass]="{
+                        'table-row-even': even,
+                        'table-row-odd': !even,
+                        'animated-row': product.isNew || product.isRemoved
+                      }"
+                      [@slideInOut]="product.isNew ? 'in' : 'out'"
+                      [@slideOut]="product.isRemoved ? 'out' : 'in'"
+                      (@slideInOut.done)="product.isNew = true"
+                      (@slideInOut.done)="product.isRemoved = false"
+                    >
+                      <td
+                        class="text-left product-detail-table-content"
+                        style="width: 120px"
+                      >
+                        {{ product.name }}
+                      </td>
+                      <td
+                        class="text-right product-detail-table-content"
+                        style="width: 50px"
+                      >
+                        <input
+                          class="custom-input text-right product-detail-table-content"
+                          style="width: 30px; padding: 0 !important"
+                          type="number"
+                          [value]="product.quantity"
+                          (input)="updateProduct(product, $event)"
+                          min="1"
+                          step="0.01"
+                        />
+                      </td>
+                      <td
+                        class="text-right product-detail-table-content"
+                        style="width: 70px"
+                      >
+                        {{ product.price | currency : "CRC" : "₡" }}
+                      </td>
+                      <td
+                        class="text-right product-detail-table-content"
+                        style="width: 70px"
+                      >
+                        {{
+                          product.sub_total + product.taxes_amount
+                            | currency : "CRC" : "₡"
+                        }}
+                      </td>
+                      <td style="width: 50px; padding-top: 2px">
+                        <button
+                          type="button"
+                          class="clic-on-image"
+                          (click)="removeProduct(product)"
+                        >
+                          <i
+                            class="fa-solid fa-trash"
+                            style="
+                              color: #fa0000;
+                              cursor: pointer;
+                              font-size: 10px;
+                            "
+                          ></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="mt-2">
+            <div class="row total-box">
+              <div class="col flex-column align-items-center">
+                <h6 class="text-center total-box-titles">Sub Total</h6>
+                <p class="text-center total-invoice">
+                  {{ subTotalSaleAmount | currency : "CRC" : "₡" }}
+                </p>
+              </div>
+              <div class="col flex-column align-items-center">
+                <h6 class="text-center total-box-titles">I.V.A.</h6>
+                <p class="text-center total-invoice">
+                  {{ totalTaxesAmount | currency : "CRC" : "₡" }}
+                </p>
+              </div>
+              <div class="col flex-column align-items-center">
+                <h6
+                  class="text-center total-box-titles"
+                  style="padding-right: 0 !important"
+                >
+                  Total
+                </h6>
+                <p class="text-center total-invoice">
+                  {{ totalSaleAmount | currency : "CRC" : "₡" : "1.2-2" }}
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-primary shadow clic-on-image"
-          (click)="createSale($event)"
-          data-dismiss="modal"
-        >
-          Guardar venta
-        </button>
-        <button
-          type="button"
-          class="btn btn-secondary shadow clic-on-image"
-          data-dismiss="modal"
-          (click)="closeSaleModal()"
-        >
-          Cerrar
-        </button>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-primary shadow clic-on-image"
+            (click)="createSale($event)"
+            data-dismiss="modal"
+          >
+            Guardar venta
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary shadow clic-on-image"
+            data-dismiss="modal"
+            (click)="closeSaleModal()"
+          >
+            Cerrar
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</form>
 
 <!-- Modal para consultar las ventas -->
 <div
@@ -526,7 +516,8 @@
                 </div>
                 <div class="col">
                   <p class="text-right">
-                    IVA: {{ sale.taxes_amount | currency : "CRC" : "₡" : "1.2-2" }}
+                    IVA:
+                    {{ sale.taxes_amount | currency : "CRC" : "₡" : "1.2-2" }}
                   </p>
                 </div>
               </div>
@@ -537,7 +528,8 @@
                 <div class="col">
                   <p class="text-right">
                     <b
-                      >Total: {{ sale.total | currency : "CRC" : "₡" : "1.2-2" }}</b
+                      >Total:
+                      {{ sale.total | currency : "CRC" : "₡" : "1.2-2" }}</b
                     >
                   </p>
                 </div>
