@@ -25,6 +25,7 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
+import { ProductService } from 'src/app/services/product.service';
 
 interface ApiPurchaseResponse {
   success: boolean;
@@ -58,6 +59,7 @@ interface Product {
   price: any;
   quantity: any;
   taxes: boolean;
+  taxPercentage: number;
   taxes_amount?: number;
   sub_total?: number;
   isNew?: boolean;
@@ -162,7 +164,8 @@ export class PurchaseHistoryComponent {
     private toastr: ToastrService,
     private purchaseService: PurchaseService,
     private formBuilder: FormBuilder,
-    private productCache: ProductCacheService
+    private productCache: ProductCacheService,
+    private productService: ProductService
   ) {
     this.date = this.getCurrentDate();
     this.selectedDate = this.calendar.getToday();
@@ -175,6 +178,8 @@ export class PurchaseHistoryComponent {
       }
     });
     this.selectedDate = this.calendar.getToday();
+
+    // DEFINICIÓN FORMULARIO PARA COMPRAS
     this.purchaseForm = this.formBuilder.group({
       provider_name: ['', Validators.required],
       doc_number: ['', Validators.required],
@@ -250,102 +255,106 @@ export class PurchaseHistoryComponent {
       console.log('Fecha no especificada', selectedDate);
       return;
     }
-    this.http
-      .get<ApiPurchaseResponse>(
-        `${this.backendUrl}purchases/date/${selectedDate}`
-      )
-      .subscribe({
-        next: (response) => {
-          if (response.message.Purchases.length === 0) {
-            this.toastr.warning(
-              'No hay compras para mostrar en la fecha seleccionada.'
-            );
-          }
-          if (response.success) {
-            this.purchases = response.message?.Purchases || [];
-            this.purchases.forEach((purchase: any) => {
-              purchase.showDetails = false;
-            });
-          } else {
-            console.log('Error recuperando las compras');
-          }
-        },
-        error: (error) => {
-          console.log('Error al obtener el historial de compras', error);
-        },
-      });
+
+    this.purchaseService.getPurchasesByDate(selectedDate).subscribe({
+      next: (response) => {
+        if (response.message.Purchases.length === 0) {
+          this.toastr.warning(
+            'No hay compras para mostrar en la fecha seleccionada.'
+          );
+        }
+        if (response.success) {
+          this.purchases = response.message?.Purchases || [];
+          this.purchases.forEach((purchase: any) => {
+            purchase.showDetails = false;
+          });
+        } else {
+          console.log('Error recuperando las compras');
+        }
+      },
+      error: (error) => {
+        console.log('Error al obtener el historial de compras', error);
+      },
+    });
   }
 
   searchProduct() {
     const productNameControl = this.purchaseForm.get('product_name').value;
+    
+    const searchTerm = productNameControl?.toLowerCase().trim() || '';
+    if (!searchTerm) {
+      this.clearProductSuggestions();
+      return;
+    }
 
-    if (productNameControl && productNameControl.value !== null) {
-      const searchTerm = productNameControl.toLowerCase();
-      this.http.get(`${this.backendUrl}products`).subscribe({
-        next: (response: any) => {
-          const products = response?.message?.products;
-          if (Array.isArray(products) && products.length > 0) {
-            const searchTermNormalized = searchTerm
-              ? searchTerm.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-              : '';
+    this.productService.getProducts().subscribe({
+      next: (response: any) => {
+        const products = response?.message?.products;
+        if (Array.isArray(products) && products.length > 0) {
+          this.updateProductSuggestions(products, searchTerm);
+          this.selectSingleProduct();
+        } else {
+          this.clearProductSuggestions();
+        }
+        this.updateSelectedProductPrice();
+      },
+      error: (error: any) => {
+        console.log('Error al recuperar productos');
+        this.toastr.error('Error al recuperar productos.');
+      },
+    });
+  }
 
-            const searchPattern = searchTermNormalized
-              .toLowerCase()
-              .replace(/\*/g, '.*');
+  private updateProductSuggestions(products: any[], searchTerm: string) {
+    const searchTermNormalized = searchTerm
+      ? searchTerm.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      : '';
+    const searchPattern = searchTermNormalized
+      .toLowerCase()
+      .replace(/\*/g, '.*');
+    const regex = new RegExp(searchPattern);
 
-            const regex = new RegExp(searchPattern);
+    this.productSuggestionList = products.filter((product: any) => {
+      const productNameNormalized = product.name
+        ? product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        : '';
+      const productCodeNormalized = product.int_code
+        ? product.int_code.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        : '';
 
-            this.productSuggestionList = products.filter((product: any) => {
-              const productNameNormalized = product.name
-                ? product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-                : '';
+      return (
+        regex.test(productNameNormalized.toLowerCase()) ||
+        regex.test(productCodeNormalized.toLowerCase())
+      );
+    });
+  }
 
-              const productCodeNormalized = product.int_code
-                ? product.int_code
-                    .normalize('NFD')
-                    .replace(/[\u0300-\u036f]/g, '')
-                : '';
-
-              return (
-                regex.test(productNameNormalized.toLowerCase()) ||
-                regex.test(productCodeNormalized.toLowerCase())
-              );
-            });
-
-            if (this.productSuggestionList.length === 1) {
-              const suggestion = this.productSuggestionList[0];
-              this.selectProductSuggestion(suggestion, null);
-              this.selectedProduct = suggestion;
-            } else {
-              this.selectedProduct = null;
-            }
-          } else {
-            this.productSuggestionList = [];
-            this.selectedProduct = null;
-          }
-
-          if (searchTerm === '') {
-            this.selectedProduct = null;
-            this.selectedProductTaxes = null;
-            this.selectedProductPrice = null;
-          } else {
-            if (this.selectedProduct) {
-              this.selectedProductPrice = this.selectedProduct.purchase_price;
-            }
-          }
-        },
-        error: (error: any) => {
-          console.log('Error al recuperar productos');
-          this.toastr.error('Error al recuperar productos.');
-        },
-      });
+  private selectSingleProduct() {
+    if (this.productSuggestionList.length === 1) {
+      const suggestion = this.productSuggestionList[0];
+      this.selectProductSuggestion(suggestion, null);
+      this.selectedProduct = suggestion;
     } else {
-      this.productSuggestionList = [];
       this.selectedProduct = null;
     }
   }
 
-  selectProductSuggestion(product: any, event: Event) {
+  private updateSelectedProductPrice() {
+    if (!this.selectedProduct) {
+      this.selectedProductPrice = null;
+    } else {
+      this.selectedProductPrice = this.selectedProduct.purchase_price;
+    }
+  }
+
+  private clearProductSuggestions() {
+    this.productSuggestionList = [];
+    this.selectedProduct = null;
+    this.selectedProductTaxes = null;
+    this.selectedProductPrice = null;
+  }
+
+  private selectProductSuggestion(product: any, event: Event) {
     if (event) {
       event.preventDefault();
     }
@@ -393,10 +402,7 @@ export class PurchaseHistoryComponent {
     }
 
     const productIntCode = this.int_code;
-    const cachedProducts = this.productCache.getCachedProducts();
-    const productFromCache = cachedProducts.find(
-      (product: Product) => product.int_code === productIntCode
-    );
+    const productFromCache = this.getProductFromCache(productIntCode);
 
     if (!productFromCache) {
       this.toastr.error('El producto no se encuentra en la caché.');
@@ -406,56 +412,64 @@ export class PurchaseHistoryComponent {
     const taxPercent = productFromCache.taxPercentage;
     const productId = productFromCache.productId;
 
-    // console.log(taxPercent, productId);
     const product: Product = {
       productId: productId,
       int_code: this.int_code,
-      name: this.purchaseForm.get('product_name')?.value,
-      price: this.purchaseForm.get('product_new_price')?.value,
-      quantity: this.purchaseForm.get('product_quantity')?.value,
+      name: productName?.value,
+      price: productNewPrice?.value,
+      quantity: productQuantity?.value,
       taxes: this.selectedProductTaxes,
       isNew: true,
+      taxPercentage: taxPercent,
     };
 
-    let taxesAmount = 0;
-    let subTotal = 0;
-
-    if (product.taxes) {
-      const priceWithTaxes = product.price / (1 - taxPercent / 100);
-      const taxesPerItem = priceWithTaxes - product.price;
-      taxesAmount = taxesPerItem * product.quantity;
-      subTotal = product.price * product.quantity;
-    }
-
-    product.taxes_amount = taxesAmount;
-    product.sub_total = subTotal;
-    // console.log(product);
+    this.calculateProductAmounts(product, taxPercent);
     this.productList.push(product);
     product.isNew = false;
     this.calculateTotalPurchaseAmount();
-    this.productNameInput.nativeElement.focus();
-    this.purchaseForm.get('product_name')?.reset();
-    this.purchaseForm.get('product_new_price')?.reset();
-    this.purchaseForm.get('product_quantity')?.reset();
+    this.resetFormFields();
+  }
 
-    this.selectedProductPrice = 0;
-    this.selectedProductTaxes = false;
+  private getProductFromCache(intCode: any): Product | undefined {
+    const cachedProducts = this.productCache.getCachedProducts();
+    return cachedProducts.find(
+      (product: Product) => product.int_code === intCode
+    );
+  }
+
+  private calculateProductAmounts(product: Product, taxPercent: number) {
+    if (product.taxes) {
+      const priceWithTaxes = product.price / (1 - taxPercent / 100);
+      const taxesPerItem = priceWithTaxes - product.price;
+      product.taxes_amount = taxesPerItem * product.quantity;
+      product.sub_total = product.price * product.quantity;
+    } else {
+      product.taxes_amount = 0;
+      product.sub_total = product.price * product.quantity;
+    }
   }
 
   private calculateTotalPurchaseAmount() {
     this.subTotalPurchaseAmount = this.productList.reduce(
-      (subTotal, product) => {
-        return subTotal + product.sub_total;
-      },
+      (subTotal, product) => subTotal + product.sub_total,
       0
     );
 
-    this.totalTaxesAmount = this.productList.reduce((taxesTotal, product) => {
-      return taxesTotal + product.taxes_amount;
-    }, 0);
+    this.totalTaxesAmount = this.productList.reduce(
+      (taxesTotal, product) => taxesTotal + product.taxes_amount,
+      0
+    );
 
     this.totalPurchaseAmount =
       this.subTotalPurchaseAmount + this.totalTaxesAmount;
+  }
+
+  private resetFormFields() {
+    this.purchaseForm.get('product_name')?.reset();
+    this.purchaseForm.get('product_new_price')?.reset();
+    this.purchaseForm.get('product_quantity')?.reset();
+    this.selectedProductPrice = 0;
+    this.selectedProductTaxes = false;
   }
 
   removeProduct(product: any) {
@@ -477,43 +491,42 @@ export class PurchaseHistoryComponent {
 
     if (providerName.invalid) {
       this.toastr.warning('Seleccione un proveedor.');
-      event.stopPropagation();
-    }
-    if (!this.validatePurchaseData(event)) {
-      event.stopPropagation();
-      return;
-    }
-    try {
-      const validDocument = await this.purchaseService.checkPurchaseDocNumber(
-        this.purchaseForm.get('doc_number').value
-      );
-      if (validDocument) {
-        this.toastr.error('Documento ya fue registrado anteriormente');
-        return;
-      } else {
-        const updateProductPrices$ = this.updateProductPrices();
+    } else if (!this.validatePurchaseData(event)) {
+    } else {
+      try {
+        const validDocument = await this.purchaseService.checkPurchaseDocNumber(
+          this.purchaseForm.get('doc_number').value
+        );
 
-        updateProductPrices$.subscribe({
-          next: () => {
-            this.toastr.success(
-              'Precios de compra actualizados para los productos.'
-            );
-            if (this.productList.length === 0) {
-              this.toastr.warning('No hay productos agregados.');
-              event.stopPropagation();
-            } else {
-              this.savePurchase();
-            }
-          },
-          error: (error) => {
-            console.log('Error al actualizar los precios de compra.', error);
-            this.toastr.error(
-              'Ocurrió un error al actualizar los precios de compra. Por favor inténtalo nuevamente.'
-            );
-          },
-        });
+        if (validDocument) {
+          this.toastr.error('Documento ya fue registrado anteriormente');
+        } else {
+          const updateProductPrices$ = this.updateProductPrices();
+
+          updateProductPrices$.subscribe({
+            next: () => {
+              this.toastr.success(
+                'Precios de compra actualizados para los productos.'
+              );
+              if (this.productList.length === 0) {
+                this.toastr.warning('No hay productos agregados.');
+              } else {
+                this.savePurchase(event);
+              }
+            },
+            error: (error) => {
+              console.log('Error al actualizar los precios de compra.', error);
+              this.toastr.error(
+                'Ocurrió un error al actualizar los precios de compra. Por favor inténtalo nuevamente.'
+              );
+            },
+          });
+        }
+      } catch (error) {
+        this.toastr.error('Error al registrar la compra.');
       }
-    } catch (error) {}
+    }
+    event.stopPropagation();
   }
 
   private validatePurchaseData(event: Event): boolean {
@@ -531,8 +544,6 @@ export class PurchaseHistoryComponent {
       return false;
     }
 
-    // Aquí se pueden realizar más validaciones
-
     return true;
   }
 
@@ -542,16 +553,12 @@ export class PurchaseHistoryComponent {
         product.int_code
       );
       if (!cachedProduct) {
-        // El producto no está en la caché, manejar el error o la lógica apropiada
         return throwError(
           () =>
             new Error(
               `Product with int_code ${product.int_code} not found in cache.`
             )
         );
-        // return throwError(
-        //   `Product with int_code ${product.int_code} not found in cache.`
-        // );
       }
 
       const data = {
@@ -566,7 +573,7 @@ export class PurchaseHistoryComponent {
     return forkJoin(updateRequests);
   }
 
-  private savePurchase() {
+  private savePurchase(event: Event) {
     const purchase: Purchase = {
       providerId: this.provider_id,
       provider_name: this.purchaseForm.get('provider_name').value,
@@ -577,17 +584,15 @@ export class PurchaseHistoryComponent {
       taxes_amount: this.totalTaxesAmount || 0,
       products: this.productList.map((product) => ({ ...product })),
     };
+  
     this.purchaseService.createPurchase(purchase).subscribe({
       next: () => {
         this.toastr.success('Compra registrada exitosamente.');
         this.resetForm();
         this.closePurchaseModal();
-        this.subTotalPurchaseAmount = 0;
-        this.totalTaxesAmount = 0;
-        this.totalPurchaseAmount = 0;
-        this.isProviderValid = false;
       },
       error: (error) => {
+        event.stopPropagation();
         console.log('Error al crear la compra', error.error.error);
         this.toastr.error(
           'Ocurrió un error al crear la compra. Por favor inténtalo nuevamente.',
@@ -597,8 +602,12 @@ export class PurchaseHistoryComponent {
     });
   }
 
-  resetForm() {
+  private resetForm() {
     this.purchaseForm.reset();
+    this.subTotalPurchaseAmount = 0;
+    this.totalTaxesAmount = 0;
+    this.totalPurchaseAmount = 0;
+    this.isProviderValid = false;
     this.productList = [];
     this.providerSuggestionList = [];
   }
@@ -663,7 +672,7 @@ export class PurchaseHistoryComponent {
   }
 
   fetchProviders() {
-    this.http.get(`${this.backendUrl}providers`).subscribe({
+    this.purchaseService.getProviders().subscribe({
       next: (response: any) => {
         const providers = response?.message?.providers;
         if (Array.isArray(providers) && providers.length > 0) {
@@ -690,7 +699,7 @@ export class PurchaseHistoryComponent {
     } else {
       this.providerSuggestionList = [];
     }
-  
+
     if (this.providerSuggestionList.length === 1) {
       const suggestion = this.providerSuggestionList[0];
       this.selectedProvider = suggestion;
@@ -702,7 +711,7 @@ export class PurchaseHistoryComponent {
       this.provider_id = null;
     }
   }
-  
+
   formatOption(provider: any): string {
     return `${provider.provider_name}`;
   }
@@ -711,5 +720,4 @@ export class PurchaseHistoryComponent {
     // Abre el dropdown al hacer clic en el input
     this.providerForm.get('provider_name').enable();
   }
-  
 }

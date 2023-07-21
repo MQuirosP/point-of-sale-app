@@ -202,8 +202,8 @@
                   formControlName="product_name"
                   class="form-control datalist-no-arrow"
                   (keyup)="searchProduct()"
-                  (keydown.enter)="addProduct()"
                   (focus)="handleBarcodeInput($event)"
+                  (keydown.enter)="addProduct()"
                   autocomplete="off"
                   placeholder="Seleccione producto..."
                   [ngClass]="{

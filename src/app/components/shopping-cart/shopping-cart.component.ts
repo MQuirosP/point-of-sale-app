@@ -1,5 +1,4 @@
 import {
-  ChangeDetectorRef,
   Component,
   ElementRef,
   ViewChild,
@@ -16,7 +15,7 @@ import { fadeAnimation } from 'src/app/fadeAnimation';
 import { ToastrService } from 'ngx-toastr';
 import { TicketService } from 'src/app/services/ticket.service';
 import { SaleService } from 'src/app/services/sale.service';
-import { Observable, Subscription, map } from 'rxjs';
+import { Subscription } from 'rxjs';
 import {
   animate,
   state,
@@ -30,6 +29,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { ProductService } from 'src/app/services/product.service';
 
 interface ApiSaleResponse {
   success: boolean;
@@ -154,6 +154,7 @@ export class ShoppingCartComponent {
     private toastr: ToastrService,
     private ticketService: TicketService,
     private saleService: SaleService,
+    private productService: ProductService,
     private dateFormatter: NgbDateParserFormatter,
     private formBuilder: FormBuilder
   ) {
@@ -162,13 +163,16 @@ export class ShoppingCartComponent {
   }
 
   ngOnInit() {
+    // SUSCRIPCION PARA ACCESAR EL FORMULARIO DE VENTAS
+    // DESDE LA PÁGINA PRINCIPAL
     this.showNewSaleModalSubscription =
       this.modalService.showNewSaleModal.subscribe((show: boolean) => {
         if (show) {
           this.openSaleModal();
         }
       });
-    this.selectedDate = this.calendar.getToday();
+
+    // DEFINICIÓN FORMULARIO PARA VENTAS
     this.saleForm = this.formBuilder.group({
       customer_id: [0, Validators.required],
       customer_name: ['', Validators.required],
@@ -193,6 +197,7 @@ export class ShoppingCartComponent {
       product_quantity: [1, [Validators.required, Validators.min(0.01)]],
     });
     this.getProductList();
+    this.selectedDate = this.calendar.getToday();
     this.fetchCustomers();
   }
 
@@ -242,38 +247,37 @@ export class ShoppingCartComponent {
       console.log('Fecha no especificada', selectedDate);
       return;
     }
-    this.http
-      .get<ApiSaleResponse>(`${this.backendUrl}sales/date/${selectedDate}`)
-      .subscribe({
-        next: (response) => {
-          if (response.message.Sales.length === 0) {
-            this.toastr.warning(
-              'No hay ventas para mostrar en la fecha seleccionada.'
-            );
-          }
-          if (response.success) {
-            this.sales = response.message?.Sales || [];
-            this.sales.forEach((sale: any) => {
-              sale.showDetails = false;
-            });
 
-            if (this.sales.length > 0) {
-              const lastSale = this.sales[this.sales.length - 1];
-              this.lastSaleDocNumber = lastSale.doc_number;
-            }
-          } else {
-            console.log('Error recuperando las ventas');
+    this.saleService.getSalesByDate(selectedDate).subscribe({
+      next: (response: ApiSaleResponse) => {
+        if (response.message.Sales.length === 0) {
+          this.toastr.warning(
+            'No hay ventas para mostrar en la fecha seleccionada.'
+          );
+        }
+        if (response.success) {
+          this.sales = response.message?.Sales || [];
+          this.sales.forEach((sale: any) => {
+            sale.showDetails = false;
+          });
+
+          if (this.sales.length > 0) {
+            const lastSale = this.sales[this.sales.length - 1];
+            this.lastSaleDocNumber = lastSale.doc_number;
           }
-        },
-        error: (error) => {
-          console.log('Error al obtener el historial de ventas', error);
-        },
-      });
+        } else {
+          console.log('Error recuperando las ventas');
+        }
+      },
+      error: (error) => {
+        console.log('Error al obtener el historial de ventas', error);
+      },
+    });
   }
 
   // Método para obtener la lista de productos
   getProductList() {
-    this.http.get(`${this.backendUrl}products`).subscribe({
+    this.productService.getProducts().subscribe({
       next: (response: any) => {
         const products = response?.message?.products;
         if (Array.isArray(products) && products.length > 0) {
@@ -296,72 +300,88 @@ export class ShoppingCartComponent {
 
   searchProduct() {
     const productNameControl = this.saleForm.get('product_name').value;
+    
+    const searchTerm = productNameControl?.toLowerCase().trim() || '';
+    if (!searchTerm) {
+      this.clearProductSuggestions();
+      return;
+    }
 
-    if (productNameControl && productNameControl !== null) {
-      const searchTerm = productNameControl.toLowerCase();
-      this.http.get(`${this.backendUrl}products`).subscribe({
-        next: (response: any) => {
-          const products = response?.message?.products;
-          if (Array.isArray(products) && products.length > 0) {
-            const searchTermNormalized = searchTerm
-              ? searchTerm.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    this.productService.getProducts().subscribe({
+      next: (response: any) => {
+        const products = response?.message?.products;
+        if (Array.isArray(products) && products.length > 0) {
+          this.updateProductSuggestions(products, searchTerm);
+          this.selectSingleProduct();
+        } else {
+          this.clearProductSuggestions();
+        }
+
+        this.updateSelectedProductPrice();
+      },
+      error: (error: any) => {
+        console.log('Error al recuperar productos');
+        this.toastr.error('Error al recuperar productos.');
+      },
+    });
+  }
+
+  private updateProductSuggestions(products: any[], searchTerm: string) {
+    const searchTermNormalized = searchTerm
+            ? searchTerm.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+            : '';
+
+          const searchPattern = searchTermNormalized
+            .toLowerCase()
+            .replace(/\*/g, '.*');
+
+          const regex = new RegExp(searchPattern);
+
+          this.productSuggestionList = products.filter((product: any) => {
+            const productNameNormalized = product.name
+              ? product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
               : '';
 
-            const searchPattern = searchTermNormalized
-              .toLowerCase()
-              .replace(/\*/g, '.*');
+            const productCodeNormalized = product.int_code
+              ? product.int_code.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+              : '';
 
-            const regex = new RegExp(searchPattern);
+            return (
+              regex.test(productNameNormalized.toLowerCase()) ||
+              regex.test(productCodeNormalized.toLowerCase())
+            );
+          });
 
-            this.productSuggestionList = products.filter((product: any) => {
-              const productNameNormalized = product.name
-                ? product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-                : '';
-
-              const productCodeNormalized = product.int_code
-                ? product.int_code
-                    .normalize('NFD')
-                    .replace(/[\u0300-\u036f]/g, '')
-                : '';
-
-              return (
-                regex.test(productNameNormalized.toLowerCase()) ||
-                regex.test(productCodeNormalized.toLowerCase())
-              );
-            });
-
-            if (this.productSuggestionList.length === 1) {
-              const suggestion = this.productSuggestionList[0];
-              this.selectProductSuggestion(suggestion, null);
-              this.selectedProduct = suggestion.name;
-            } else {
-              this.selectedProduct = null;
-            }
+          if (this.productSuggestionList.length === 1) {
+            this.selectSingleProduct();
           } else {
-            this.productSuggestionList = [];
             this.selectedProduct = null;
           }
+  }
 
-          if (searchTerm === '') {
-            this.selectedProduct = null;
-            this.selectedProductTaxes = null;
-            this.selectedProductPrice = null;
-          } else {
-            // Actualizar el precio solo cuando se selecciona un producto
-            if (this.selectedProduct) {
-              this.selectedProductPrice = this.selectedProduct.purchase_price;
-            }
-          }
-        },
-        error: (error: any) => {
-          console.log('Error al recuperar productos');
-          this.toastr.error('Error al recuperar productos.');
-        },
-      });
+  private selectSingleProduct() {
+    if (this.productSuggestionList.length === 1) {
+      const suggestion = this.productSuggestionList[0];
+      this.selectProductSuggestion(suggestion, null);
+      this.selectedProduct = suggestion;
     } else {
-      this.productSuggestionList = [];
       this.selectedProduct = null;
     }
+  }
+
+  private updateSelectedProductPrice() {
+    if (!this.selectedProduct) {
+      this.selectedProductPrice = null;
+    } else {
+      this.selectedProductPrice = this.selectedProduct.purchase_price;
+    }
+  }
+
+  private clearProductSuggestions() {
+    this.productSuggestionList = [];
+    this.selectedProduct = null;
+    this.selectedProductTaxes = null;
+    this.selectedProductPrice = null;
   }
 
   handleBarcodeInput(event: Event) {
@@ -374,12 +394,11 @@ export class ShoppingCartComponent {
 
       if (matchingProduct) {
         this.selectProductSuggestion(matchingProduct, null);
-        // this.addProduct();
       }
     }
   }
 
-  selectProductSuggestion(product: any, event: Event) {
+  private selectProductSuggestion(product: any, event: Event) {
     if (event) {
       event.preventDefault();
     }
@@ -389,7 +408,6 @@ export class ShoppingCartComponent {
     this.selectedProductTaxes = product.taxes;
     this.saleForm.get('product_price').setValue(product.sale_price);
     this.selectedProduct = product;
-    // this.addProduct();
     this.productSuggestionList = [];
     setTimeout(() => {
       this.nameInput.nativeElement.focus();
@@ -417,71 +435,87 @@ export class ShoppingCartComponent {
       return;
     }
 
-    // event.preventDefault();
-    // let productData = {};
+    this.productService.getProductByIntCode(this.int_code).subscribe({
+      next: (response: any) => {
+        const productData = response.message.product;
+        this.TAXES = productData.taxPercentage;
+
+        const { taxesAmount, subTotal } = this.calculateProductAmounts(
+          productData,
+          productQuantity
+        );
+
+        if (productQuantity > productData.quantity) {
+          this.toastr.error(
+            `Stock de producto ${productData.name} inferior al digitado.`
+          );
+          return;
+        }
+
+        const product: Product = {
+          productId: productData.productId,
+          int_code: this.int_code,
+          name: productName,
+          price: productNewPrice,
+          quantity: productQuantity,
+          taxPercentage: this.TAXES,
+          taxes: this.selectedProductTaxes,
+          taxes_amount: taxesAmount,
+          sub_total: subTotal,
+          isNew: true,
+        };
+
+        this.updateProductList(product);
+        this.calculateTotalSaleAmount();
+        this.clearProductForm();
+        setTimeout(() => {
+          this.nameInput.nativeElement.focus();
+        }, 0);
+      },
+      error: (response: any) => {
+        this.toastr.error(
+          'No se pudo recuperar la información de impuestos del producto.'
+        );
+      },
+    });
+  }
+
+  private calculateProductAmounts(
+    productData: any,
+    productQuantity: number
+  ): { taxesAmount: number; subTotal: number } {
     let taxesAmount = 0;
     let subTotal = 0;
 
-    this.http
-      .get(`${this.backendUrl}products/int_code/${this.int_code}`)
-      .subscribe({
-        next: (response: any) => {
-          const productData = response.message.product;
-          this.TAXES = productData.taxPercentage;
-          if (this.selectedProductTaxes) {
-            taxesAmount =
-              productData.purchase_price /
-                (1 - productData.taxPercentage / 100) -
-              productData.purchase_price;
-            subTotal = productData.sale_price - taxesAmount;
-          }
-          if (productQuantity > productData.quantity) {
-            this.toastr.error(
-              `Stock de producto ${productData.name} inferior al digitado.`
-            );
-            return;
-          }
+    if (this.selectedProductTaxes) {
+      taxesAmount =
+        productData.purchase_price / (1 - productData.taxPercentage / 100) -
+        productData.purchase_price;
+      subTotal = productData.sale_price - taxesAmount;
+    }
 
-          const product: Product = {
-            productId: productData.productId,
-            int_code: this.int_code,
-            name: this.saleForm.get('product_name').value,
-            price: this.saleForm.get('product_price').value,
-            quantity: this.saleForm.get('product_quantity').value,
-            taxPercentage: this.TAXES,
-            taxes: this.selectedProductTaxes,
-            taxes_amount: taxesAmount * productQuantity,
-            sub_total: subTotal * productQuantity,
-            isNew: true,
-          };
+    taxesAmount *= productQuantity;
+    subTotal *= productQuantity;
 
-          const existingProductIndex = this.productList.findIndex(
-            (p) => p.int_code === this.int_code
-          );
+    return { taxesAmount, subTotal };
+  }
 
-          if (existingProductIndex !== -1) {
-            const existingProduct = this.productList[existingProductIndex];
-            existingProduct.quantity += product.quantity;
-            existingProduct.taxes_amount += product.taxes_amount;
-            existingProduct.sub_total += product.sub_total;
-            existingProduct.total =
-              existingProduct.sub_total + existingProduct.taxes_amount;
-          } else {
-            this.productList.push(product);
-            product.isNew = false; // Desactivar la animación para la fila recién agregada
-          }
-          this.calculateTotalSaleAmount();
-          this.clearProductForm();
-          setTimeout(() => {
-            this.nameInput.nativeElement.focus();
-          }, 0);
-        },
-        error: (response: any) => {
-          this.toastr.error(
-            'No se pudo recuperar la información de impuestos del producto.'
-          );
-        },
-      });
+  private updateProductList(product: Product) {
+    const existingProductIndex = this.productList.findIndex(
+      (p) => p.int_code === this.int_code
+    );
+
+    if (existingProductIndex !== -1) {
+      const existingProduct = this.productList[existingProductIndex];
+      existingProduct.quantity += product.quantity;
+      existingProduct.taxes_amount += product.taxes_amount;
+      existingProduct.sub_total += product.sub_total;
+      existingProduct.total =
+        existingProduct.sub_total + existingProduct.taxes_amount;
+    } else {
+      this.productList.push(product);
+      product.isNew = false;
+    }
   }
 
   private calculateTotalSaleAmount() {
@@ -527,15 +561,8 @@ export class ShoppingCartComponent {
     }
   }
 
-  // getCustomerDetails(): Observable<any> {
-  //   return this.http
-  //     .get(`${this.backendUrl}customers/id/${this.customer_id}`)
-  //     .pipe(map((response: any) => response?.message?.customer));
-  // }
-
-  buildSaleObject(customerFullName: string): any {
+  private buildSaleObject(customerFullName: string): any {
     return {
-      // customerId: this.selectedCustomer.customer_id,
       customer_name: customerFullName,
       paymentMethod: this.paymentMethod,
       sub_total: this.subTotalSaleAmount.toFixed(2),
@@ -545,7 +572,7 @@ export class ShoppingCartComponent {
     };
   }
 
-  buildProductList(): any[] {
+  private buildProductList(): any[] {
     return this.productList.map((product) => ({
       int_code: product.int_code,
       quantity: product.quantity,
@@ -554,7 +581,7 @@ export class ShoppingCartComponent {
     }));
   }
 
-  saveSale(sale: any) {
+  private saveSale(sale: any) {
     this.saleService.createSale(sale).subscribe({
       next: () => {
         this.handleSaleCreationSuccess();
@@ -565,7 +592,7 @@ export class ShoppingCartComponent {
     });
   }
 
-  handleSaleCreationSuccess() {
+  private handleSaleCreationSuccess() {
     this.toastr.success('La venta ha sido guardada exitosamente.');
     this.date = this.getCurrentDate();
     this.getSalesHistory(this.date);
@@ -577,14 +604,13 @@ export class ShoppingCartComponent {
     this.closeSaleModal();
   }
 
-  handleSaleCreationError() {
+  private handleSaleCreationError() {
     this.toastr.error(
       'Ocurrió un error al guardar la venta. Por favor inténtalo nuevamente.'
     );
   }
 
   private clearSaleFormData() {
-    // this.saleForm.reset();
     this.saleForm.get('customer_name')?.reset();
     this.totalTaxesAmount = 0;
     this.subTotalSaleAmount = 0;
@@ -708,7 +734,7 @@ export class ShoppingCartComponent {
   }
 
   fetchCustomers() {
-    this.http.get(`${this.backendUrl}customers`).subscribe({
+    this.saleService.getCustomers().subscribe({
       next: (response: any) => {
         const customers = response?.message?.customers;
         if (Array.isArray(customers) && customers.length > 0) {
@@ -728,7 +754,6 @@ export class ShoppingCartComponent {
     const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
 
     if (Array.isArray(this.customersList) && this.customersList.length > 0) {
-      
       this.customerSuggestionList = this.customersList.filter(
         (customer: any) =>
           customer.customer_name.toLowerCase().includes(searchTerm) ||
@@ -743,15 +768,13 @@ export class ShoppingCartComponent {
       const suggestion = this.customerSuggestionList[0];
       this.selectedCustomer = suggestion;
       this.customer_id = suggestion.customer_id;
-      this.customerSuggestionList = []; // Limpiar la lista de sugerencias de clientes
+      this.customerSuggestionList = [];
       (document.getElementById('customer_name') as HTMLInputElement).value =
-        this.formatOption(suggestion); // Establecer el valor en el input
+        this.formatOption(suggestion); 
     } else {
       this.customer_id = null;
     }
   }
-
-  
 
   formatOption(customer: any): string {
     return `${customer.customer_name} ${customer.customer_first_lastname} ${customer.customer_second_lastname}`;

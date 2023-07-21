@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -9,10 +10,12 @@ export class ProductCacheService {
   private cachedProducts: any[] = [];
   private localStorageKey = 'cachedProducts';
 
+  private backendUrl = environment.apiUrl;
+
   constructor(private http: HttpClient) { }
 
   loadCachedProducts(): Observable<any[]> {
-    return this.http.get<any[]>('http://localhost:3000/api/products');
+    return this.http.get<any[]>(`${this.backendUrl}products`);
   }
 
   getCachedProducts(): any[] {

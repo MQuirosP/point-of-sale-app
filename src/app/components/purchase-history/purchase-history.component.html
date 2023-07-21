@@ -207,17 +207,16 @@
                   (keyup)="searchProduct()"
                   (focus)="handleBarcodeInput($event)"
                   autocomplete="off"
-                  #productNameInput
                   placeholder="Seleccione producto..."
                   [ngClass]="{
                     'is-valid':
-                      purchaseForm.get('product_name').touched &&
-                      purchaseForm.get('product_name').valid,
+                    purchaseForm.get('product_name').touched &&
+                    purchaseForm.get('product_name').valid,
                     'is-invalid':
-                      purchaseForm.get('product_name').touched &&
-                      purchaseForm.get('product_name').invalid
+                    purchaseForm.get('product_name').touched &&
+                    purchaseForm.get('product_name').invalid
                   }"
-                  [value]="selectedProduct ? selectedProduct.name : ''"
+                  #productNameInput
                   list="suggestionOptions"
                 />
                 <datalist id="suggestionOptions">
@@ -229,25 +228,6 @@
                   </option>
                 </datalist>
 
-                <!-- <div
-                  class="suggestions"
-                  *ngIf="
-                    productSuggestionList.length > 0 &&
-                    purchaseForm.get('product_name').value
-                  "
-                >
-                  <ul class="list-inline">
-                    <li *ngFor="let product of productSuggestionList">
-                      <a
-                        class="text-decoration-none"
-                        href=""
-                        (click)="selectProductSuggestion(product, $event)"
-                      >
-                        {{ product.name }} - {{ product.purchase_price }}
-                      </a>
-                    </li>
-                  </ul>
-                </div> -->
               </div>
               <div class="form-group form-row">
                 <div class="col">

@@ -15,6 +15,13 @@ interface Purchase {
   products: Product[];
 }
 
+interface ApiPurchaseResponse {
+  success: boolean;
+  message: {
+    Purchases: any[];
+  };
+}
+
 interface Product {
   int_code: number;
   quantity: number;
@@ -66,5 +73,13 @@ export class PurchaseService {
   cancelPurchase(docNumber: string): Observable<any> {
     const url = `${this.backendUrl}purchases/${docNumber}`;
     return this.http.put(url, null);
+  }
+
+  getPurchasesByDate(selectedDate: string): Observable<ApiPurchaseResponse> {
+    return this.http.get<ApiPurchaseResponse>(`${this.backendUrl}purchases/date/${selectedDate}`);
+  }
+
+  getProviders(): Observable<any> {
+    return this.http.get(`${this.backendUrl}providers`);
   }
 }
