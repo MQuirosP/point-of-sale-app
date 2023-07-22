@@ -13,7 +13,7 @@
 <div class="container pt-2">
   <label for="search">Buscar producto:</label>
   <input
-    type="text"
+    type="search"
     id="search"
     [(ngModel)]="searchTerm"
     (input)="filterProducts()"
@@ -49,7 +49,10 @@
                 [class.active]="i === 0"
               >
                 <div class="row">
-                  <div class="col-7 text-left" style="align-items: center; margin: auto 0;">
+                  <div
+                    class="col-7 text-left"
+                    style="align-items: center; margin: auto 0"
+                  >
                     <h4
                       class=""
                       style="
@@ -106,18 +109,14 @@
                 </a>
               </button>
               <div class="add-button-container">
-                <button
+                <a
                   (click)="openSaleModal()"
+                  routerLink="/shopping-cart"
                   type="button"
-                  class="btn roundButton my-clic clic-on-image"
+                  class="btn roundButton my-clic clic-on-image hidden-link my-clic text-decoration-none"
                 >
                   <i class="fas fa-shopping-cart"></i>
-                  <a
-                    routerLink="/shopping-cart"
-                    style="text-decoration: none"
-                    class="hidden-link my-clic text-decoration-none"
-                  ></a>
-                </button>
+                </a>
               </div>
               <button
                 class="carousel-control-next"
@@ -212,6 +211,8 @@
 <!-- Resultado no coincidente búsqueda de productos -->
 <ng-template #noMatchesMessage>
   <div class="text-center mt-4">
-    <h4 class="strong" style="text-shadow: 2px 2px 2px darkgray;">No hay coincidencias, intente de nuevo por favor.</h4>
+    <h4 class="strong" style="text-shadow: 2px 2px 2px darkgray">
+      No hay coincidencias, intente de nuevo por favor.
+    </h4>
   </div>
 </ng-template>

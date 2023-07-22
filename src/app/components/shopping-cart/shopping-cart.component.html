@@ -137,7 +137,7 @@
               <div class="form-group">
                 <label for="customer_name">Cliente:</label>
                 <input
-                  type="text"
+                  type="search"
                   role="combobox"
                   id="customer_name"
                   formControlName="customer_name"
@@ -345,7 +345,7 @@
                           [value]="product.quantity"
                           (input)="updateProduct(product, $event)"
                           min="1"
-                          step="0.01"
+                          step="1"
                         />
                       </td>
                       <td

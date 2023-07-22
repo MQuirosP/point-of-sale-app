@@ -121,16 +121,16 @@ export class FrontPanelComponent {
   //     .replace(/[\u0300-\u036f]/g, '');
   // }
 
-  goToShoppingCart() {
-    this.router.navigate(['/shopping-cart']);
-  }
+  // goToShoppingCart() {
+  //   this.router.navigate(['/shopping-cart']);
+  // }
 
   // goToPurchaseHistory() {
   //   this.router.navigate(['/purchase-history']);
   // }
 
   openSaleModal() {
-    this.goToShoppingCart();
+    // this.goToShoppingCart();
     setTimeout(() => {
       this.modalService.showNewSaleModal.next(true);
     }, 500);
