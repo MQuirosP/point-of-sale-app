@@ -10,13 +10,13 @@
 </header>
 
 <!-- Formulario registro de usuarios -->
-<section id="registro" class="py-4 col col-md-6 align-content-center" [@fadeAnimation]>
-  <div class="mb-4">
+<section id="registro" class="align-content-center" [@fadeAnimation]>
+  <div class="container">
     <div class="row">
-      <div class="container col col-md-6 mb-3">
+      <div class="col col-md-4 mt-3">
         <div class="card shadow">
           <div class="card-header modal-header">
-            <h4 class="text-center">Registrar usuario</h4>
+            <h4 class="text-center">Datos personales</h4>
           </div>
           <form [formGroup]="newUserForm" (ngSubmit)="registerNewUser()">
             <div class="card-body">
@@ -115,6 +115,34 @@
           </form>
         </div>
       </div>
+      <div class="col col-md-4 mt-3">
+        <div class="card shadow">
+          <div class="card-header modal-header">
+            <h4>Usuarios registrados</h4>
+          </div>
+          <div class="card-body p-1">
+            <div class="table-responsive w-100">
+              <table class="table w-100">
+                <thead>
+                  <tr>
+                    <th>Usuario</th>
+                    <th>Rol</th>
+                    <th>Estado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let user of userList">
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.role }}</td>
+                    <td>{{ user.status }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      
     </div>
   </div>
 </section>

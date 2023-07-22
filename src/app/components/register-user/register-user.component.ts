@@ -23,6 +23,7 @@ interface NewUser {
 export class RegisterUserComponent implements OnInit {
   newUserForm: FormGroup;
   backendUrl = `${environment.apiUrl}users/`;
+  userList: any[]=[];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,6 +40,8 @@ export class RegisterUserComponent implements OnInit {
       password: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
     });
+
+    this.getUsersList();
   }
 
   registerNewUser() {
@@ -72,8 +75,10 @@ export class RegisterUserComponent implements OnInit {
       next: (response: any) => {
         this.toastr.success(`Usuario creado satisfactoriamente: ${response.message.username}`);
         this.newUserForm.reset();
+        this.getUsersList();
       },
       error: (error: any) => {
+        console.log(error);
         this.toastr.error(`Error al crear el usuario: ${error.message}`);
       },
     });
@@ -90,5 +95,17 @@ export class RegisterUserComponent implements OnInit {
     if (input.value === '') {
       label?.classList.remove('active');
     }
+  }
+
+  getUsersList() {
+    this.http.get('http://localhost:3000/api/users').subscribe({
+      next: (response: any) => {
+        this.userList = response.message.Users
+      },
+      error: (error: any) => {
+        console.log(error);
+        this.toastr.error('Error recuperando la lista de usuarios.')
+      }
+    })
   }
 }

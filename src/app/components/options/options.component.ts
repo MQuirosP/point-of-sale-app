@@ -900,7 +900,7 @@ export class OptionsComponent implements OnInit {
             return { ...user, showIcons: false };
           });
           this.filteredUsers = [...this.users];
-          this.toastr.success('Lista de usuarios actualizada.');
+          // this.toastr.success('Lista de usuarios actualizada.');
         } else {
         }
       },
