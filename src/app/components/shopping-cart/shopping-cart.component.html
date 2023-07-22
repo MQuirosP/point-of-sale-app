@@ -1,27 +1,25 @@
 <!-- Encabezado de componente Mis ventas -->
-<header id="main-header" class="py-2 bg-info text-white main-board-style">
+<header id="main-header" class="pb-2 bg-info text-white main-board-style">
   <div class="container">
-    <div class="row">
+    <div class="row align-items-center">
       <div class="col-md-8" [@fadeAnimation]>
         <h1><i class="fas fa-cog"></i> Mis ventas</h1>
+      </div>
+      <div class="col-md-4 d-none d-md-block">
+        <label for="search">Buscar producto:</label>
+        <input
+          type="search"
+          id="search"
+          name="search"
+          class="form-control"
+          placeholder="Ingresa tu búsqueda aquí..."
+          autocomplete="off"
+          readonly
+        />
       </div>
     </div>
   </div>
 </header>
-
-<!-- Barra de búsqueda de productos -->
-<div class="container pt-2 d-none d-md-block">
-  <label for="search">Buscar producto:</label>
-  <input
-    type="text"
-    id="search"
-    name="search"
-    class="form-control"
-    placeholder="Ingresa tu búsqueda aquí..."
-    autocomplete="off"
-    readonly
-  />
-</div>
 
 <!-- Opciones de Mis ventas -->
 <div class="container justify-content-center" [@fadeAnimation]>

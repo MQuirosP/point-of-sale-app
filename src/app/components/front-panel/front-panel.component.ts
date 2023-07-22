@@ -1,6 +1,5 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
 import { ModalService } from '../../services/modalService';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
@@ -26,7 +25,6 @@ export class FrontPanelComponent {
   dataLoaded: boolean = false;
 
   constructor(
-    private router: Router,
     private changeDetectorRef: ChangeDetectorRef,
     private modalService: ModalService,
     private http: HttpClient,
@@ -35,7 +33,6 @@ export class FrontPanelComponent {
 
   ngOnInit(): void {
     this.loadData();
-    // this.loadDataFromCache();
   }
 
   ngOnDestroy() {
@@ -114,23 +111,7 @@ export class FrontPanelComponent {
     this.changeDetectorRef.detectChanges();
   }
 
-  // normalizeString(str: any) {
-  //   return str
-  //     .toLowerCase()
-  //     .normalize('NFD')
-  //     .replace(/[\u0300-\u036f]/g, '');
-  // }
-
-  // goToShoppingCart() {
-  //   this.router.navigate(['/shopping-cart']);
-  // }
-
-  // goToPurchaseHistory() {
-  //   this.router.navigate(['/purchase-history']);
-  // }
-
   openSaleModal() {
-    // this.goToShoppingCart();
     setTimeout(() => {
       this.modalService.showNewSaleModal.next(true);
     }, 500);
