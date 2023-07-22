@@ -545,7 +545,7 @@ button {
   text-align: center;
 }
 
-.modal-header {
+.modal-header, .product-list-header {
   background-color: #31708f;
   color: white;
 }

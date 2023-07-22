@@ -9,9 +9,10 @@
         <label for="search">Buscar producto:</label>
         <input
           type="search"
+          #productSearch
           id="search"
           [(ngModel)]="searchTerm"
-          (ngModelChange)="filterProducts()"
+          (ngModelChange)="filterProducts(productSearch.value)"
           class="form-control"
           placeholder="Ingresa tu búsqueda aquí..."
           autocomplete="off"
@@ -23,28 +24,51 @@
 
 <!-- Tabla con la lista de productos -->
 <div
-  class="container modal-container pt-2 mt-3"
-  style="margin-bottom: 10%"
+  class="container modal-container mt-4 mb-0"
   [@fadeAnimation]
 >
   <div
     class="modal-content modal-dialog-scrollable shadow"
-    style="max-width: 100%; margin: 0 auto; margin-bottom: 120px"
+    style="max-width: 100%; margin: 0 auto;"
   >
     <div
-      class="modal-header"
-      style="background-color: white !important; color: black"
+      class="card-header product-list-header"
     >
       <div class="d-flex justify-content-between align-items-center">
-        <h4 class="h4">Lista de productos</h4>
-        <button
-          class="btn btn-primary shadow ml-4 clic-on-image"
-          data-toggle="modal"
-          data-target="#productModal"
-          (click)="openProductModal(false, ''); this.editMode = false"
-        >
-          Agregar
-        </button>
+        <!-- Encabezado del listado con los botones -->
+        <h4 class="h4 col-md-4">Lista de productos</h4>
+        <div class="col-md-4">
+          <button
+            class="btn btn-primary border-primary shadow ml-4 clic-on-image"
+            data-toggle="modal"
+            data-target="#productModal"
+            (click)="openProductModal(false, 0); this.editMode = false"
+          >
+            Agregar
+          </button>
+        </div>
+        <div class="col-md-4 d-flex justify-content-end">
+          <div class="row">
+            <button
+              class="btn btn-warning border-warning shadow clic-on-image mr-2"
+              (click)="prevPage()"
+              style="color: white !important;"
+            >
+              <span><i class="fa-solid fa-arrow-left"></i></span>
+              <span class="d-md-none">&nbsp;</span>
+            </button>
+            <button
+              class="btn btn-success border-success shadow clic-on-image"
+              (click)="nextPage()"
+              [disabled]="
+                (products | productsFilter : page : searchTerm).length === 0
+              "
+            >
+              <span class="d-md-none">&nbsp;</span>
+              <span><i class="fa-solid fa-arrow-right"></i></span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <div class="w-100">
@@ -52,51 +76,38 @@
         <table class="table">
           <thead>
             <tr class="product-detail-table-titles">
-              <th class="text-left">Código</th>
-              <th class="text-left">Producto</th>
-              <th class="text-right">Disponible</th>
-              <th class="text-right">P. Compra</th>
-              <th class="text-right">Margen (%)</th>
-              <th class="text-right">IVA (%)</th>
-              <th class="text-right">P. Venta</th>
+              <th class="text-left" style="min-width: 170px">Código</th>
+              <th class="text-left" style="max-width: 300px">Producto</th>
+              <th class="text-right" style="min-width: 100px">Disponible</th>
+              <th class="text-right" style="min-width: 100px">P. Compra</th>
+              <th class="text-right" style="min-width: 75px">Margen</th>
+              <th class="text-right" style="min-width: 75px">IVA</th>
+              <th class="text-right" style="min-width: 100px">P. Venta</th>
             </tr>
           </thead>
           <tbody>
             <tr
-              *ngFor="let product of filteredProducts; let even = even"
+              *ngFor="let product of filteredProducts | productsFilter : page : searchTerm; let even = even"
               [ngClass]="{ 'table-row-even': even, 'table-row-odd': !even }"
               class=""
             >
-              <td class="product-code">
+              <td class="product-code" style="min-width: 170px">
                 {{ product.int_code }}
               </td>
-              <td>
-                <span
-                  class="product-name"
-                  style="cursor: pointer"
-                  (click)="product.showIcons = !product.showIcons"
-                  tabindex="0"
-                >
+              <td style="max-width: 300px; min-width: 300px; white-space: nowrap;">
+                <span class="product-name" style="cursor: pointer" (click)="product.showIcons = !product.showIcons" tabindex="0">
                   {{ product.name }}
                 </span>
-                <div
-                  class="product-icons"
-                  [ngClass]="{ 'show-icons': product.showIcons }"
-                >
+                <div class="product-icons" [ngClass]="{ 'show-icons': product.showIcons }">
+                  <!-- El resto de tu código para los íconos... -->
                   <a
                     role="button"
                     class="ml-2 mr-3"
                     data-toggle="modal"
                     data-target="#productModal"
-                    (click)="
-                      openProductModal(true, product.productId);
-                      this.editMode = true
-                    "
+                    (click)="openProductModal(true, product.productId); this.editMode = true"
                   >
-                    <i
-                      class="fa-solid fa-pen-to-square clic-on-icon"
-                      style="color: #1100fa; cursor: pointer"
-                    ></i>
+                    <i class="fa-solid fa-pen-to-square clic-on-icon" style="color: #1100fa; cursor: pointer"></i>
                   </a>
                   <a
                     class=""
@@ -105,43 +116,41 @@
                     data-target="#deletePasswordModal"
                     (click)="openPasswordModal(product.int_code)"
                   >
-                    <i
-                      class="fa-solid fa-trash clic-on-icon"
-                      style="color: #fa0000; cursor: pointer"
-                    ></i>
+                    <i class="fa-solid fa-trash clic-on-icon" style="color: #fa0000; cursor: pointer"></i>
                   </a>
                 </div>
               </td>
-              <td class="text-right">
+              <td class="text-right" style="min-width: 100px">
                 {{ product.quantity | number : "1.2-2" }}
               </td>
-              <td class="text-right">
+              <td class="text-right" style="min-width: 100px">
                 {{ product.purchase_price | currency : "CRC" : "₡" }}
               </td>
-              <td class="text-right">
+              <td class="text-right" style="min-width: 75px">
                 {{ product.margin | number : "1.2-2" }} %
               </td>
-              <td class="text-right">
+              <td class="text-right" style="min-width: 75px">
                 {{ product.taxPercentage | number : "1.1-1" }} %
               </td>
-              <td class="text-right price-cell">
+              <td class="text-right price-cell" style="min-width: 100px">
                 {{ product.sale_price | currency : "CRC" : "₡" }}
               </td>
             </tr>
           </tbody>
         </table>
+        
       </div>
     </div>
   </div>
 </div>
 
 <!-- Botón para ir al principio de la lista -->
-<button
+<!-- <button
   class="btn btn-primary btn-floating shadow clic-on-image"
   (click)="scrollToTop()"
 >
   <i class="fas fa-arrow-up"></i>
-</button>
+</button> -->
 
 <!-- Modal para agregar/editar producto -->
 <div

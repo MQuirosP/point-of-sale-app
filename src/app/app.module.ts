@@ -32,6 +32,7 @@ import { Subscription } from 'rxjs';
 import { PurchaseHistoryComponent } from './components/purchase-history/purchase-history.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.component';
+import { ProductsPipe } from './pipes/products.pipe';
 
 
 @NgModule({

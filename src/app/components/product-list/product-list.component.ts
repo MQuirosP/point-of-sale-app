@@ -35,7 +35,8 @@ export class ProductListComponent implements OnInit {
   backendUrl: string = environment.apiUrl;
 
   subscription: Subscription = new Subscription();
-  products: any[] = [];
+  public products: any[] = [];
+  public page: number = 0;
   filteredProducts: any[] = [];
   searchTerm: string = '';
   currentSlide: number = 0;
@@ -96,6 +97,14 @@ export class ProductListComponent implements OnInit {
     return localStorage.getItem('role');
   }
   
+  nextPage() {
+    this.page += 5;
+  }
+
+  prevPage() {
+    if ( this.page > 0 )
+      this.page -= 5;
+  }
 
   toggleTaxPercentage() {
     const taxPercentageControl = this.productForm.get('taxPercentage');
@@ -173,37 +182,41 @@ export class ProductListComponent implements OnInit {
     });
   }
 
-  filterProducts() {
-    if (!this.searchTerm) {
-      this.filteredProducts = [...this.products];
-      return;
-    }
+  filterProducts(search: string) {
+    this.searchTerm = search;
+    this.page = 0;
 
-    const searchTermNormalized = this.searchTerm
-      ? this.searchTerm.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-      : '';
+    // if (!this.searchTerm) {
+    //   this.filteredProducts = [...this.products];
+    //   return;
+    // }
 
-    this.filteredProducts = this.products.filter((product: any) => {
-      const productNameNormalized = product.name
-        ? product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-        : '';
 
-      const productCodeNormalized = product.int_code
-        ? product.int_code.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-        : '';
+    // const searchTermNormalized = this.searchTerm
+    //   ? this.searchTerm.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    //   : '';
 
-      const searchTermLower = searchTermNormalized.toLowerCase();
+    // this.filteredProducts = this.products.filter((product: any) => {
+    //   const productNameNormalized = product.name
+    //     ? product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    //     : '';
 
-      return (
-        productNameNormalized.toLowerCase().includes(searchTermLower) ||
-        productCodeNormalized.toLowerCase().includes(searchTermLower)
-      );
-    });
+    //   const productCodeNormalized = product.int_code
+    //     ? product.int_code.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    //     : '';
+
+    //   const searchTermLower = searchTermNormalized.toLowerCase();
+
+    //   return (
+    //     productNameNormalized.toLowerCase().includes(searchTermLower) ||
+    //     productCodeNormalized.toLowerCase().includes(searchTermLower)
+    //   );
+    // });
 
     this.changeDetectorRef.detectChanges();
   }
 
-  openProductModal(value: boolean, product_id: string) {
+  openProductModal(value: boolean, product_id: number) {
     let selectedProductId = null;
     if (value && product_id) {
       this.modalTitle = value ? 'Edición' : 'Registro';
@@ -333,7 +346,7 @@ export class ProductListComponent implements OnInit {
     this.productModal.nativeElement.classList.remove('show');
     this.productModal.nativeElement.style.display = 'none';
     this.searchTerm = '';
-    this.filterProducts();
+    // this.filterProducts();
   }
 
   createProduct(event: Event) {
