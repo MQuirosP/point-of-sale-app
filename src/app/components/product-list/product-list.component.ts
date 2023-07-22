@@ -209,10 +209,10 @@ export class ProductListComponent implements OnInit {
       this.modalTitle = value ? 'Edición' : 'Registro';
       this.modalActionLabel = value;
       this.changeDetectorRef.detectChanges();
+      this.productModal.nativeElement.classList.add('show');
       this.productModal.nativeElement.style.display = 'block';
-      this.productModal.nativeElement.classList.add('fade');
+      // this.productModal.nativeElement.classList.add('fade');
       setTimeout(() => {
-        this.productModal.nativeElement.classList.add('show');
         selectedProductId = product_id;
 
       }, 50)
@@ -226,10 +226,10 @@ export class ProductListComponent implements OnInit {
       this.modalActionLabel = !value;
       this.productForm.reset();
       this.changeDetectorRef.detectChanges();
+      this.productModal.nativeElement.classList.toggle('show');
       this.productModal.nativeElement.style.display = 'block';
-      this.productModal.nativeElement.classList.add('fade');
+      // this.productModal.nativeElement.classList.add('fade');
       setTimeout(() => {
-        this.productModal.nativeElement.classList.toggle('show');
       }, 50)
     }
   }
