@@ -48,6 +48,7 @@ interface Product {
   taxes: boolean;
   taxes_amount?: number;
   sub_total?: number;
+  total?: number;
   isNew?: boolean;
   isRemoved?: boolean;
 }
@@ -300,6 +301,11 @@ export class ShoppingCartComponent {
 
   searchProduct() {
     const productNameControl = this.saleForm.get('product_name').value;
+
+    if(productNameControl === '') {
+      this.clearProductSuggestions();
+      this.saleForm.get('product_price').setValue(null);
+    }
     
     const searchTerm = productNameControl?.toLowerCase().trim() || '';
     if (!searchTerm) {
@@ -426,6 +432,7 @@ export class ShoppingCartComponent {
     const productName = this.saleForm.get('product_name').value;
     const productQuantity = this.saleForm.get('product_quantity').value;
     const productNewPrice = this.saleForm.get('product_price').value;
+    
     if (
       productName?.invalid ||
       productQuantity?.invalid ||
@@ -440,18 +447,18 @@ export class ShoppingCartComponent {
         const productData = response.message.product;
         this.TAXES = productData.taxPercentage;
 
-        const { taxesAmount, subTotal } = this.calculateProductAmounts(
-          productData,
-          productQuantity
-        );
-
         if (productQuantity > productData.quantity) {
           this.toastr.error(
             `Stock de producto ${productData.name} inferior al digitado.`
           );
           return;
         }
+        const { taxesAmount, subTotal } = this.calculateProductAmounts(
+          productData,
+          productQuantity
+        );
 
+        
         const product: Product = {
           productId: productData.productId,
           int_code: this.int_code,
@@ -465,9 +472,16 @@ export class ShoppingCartComponent {
           isNew: true,
         };
 
+        product.total = product.sub_total + product.taxes_amount;
+        
+        if (product.total === 0) {
+          this.toastr.error('Se deben suministrar todos los campos.')
+          return;
+        }
         this.updateProductList(product);
         this.calculateTotalSaleAmount();
         this.clearProductForm();
+        this.clearProductSuggestions();
         setTimeout(() => {
           this.nameInput.nativeElement.focus();
         }, 0);
@@ -501,8 +515,10 @@ export class ShoppingCartComponent {
   }
 
   private updateProductList(product: Product) {
+
+  if (product.total !== 0) {
     const existingProductIndex = this.productList.findIndex(
-      (p) => p.int_code === this.int_code
+      (p) => p.int_code === product.int_code
     );
 
     if (existingProductIndex !== -1) {
@@ -510,13 +526,24 @@ export class ShoppingCartComponent {
       existingProduct.quantity += product.quantity;
       existingProduct.taxes_amount += product.taxes_amount;
       existingProduct.sub_total += product.sub_total;
-      existingProduct.total =
-        existingProduct.sub_total + existingProduct.taxes_amount;
+      existingProduct.total = product.total;
     } else {
       this.productList.push(product);
       product.isNew = false;
     }
+  } else {
+    // Eliminar el producto de la lista si ya existía previamente
+    const existingProductIndex = this.productList.findIndex(
+      (p) => p.int_code === product.int_code
+    );
+    if (existingProductIndex !== -1) {
+      this.productList.splice(existingProductIndex, 1);
+    }
+
+    // Mostrar el mensaje de error con Toastr
+    this.toastr.error('Se deben suministrar todos los campos.');
   }
+}
 
   private calculateTotalSaleAmount() {
     this.subTotalSaleAmount = this.productList.reduce((subTotal, product) => {

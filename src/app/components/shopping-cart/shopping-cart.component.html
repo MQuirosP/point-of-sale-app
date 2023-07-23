@@ -199,7 +199,7 @@
                   id="product_name"
                   formControlName="product_name"
                   class="form-control datalist-no-arrow"
-                  (keyup)="searchProduct()"
+                  (input)="searchProduct()"
                   (focus)="handleBarcodeInput($event)"
                   (keydown.enter)="addProduct()"
                   autocomplete="off"
