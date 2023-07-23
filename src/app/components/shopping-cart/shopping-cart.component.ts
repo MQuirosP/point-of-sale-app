@@ -532,7 +532,6 @@ export class ShoppingCartComponent {
       product.isNew = false;
     }
   } else {
-    // Eliminar el producto de la lista si ya existía previamente
     const existingProductIndex = this.productList.findIndex(
       (p) => p.int_code === product.int_code
     );
@@ -540,7 +539,6 @@ export class ShoppingCartComponent {
       this.productList.splice(existingProductIndex, 1);
     }
 
-    // Mostrar el mensaje de error con Toastr
     this.toastr.error('Se deben suministrar todos los campos.');
   }
 }
