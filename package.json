@@ -21,6 +21,7 @@
     "@angular/router": "^16.0.0",
     "@ng-bootstrap/ng-bootstrap": "^15.0.1",
     "@ng-select/ng-select": "^11.0.0",
+    "angular-resizable-element": "^7.0.2",
     "bootstrap": "^4.5.2",
     "browserify-zlib": "^0.2.0",
     "escpos": "^3.0.0-alpha.6",
