@@ -5,7 +5,7 @@
       <div class="col-md-8" [@fadeAnimation]>
         <h1><i class="fas fa-users-rectangle"></i> Registro de usuarios</h1>
       </div>
-      <div class="col-md-4" style="visibility: hidden;">
+      <div class="col-md-4" style="visibility: hidden">
         <label for="search">Buscar producto:</label>
         <input
           type="search"
@@ -26,7 +26,9 @@
       <div class="col col-md-4 mt-3">
         <div class="card shadow">
           <div class="card-header modal-header">
-            <h4 class="text-center"><i class="fa fa-person-circle-check"></i> Datos personales</h4>
+            <h4 class="text-center">
+              <i class="fa fa-person-circle-check"></i> Datos personales
+            </h4>
           </div>
           <form [formGroup]="newUserForm" (ngSubmit)="registerNewUser()">
             <div class="card-body">
@@ -43,8 +45,12 @@
                   (blur)="removeFloatingLabelClass('name')"
                   style="margin-bottom: 30px"
                   [ngClass]="{
-                    'is-valid': newUserForm.get('name').touched && newUserForm.get('name').valid,
-                    'is-invalid': newUserForm.get('name').touched && newUserForm.get('name').invalid
+                    'is-valid':
+                      newUserForm.get('name').touched &&
+                      newUserForm.get('name').valid,
+                    'is-invalid':
+                      newUserForm.get('name').touched &&
+                      newUserForm.get('name').invalid
                   }"
                 />
               </div>
@@ -52,7 +58,7 @@
                 <label for="lastname" class="floating-label">Apellidos:</label>
                 <input
                   type="text"
-                  class="form-control "
+                  class="form-control"
                   id="lastname"
                   formControlName="lastname"
                   autocomplete="off"
@@ -60,8 +66,12 @@
                   (blur)="removeFloatingLabelClass('lastname')"
                   style="margin-bottom: 30px"
                   [ngClass]="{
-                    'is-valid': newUserForm.get('lastname').touched && newUserForm.get('lastname').valid,
-                    'is-invalid': newUserForm.get('lastname').touched && newUserForm.get('lastname').invalid
+                    'is-valid':
+                      newUserForm.get('lastname').touched &&
+                      newUserForm.get('lastname').valid,
+                    'is-invalid':
+                      newUserForm.get('lastname').touched &&
+                      newUserForm.get('lastname').invalid
                   }"
                 />
               </div>
@@ -69,7 +79,7 @@
                 <label for="username" class="floating-label">Usuario:</label>
                 <input
                   type="text"
-                  class="form-control "
+                  class="form-control"
                   id="username"
                   formControlName="username"
                   autocomplete="off"
@@ -77,8 +87,12 @@
                   (blur)="removeFloatingLabelClass('username')"
                   style="margin-bottom: 30px"
                   [ngClass]="{
-                    'is-valid': newUserForm.get('username').touched && newUserForm.get('username').valid,
-                    'is-invalid': newUserForm.get('username').touched && newUserForm.get('username').invalid
+                    'is-valid':
+                      newUserForm.get('username').touched &&
+                      newUserForm.get('username').valid,
+                    'is-invalid':
+                      newUserForm.get('username').touched &&
+                      newUserForm.get('username').invalid
                   }"
                 />
               </div>
@@ -86,15 +100,19 @@
                 <label for="password" class="floating-label">Contraseña:</label>
                 <input
                   type="password"
-                  class="form-control "
+                  class="form-control"
                   id="password"
                   formControlName="password"
                   (focus)="addFloatingLabelClass('password')"
                   (blur)="removeFloatingLabelClass('password')"
                   style="margin-bottom: 30px"
                   [ngClass]="{
-                    'is-valid': newUserForm.get('password').touched && newUserForm.get('password').valid,
-                    'is-invalid': newUserForm.get('password').touched && newUserForm.get('password').invalid
+                    'is-valid':
+                      newUserForm.get('password').touched &&
+                      newUserForm.get('password').valid,
+                    'is-invalid':
+                      newUserForm.get('password').touched &&
+                      newUserForm.get('password').invalid
                   }"
                 />
               </div>
@@ -152,9 +170,9 @@
           </div>
         </div>
       </div>
-      
     </div>
   </div>
+  <div style="margin-bottom: 50px"></div>
 </section>
 <div class="mb-4">
   <hr />
