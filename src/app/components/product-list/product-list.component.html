@@ -108,11 +108,10 @@
                 >
                   {{ product.name }}
                 </span>
-                <div
+                <span
                   class="product-icons"
                   [ngClass]="{ 'show-icons': product.showIcons }"
                 >
-                  <!-- El resto de tu código para los íconos... -->
                   <a
                     role="button"
                     class="ml-2 mr-3"
@@ -140,7 +139,7 @@
                       style="color: #fa0000; cursor: pointer"
                     ></i>
                   </a>
-                </div>
+                </span>
               </td>
               <td class="text-right" style="min-width: 100px">
                 {{ product.quantity | number : "1.2-2" }}
