@@ -1,23 +1,12 @@
-<header id="main-header" class="py-2 bg-info text-white main-board-style">
+<!-- Encabezado de componente Mis Reportes -->
+<header id="main-header" class="pt-2 pb-3 bg-info text-white main-board-style">
   <div class="container">
-    <div class="row">
-      <div class="col-md-8" [@fadeAnimation]>
-        <h1><i class="fas fa-cog"></i> Mis reportes</h1>
+    <div class="row align-items-center">
+      <div class="col-md-6" [@fadeAnimation]>
+        <h1><i class="fas fa-list-check"></i> Mis reportes</h1>
       </div>
-    </div>
-  </div>
-</header>
-
-<!-- Seccion de botones opciones -->
-<div class="container">
-  <section id="actions" class="py-4 bg-transparent" [@fadeAnimation]>
-    <div class="container">
-      <div
-        class="row justify-content-center"
-        style="width: 50%; margin-left: 25%"
-      >
-        <div class="col col-md-12 d-flex justify-content-between">
-          <a
+      <div class="col-md-6 d-none d-md-block d-flex text-right">
+        <a
             routerLink="/shopping-cart"
             role="button"
             type="submit"
@@ -47,21 +36,36 @@
             <span class="d-none d-md-inline">Mis compras&nbsp;</span>
             <i class="fas fa-arrow-right"></i>
           </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Seccion de botones opciones -->
+<!-- <div class="container">
+  <section id="actions" class="py-4 bg-transparent" [@fadeAnimation]>
+    <div class="container">
+      <div
+        class="row justify-content-center"
+        style="width: 50%; margin-left: 25%"
+      >
+        <div class="col col-md-12 d-flex justify-content-between">
+          
         </div>
       </div>
     </div>
   </section>
-</div>
+</div> -->
 
 <!-- Tarjetas para selección de Ventas/Compras -->
 <div class="container">
   <div class="row justify-content-center">
-    <div class="col-12 col-md-4 mt-3">
+    <div class="col-12 col-md-4 mt-4">
       <section id="proveedores" [@fadeAnimation]>
         <div class="container">
           <div class="card shadow">
-            <div class="card-header text-center">
-              <h3 class="h4">Ventas</h3>
+            <div class="card-header modal-header text-center">
+              <h3 class="h4"><i class="fas fa-shop"></i> Ventas</h3>
             </div>
             <div class="card-body">
               <fieldset class="row">
@@ -71,7 +75,7 @@
                 <div class="col-12 text-center">
                   <a
                     role="button"
-                    class="btn btn-primary shadow clic-on-image"
+                    class="btn btn-primary border border-primary shadow clic-on-image"
                     data-toggle="modal"
                     data-target="#salesReportModal"
                   >
@@ -84,12 +88,12 @@
         </div>
       </section>
     </div>
-    <div class="col-12 col-md-4 mt-3">
+    <div class="col-12 col-md-4 mt-4">
       <section [@fadeAnimation]>
         <div class="container">
           <div class="card shadow">
-            <div class="card-header text-center">
-              <h3 class="h4">Compras</h3>
+            <div class="card-header modal-header text-center">
+              <h3 class="h4"> <i class="fas fa-bucket"></i> Compras</h3>
             </div>
             <div class="card-body">
               <fieldset class="row">
@@ -99,7 +103,7 @@
                 <div class="col-12 text-center">
                   <a
                     role="button"
-                    class="btn btn-primary shadow clic-on-image"
+                    class="btn btn-primary border border-primary shadow clic-on-image"
                     data-toggle="modal"
                     data-target="#purchasesReportModal"
                   >
@@ -119,7 +123,7 @@
 <div id="salesReportModal" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header border">
         <h5 class="modal-title">Generar Reporte de Ventas</h5>
         <button
           type="button"
@@ -172,21 +176,21 @@
       <div class="modal-footer">
         <button
           type="button"
-          class="btn btn-primary shadow clic-on-image"
+          class="btn btn-primary border border-primary shadow clic-on-image"
           (click)="generateGeneralSalesReport()"
         >
           General
         </button>
         <button
           type="button"
-          class="btn btn-primary shadow clic-on-image"
+          class="btn btn-primary border border-primary shadow clic-on-image"
           (click)="generateDetailSalesReport()"
         >
           Detalle
         </button>
         <button
           type="button"
-          class="btn btn-secondary shadow clic-on-image"
+          class="btn btn-secondary border border-secondary shadow clic-on-image"
           data-dismiss="modal"
         >
           Cerrar
@@ -200,7 +204,7 @@
 <div id="purchasesReportModal" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header border">
         <h5 class="modal-title">Generar Reporte de Compras</h5>
         <button
           type="button"
@@ -253,21 +257,21 @@
       <div class="modal-footer">
         <button
           type="button"
-          class="btn btn-primary shadow clic-on-image"
+          class="btn btn-primary border border-primary shadow clic-on-image"
           (click)="generateGeneralPurchasesReport()"
         >
           General
         </button>
         <button
           type="button"
-          class="btn btn-primary shadow clic-on-image"
+          class="btn btn-primary border border-primary shadow clic-on-image"
           (click)="generateDetailPurchasesReport()"
         >
           Detalle
         </button>
         <button
           type="button"
-          class="btn btn-secondary shadow clic-on-image"
+          class="btn btn-secondary border border-secondary shadow clic-on-image"
           data-dismiss="modal"
         >
           Cerrar

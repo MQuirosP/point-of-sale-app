@@ -3,9 +3,9 @@
   <div class="container">
     <div class="row align-items-center">
       <div class="col-md-8" [@fadeAnimation]>
-        <h1><i class="fas fa-cog"></i> Mis productos</h1>
+        <h1><i class="fas fa-list"></i> Mis productos</h1>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-4 search-input-pointer">
         <label for="productSearch">Buscar producto:</label>
         <input
           type="search"
@@ -23,31 +23,28 @@
 </header>
 
 <!-- Tabla con la lista de productos -->
-<div class="container modal-container mt-4 mb-0" [@fadeAnimation]>
+<div class="container modal-container mt-4" [@fadeAnimation]>
   <div
     class="modal-content modal-dialog-scrollable shadow"
     style="max-width: 100%; margin: 0 auto"
   >
-  <div class="card-header product-list-header">
+  <div class="card-header product-list-header border">
     <div class="row">
-      <div class="col-md-3 align-items-center">
+      <div class="col-md-6 align-items-center">
         <!-- Encabezado del listado -->
         <h4 class="h4">Lista de productos</h4>
       </div>
-      <div class=" col-md-3 align-items-center justify-content-start justify-content-md-start">
-        <!-- Botón Agregar -->
-        <button
-          class="btn btn-primary border-primary shadow clic-on-image"
+      <div class="col-md-6 d-flex justify-content-md-end">
+        <!-- Contenedor de los botones Agregar, Anterior y Siguiente -->
+        <div class="d-flex align-items-center">
+          <button
+          class="btn btn-primary border-primary shadow clic-on-image mr-4"
           data-toggle="modal"
           data-target="#productModal"
           (click)="openProductModal(false, 0); this.editMode = false"
         >
           Agregar
         </button>
-      </div>
-      <div class=" col-md-6 d-flex justify-content-center justify-content-md-end align-items-center mt-1">
-        <!-- Contenedor de los botones Anterior y Siguiente -->
-        <div class="d-flex align-items-center">
           <button
             class="btn btn-warning border-warning shadow clic-on-image mr-2"
             (click)="prevPage()"
@@ -72,7 +69,7 @@
     </div>
     <div class="w-100">
       <div class="table-responsive">
-        <table class="table">
+        <table class="table mb-3">
           <thead>
             <tr class="product-detail-table-titles">
               <th class="text-left" style="min-width: 170px">Código</th>
@@ -100,46 +97,48 @@
               <td
                 style="max-width: 300px; min-width: 300px; white-space: nowrap"
               >
-                <span
-                  class="product-name"
-                  style="cursor: pointer"
-                  (click)="product.showIcons = !product.showIcons"
-                  tabindex="0"
-                >
-                  {{ product.name }}
-                </span>
-                <span
-                  class="product-icons"
-                  [ngClass]="{ 'show-icons': product.showIcons }"
-                >
-                  <a
-                    role="button"
-                    class="ml-2 mr-3"
-                    data-toggle="modal"
-                    data-target="#productModal"
-                    (click)="
-                      openProductModal(true, product.productId);
-                      this.editMode = true
-                    "
+                <div class="d-inline-flex">
+                  <span
+                    class="product-name"
+                    style="cursor: pointer"
+                    (click)="product.showIcons = !product.showIcons"
+                    tabindex="0"
                   >
-                    <i
-                      class="fa-solid fa-pen-to-square clic-on-icon"
-                      style="color: #1100fa; cursor: pointer"
-                    ></i>
-                  </a>
-                  <a
-                    class=""
-                    *ngIf="getUserRole() !== 'user'"
-                    data-toggle="modal"
-                    data-target="#deletePasswordModal"
-                    (click)="openPasswordModal(product.int_code)"
+                    {{ product.name }}
+                  </span>
+                  <span
+                    class="product-icons"
+                    [ngClass]="{ 'show-icons': product.showIcons }"
                   >
-                    <i
-                      class="fa-solid fa-trash clic-on-icon"
-                      style="color: #fa0000; cursor: pointer"
-                    ></i>
-                  </a>
-                </span>
+                    <a
+                      role="button"
+                      class="ml-2 mr-3"
+                      data-toggle="modal"
+                      data-target="#productModal"
+                      (click)="
+                        openProductModal(true, product.productId);
+                        this.editMode = true
+                      "
+                    >
+                      <i
+                        class="fa-solid fa-pen-to-square clic-on-icon"
+                        style="color: #1100fa; cursor: pointer"
+                      ></i>
+                    </a>
+                    <a
+                      class=""
+                      *ngIf="getUserRole() !== 'user'"
+                      data-toggle="modal"
+                      data-target="#deletePasswordModal"
+                      (click)="openPasswordModal(product.int_code)"
+                    >
+                      <i
+                        class="fa-solid fa-trash clic-on-icon"
+                        style="color: #fa0000; cursor: pointer"
+                      ></i>
+                    </a>
+                  </span>
+                </div>
               </td>
               <td class="text-right" style="min-width: 100px">
                 {{ product.quantity | number : "1.2-2" }}
@@ -162,6 +161,9 @@
       </div>
     </div>
   </div>
+</div>
+<div style="margin-bottom: 65px;">
+
 </div>
 
 <!-- Botón para ir al principio de la lista -->
@@ -188,7 +190,7 @@
     style="width: 500px"
   >
     <div class="modal-content shadow">
-      <div class="modal-header">
+      <div class="modal-header border">
         <h5 class="modal-title" id="productModalLabel">
           {{ modalTitle }} de producto
         </h5>
@@ -412,7 +414,7 @@
     style="width: 300px"
   >
     <div class="modal-content shadow">
-      <div class="modal-header">
+      <div class="modal-header border">
         <h5 class="modal-title">Eliminar producto</h5>
         <button
           class="close clic-on-close"

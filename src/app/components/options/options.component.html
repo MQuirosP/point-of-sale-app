@@ -1,38 +1,15 @@
 <!-- Encabezado Opciones -->
-<header id="main-header" class="pb-2 bg-info text-white main-board-style">
+<header id="main-header" class="pt-2 pb-3 bg-info text-white main-board-style">
   <div class="container">
     <div class="row align-items-center">
-      <div class="col-md-8" [@fadeAnimation]>
+      <div class="col-md-6" [@fadeAnimation]>
         <h1><i class="fas fa-cog"></i> Opciones</h1>
       </div>
-      <div class="col-md-4 d-none d-md-block" style="visibility: hidden;">
-        <label for="search">Buscar producto:</label>
-        <input
-          type="search"
-          id="search"
-          name="search"
-          class="form-control"
-          placeholder="Ingresa tu búsqueda aquí..."
-          autocomplete="off"
-          readonly
-        />
-      </div>
-    </div>
-  </div>
-</header>
-
-<!-- Botones -->
-<div class="container">
-  <section id="actions" class="py-4 bg-transparent" [@fadeAnimation]>
-    <div class="container">
-      <div class="row">
-        <div
-          class="col-12 col-md-4 d-flex justify-content-center align-items-center"
-        >
-          <a
+      <div class="col-md-6 d-none d-md-block d-flex text-right">
+        <a
             routerLink="/"
             role="button"
-            class="btn btn-warning border border-warning clic-on-image ml-4"
+            class="btn btn-warning border border-warning clic-on-image"
             style="margin-right: 10px"
           >
             <i class="fas fa-arrow-left"></i>
@@ -48,21 +25,35 @@
             <i class="fas fa-check"></i>
             <span class="d-none d-md-inline">&nbsp;Guardar</span>
           </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Botones -->
+<!-- <div class="container">
+  <section id="actions" class="py-4 bg-transparent" [@fadeAnimation]>
+    <div class="container">
+      <div class="row">
+        <div
+          class="col-12 col-md-4 d-flex justify-content-center align-items-center"
+        >
+          
         </div>
       </div>
     </div>
   </section>
-</div>
+</div> -->
 
 <!-- Tarjetas registro de usuarios, Proveedores y clientes -->
 <div class="container">
   <div class="row">
-    <div class="col-12 col-md-4 mt-3">
+    <div class="col-12 col-md-4 mt-4">
       <section id="configuracion" [@fadeAnimation]>
         <div class="container">
           <div class="card">
-            <div class="card-header text-center">
-              <h3 class="h4">Registro de usuarios</h3>
+            <div class="card-header modal-header text-center">
+              <h3 class="h4"><i class="fa fa-users"></i> Registro de usuarios</h3>
             </div>
             <div class="card-body" style="margin-bottom: 14px">
               <fieldset class="row">
@@ -88,12 +79,12 @@
         </div>
       </section>
     </div>
-    <div class="col-12 col-md-4 mt-3">
+    <div class="col-12 col-md-4 mt-4">
       <section id="proveedores" [@fadeAnimation]>
         <div class="container">
           <div class="card">
-            <div class="card-header text-center">
-              <h3 class="h4">Mis proveedores</h3>
+            <div class="card-header modal-header text-center">
+              <h3 class="h4"><i class="fa fa-people-line"></i> Mis proveedores</h3>
             </div>
             <div class="card-body">
               <fieldset class="row">
@@ -103,7 +94,7 @@
                 <div class="col-12 text-center">
                   <a
                     role="button"
-                    class="btn btn-primary clic-on-image"
+                    class="btn btn-primary border border-primary clic-on-image"
                     data-toggle="modal"
                     data-target="#providerListModal"
                     
@@ -117,12 +108,12 @@
         </div>
       </section>
     </div>
-    <div class="col-12 col-md-4 mt-3">
+    <div class="col-12 col-md-4 mt-4">
       <section [@fadeAnimation]>
         <div class="container">
           <div class="card">
-            <div class="card-header text-center">
-              <h3 class="h4">Mis clientes</h3>
+            <div class="card-header modal-header text-center">
+              <h3 class="h4"><i class="fa fa-people-group"></i> Mis clientes</h3>
             </div>
             <div class="card-body">
               <fieldset class="row">
@@ -132,7 +123,7 @@
                 <div class="col-12 text-center">
                   <a
                     role="button"
-                    class="btn btn-primary clic-on-image"
+                    class="btn btn-primary border border-primary clic-on-image"
                     data-toggle="modal"
                     data-target="#customerListModal"
                   >
@@ -147,12 +138,12 @@
     </div>
   </div>
   <div class="row" *ngIf="getUserRole() !== 'user'">
-    <div class="col-12 col-md-4 mt-3">
+    <div class="col-12 col-md-4 mt-4">
       <section id="configuracion" [@fadeAnimation]>
         <div class="container">
           <div class="card">
-            <div class="card-header text-center">
-              <h3 class="h4">Mis usuarios</h3>
+            <div class="card-header modal-header text-center">
+              <h3 class="h4"><i class="fa fa-users-between-lines"></i> Mis usuarios</h3>
             </div>
             <div class="card-body" style="margin-bottom: 14px">
               <fieldset class="row">
@@ -162,7 +153,7 @@
                 <div class="col-12 text-center">
                   <a
                     role="button"
-                    class="btn btn-primary clic-on-image"
+                    class="btn btn-primary border border-primary clic-on-image"
                     data-toggle="modal"
                     data-target="#usersListModal"
                   >
@@ -221,7 +212,7 @@
 >
   <div class="modal-dialog modal-dialog-scrollable" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header border">
         <h5 class="modal-title">Mantenimiento de proveedores</h5>
         <button
           type="button"
@@ -352,7 +343,7 @@
 >
   <div class="modal-dialog modal-dialog-scrollable" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header border">
         <h5 class="modal-title" id="providerInfoModalLabel">
           {{ modalTitle }} de proveedores
         </h5>
@@ -517,7 +508,7 @@
 >
   <div class="modal-dialog modal-dialog-scrollable" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header border">
         <h5 class="modal-title">Mantenimiento de clientes</h5>
         <button
           type="button"
@@ -648,7 +639,7 @@
 >
   <div class="modal-dialog modal-dialog-scrollable" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header border">
         <h5 class="modal-title" id="customerInfoModalLabel">
           {{ modalTitle }} de clientes
         </h5>
@@ -857,7 +848,7 @@
 >
   <div class="modal-dialog modal-dialog-scrollable" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header border">
         <h5 class="modal-title">Mantenimiento de usuarios</h5>
         <button
           type="button"
@@ -990,7 +981,7 @@
 >
   <div class="modal-dialog modal-dialog-scrollable" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header border">
         <h5 class="modal-title" id="userInfoModalLabel">
           {{ modalTitle }} de usuarios
         </h5>
@@ -1156,7 +1147,7 @@
 >
   <div class="modal-dialog" role="document" style="width: 300px">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header border">
         <h5 class="modal-title" id="resetPasswordModalLabel">
           Restablecer Contraseña
         </h5>
