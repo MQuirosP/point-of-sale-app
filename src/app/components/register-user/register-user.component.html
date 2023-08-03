@@ -3,7 +3,7 @@
   <div class="container">
     <div class="row align-items-center">
       <div class="col-md-8" [@fadeAnimation]>
-        <h1><i class="fas fa-cog"></i> Registro de usuarios</h1>
+        <h1><i class="fas fa-users-rectangle"></i> Registro de usuarios</h1>
       </div>
       <div class="col-md-4" style="visibility: hidden;">
         <label for="search">Buscar producto:</label>
@@ -26,7 +26,7 @@
       <div class="col col-md-4 mt-3">
         <div class="card shadow">
           <div class="card-header modal-header">
-            <h4 class="text-center">Datos personales</h4>
+            <h4 class="text-center"><i class="fa fa-person-circle-check"></i> Datos personales</h4>
           </div>
           <form [formGroup]="newUserForm" (ngSubmit)="registerNewUser()">
             <div class="card-body">
@@ -128,7 +128,7 @@
       <div class="col col-md-4 mt-3">
         <div class="card shadow">
           <div class="card-header modal-header">
-            <h4>Usuarios registrados</h4>
+            <h4><i class="fa fa-users-viewfinder"></i> Usuarios registrados</h4>
           </div>
           <div class="card-body p-1">
             <div class="table-responsive w-100">
