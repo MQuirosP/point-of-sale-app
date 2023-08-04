@@ -315,7 +315,7 @@
         <button
           *ngIf="getUserRole() !== 'user'"
           type="button"
-          class="btn btn-primary clic-on-image"
+          class="btn btn-primary border border-primary clic-on-image"
           data-toggle="modal"
           data-target="#providerInfoModal"
           (click)="openProviderInfoModal(false, ''); this.editMode = false"
@@ -324,7 +324,7 @@
         </button>
         <button
           type="button"
-          class="btn btn-secondary clic-on-image"
+          class="btn btn-secondary border border-secondary clic-on-image"
           data-dismiss="modal"
           (click)="closeProviderListModal()"
         >
@@ -471,7 +471,7 @@
             <button
               *ngIf="this.editMode === false"
               type="submit"
-              class="btn btn-primary clic-on-image"
+              class="btn btn-primary border border-primary clic-on-image"
               (click)="createProvider()"
               data-dismiss="modal"
             >
@@ -480,7 +480,7 @@
             <button
               *ngIf="this.editMode === true && getUserRole() !== 'user'"
               type="submit"
-              class="btn btn-primary clic-on-image"
+              class="btn btn-primary border border-primary clic-on-image"
               (click)="editProvider(providerForm.get('provider_id').value)"
               data-dismiss="modal"
             >
@@ -488,7 +488,7 @@
             </button>
             <button
               type="button"
-              class="btn btn-secondary clic-on-image ml-2"
+              class="btn btn-secondary border border-secondary clic-on-image ml-2"
               data-dismiss="modal"
               (click)="closeProviderInfoModal()"
             >
@@ -609,7 +609,7 @@
       <div class="modal-footer">
         <button
           type="button"
-          class="btn btn-primary clic-on-image"
+          class="btn btn-primary border border-primary clic-on-image"
           data-toggle="modal"
           data-target="#customerInfoModal"
           (click)="openCustomerInfoModal(false, ''); this.editMode = false"
@@ -618,7 +618,7 @@
         </button>
         <button
           type="button"
-          class="btn btn-secondary clic-on-image"
+          class="btn btn-secondary border border-primary clic-on-image"
           data-dismiss="modal"
           (click)="closeCustomerListModal()"
         >
@@ -805,7 +805,7 @@
             <button
               *ngIf="this.editMode === false"
               type="submit"
-              class="btn btn-primary clic-on-image"
+              class="btn btn-primary border border-primary clic-on-image"
               (click)="createCustomer()"
               data-dismiss="modal"
             >
@@ -814,7 +814,7 @@
             <button
               *ngIf="this.editMode === true"
               type="submit"
-              class="btn btn-primary clic-on-image"
+              class="btn btn-primary border border-primary clic-on-image"
               data-dismiss="modal"
               (click)="editCustomer(customerForm.get('customer_id').value)"
             >
@@ -822,7 +822,7 @@
             </button>
             <button
               type="button"
-              class="btn btn-secondary clic-on-image ml-2"
+              class="btn btn-secondary border border-secondary clic-on-image ml-2"
               data-dismiss="modal"
               (click)="closeCustomerInfoModal()"
             >
@@ -954,7 +954,15 @@
         </button> -->
         <button
           type="button"
-          class="btn btn-secondary clic-on-image"
+          class="btn btn-primary border border-primary clic-on-image"
+          data-dismiss="modal"
+          routerLink="/register"
+        >
+          Agregar
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary border border-secondary clic-on-image"
           data-dismiss="modal"
           (click)="closeUsersListModal()"
         >
@@ -1042,7 +1050,7 @@
               <div class="text-center">
                 <button
                   type="button"
-                  class="btn btn-primary clic-on-image"
+                  class="btn btn-primary border border-primary clic-on-image"
                   data-toggle="modal"
                   data-target="#resetPasswordModal"
                   (click)="openResetPasswordModal()"
@@ -1107,7 +1115,7 @@
             <button
               *ngIf="editMode"
               type="submit"
-              class="btn btn-primary clic-on-image"
+              class="btn btn-primary border border-primary clic-on-image"
               data-dismiss="modal"
               (click)="editUser(userForm.get('userId').value)"
             >
@@ -1115,7 +1123,7 @@
             </button>
             <button
               type="button"
-              class="btn btn-secondary clic-on-image ml-2"
+              class="btn btn-secondary border border-secondary clic-on-image ml-2"
               data-dismiss="modal"
               (click)="closeUserInfoModal()"
             >
@@ -1202,7 +1210,7 @@
           <div class="modal-footer">
             <button
               type="button"
-              class="btn btn-primary clic-on-image"
+              class="btn btn-primary border border-primary clic-on-image"
               data-dismiss="modal"
               (click)="resetPassword(this.userForm.get('username').value)"
             >
@@ -1210,7 +1218,7 @@
             </button>
             <button
               type="button"
-              class="btn btn-secondary clic-on-image"
+              class="btn btn-secondary border border-secondary clic-on-image"
               data-dismiss="modal"
               (click)="closeResetPasswordModal()"
             >
