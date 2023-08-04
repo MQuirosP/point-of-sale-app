@@ -35,13 +35,10 @@ body {
 .app-container {
   display: flex;
   flex-direction: column;
-
-  /* min-height: 102%; */
 }
 
 .main-board {
   height: auto;
-  /* transition: opacity 300ms; */
 }
 
 .main-board-style {
@@ -54,10 +51,49 @@ body {
   background-color: #f0f0f0;
 }
 
+header {
+  min-height: 80px;
+}
+
+.nav-link {
+  position: relative;
+  text-decoration: none; 
+  display: inline-block;
+  color: #000;
+}
+
+.nav-link::before {
+  content: "";
+  position: absolute;
+  bottom: 4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #007bff;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.3s ease;
+}
+
+.nav-link:hover::before {
+  transform: scaleX(1);
+}
+
+.dropdown-toggle::after {
+  display: inline-block; 
+  margin-left: 0.255em; 
+  vertical-align: 0.255em; 
+  content: ""; 
+  border-top: 0.3em solid;
+  border-right: 0.3em solid transparent;
+  border-bottom: 0;
+  border-left: 0.3em solid transparent;
+}
+
 @media (max-width: 767px) {
   #navbarCollapse {
-    position: fixed;
-    top: 40px;
+    position: inherit;
+    /* top: 60px; */
     right: 0px;
     /* background-color: black; */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -65,6 +101,7 @@ body {
     max-height: auto;
     overflow-y: auto;
     border-radius: 0 0 0 5px;
+    transition: 0.3s ease;
   }
 }
 
