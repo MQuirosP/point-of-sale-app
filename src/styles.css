@@ -383,8 +383,8 @@ button {
 
 .toast-container {
   position: fixed;
-  top: 100px;
-  right: 100px;
+  top: 50px;
+  right: 50px;
   width: 300px;
   z-index: 9999;
 }

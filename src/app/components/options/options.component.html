@@ -7,24 +7,24 @@
       </div>
       <div class="col-md-6 d-none d-md-block d-flex text-right">
         <a
-            routerLink="/"
-            role="button"
-            class="btn btn-warning border border-warning clic-on-image"
-            style="margin-right: 10px"
-          >
-            <i class="fas fa-arrow-left"></i>
-            <span class="d-none d-md-inline">&nbsp;Volver</span>
-          </a>
+          routerLink="/"
+          role="button"
+          class="btn btn-warning border border-warning clic-on-image"
+          style="margin-right: 10px"
+        >
+          <i class="fas fa-arrow-left"></i>
+          <span class="d-none d-md-inline">&nbsp;Volver</span>
+        </a>
 
-          <a
-            role="button"
-            type="submit"
-            (click)="saveRegisterStatus()"
-            class="btn btn-success border border-success clic-on-image mr-5"
-          >
-            <i class="fas fa-check"></i>
-            <span class="d-none d-md-inline">&nbsp;Guardar</span>
-          </a>
+        <a
+          role="button"
+          type="submit"
+          (click)="saveRegisterStatus()"
+          class="btn btn-success border border-success clic-on-image mr-5"
+        >
+          <i class="fas fa-check"></i>
+          <span class="d-none d-md-inline">&nbsp;Guardar</span>
+        </a>
       </div>
     </div>
   </div>
@@ -53,7 +53,9 @@
         <div class="container">
           <div class="card">
             <div class="card-header modal-header text-center">
-              <h3 class="h4"><i class="fa fa-users"></i> Registro de usuarios</h3>
+              <h3 class="h4">
+                <i class="fa fa-users"></i> Registro de usuarios
+              </h3>
             </div>
             <div class="card-body" style="margin-bottom: 14px">
               <fieldset class="row">
@@ -84,7 +86,9 @@
         <div class="container">
           <div class="card">
             <div class="card-header modal-header text-center">
-              <h3 class="h4"><i class="fa fa-people-line"></i> Mis proveedores</h3>
+              <h3 class="h4">
+                <i class="fa fa-people-line"></i> Mis proveedores
+              </h3>
             </div>
             <div class="card-body">
               <fieldset class="row">
@@ -97,7 +101,6 @@
                     class="btn btn-primary border border-primary clic-on-image"
                     data-toggle="modal"
                     data-target="#providerListModal"
-                    
                   >
                     Abrir lista
                   </a>
@@ -113,7 +116,9 @@
         <div class="container">
           <div class="card">
             <div class="card-header modal-header text-center">
-              <h3 class="h4"><i class="fa fa-people-group"></i> Mis clientes</h3>
+              <h3 class="h4">
+                <i class="fa fa-people-group"></i> Mis clientes
+              </h3>
             </div>
             <div class="card-body">
               <fieldset class="row">
@@ -143,7 +148,9 @@
         <div class="container">
           <div class="card">
             <div class="card-header modal-header text-center">
-              <h3 class="h4"><i class="fa fa-users-between-lines"></i> Mis usuarios</h3>
+              <h3 class="h4">
+                <i class="fa fa-users-between-lines"></i> Mis usuarios
+              </h3>
             </div>
             <div class="card-body" style="margin-bottom: 14px">
               <fieldset class="row">
@@ -222,10 +229,7 @@
           aria-label="Cerrar"
         >
           <span aria-hidden="true"
-            ><i
-              class="fa fa-times-circle"
-              style="color: white"
-            ></i
+            ><i class="fa fa-times-circle" style="color: white"></i
           ></span>
         </button>
       </div>
@@ -355,16 +359,17 @@
           (click)="closeProviderInfoModal()"
         >
           <span aria-hidden="true"
-            ><i
-              class="fa fa-times-circle"
-              style="color: white"
-            ></i
+            ><i class="fa fa-times-circle" style="color: white"></i
           ></span>
         </button>
       </div>
       <div class="modal-body">
         <!-- Formulario de registro de proveedores -->
-        <form [formGroup]="providerForm" autocomplete="new-password" role="presentation">
+        <form
+          [formGroup]="providerForm"
+          autocomplete="new-password"
+          role="presentation"
+        >
           <div class="form-group">
             <label for="provider_name">Nombre:</label>
             <input
@@ -518,10 +523,7 @@
           aria-label="Cerrar"
         >
           <span aria-hidden="true"
-            ><i
-              class="fa fa-times-circle"
-              style="color: white"
-            ></i
+            ><i class="fa fa-times-circle" style="color: white"></i
           ></span>
         </button>
       </div>
@@ -651,10 +653,7 @@
           (click)="closeCustomerInfoModal()"
         >
           <span aria-hidden="true"
-            ><i
-              class="fa fa-times-circle"
-              style="color: white"
-            ></i
+            ><i class="fa fa-times-circle" style="color: white"></i
           ></span>
         </button>
       </div>
@@ -858,10 +857,7 @@
           aria-label="Cerrar"
         >
           <span aria-hidden="true"
-            ><i
-              class="fa fa-times-circle"
-              style="color: white"
-            ></i
+            ><i class="fa fa-times-circle" style="color: white"></i
           ></span>
         </button>
       </div>
@@ -993,10 +989,7 @@
           (click)="closeUserInfoModal()"
         >
           <span aria-hidden="true"
-            ><i
-              class="fa fa-times-circle"
-              style="color: white"
-            ></i
+            ><i class="fa fa-times-circle" style="color: white"></i
           ></span>
         </button>
       </div>
@@ -1158,12 +1151,9 @@
           aria-label="Close"
           (click)="closeResetPasswordModal()"
         >
-          <span aria-hidden="true"
-            ><i
-              class="fa fa-times-circle"
-              style="color: #f40b0b"
-            ></i
-          ></span>
+          <span aria-hidden="true">
+            <i class="fa fa-times-circle" style="color: white"></i>
+          </span>
         </button>
       </div>
       <div class="modal-body">
