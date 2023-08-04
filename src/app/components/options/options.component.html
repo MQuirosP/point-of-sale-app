@@ -66,16 +66,19 @@
                   Activar el registro de usuarios.
                 </legend>
                 <div class="container text-center">
-                  <label for="activateRegister" class="form-check-label">
+                  <label class="form-check-label" style="cursor: pointer;">
                     <input
                       *ngIf="getUserRole() !== 'user'"
                       type="checkbox"
                       class="form-check-input"
+                      id="activateRegister"
                       name="activateRegister"
                       [(ngModel)]="activateRegister"
                       [checked]="activateRegister"
+                      style="cursor: pointer;;"
+                      (click)="toggleCheckbox()"
                     />
-                    {{ activateRegister ? "Activado" : "Desactivado" }}
+                    <span>{{ activateRegister ? "Activado" : "Desactivado" }}</span>
                   </label>
                 </div>
               </fieldset>

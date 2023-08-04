@@ -1,4 +1,3 @@
-import { style } from '@angular/animations';
 import {
   Component,
   OnInit,
@@ -150,6 +149,10 @@ export class OptionsComponent implements OnInit {
         this.toastr.error('No se pudo activar el registro de usuarios.');
       },
     });
+  }
+
+  toggleCheckbox() {
+    this.activateRegister = !this.activateRegister;
   }
 
   getCustomerList() {
