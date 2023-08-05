@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { fadeAnimation } from 'src/app/fadeAnimation';
 import { ProductCacheService } from 'src/app/services/product-cache.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-front-panel',
@@ -29,6 +30,7 @@ export class FrontPanelComponent {
     private modalService: ModalService,
     private http: HttpClient,
     private productCacheService: ProductCacheService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -112,8 +114,9 @@ export class FrontPanelComponent {
   }
 
   openSaleModal() {
+    this.router.navigate(["/shopping-cart"]);
     setTimeout(() => {
       this.modalService.showNewSaleModal.next(true);
-    }, 500);
+    }, 300);
   }
 }
