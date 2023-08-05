@@ -162,7 +162,7 @@
                   <tr *ngFor="let user of userList">
                     <td>{{ user.username }}</td>
                     <td>{{ user.role }}</td>
-                    <td>{{ user.status }}</td>
+                    <td [ngStyle]="getStatusStyles(user.status)">{{ user.status }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -172,8 +172,5 @@
       </div>
     </div>
   </div>
-  <div style="margin-bottom: 50px"></div>
 </section>
-<div class="mb-4">
-  <hr />
-</div>
+

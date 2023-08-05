@@ -939,9 +939,7 @@
                   <td class="text-left">
                     {{ user.role }}
                   </td>
-                  <td class="text-left">
-                    {{ user.status }}
-                  </td>
+                  <td [ngStyle]="getStatusStyles(user.status)">{{ user.status }}</td>
                 </tr>
               </tbody>
             </table>

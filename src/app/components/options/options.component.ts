@@ -136,6 +136,19 @@ export class OptionsComponent implements OnInit {
     return localStorage.getItem('username');
   }
 
+  getStatusStyles(status: string) {
+    switch (status) {
+      case 'active':
+        return { color: 'green' };
+      case 'pending':
+        return { color: 'blue' };
+      case 'suspended':
+        return { color: 'red' };
+      default:
+        return {};
+    }
+  }
+
   saveRegisterStatus() {
     this.optionService.changeRegisterStatus(this.activateRegister).subscribe({
       next: () => {

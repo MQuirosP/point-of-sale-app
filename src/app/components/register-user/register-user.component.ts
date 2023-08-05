@@ -98,7 +98,7 @@ export class RegisterUserComponent implements OnInit {
   }
 
   getUsersList() {
-    this.http.get('http://localhost:3000/api/users').subscribe({
+    this.http.get(`${this.backendUrl}`).subscribe({
       next: (response: any) => {
         this.userList = response.message.Users
       },
@@ -107,5 +107,18 @@ export class RegisterUserComponent implements OnInit {
         this.toastr.error('Error recuperando la lista de usuarios.')
       }
     })
+  }
+
+  getStatusStyles(status: string) {
+    switch (status) {
+      case 'active':
+        return { color: 'green' };
+      case 'pending':
+        return { color: 'blue' };
+      case 'suspended':
+        return { color: 'red' };
+      default:
+        return {};
+    }
   }
 }
