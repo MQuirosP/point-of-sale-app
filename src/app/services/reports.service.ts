@@ -67,11 +67,7 @@ export class ReportsService {
             const acceptedSales = reportData.filter(
               (sale: Sale) => sale.status === 'aceptado'
             );
-            this.generateDetailSalesExcel(
-              acceptedSales, 
-              startDate, 
-              endDate
-              );
+            this.generateDetailSalesExcel(acceptedSales, startDate, endDate);
             this.toastrService.success(
               'Información de compras recuperada exitosamente.'
             );
@@ -342,31 +338,33 @@ export class ReportsService {
 
   generateGeneralPurchasesReport(startDate: string, endDate: string) {
     this.http
-    .post(`${this.backendUrl}purchases-report`, {
-      startDate: startDate,
-      endDate: endDate,
-    })
-    .subscribe({
-      next: (response: any) => {
-        const reportData = response.success ? response.message : [];
-        this.generateGeneralPurchasesExcel(reportData, startDate, endDate);
-        this.toastrService.success('Información de compras recuperada exitosamente.'
-        );
-      },
-      error: (error) => {
-        this.toastrService.error('Error al generar el reporte de compras: ',
-        error
-        );
-      },
-    });
+      .post(`${this.backendUrl}purchases-report`, {
+        startDate: startDate,
+        endDate: endDate,
+      })
+      .subscribe({
+        next: (response: any) => {
+          const reportData = response.success ? response.message : [];
+          this.generateGeneralPurchasesExcel(reportData, startDate, endDate);
+          this.toastrService.success(
+            'Información de compras recuperada exitosamente.'
+          );
+        },
+        error: (error) => {
+          this.toastrService.error(
+            'Error al generar el reporte de compras: ',
+            error
+          );
+        },
+      });
   }
 
   generateGeneralPurchasesExcel(
     reportData: any[],
     startDate: string,
     endDate: string
-    ) {
-      const workbook = xlsx.utils.book_new();
+  ) {
+    const workbook = xlsx.utils.book_new();
     const data: any[][] = [];
 
     // Agregar encabezado
@@ -391,7 +389,8 @@ export class ReportsService {
     ]);
 
     reportData.forEach((purchase: any) => {
-      const { doc_number, createdAt, provider_name, status, purchaseItems } = purchase;
+      const { doc_number, createdAt, provider_name, status, purchaseItems } =
+        purchase;
 
       purchaseItems.forEach((item: any) => {
         const {
@@ -450,7 +449,7 @@ export class ReportsService {
   generateDetailPurchasesExcel(
     reportData: any[],
     startDate: string,
-    endDate: string,
+    endDate: string
   ) {
     const workbook = xlsx.utils.book_new();
     const data: any[][] = [];
@@ -473,7 +472,13 @@ export class ReportsService {
         purchaseItems,
       } = purchase;
 
-      data.push(['Número de Documento', 'Proveedor', 'Subtotal', 'IVA', 'Total']);
+      data.push([
+        'Número de Documento',
+        'Proveedor',
+        'Subtotal',
+        'IVA',
+        'Total',
+      ]);
       data.push([
         doc_number,
         provider_name,
@@ -520,7 +525,8 @@ export class ReportsService {
       0
     );
     const totalTaxes = reportData.reduce(
-      (total: number, purchase: any) => total + parseFloat(purchase.taxes_amount),
+      (total: number, purchase: any) =>
+        total + parseFloat(purchase.taxes_amount),
       0
     );
     const totalGrandTotal = totalSubtotal + totalTaxes;
