@@ -66,7 +66,7 @@
                   Activar el registro de usuarios.
                 </legend>
                 <div class="container text-center">
-                  <label class="form-check-label" style="cursor: pointer;">
+                  <label class="form-check-label" style="cursor: pointer">
                     <input
                       *ngIf="getUserRole() !== 'user'"
                       type="checkbox"
@@ -75,10 +75,13 @@
                       name="activateRegister"
                       [(ngModel)]="activateRegister"
                       [checked]="activateRegister"
-                      style="cursor: pointer;;"
+                      style="cursor: pointer"
                       (click)="toggleCheckbox()"
                     />
-                    <span>{{ activateRegister ? "Activado" : "Desactivado" }}</span>
+                    <span
+                      [ngStyle]="{ color: activateRegister ? 'green' : 'red' }"
+                      >{{ activateRegister ? "Activado" : "Desactivado" }}</span
+                    >
                   </label>
                 </div>
               </fieldset>
@@ -939,7 +942,9 @@
                   <td class="text-left">
                     {{ user.role }}
                   </td>
-                  <td [ngStyle]="getStatusStyles(user.status)">{{ user.status }}</td>
+                  <td [ngStyle]="getStatusStyles(user.status)">
+                    {{ user.status }}
+                  </td>
                 </tr>
               </tbody>
             </table>
