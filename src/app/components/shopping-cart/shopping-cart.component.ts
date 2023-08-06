@@ -1,8 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import {
@@ -302,11 +298,11 @@ export class ShoppingCartComponent {
   searchProduct() {
     const productNameControl = this.saleForm.get('product_name').value;
 
-    if(productNameControl === '') {
+    if (productNameControl === '') {
       this.clearProductSuggestions();
       this.saleForm.get('product_price').setValue(null);
     }
-    
+
     const searchTerm = productNameControl?.toLowerCase().trim() || '';
     if (!searchTerm) {
       this.clearProductSuggestions();
@@ -334,35 +330,35 @@ export class ShoppingCartComponent {
 
   private updateProductSuggestions(products: any[], searchTerm: string) {
     const searchTermNormalized = searchTerm
-            ? searchTerm.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-            : '';
+      ? searchTerm.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      : '';
 
-          const searchPattern = searchTermNormalized
-            .toLowerCase()
-            .replace(/\*/g, '.*');
+    const searchPattern = searchTermNormalized
+      .toLowerCase()
+      .replace(/\*/g, '.*');
 
-          const regex = new RegExp(searchPattern);
+    const regex = new RegExp(searchPattern);
 
-          this.productSuggestionList = products.filter((product: any) => {
-            const productNameNormalized = product.name
-              ? product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-              : '';
+    this.productSuggestionList = products.filter((product: any) => {
+      const productNameNormalized = product.name
+        ? product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        : '';
 
-            const productCodeNormalized = product.int_code
-              ? product.int_code.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-              : '';
+      const productCodeNormalized = product.int_code
+        ? product.int_code.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        : '';
 
-            return (
-              regex.test(productNameNormalized.toLowerCase()) ||
-              regex.test(productCodeNormalized.toLowerCase())
-            );
-          });
+      return (
+        regex.test(productNameNormalized.toLowerCase()) ||
+        regex.test(productCodeNormalized.toLowerCase())
+      );
+    });
 
-          if (this.productSuggestionList.length === 1) {
-            this.selectSingleProduct();
-          } else {
-            this.selectedProduct = null;
-          }
+    if (this.productSuggestionList.length === 1) {
+      this.selectSingleProduct();
+    } else {
+      this.selectedProduct = null;
+    }
   }
 
   private selectSingleProduct() {
@@ -432,7 +428,7 @@ export class ShoppingCartComponent {
     const productName = this.saleForm.get('product_name').value;
     const productQuantity = this.saleForm.get('product_quantity').value;
     const productNewPrice = this.saleForm.get('product_price').value;
-    
+
     if (
       productName?.invalid ||
       productQuantity?.invalid ||
@@ -458,7 +454,6 @@ export class ShoppingCartComponent {
           productQuantity
         );
 
-        
         const product: Product = {
           productId: productData.productId,
           int_code: this.int_code,
@@ -473,9 +468,9 @@ export class ShoppingCartComponent {
         };
 
         product.total = product.sub_total + product.taxes_amount;
-        
+
         if (product.total === 0) {
-          this.toastr.error('Se deben suministrar todos los campos.')
+          this.toastr.error('Se deben suministrar todos los campos.');
           return;
         }
         this.updateProductList(product);
@@ -515,33 +510,32 @@ export class ShoppingCartComponent {
   }
 
   private updateProductList(product: Product) {
+    if (product.total !== 0) {
+      const existingProductIndex = this.productList.findIndex(
+        (p) => p.int_code === product.int_code
+      );
 
-  if (product.total !== 0) {
-    const existingProductIndex = this.productList.findIndex(
-      (p) => p.int_code === product.int_code
-    );
-
-    if (existingProductIndex !== -1) {
-      const existingProduct = this.productList[existingProductIndex];
-      existingProduct.quantity += product.quantity;
-      existingProduct.taxes_amount += product.taxes_amount;
-      existingProduct.sub_total += product.sub_total;
-      existingProduct.total = product.total;
+      if (existingProductIndex !== -1) {
+        const existingProduct = this.productList[existingProductIndex];
+        existingProduct.quantity += product.quantity;
+        existingProduct.taxes_amount += product.taxes_amount;
+        existingProduct.sub_total += product.sub_total;
+        existingProduct.total = product.total;
+      } else {
+        this.productList.push(product);
+        product.isNew = false;
+      }
     } else {
-      this.productList.push(product);
-      product.isNew = false;
-    }
-  } else {
-    const existingProductIndex = this.productList.findIndex(
-      (p) => p.int_code === product.int_code
-    );
-    if (existingProductIndex !== -1) {
-      this.productList.splice(existingProductIndex, 1);
-    }
+      const existingProductIndex = this.productList.findIndex(
+        (p) => p.int_code === product.int_code
+      );
+      if (existingProductIndex !== -1) {
+        this.productList.splice(existingProductIndex, 1);
+      }
 
-    this.toastr.error('Se deben suministrar todos los campos.');
+      this.toastr.error('Se deben suministrar todos los campos.');
+    }
   }
-}
 
   private calculateTotalSaleAmount() {
     this.subTotalSaleAmount = this.productList.reduce((subTotal, product) => {
@@ -656,32 +650,43 @@ export class ShoppingCartComponent {
   updateProduct(product: any, event: Event) {
     const newQuantity = (event.target as HTMLInputElement).valueAsNumber;
 
-    const foundProduct = this.productList.find(
+    const productIndex = this.productList.findIndex(
       (p: any) => p.int_code === product.int_code
     );
 
-    if (foundProduct) {
-      this.http
-        .get(`${this.backendUrl}products/int_code/${product.int_code}`, {})
-        .subscribe({
-          next: (response: any) => {
-            const productData = response.message.product;
-
-            const taxesAmount =
-              productData.purchase_price /
-                (1 - productData.taxPercentage / 100) -
-              productData.purchase_price;
-            const subTotal = productData.sale_price - taxesAmount;
-
-            foundProduct.taxes_amount = taxesAmount * newQuantity;
-            foundProduct.sub_total = subTotal * newQuantity;
-            foundProduct.total =
-              foundProduct.sub_total + foundProduct.taxes_amount;
-
-            this.calculateTotalSaleAmount();
-          },
-        });
+    if (productIndex !== -1) {
+      this.getProductDataAndUpdateProductList(product, newQuantity, productIndex);
     }
+  }
+
+  private getProductDataAndUpdateProductList(
+    product: any,
+    newQuantity: number,
+    productIndex: number
+  ) {
+    this.http
+      .get(`${this.backendUrl}products/int_code/${product.int_code}`, {})
+      .subscribe({
+        next: (response: any) => {
+          const productData = response.message.product;
+
+          const taxesAmount =
+            productData.purchase_price / (1 - productData.taxPercentage / 100) -
+            productData.purchase_price;
+          const subTotal = productData.sale_price - taxesAmount;
+
+          this.productList[productIndex].quantity = newQuantity;
+          this.productList[productIndex].taxes_amount =
+            taxesAmount * newQuantity;
+          this.productList[productIndex].sub_total =
+            subTotal * newQuantity;
+          this.productList[productIndex].total =
+            this.productList[productIndex].sub_total +
+            this.productList[productIndex].taxes_amount;
+
+          this.calculateTotalSaleAmount();
+        },
+      });
   }
 
   cancelSale(doc_number: string) {
@@ -795,7 +800,7 @@ export class ShoppingCartComponent {
       this.customer_id = suggestion.customer_id;
       this.customerSuggestionList = [];
       (document.getElementById('customer_name') as HTMLInputElement).value =
-        this.formatOption(suggestion); 
+        this.formatOption(suggestion);
     } else {
       this.customer_id = null;
     }
