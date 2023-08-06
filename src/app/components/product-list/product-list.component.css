@@ -7,8 +7,17 @@
     opacity: 1;
   } */
 
-  td {
-    padding-top: 10px;
-    padding-bottom: 10px;
-  }
-  
+td {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+th {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.product-list-header {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
