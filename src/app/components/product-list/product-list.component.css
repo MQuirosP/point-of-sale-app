@@ -1,9 +1,14 @@
-.fade {
+/* .fade {
     opacity: 0;
     transition: opacity 0.3s ease-out;
   }
   
   .fade.show {
     opacity: 1;
+  } */
+
+  td {
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
   
