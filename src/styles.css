@@ -625,9 +625,18 @@ h5.card-title {
   padding-top: 20px;
 }
 
+input::-webkit-search-cancel-button {
+  cursor: pointer;
+}
+
+
 .datalist-no-arrow::-webkit-calendar-picker-indicator {
   opacity: 0;
   display: none;
+  margin: 0;
+  margin-right: -10px;
+  padding: 0;
+  padding-right: -20px;
   visibility: hidden;
 }
 
