@@ -113,24 +113,25 @@
     aria-hidden="true"
   >
     <div
-      class="modal-dialog  modal-lg shadow"
+      class="modal-dialog modal-lg shadow"
       role="document"
     >
-      <div class="modal-content modal-dialog-scrollable">
+      <div class="modal-content">
         <div class="modal-header border">
           <h5 class="modal-title">Registro de ventas</h5>
-          <button
-            type="button"
-            class="close overflow-visible"
-            data-dismiss="modal"
-            aria-label="Close"
-            style="position: absolute; right: 20px; top: 20px"
-            (click)="closeSaleModal()"
-          >
-            <span aria-hidden="true">
-              <i class="fa fa-times-circle" style="color: #ffffff"></i>
-            </span>
-          </button>
+          <div>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+              (click)="closeSaleModal()"
+            >
+              <span aria-hidden="true">
+                <i class="fa fa-times-circle"></i>
+              </span>
+            </button>
+          </div>
         </div>
         <div class="modal-body">
           <div class="row">
@@ -453,13 +454,13 @@
         <h5 class="modal-title">Historial de ventas</h5>
         <button
           type="button"
-          class="close overflow-visible"
+          class="close"
           data-dismiss="modal"
           aria-label="Close"
           (click)="closeSaleHistoryModal()"
         >
           <span aria-hidden="true"
-            ><i class="fa fa-times-circle" style="color: white"></i
+            ><i class="fa fa-times-circle"></i
           ></span>
         </button>
       </div>

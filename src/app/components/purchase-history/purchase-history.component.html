@@ -115,19 +115,18 @@
       class="modal-dialog modal-lg shadow"
       role="document"
     >
-      <div class="modal-content modal-dialog-scrollable">
+      <div class="modal-content">
         <div class="modal-header border">
           <h5 class="modal-title">Registro de compras</h5>
           <button
             type="button"
-            class="close overflow-visible"
+            class="close"
             data-dismiss="modal"
             aria-label="Close"
-            style="position: absolute; right: 20px; top: 20px"
             (click)="closePurchaseModal()"
           >
             <span aria-hidden="true">
-              <i class="fa fa-times-circle" style="color: white"></i>
+              <i class="fa fa-times-circle"></i>
             </span>
           </button>
         </div>
@@ -301,8 +300,7 @@
                   <div class="d-flex justify-content-center">
                     <button
                       type="button"
-                      class="btn btn-primary shadow clic-on-image"
-                      style="margin-top: 32px"
+                      class="btn btn-primary shadow clic-on-image mt-4 mb-3"
                       (click)="addProduct()"
                     >
                       Agregar
@@ -472,13 +470,13 @@
         <h5 class="modal-title">Historial de compras</h5>
         <button
           type="button"
-          class="close overflow-visible"
+          class="close"
           data-dismiss="modal"
           aria-label="Close"
           (click)="closePurchaseHistoryModal()"
         >
           <span aria-hidden="true"
-            ><i class="fa fa-times-circle" style="color: white"></i
+            ><i class="fa fa-times-circle"></i
           ></span>
         </button>
       </div>

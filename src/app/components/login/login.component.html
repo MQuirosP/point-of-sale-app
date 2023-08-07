@@ -34,7 +34,7 @@
       "
     >
       <form (ngSubmit)="onSubmit()">
-        <div class="card-header modal-header mb-3">
+        <div class="card-header modal-header">
           <h4 class="text-center">Inicio de sesión</h4>
         </div>
         <div class="card-body">
@@ -50,7 +50,7 @@
               autocomplete="off"
               (focus)="addFloatingLabelClass('username')"
               (blur)="removeFloatingLabelClass('username')"
-              style="margin-bottom: 35px;"
+              style="margin-bottom: 35px; margin-top: 30px;"
             />
           </div>
           <div class="form-group">
@@ -66,7 +66,7 @@
               (blur)="removeFloatingLabelClass('password')"
             />
           </div>
-          <div class="card-footer text-center">
+          <div class="card-footer text-center" style="margin-top: 25px;">
             <button type="submit" class="btn btn-primary clic-on-image">
               Login
             </button>

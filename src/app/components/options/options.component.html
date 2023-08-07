@@ -6,7 +6,7 @@
         <h1><i class="fas fa-cog"></i> Opciones</h1>
       </div>
       <div
-        class="col-md-6 d-none d-md-block d-flex text-right"
+        class="col-md-6 d-none d-md-block d-flex text-right mt-3"
         *ngIf="getUserRole() === 'administrator'"
       >
         <a
@@ -183,36 +183,8 @@
       </section>
     </div>
   </div>
-  <div class="row" *ngIf="getUserRole() !== 'user'">
-    <div class="col-12 col-md-4" style="margin-top: 100px">
-      <!-- <section id="configuracion" [@fadeAnimation]>
-        <div class="container">
-          <div class="card">
-            <div class="card-header text-center">
-              <h3 class="h4">Mis usuarios</h3>
-            </div>
-            <div class="card-body" style="margin-bottom: 14px">
-              <fieldset class="row">
-                <legend class="text-center" style="font-size: 18px">
-                  Mantenimiento de usuarios
-                </legend>
-                <div class="col-12 text-center">
-                  <a
-                    role="button"
-                    class="btn btn-primary clic-on-image"
-                    data-toggle="modal"
-                    data-target="#usersListModal"
-                    (click)="openUsersListModal()"
-                  >
-                    Ver lista
-                  </a>
-                </div>
-              </fieldset>
-            </div>
-          </div>
-        </div>
-      </section> -->
-    </div>
+  <div style="margin-bottom: 95px;">
+
   </div>
 </div>
 
@@ -232,13 +204,13 @@
         <h5 class="modal-title">Mantenimiento de proveedores</h5>
         <button
           type="button"
-          class="close clic-on-close"
+          class="close"
           data-dismiss="modal"
           (click)="closeProviderListModal()"
           aria-label="Cerrar"
         >
           <span aria-hidden="true"
-            ><i class="fa fa-times-circle" style="color: white"></i
+            ><i class="fa fa-times-circle"></i
           ></span>
         </button>
       </div>
@@ -362,13 +334,13 @@
         </h5>
         <button
           type="button"
-          class="close clic-on-close"
+          class="close"
           data-dismiss="modal"
           aria-label="Close"
           (click)="closeProviderInfoModal()"
         >
           <span aria-hidden="true"
-            ><i class="fa fa-times-circle" style="color: white"></i
+            ><i class="fa fa-times-circle"></i
           ></span>
         </button>
       </div>
@@ -526,13 +498,13 @@
         <h5 class="modal-title">Mantenimiento de clientes</h5>
         <button
           type="button"
-          class="close clic-on-close"
+          class="close"
           data-dismiss="modal"
           (click)="closeCustomerListModal()"
           aria-label="Cerrar"
         >
           <span aria-hidden="true"
-            ><i class="fa fa-times-circle" style="color: white"></i
+            ><i class="fa fa-times-circle"></i
           ></span>
         </button>
       </div>
@@ -656,13 +628,13 @@
         </h5>
         <button
           type="button"
-          class="close clic-on-close"
+          class="close"
           data-dismiss="modal"
           aria-label="Close"
           (click)="closeCustomerInfoModal()"
         >
           <span aria-hidden="true"
-            ><i class="fa fa-times-circle" style="color: white"></i
+            ><i class="fa fa-times-circle"></i
           ></span>
         </button>
       </div>
@@ -860,13 +832,13 @@
         <h5 class="modal-title">Mantenimiento de usuarios</h5>
         <button
           type="button"
-          class="close clic-on-close"
+          class="close"
           data-dismiss="modal"
           (click)="closeUsersListModal()"
           aria-label="Cerrar"
         >
           <span aria-hidden="true"
-            ><i class="fa fa-times-circle" style="color: white"></i
+            ><i class="fa fa-times-circle"></i
           ></span>
         </button>
       </div>
@@ -1000,13 +972,13 @@
         </h5>
         <button
           type="button"
-          class="close clic-on-close"
+          class="close"
           data-dismiss="modal"
           aria-label="Close"
           (click)="closeUserInfoModal()"
         >
           <span aria-hidden="true"
-            ><i class="fa fa-times-circle" style="color: white"></i
+            ><i class="fa fa-times-circle"></i
           ></span>
         </button>
       </div>
@@ -1163,13 +1135,13 @@
         </h5>
         <button
           type="button"
-          class="close clic-on-close"
+          class="close"
           data-dismiss="modal"
           aria-label="Close"
           (click)="closeResetPasswordModal()"
         >
           <span aria-hidden="true">
-            <i class="fa fa-times-circle" style="color: white"></i>
+            <i class="fa fa-times-circle"></i>
           </span>
         </button>
       </div>

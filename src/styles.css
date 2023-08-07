@@ -52,6 +52,7 @@ body {
 }
 
 header {
+  padding-top: 5px;
   min-height: 80px;
 }
 
@@ -243,16 +244,6 @@ header {
   transform: scale(0.95);
   transition: transform 0.2s;
 }
-
-/* .clic-on-close:hover {
-  transform: scale(1.05);
-  transition: transform 0.2s ease-in-out;
-} */
-
-/* .clic-on-close:active {
-  transform: scale(0.95);
-  transition: transform 0.2 ease-in-out;
-} */
 
 .clic-on-main-image {
   padding: 10px;
@@ -518,7 +509,7 @@ button {
 
 .floating-label.active {
   top: 0;
-  left: -3px;
+  left: 0px;
   transform: translate(0, -100%);
   font-size: 16px;
   opacity: 1;
@@ -606,6 +597,32 @@ button {
 .modal-header, .product-list-header {
   background-color: #31708f;
   color: white;
+}
+
+.fa-times-circle {
+  color: white;
+}
+
+label {
+  margin-bottom: 0px;
+}
+
+.form-group {
+  margin-bottom: 10px
+}
+
+.card-body {
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+
+.modal-footer {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+h5.card-title {
+  padding-top: 20px;
 }
 
 .datalist-no-arrow::-webkit-calendar-picker-indicator {
