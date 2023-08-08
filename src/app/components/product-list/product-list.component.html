@@ -28,58 +28,59 @@
     class="modal-content modal-dialog-scrollable shadow"
     style="max-width: 100%; margin: 0 auto"
   >
-  <div class="card-header product-list-header border">
-    <div class="row">
-      <div class="col-md-6 align-items-center">
-        <!-- Encabezado del listado -->
-        <h4 class="h4">Lista de productos</h4>
-      </div>
-      <div class="col-md-6 d-flex justify-content-md-end">
-        <!-- Contenedor de los botones Agregar, Anterior y Siguiente -->
-        <div class="d-flex align-items-center">
-          <button
-          class="btn btn-primary border-primary shadow clic-on-image mr-4"
-          data-toggle="modal"
-          data-target="#productModal"
-          (click)="openProductModal(false, 0); this.editMode = false"
-          [disabled]="getUserRole() === 'user'"
-        >
-          Agregar
-        </button>
-          <button
-            class="btn btn-warning border-warning shadow clic-on-image mr-2"
-            (click)="prevPage()"
-            [disabled]="page === 0"
-            style="color: white !important"
-          >
-            <span><i class="fa-solid fa-arrow-left"></i></span>
-            <span class="d-md-none"></span>
-          </button>
-          <button
-            class="btn btn-success border-success shadow clic-on-image"
-            (click)="nextPage()"
-            [disabled]="(products | productsFilter : page : searchTerm).length < 8"
-          >
-            <span class="d-md-none"></span>
-            <span><i class="fa-solid fa-arrow-right"></i></span>
-          </button>
+    <div class="card-header product-list-header border">
+      <div class="row">
+        <div class="col-md-6 align-items-center">
+          <!-- Encabezado del listado -->
+          <h4 class="h4">Lista de productos</h4>
+        </div>
+        <div class="col-md-6 d-flex justify-content-md-end">
+          <!-- Contenedor de los botones Agregar, Anterior y Siguiente -->
+          <div class="d-flex align-items-center">
+            <button
+              class="btn btn-primary border-primary shadow clic-on-image mr-4"
+              data-toggle="modal"
+              data-target="#productModal"
+              (click)="openProductModal(false, 0); this.editMode = false"
+              [disabled]="getUserRole() === 'user'"
+            >
+              Agregar
+            </button>
+            <button
+              class="btn btn-warning border-warning shadow clic-on-image mr-2"
+              (click)="prevPage()"
+              [disabled]="page === 0"
+              style="color: white !important"
+            >
+              <span><i class="fa-solid fa-arrow-left"></i></span>
+              <span class="d-md-none"></span>
+            </button>
+            <button
+              class="btn btn-success border-success shadow clic-on-image"
+              (click)="nextPage()"
+              [disabled]="
+                (products | productsFilter : page : searchTerm).length < 8
+              "
+            >
+              <span class="d-md-none"></span>
+              <span><i class="fa-solid fa-arrow-right"></i></span>
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  
     </div>
     <div class="w-100">
       <div class="table-responsive">
         <table class="table">
           <thead>
             <tr class="product-detail-table-titles">
-              <th class="text-left" style="min-width: 170px">Código</th>
-              <th class="text-left" style="max-width: 300px">Producto</th>
+              <th class="text-left" style="min-width: 30px"></th>
+              <th class="text-left" style="max-width: 200px">Producto</th>
               <th class="text-right" style="min-width: 100px">Disponible</th>
               <th class="text-right" style="min-width: 100px">P. Compra</th>
               <th class="text-right" style="min-width: 75px">Margen</th>
               <th class="text-right" style="min-width: 75px">I.V.A.</th>
-              <th class="text-right" style="min-width: 100px">P. Venta</th>
+              <th class="text-right" style="min-width: 100px; padding-right: 30px;">P. Venta</th>
             </tr>
           </thead>
           <tbody class="">
@@ -92,28 +93,20 @@
               [ngClass]="{ 'table-row-even': even, 'table-row-odd': !even }"
               class=""
             >
-              <td class="product-code" style="min-width: 170px">
-                {{ product.int_code }}
+              <td class="product-code" style="min-width: 30px">
               </td>
               <td
-                style="max-width: 300px; min-width: 300px; white-space: nowrap"
+                style="max-width: 200px; min-width: 200px; white-space: nowrap;"
+                (click)="product.showIcons = !product.showIcons"
               >
-                <div class="d-inline-flex">
-                  <span
-                    class="product-name"
-                    style="cursor: pointer"
-                    (click)="product.showIcons = !product.showIcons"
-                    tabindex="0"
-                  >
-                    {{ product.name }}
-                  </span>
+                <div class="d-flex" style="left: 100px;">
                   <span
                     class="product-icons"
                     [ngClass]="{ 'show-icons': product.showIcons }"
                   >
                     <a
                       role="button"
-                      class="ml-2 mr-3"
+                      class="ml-3 mr-2"
                       data-toggle="modal"
                       data-target="#productModal"
                       (click)="
@@ -127,18 +120,26 @@
                       ></i>
                     </a>
                     <a
-                      class=""
+                      class="mr-2"
                       *ngIf="getUserRole() !== 'user'"
                       data-toggle="modal"
                       data-target="#deletePasswordModal"
                       (click)="openPasswordModal(product.int_code)"
                     >
                       <i
-                        class="fa-solid fa-trash clic-on-icon"
+                        class="fas fa-solid fa-trash clic-on-icon"
                         style="color: #fa0000; cursor: pointer"
                       ></i>
                     </a>
                   </span>
+                  <span
+                    class="product-name"
+                    style="cursor: pointer;"
+                    tabindex="-1"
+                  >
+                    {{ product.name }}
+                  </span>
+                  
                 </div>
               </td>
               <td class="text-right" style="min-width: 100px">
@@ -153,7 +154,7 @@
               <td class="text-right" style="min-width: 75px">
                 {{ product.taxPercentage | number : "1.1-1" }} %
               </td>
-              <td class="text-right price-cell" style="min-width: 100px">
+              <td class="text-right price-cell" style="min-width: 100px; padding-right: 30px;">
                 {{ product.sale_price | currency : "CRC" : "₡" }}
               </td>
             </tr>
@@ -163,9 +164,7 @@
     </div>
   </div>
 </div>
-<div style="margin-bottom: 80px;">
-
-</div>
+<div style="margin-bottom: 80px"></div>
 
 <!-- Botón para ir al principio de la lista -->
 <!-- <button
@@ -185,10 +184,7 @@
   aria-labelledby="productModalLabel"
   aria-hidden="true"
 >
-  <div
-    class="modal-dialog modal-dialog-centered"
-    role="document"
-  >
+  <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content shadow">
       <div class="modal-header border">
         <h5 class="modal-title" id="productModalLabel">
@@ -202,7 +198,7 @@
           (click)="closeProductModal()"
         >
           <span aria-hidden="true">
-            <i class="fa fa-times-circle"></i>
+            <i class="fas fa-close"></i>
           </span>
         </button>
       </div>
@@ -417,15 +413,11 @@
       <div class="modal-header border">
         <h5 class="modal-title">Eliminar producto</h5>
         <button
-          class="btn-close"
+          class="close"
           (click)="closePasswordModal()"
           data-dismiss="modal"
         >
-          <span aria-hidden="true"
-            ><i
-              class="fa fa-times-circle"
-            ></i
-          ></span>
+          <span aria-hidden="true"><i class="fas fa-close"></i></span>
         </button>
       </div>
       <div class="modal-body">

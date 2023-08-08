@@ -12,3 +12,81 @@
 [debug] [2023-08-08T06:12:30.475Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/verduleria-app-142c1:testIamPermissions [none]
 [debug] [2023-08-08T06:12:30.476Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/verduleria-app-142c1:testIamPermissions x-goog-quota-user=projects/verduleria-app-142c1
 [debug] [2023-08-08T06:12:30.476Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/verduleria-app-142c1:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2023-08-08T06:12:51.655Z] [iam] error while checking permissions, command may fail: FirebaseError: Failed to make request to https://cloudresourcemanager.googleapis.com/v1/projects/verduleria-app-142c1:testIamPermissions
+[debug] [2023-08-08T06:12:51.656Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/verduleria-app-142c1 [none]
+[debug] [2023-08-08T06:13:12.731Z] Failed to make request to https://firebase.googleapis.com/v1beta1/projects/verduleria-app-142c1
+[debug] [2023-08-08T06:13:17.751Z] Error: Timed out.
+    at Timeout._onTimeout (C:\Users\mquir\AppData\Roaming\npm\node_modules\firebase-tools\lib\utils.js:253:49)
+    at listOnTimeout (node:internal/timers:564:17)
+    at process.processTimers (node:internal/timers:507:7)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-08-08T06:13:35.531Z] ----------------------------------------------------------------------
+[debug] [2023-08-08T06:13:35.533Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\mquir\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2023-08-08T06:13:35.534Z] CLI Version:   11.24.0
+[debug] [2023-08-08T06:13:35.534Z] Platform:      win32
+[debug] [2023-08-08T06:13:35.534Z] Node Version:  v18.13.0
+[debug] [2023-08-08T06:13:35.535Z] Time:          Tue Aug 08 2023 00:13:35 GMT-0600 (hora estándar central)
+[debug] [2023-08-08T06:13:35.536Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-08-08T06:13:35.611Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-08-08T06:13:35.611Z] > authorizing via signed-in user (mquirosp78@gmail.com)
+[debug] [2023-08-08T06:13:35.611Z] [iam] checking project verduleria-app-142c1 for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2023-08-08T06:13:35.613Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/verduleria-app-142c1:testIamPermissions [none]
+[debug] [2023-08-08T06:13:35.614Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/verduleria-app-142c1:testIamPermissions x-goog-quota-user=projects/verduleria-app-142c1
+[debug] [2023-08-08T06:13:35.614Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/verduleria-app-142c1:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2023-08-08T06:13:56.734Z] [iam] error while checking permissions, command may fail: FirebaseError: Failed to make request to https://cloudresourcemanager.googleapis.com/v1/projects/verduleria-app-142c1:testIamPermissions
+[debug] [2023-08-08T06:13:56.736Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/verduleria-app-142c1 [none]
+[debug] [2023-08-08T06:14:17.781Z] Failed to make request to https://firebase.googleapis.com/v1beta1/projects/verduleria-app-142c1
+[debug] [2023-08-08T06:14:22.792Z] Error: Timed out.
+    at Timeout._onTimeout (C:\Users\mquir\AppData\Roaming\npm\node_modules\firebase-tools\lib\utils.js:253:49)
+    at listOnTimeout (node:internal/timers:564:17)
+    at process.processTimers (node:internal/timers:507:7)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-08-08T06:15:17.218Z] ----------------------------------------------------------------------
+[debug] [2023-08-08T06:15:17.219Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\mquir\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2023-08-08T06:15:17.220Z] CLI Version:   11.24.0
+[debug] [2023-08-08T06:15:17.220Z] Platform:      win32
+[debug] [2023-08-08T06:15:17.220Z] Node Version:  v18.13.0
+[debug] [2023-08-08T06:15:17.221Z] Time:          Tue Aug 08 2023 00:15:17 GMT-0600 (hora estándar central)
+[debug] [2023-08-08T06:15:17.221Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-08-08T06:15:17.294Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-08-08T06:15:17.295Z] > authorizing via signed-in user (mquirosp78@gmail.com)
+[debug] [2023-08-08T06:15:17.295Z] [iam] checking project verduleria-app-142c1 for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2023-08-08T06:15:17.297Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/verduleria-app-142c1:testIamPermissions [none]
+[debug] [2023-08-08T06:15:17.298Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/verduleria-app-142c1:testIamPermissions x-goog-quota-user=projects/verduleria-app-142c1
+[debug] [2023-08-08T06:15:17.298Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/verduleria-app-142c1:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2023-08-08T06:15:38.407Z] [iam] error while checking permissions, command may fail: FirebaseError: Failed to make request to https://cloudresourcemanager.googleapis.com/v1/projects/verduleria-app-142c1:testIamPermissions
+[debug] [2023-08-08T06:15:38.408Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/verduleria-app-142c1 [none]
+[debug] [2023-08-08T06:15:59.452Z] Failed to make request to https://firebase.googleapis.com/v1beta1/projects/verduleria-app-142c1
+[debug] [2023-08-08T06:16:04.468Z] Error: Timed out.
+    at Timeout._onTimeout (C:\Users\mquir\AppData\Roaming\npm\node_modules\firebase-tools\lib\utils.js:253:49)
+    at listOnTimeout (node:internal/timers:564:17)
+    at process.processTimers (node:internal/timers:507:7)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-08-08T06:28:21.624Z] ----------------------------------------------------------------------
+[debug] [2023-08-08T06:28:21.626Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\mquir\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2023-08-08T06:28:21.626Z] CLI Version:   11.24.0
+[debug] [2023-08-08T06:28:21.626Z] Platform:      win32
+[debug] [2023-08-08T06:28:21.627Z] Node Version:  v18.13.0
+[debug] [2023-08-08T06:28:21.627Z] Time:          Tue Aug 08 2023 00:28:21 GMT-0600 (hora estándar central)
+[debug] [2023-08-08T06:28:21.628Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-08-08T06:28:21.703Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-08-08T06:28:21.704Z] > authorizing via signed-in user (mquirosp78@gmail.com)
+[debug] [2023-08-08T06:28:21.704Z] [iam] checking project verduleria-app-142c1 for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2023-08-08T06:28:21.706Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/verduleria-app-142c1:testIamPermissions [none]
+[debug] [2023-08-08T06:28:21.706Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/verduleria-app-142c1:testIamPermissions x-goog-quota-user=projects/verduleria-app-142c1
+[debug] [2023-08-08T06:28:21.707Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/verduleria-app-142c1:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2023-08-08T06:28:42.904Z] [iam] error while checking permissions, command may fail: FirebaseError: Failed to make request to https://cloudresourcemanager.googleapis.com/v1/projects/verduleria-app-142c1:testIamPermissions
+[debug] [2023-08-08T06:28:42.905Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/verduleria-app-142c1 [none]
+[debug] [2023-08-08T06:29:04.024Z] Failed to make request to https://firebase.googleapis.com/v1beta1/projects/verduleria-app-142c1
+[debug] [2023-08-08T06:29:09.124Z] Error: Timed out.
+    at Timeout._onTimeout (C:\Users\mquir\AppData\Roaming\npm\node_modules\firebase-tools\lib\utils.js:253:49)
+    at listOnTimeout (node:internal/timers:564:17)
+    at process.processTimers (node:internal/timers:507:7)
+[error] 
+[error] Error: An unexpected error has occurred.
