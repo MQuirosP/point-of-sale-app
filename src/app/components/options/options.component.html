@@ -183,7 +183,7 @@
       </section>
     </div>
   </div>
-  <div style="margin-bottom: 95px"></div>
+  <div style="margin-bottom: 80px"></div>
 </div>
 
 <!-- Modal para listado de proveedores -->
@@ -212,7 +212,7 @@
       </div>
       <div class="modal-body">
         <!-- Contenido del modal -->
-        <div class="container pt-2 pb-2">
+        <div class="mb-3">
           <label for="providerSearch">Buscar proveedor:</label>
           <input
             type="text"
@@ -224,25 +224,26 @@
             autocomplete="new-password"
           />
         </div>
-        <div class="w-100">
+        <div class="">
           <div class="table-responsive">
             <table class="table">
               <thead>
                 <tr>
-                  <th style="width: 40%">Nombre</th>
-                  <th style="width: 30%">Email</th>
-                  <th style="width: 30%">Teléfono</th>
+                  <th>Nombre</th>
+                  <th>Email</th>
+                  <th>Teléfono</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let provider of filteredProviders">
-                  <td class="bg-transparent d-flex justify-content-between" (click)="provider.showIcons = !provider.showIcons">
-                    <span
-                      class="product-name"
-                      style="cursor: pointer; width: 75%"
-                      
-                      tabindex="0"
-                    >
+                <tr
+                  *ngFor="let provider of filteredProviders; let even = even"
+                  [ngClass]="{ 'table-row-even': even, 'table-row-odd': !even }"
+                >
+                  <td
+                    class="d-flex justify-content-between"
+                    (click)="provider.showIcons = !provider.showIcons"
+                  >
+                    <span class="" style="cursor: pointer" tabindex="0">
                       {{ provider.provider_name }}
                     </span>
                     <span
@@ -261,7 +262,7 @@
                       >
                         <i
                           class="fa-solid fa-pen-to-square clic-on-icon"
-                          style="color: #1100fa; cursor: pointer"
+                          style="color: #1100fa"
                         ></i>
                       </a>
                       <a
@@ -270,8 +271,8 @@
                         (click)="deleteProvider(provider.provider_id)"
                       >
                         <i
-                          class="fa-solid fa-trash clic-on-icon"
-                          style="color: #fa0000; cursor: pointer"
+                          class="fas fa-solid fa-trash clic-on-icon"
+                          style="color: #fa0000"
                         ></i>
                       </a>
                     </span>
@@ -502,7 +503,7 @@
       </div>
       <div class="modal-body">
         <!-- Contenido del modal -->
-        <div class="container pt-2 pb-2">
+        <div class="mb-3">
           <label for="customerSearch">Buscar cliente:</label>
           <input
             type="text"
@@ -519,27 +520,29 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th style="width: 250px">Nombre</th>
-                  <th style="width: 200px">Email</th>
-                  <th style="width: 150px">Teléfono</th>
+                  <th>Nombre</th>
+                  <th>Email</th>
+                  <th>Teléfono</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let customer of filteredCustomers">
+                <tr
+                  *ngFor="let customer of filteredCustomers; let even = even"
+                  [ngClass]="{ 'table-row-even': even, 'table-row-odd': !even }"
+                >
                   <td
-                    class="bg-transparent d-flex justify-content-between"
-                    style="width: 250px;"
+                    class="d-flex justify-content-between"
                     (click)="customer.showIcons = !customer.showIcons"
                   >
                     <span
-                      class="product-name"
+                      class=""
                       style="cursor: pointer"
                       tabindex="-1"
                     >
                       {{ customer.customer_name }}
                       {{ customer.customer_first_lastname }}
                     </span>
-                    <div
+                    <span
                       class="utilitary-icons show-icons align-items-end"
                       [ngClass]="{ 'show-icons': customer.showIcons }"
                     >
@@ -555,7 +558,7 @@
                       >
                         <i
                           class="fa-solid fa-pen-to-square clic-on-icon"
-                          style="color: #1100fa; cursor: pointer"
+                          style="color: #1100fa;"
                         ></i>
                       </a>
                       <a
@@ -568,12 +571,12 @@
                           style="color: #fa0000; cursor: pointer"
                         ></i>
                       </a>
-                    </div>
+                    </span>
                   </td>
-                  <td class="text-left" style="width: 200px;">
+                  <td class="text-left">
                     {{ customer.customer_email }}
                   </td>
-                  <td class="text-left" style="width: 150px;">
+                  <td class="text-left">
                     {{ customer.customer_phone }}
                   </td>
                 </tr>
@@ -835,7 +838,7 @@
       </div>
       <div class="modal-body">
         <!-- Contenido del modal -->
-        <div class="container pt-2 pb-2">
+        <div class="mb-3">
           <label for="userSearch">Buscar usuario:</label>
           <input
             type="text"
@@ -847,24 +850,26 @@
             autocomplete="new-password"
           />
         </div>
-        <div class="w-100">
+        <div class="">
           <div class="table-responsive">
             <table class="table">
               <thead>
                 <tr>
-                  <th style="width: 40%">Usuario</th>
-                  <th style="width: 30%">Rol</th>
-                  <th style="width: 30%">Status</th>
+                  <th>Usuario</th>
+                  <th>Rol</th>
+                  <th>Status</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let user of filteredUsers">
+                <tr *ngFor="let user of filteredUsers; let even = even"
+                [ngClass]="{ 'table-row-even': even, 'table-row-odd': !even }"
+                >
                   <td
                     class="bg-transparent d-flex justify-content-between"
                     (click)="user.showIcons = !user.showIcons"
                   >
                     <span
-                      class="product-name"
+                      class=""
                       style="cursor: pointer"
                       tabindex="0"
                     >

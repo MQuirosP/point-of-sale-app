@@ -356,6 +356,10 @@ button {
   min-height: 110%;
 } */
 
+.clic-on-icon {
+  cursor: pointer;
+}
+
 /* Efecto íconos */
 .clic-on-icon:hover {
   transform: scale(1.15);
@@ -574,7 +578,7 @@ button {
   margin: 0.5% 1%;
   border-radius: 10px;
   border: 1px solid darkgray;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2), 0 0 10px rgba(0, 0, 0, 0.1),
+  box-shadow: inset 0 0 10px #00000033, 0 0 10px rgba(0, 0, 0, 0.1),
     0 0 20px rgba(0, 0, 0, 0.1), 0 0 30px rgba(0, 0, 0, 0.1);
 }
 

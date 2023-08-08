@@ -7,3 +7,7 @@
   min-height: 175px;
   max-height: auto;
 }
+
+td {
+  padding: 10px 10px;
+}
