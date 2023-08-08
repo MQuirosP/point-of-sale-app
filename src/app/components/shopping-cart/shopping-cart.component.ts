@@ -426,25 +426,12 @@ export class ShoppingCartComponent {
     this.productSuggestionList = []; // Limpiar la lista de sugerencias
   }
 
-  handleKeyDown(event: KeyboardEvent) {
-    if (event.key === 'ArrowDown') {
-      event.preventDefault();
-      if (this.selectedIndex < this.productSuggestionList.length - 1) {
-        this.selectedIndex++;
-      }
-    } else if (event.key === 'ArrowUp') {
-      event.preventDefault();
-      if (this.selectedIndex > 0) {
-        this.selectedIndex--;
-      }
-    } else if (event.key === 'Enter') {
-      event.preventDefault();
+  handleKeyDown(event: Event) {
       if (this.selectedIndex !== -1) {
         const selectedSuggestion =
           this.productSuggestionList[this.selectedIndex];
         this.handleSuggestionClick(event, selectedSuggestion);
       }
-    }
   }
 
   isValidQuantity(): boolean {

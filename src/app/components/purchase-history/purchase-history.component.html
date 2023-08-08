@@ -216,14 +216,11 @@
                 <div
                   class="suggestion-list position-fixed text-white bg-dark"
                   [style.width.px]="nameInput.offsetWidth"
-                  [style.z-index]="999"
-                  [style.max-height.px]="300"
-                  [style.overflow-y]="'auto'"
                 >
                   <ul
                     id="suggestionOptions"
                     class="list-unstyled"
-                    style="margin: 0; padding: 0 5px"
+                    style="margin: 0; padding: 0 1px"
                   >
                     <li
                       *ngFor="
@@ -231,7 +228,6 @@
                         let i = index
                       "
                       [class.selected]="selectedIndex === i"
-                      class=""
                     >
                       <a
                         href="#"
@@ -239,6 +235,7 @@
                         style="color: black"
                         (click)="handleSuggestionClick($event, suggestion)"
                         style="color: #fff"
+                        tabindex="-1"
                       >
                         {{ suggestion.name }}
                       </a>

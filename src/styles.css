@@ -107,10 +107,9 @@ header {
 .dropdown-item {
   opacity: 0.5;
   border: 1px solid transparent;
-  /* max-width: 200px; */
 }
 
-.dropdown-item:hover {
+.dropdown-item:hover, .dropdown-item:focus {
   border: 1px solid white;
   border-radius: 5px;
   background-color: rgb(197, 197, 197);
@@ -628,6 +627,14 @@ h5.card-title {
 
 input::-webkit-search-cancel-button {
   cursor: pointer;
+}
+
+.suggestion-list {
+  z-index: 999;
+  max-height: 300px;
+  border-radius: 3px;
+  overflow-y: auto;
+  border-right: 1px solid darkgray;
 }
 
 .datalist-no-arrow::-webkit-calendar-picker-indicator {

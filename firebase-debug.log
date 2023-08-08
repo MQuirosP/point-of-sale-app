@@ -1,0 +1,14 @@
+[debug] [2023-08-08T06:12:30.391Z] ----------------------------------------------------------------------
+[debug] [2023-08-08T06:12:30.392Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\mquir\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2023-08-08T06:12:30.393Z] CLI Version:   11.24.0
+[debug] [2023-08-08T06:12:30.393Z] Platform:      win32
+[debug] [2023-08-08T06:12:30.393Z] Node Version:  v18.13.0
+[debug] [2023-08-08T06:12:30.394Z] Time:          Tue Aug 08 2023 00:12:30 GMT-0600 (hora estándar central)
+[debug] [2023-08-08T06:12:30.394Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-08-08T06:12:30.472Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-08-08T06:12:30.473Z] > authorizing via signed-in user (mquirosp78@gmail.com)
+[debug] [2023-08-08T06:12:30.473Z] [iam] checking project verduleria-app-142c1 for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2023-08-08T06:12:30.475Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/verduleria-app-142c1:testIamPermissions [none]
+[debug] [2023-08-08T06:12:30.476Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/verduleria-app-142c1:testIamPermissions x-goog-quota-user=projects/verduleria-app-142c1
+[debug] [2023-08-08T06:12:30.476Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/verduleria-app-142c1:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}

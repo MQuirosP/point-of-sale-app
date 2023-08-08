@@ -153,7 +153,7 @@ export class PurchaseHistoryComponent {
   purchaseHistoryModal!: ElementRef;
   @ViewChild('productQuantityInput')
   productQuantityInput: ElementRef<HTMLInputElement>;
-  @ViewChild('productNameInput') productNameInput!: ElementRef;
+  @ViewChild('nameInput') nameInput!: ElementRef;
   selectedProvider: any;
   selectedIndex: number = -1;
 
@@ -472,7 +472,7 @@ export class PurchaseHistoryComponent {
     product.isNew = false;
     this.calculateTotalPurchaseAmount();
     this.resetFormFields();
-    this.productNameInput.nativeElement.focus();
+    this.nameInput.nativeElement.focus();
   }
 
   private getProductFromCache(intCode: any): Product | undefined {
@@ -578,7 +578,7 @@ export class PurchaseHistoryComponent {
     const docNumber = this.purchaseForm.get('doc_number')?.value;
 
     if (!docNumber) {
-      this.toastr.error('Por favor ingresa un número de documento.');
+      this.toastr.warning('Por favor ingresa un número de documento.');
       event.stopPropagation();
       return false;
     }
