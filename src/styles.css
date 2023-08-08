@@ -114,9 +114,10 @@ header {
   border: 1px solid white;
   border-radius: 5px;
   background-color: rgb(197, 197, 197);
+  color: #000 !important;
   opacity: 1;
   transition: 0.15s ease;
-  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2), -4px -4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2), -4px -4px -8px rgba(0, 0, 0, 0.2);
 }
 
 @media (max-width: 767px) {
@@ -628,7 +629,6 @@ h5.card-title {
 input::-webkit-search-cancel-button {
   cursor: pointer;
 }
-
 
 .datalist-no-arrow::-webkit-calendar-picker-indicator {
   opacity: 0;

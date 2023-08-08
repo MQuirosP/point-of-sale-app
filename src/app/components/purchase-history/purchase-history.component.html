@@ -5,7 +5,7 @@
       <div class="col-md-8" [@fadeAnimation]>
         <h1><i class="fas fa-bucket"></i> Mis compras</h1>
       </div>
-      <div class="col-md-4 d-none d-md-block" style="visibility: hidden;">
+      <div class="col-md-4 d-none d-md-block" style="visibility: hidden">
         <label for="search">Buscar producto:</label>
         <input
           type="search"
@@ -97,9 +97,7 @@
     </div>
   </div>
 </div>
-<div style="margin-bottom: 100px;">
-
-</div>
+<div style="margin-bottom: 100px"></div>
 
 <!-- Modal para crear compras -->
 <form [formGroup]="purchaseForm">
@@ -111,10 +109,7 @@
     role="dialog"
     aria-hidden="true"
   >
-    <div
-      class="modal-dialog modal-lg shadow"
-      role="document"
-    >
+    <div class="modal-dialog modal-lg shadow" role="document">
       <div class="modal-content">
         <div class="modal-header border">
           <h5 class="modal-title">Registro de compras</h5>
@@ -152,7 +147,6 @@
                   }"
                   placeholder="Seleccione proveedor..."
                   (input)="searchProviders($event)"
-                  
                   list="providerOptions"
                 />
                 <datalist id="providerOptions" role="listbox">
@@ -204,30 +198,53 @@
                   id="product_name"
                   formControlName="product_name"
                   class="form-control datalist-no-arrow"
-                  (keyup)="searchProduct()"
+                  (input)="searchProduct()"
                   (focus)="handleBarcodeInput($event)"
                   autocomplete="off"
                   placeholder="Seleccione producto..."
                   [ngClass]="{
                     'is-valid':
-                    purchaseForm.get('product_name').touched &&
-                    purchaseForm.get('product_name').valid,
+                      purchaseForm.get('product_name').touched &&
+                      purchaseForm.get('product_name').valid,
                     'is-invalid':
-                    purchaseForm.get('product_name').touched &&
-                    purchaseForm.get('product_name').invalid
+                      purchaseForm.get('product_name').touched &&
+                      purchaseForm.get('product_name').invalid
                   }"
-                  #productNameInput
-                  list="suggestionOptions"
+                  #nameInput
+                  (keydown)="handleKeyDown($event)"
                 />
-                <datalist id="suggestionOptions">
-                  <option
-                    *ngFor="let suggestion of productSuggestionList"
-                    [ngValue]="suggestion"
+                <div
+                  class="suggestion-list position-fixed text-white bg-dark"
+                  [style.width.px]="nameInput.offsetWidth"
+                  [style.z-index]="999"
+                  [style.max-height.px]="200"
+                  [style.overflow-y]="'auto'"
+                >
+                  <ul
+                    id="suggestionOptions"
+                    class="list-unstyled"
+                    style="margin: 0; padding: 0 5px"
                   >
-                    {{ suggestion.name }}
-                  </option>
-                </datalist>
-
+                    <li
+                      *ngFor="
+                        let suggestion of productSuggestionList;
+                        let i = index
+                      "
+                      [class.selected]="selectedIndex === i"
+                      class=""
+                    >
+                      <a
+                        href="#"
+                        class="dropdown-item"
+                        style="color: black"
+                        (click)="handleSuggestionClick($event, suggestion)"
+                        style="color: #fff"
+                      >
+                        {{ suggestion.name }}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </div>
               <div class="form-group form-row">
                 <div class="col">
@@ -475,9 +492,7 @@
           aria-label="Close"
           (click)="closePurchaseHistoryModal()"
         >
-          <span aria-hidden="true"
-            ><i class="fa fa-times-circle"></i
-          ></span>
+          <span aria-hidden="true"><i class="fa fa-times-circle"></i></span>
         </button>
       </div>
       <div class="modal-body">

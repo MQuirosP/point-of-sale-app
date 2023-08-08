@@ -5,7 +5,7 @@
       <div class="col-md-8" [@fadeAnimation]>
         <h1><i class="fas fa-shop"></i> Mis ventas</h1>
       </div>
-      <div class="col-md-4 d-none d-md-block" style="visibility: hidden;">
+      <div class="col-md-4 d-none d-md-block" style="visibility: hidden">
         <label for="search">Buscar producto:</label>
         <input
           type="search"
@@ -98,9 +98,7 @@
     </div>
   </div>
 </div>
-<div style="margin-bottom: 100px;">
-
-</div>
+<div style="margin-bottom: 100px"></div>
 
 <!-- Modal para crear ventas -->
 <form [formGroup]="saleForm">
@@ -112,10 +110,7 @@
     role="dialog"
     aria-hidden="true"
   >
-    <div
-      class="modal-dialog modal-lg shadow"
-      role="document"
-    >
+    <div class="modal-dialog modal-lg shadow" role="document">
       <div class="modal-content">
         <div class="modal-header border">
           <h5 class="modal-title">Registro de ventas</h5>
@@ -205,7 +200,6 @@
                   class="form-control datalist-no-arrow"
                   (input)="searchProduct()"
                   (focus)="handleBarcodeInput($event)"
-                  (keydown.enter)="addProduct()"
                   autocomplete="off"
                   placeholder="Seleccione producto..."
                   [ngClass]="{
@@ -217,16 +211,39 @@
                       saleForm.get('product_name').invalid
                   }"
                   #nameInput
-                  list="suggestionOptions"
+                  (keydown)="handleKeyDown($event)"
                 />
-                <datalist id="suggestionOptions">
-                  <option
-                    *ngFor="let suggestion of productSuggestionList"
-                    [ngValue]="suggestion"
+                <div
+                  class="suggestion-list position-fixed text-white bg-dark"
+                  [style.width.px]="nameInput.offsetWidth"
+                  [style.z-index]="999"
+                  [style.max-height.px]="200"
+                  [style.overflow-y]="'auto'"
+                >
+                  <ul
+                    id="suggestionOptions"
+                    class="list-unstyled"
+                    style="margin: 0; padding: 0 5px"
                   >
-                    {{ suggestion.name }}
-                  </option>
-                </datalist>
+                    <li
+                      *ngFor="
+                        let suggestion of productSuggestionList;
+                        let i = index
+                      "
+                      [class.selected]="selectedIndex === i"
+                      class=""
+                    >
+                      <a
+                        href="#"
+                        class="dropdown-item"
+                        (click)="handleSuggestionClick($event, suggestion)"
+                        style="color: #fff"
+                      >
+                        {{ suggestion.name }}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </div>
               <div class="form-group form-row">
                 <div class="col">
@@ -459,9 +476,7 @@
           aria-label="Close"
           (click)="closeSaleHistoryModal()"
         >
-          <span aria-hidden="true"
-            ><i class="fa fa-times-circle"></i
-          ></span>
+          <span aria-hidden="true"><i class="fa fa-times-circle"></i></span>
         </button>
       </div>
       <div class="modal-body">

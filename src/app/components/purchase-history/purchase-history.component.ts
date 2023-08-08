@@ -155,6 +155,7 @@ export class PurchaseHistoryComponent {
   productQuantityInput: ElementRef<HTMLInputElement>;
   @ViewChild('productNameInput') productNameInput!: ElementRef;
   selectedProvider: any;
+  selectedIndex: number = -1;
 
   constructor(
     private http: HttpClient,
@@ -280,7 +281,7 @@ export class PurchaseHistoryComponent {
 
   searchProduct() {
     const productNameControl = this.purchaseForm.get('product_name').value;
-    
+
     const searchTerm = productNameControl?.toLowerCase().trim() || '';
     if (!searchTerm) {
       this.clearProductSuggestions();
@@ -312,6 +313,7 @@ export class PurchaseHistoryComponent {
     const searchPattern = searchTermNormalized
       .toLowerCase()
       .replace(/\*/g, '.*');
+
     const regex = new RegExp(searchPattern);
 
     this.productSuggestionList = products.filter((product: any) => {
@@ -387,6 +389,46 @@ export class PurchaseHistoryComponent {
     }
   }
 
+  handleSuggestionClick(event: Event, suggestion: any) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const searchTerm = suggestion.name?.toLowerCase().trim() || '';
+    const suggestionName = suggestion.name.toLowerCase().trim();
+    this.int_code = suggestion.int_code;
+    this.selectedProductPrice = suggestion.sale_price;
+
+    if (suggestionName === searchTerm) {
+      this.selectProductSuggestion(suggestion, null);
+      this.selectedProduct = suggestion;
+    } else {
+      this.selectedProduct = null;
+    }
+
+    this.productSuggestionList = [];
+  }
+
+  handleKeyDown(event: KeyboardEvent) {
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      if (this.selectedIndex < this.productSuggestionList.length - 1) {
+        this.selectedIndex++;
+      }
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      if (this.selectedIndex > 0) {
+        this.selectedIndex--;
+      }
+    } else if (event.key === 'Enter') {
+      event.preventDefault();
+      if (this.selectedIndex !== -1) {
+        const selectedSuggestion =
+          this.productSuggestionList[this.selectedIndex];
+        this.handleSuggestionClick(event, selectedSuggestion);
+      }
+    }
+  }
+
   addProduct() {
     const productName = this.purchaseForm.get('product_name');
     const productQuantity = this.purchaseForm.get('product_quantity');
@@ -397,7 +439,9 @@ export class PurchaseHistoryComponent {
       productQuantity?.invalid ||
       productNewPrice?.invalid
     ) {
-      this.toastr.warning('Se deben completar todos los campos.');
+      this.toastr.warning(
+        'Se debe seleccionar un producto para agregar a la lista.'
+      );
       return;
     }
 
@@ -428,6 +472,7 @@ export class PurchaseHistoryComponent {
     product.isNew = false;
     this.calculateTotalPurchaseAmount();
     this.resetFormFields();
+    this.productNameInput.nativeElement.focus();
   }
 
   private getProductFromCache(intCode: any): Product | undefined {
@@ -539,7 +584,9 @@ export class PurchaseHistoryComponent {
     }
 
     if (this.productList.length === 0) {
-      this.toastr.error('Agrega al menos un producto a la lista.');
+      this.toastr.error(
+        'Se debe seleccionar un producto para agregar a la lista..'
+      );
       event.stopPropagation();
       return false;
     }
@@ -584,7 +631,7 @@ export class PurchaseHistoryComponent {
       taxes_amount: this.totalTaxesAmount || 0,
       products: this.productList.map((product) => ({ ...product })),
     };
-  
+
     this.purchaseService.createPurchase(purchase).subscribe({
       next: () => {
         this.toastr.success('Compra registrada exitosamente.');

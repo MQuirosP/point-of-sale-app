@@ -142,6 +142,7 @@ export class ShoppingCartComponent {
   @ViewChild('nameInput') nameInput!: ElementRef;
   selectedProduct: any;
   product_name: any;
+  selectedIndex: number = -1;
 
   constructor(
     private http: HttpClient,
@@ -298,13 +299,8 @@ export class ShoppingCartComponent {
   searchProduct() {
     const productNameControl = this.saleForm.get('product_name').value;
 
-    if (productNameControl === '') {
-      this.clearProductSuggestions();
-      this.saleForm.get('product_price').setValue(null);
-    }
-
     const searchTerm = productNameControl?.toLowerCase().trim() || '';
-    if (!searchTerm) {
+    if (searchTerm === '') {
       this.clearProductSuggestions();
       return;
     }
@@ -318,7 +314,6 @@ export class ShoppingCartComponent {
         } else {
           this.clearProductSuggestions();
         }
-
         this.updateSelectedProductPrice();
       },
       error: (error: any) => {
@@ -332,7 +327,6 @@ export class ShoppingCartComponent {
     const searchTermNormalized = searchTerm
       ? searchTerm.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
       : '';
-
     const searchPattern = searchTermNormalized
       .toLowerCase()
       .replace(/\*/g, '.*');
@@ -343,7 +337,6 @@ export class ShoppingCartComponent {
       const productNameNormalized = product.name
         ? product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
         : '';
-
       const productCodeNormalized = product.int_code
         ? product.int_code.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
         : '';
@@ -353,12 +346,6 @@ export class ShoppingCartComponent {
         regex.test(productCodeNormalized.toLowerCase())
       );
     });
-
-    if (this.productSuggestionList.length === 1) {
-      this.selectSingleProduct();
-    } else {
-      this.selectedProduct = null;
-    }
   }
 
   private selectSingleProduct() {
@@ -380,27 +367,14 @@ export class ShoppingCartComponent {
   }
 
   private clearProductSuggestions() {
+    this.saleForm.get('product_price').setValue(0);
     this.productSuggestionList = [];
     this.selectedProduct = null;
     this.selectedProductTaxes = null;
     this.selectedProductPrice = null;
   }
 
-  handleBarcodeInput(event: Event) {
-    const inputValue = (event.target as HTMLInputElement).value.trim();
-
-    if (inputValue) {
-      const matchingProduct = this.filteredProducts.find((product: any) => {
-        return product.int_code === inputValue;
-      });
-
-      if (matchingProduct) {
-        this.selectProductSuggestion(matchingProduct, null);
-      }
-    }
-  }
-
-  private selectProductSuggestion(product: any, event: Event) {
+  selectProductSuggestion(product: any, event: Event) {
     if (event) {
       event.preventDefault();
     }
@@ -412,8 +386,65 @@ export class ShoppingCartComponent {
     this.selectedProduct = product;
     this.productSuggestionList = [];
     setTimeout(() => {
-      this.nameInput.nativeElement.focus();
+      this.addProduct();
+      this.selectedProductPrice = 0;
     }, 0);
+  }
+
+  handleBarcodeInput(event: Event) {
+    const inputValue = (event.target as HTMLInputElement).value.trim();
+
+    if (inputValue) {
+      const matchingProduct = this.productSuggestionList.find(
+        (product: any) => {
+          return product.int_code === inputValue;
+        }
+      );
+
+      if (matchingProduct) {
+        this.selectProductSuggestion(matchingProduct, null);
+      }
+    }
+  }
+
+  handleSuggestionClick(event: Event, suggestion: any) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const searchTerm = suggestion.name?.toLowerCase().trim() || '';
+    const suggestionName = suggestion.name.toLowerCase().trim();
+    this.int_code = suggestion.int_code;
+    this.selectedProductPrice = suggestion.sale_price;
+
+    if (suggestionName === searchTerm) {
+      this.selectProductSuggestion(suggestion, null);
+      this.selectedProduct = suggestion;
+    } else {
+      this.selectedProduct = null;
+    }
+
+    this.productSuggestionList = []; // Limpiar la lista de sugerencias
+  }
+
+  handleKeyDown(event: KeyboardEvent) {
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      if (this.selectedIndex < this.productSuggestionList.length - 1) {
+        this.selectedIndex++;
+      }
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      if (this.selectedIndex > 0) {
+        this.selectedIndex--;
+      }
+    } else if (event.key === 'Enter') {
+      event.preventDefault();
+      if (this.selectedIndex !== -1) {
+        const selectedSuggestion =
+          this.productSuggestionList[this.selectedIndex];
+        this.handleSuggestionClick(event, selectedSuggestion);
+      }
+    }
   }
 
   isValidQuantity(): boolean {
@@ -444,7 +475,7 @@ export class ShoppingCartComponent {
         this.TAXES = productData.taxPercentage;
 
         if (productQuantity > productData.quantity) {
-          this.toastr.error(
+          this.toastr.warning(
             `Stock de producto ${productData.name} inferior al digitado.`
           );
           return;
@@ -470,7 +501,7 @@ export class ShoppingCartComponent {
         product.total = product.sub_total + product.taxes_amount;
 
         if (product.total === 0) {
-          this.toastr.error('Se deben suministrar todos los campos.');
+          this.toastr.warning('Se deben suministrar todos los campos.');
           return;
         }
         this.updateProductList(product);
@@ -482,8 +513,8 @@ export class ShoppingCartComponent {
         }, 0);
       },
       error: (response: any) => {
-        this.toastr.error(
-          'No se pudo recuperar la información de impuestos del producto.'
+        this.toastr.warning(
+          'Se debe seleccionar un producto para agregar a la lista.'
         );
       },
     });
@@ -655,7 +686,11 @@ export class ShoppingCartComponent {
     );
 
     if (productIndex !== -1) {
-      this.getProductDataAndUpdateProductList(product, newQuantity, productIndex);
+      this.getProductDataAndUpdateProductList(
+        product,
+        newQuantity,
+        productIndex
+      );
     }
   }
 
@@ -678,8 +713,7 @@ export class ShoppingCartComponent {
           this.productList[productIndex].quantity = newQuantity;
           this.productList[productIndex].taxes_amount =
             taxesAmount * newQuantity;
-          this.productList[productIndex].sub_total =
-            subTotal * newQuantity;
+          this.productList[productIndex].sub_total = subTotal * newQuantity;
           this.productList[productIndex].total =
             this.productList[productIndex].sub_total +
             this.productList[productIndex].taxes_amount;
