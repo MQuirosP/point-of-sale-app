@@ -183,9 +183,7 @@
       </section>
     </div>
   </div>
-  <div style="margin-bottom: 95px;">
-
-  </div>
+  <div style="margin-bottom: 95px"></div>
 </div>
 
 <!-- Modal para listado de proveedores -->
@@ -198,7 +196,7 @@
   aria-labelledby="providerListModalLabel"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-dialog-scrollable" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header border">
         <h5 class="modal-title">Mantenimiento de proveedores</h5>
@@ -209,9 +207,7 @@
           (click)="closeProviderListModal()"
           aria-label="Cerrar"
         >
-          <span aria-hidden="true"
-            ><i class="fas fa-close"></i
-          ></span>
+          <span aria-hidden="true"><i class="fas fa-close"></i></span>
         </button>
       </div>
       <div class="modal-body">
@@ -240,17 +236,17 @@
               </thead>
               <tbody>
                 <tr *ngFor="let provider of filteredProviders">
-                  <td class="bg-transparent">
+                  <td class="bg-transparent d-flex justify-content-between" (click)="provider.showIcons = !provider.showIcons">
                     <span
                       class="product-name"
-                      style="cursor: pointer"
-                      (click)="provider.showIcons = !provider.showIcons"
+                      style="cursor: pointer; width: 75%"
+                      
                       tabindex="0"
                     >
                       {{ provider.provider_name }}
                     </span>
-                    <div
-                      class="product-icons text-left"
+                    <span
+                      class="utilitary-icons show-icons text-left"
                       [ngClass]="{ 'show-icons': provider.showIcons }"
                     >
                       <a
@@ -278,7 +274,7 @@
                           style="color: #fa0000; cursor: pointer"
                         ></i>
                       </a>
-                    </div>
+                    </span>
                   </td>
                   <td class="text-left">
                     {{ provider.provider_email }}
@@ -326,7 +322,7 @@
   aria-labelledby="providerInfoModalLabel"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-dialog-scrollable" role="document">
+  <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header border">
         <h5 class="modal-title" id="providerInfoModalLabel">
@@ -339,9 +335,7 @@
           aria-label="Close"
           (click)="closeProviderInfoModal()"
         >
-          <span aria-hidden="true"
-            ><i class="fas fa-close"></i
-          ></span>
+          <span aria-hidden="true"><i class="fas fa-close"></i></span>
         </button>
       </div>
       <div class="modal-body">
@@ -492,7 +486,7 @@
   aria-labelledby="customerListModalLabel"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-dialog-scrollable" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header border">
         <h5 class="modal-title">Mantenimiento de clientes</h5>
@@ -503,9 +497,7 @@
           (click)="closeCustomerListModal()"
           aria-label="Cerrar"
         >
-          <span aria-hidden="true"
-            ><i class="fas fa-close"></i
-          ></span>
+          <span aria-hidden="true"><i class="fas fa-close"></i></span>
         </button>
       </div>
       <div class="modal-body">
@@ -522,30 +514,33 @@
             autocomplete="new-password"
           />
         </div>
-        <div class="w-100">
+        <div class="">
           <div class="table-responsive">
             <table class="table">
               <thead>
                 <tr>
-                  <th style="width: 40%">Nombre</th>
-                  <th style="width: 30%">Email</th>
-                  <th style="width: 30%">Teléfono</th>
+                  <th style="width: 250px">Nombre</th>
+                  <th style="width: 200px">Email</th>
+                  <th style="width: 150px">Teléfono</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let customer of filteredCustomers">
-                  <td class="bg-transparent">
+                  <td
+                    class="bg-transparent d-flex justify-content-between"
+                    style="width: 250px;"
+                    (click)="customer.showIcons = !customer.showIcons"
+                  >
                     <span
                       class="product-name"
                       style="cursor: pointer"
-                      (click)="customer.showIcons = !customer.showIcons"
-                      tabindex="0"
+                      tabindex="-1"
                     >
                       {{ customer.customer_name }}
                       {{ customer.customer_first_lastname }}
                     </span>
                     <div
-                      class="product-icons text-left"
+                      class="utilitary-icons show-icons align-items-end"
                       [ngClass]="{ 'show-icons': customer.showIcons }"
                     >
                       <a
@@ -575,10 +570,10 @@
                       </a>
                     </div>
                   </td>
-                  <td class="text-left">
+                  <td class="text-left" style="width: 200px;">
                     {{ customer.customer_email }}
                   </td>
-                  <td class="text-left">
+                  <td class="text-left" style="width: 150px;">
                     {{ customer.customer_phone }}
                   </td>
                 </tr>
@@ -620,7 +615,7 @@
   aria-labelledby="customerInfoModalLabel"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-dialog-scrollable" role="document">
+  <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header border">
         <h5 class="modal-title" id="customerInfoModalLabel">
@@ -633,9 +628,7 @@
           aria-label="Close"
           (click)="closeCustomerInfoModal()"
         >
-          <span aria-hidden="true"
-            ><i class="fas fa-close"></i
-          ></span>
+          <span aria-hidden="true"><i class="fas fa-close"></i></span>
         </button>
       </div>
       <div class="modal-body">
@@ -837,9 +830,7 @@
           (click)="closeUsersListModal()"
           aria-label="Cerrar"
         >
-          <span aria-hidden="true"
-            ><i class="fas fa-close"></i
-          ></span>
+          <span aria-hidden="true"><i class="fas fa-close"></i></span>
         </button>
       </div>
       <div class="modal-body">
@@ -868,17 +859,19 @@
               </thead>
               <tbody>
                 <tr *ngFor="let user of filteredUsers">
-                  <td class="bg-transparent">
+                  <td
+                    class="bg-transparent d-flex justify-content-between"
+                    (click)="user.showIcons = !user.showIcons"
+                  >
                     <span
                       class="product-name"
                       style="cursor: pointer"
-                      (click)="user.showIcons = !user.showIcons"
                       tabindex="0"
                     >
                       {{ user.username }}
                     </span>
-                    <div
-                      class="product-icons text-left"
+                    <span
+                      class="utilitary-icons show-icons align-items-end"
                       [ngClass]="{ 'show-icons': user.showIcons }"
                     >
                       <a
@@ -909,7 +902,7 @@
                           style="color: #fa0000; cursor: pointer"
                         ></i>
                       </a>
-                    </div>
+                    </span>
                   </td>
                   <td class="text-left">
                     {{ user.role }}
@@ -964,7 +957,7 @@
   aria-labelledby="userInfoModalLabel"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-dialog-scrollable" role="document">
+  <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header border">
         <h5 class="modal-title" id="userInfoModalLabel">
@@ -977,9 +970,7 @@
           aria-label="Close"
           (click)="closeUserInfoModal()"
         >
-          <span aria-hidden="true"
-            ><i class="fas fa-close"></i
-          ></span>
+          <span aria-hidden="true"><i class="fas fa-close"></i></span>
         </button>
       </div>
       <div class="modal-body">

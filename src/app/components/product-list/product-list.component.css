@@ -21,3 +21,24 @@ th {
   padding-top: 8px;
   padding-bottom: 8px;
 }
+
+/* Estilos para dispositivos móviles */
+@media screen and (max-width: 900px) {
+  .d-flex {
+    flex-wrap: wrap;
+  }
+
+  .product-name {
+    text-align: left;
+    width: 100%;
+    overflow: hidden;
+    white-space: normal;
+    text-overflow: ellipsis;
+  }
+
+  .product-icons {
+    flex: content;
+    justify-content: space-between;
+  }
+}
+
