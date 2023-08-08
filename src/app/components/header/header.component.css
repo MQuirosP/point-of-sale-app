@@ -1,3 +1,11 @@
+.error-message {
+  /* Establecer estilos para los mensajes de error */
+  position: absolute;
+  color: red;
+  font-size: 10px;
+  margin-top: 4px;
+}
+
 .navbar-toggler span {
   display: block;
   background-color: #c2b9b9;
@@ -38,3 +46,4 @@
 .navbar-toggler span:nth-child(3) {
   transform: translate(0%, 0%) rotate(0deg) ;
 }
+
