@@ -347,19 +347,20 @@ button {
   background-color: transparent;
 }
 
-/* .app-container {
-  min-height: 110%;
-} */
+.close{
+  padding: 5px !important;
+  margin: auto 0 !important;
+}
 
 /* Efecto íconos */
 .clic-on-icon:hover {
-  transform: scale(1.15);
-  transition: transform 0.3s ease-in-out;
+  transform: scale(1.1);
+  transition: transform 0.1s ease-in-out;
 }
 
 .clic-on-icon:active {
   transform: scale(0.95);
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.2s ease-in-out;
 }
 
 /* Botón scroll up */
