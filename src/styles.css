@@ -22,11 +22,6 @@ html {
   }
 }
 
-/* .no-scroll {
-  height: 100%;
-  overflow-y: hidden;
-} */
-
 body {
   display: flex;
   flex-direction: column;
@@ -356,10 +351,6 @@ button {
   min-height: 110%;
 } */
 
-.clic-on-icon {
-  cursor: pointer;
-}
-
 /* Efecto íconos */
 .clic-on-icon:hover {
   transform: scale(1.15);
@@ -486,6 +477,7 @@ button {
 .form-group {
   position: relative;
   margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .floating-label {
@@ -531,9 +523,9 @@ button {
 }
 
 .custom-input {
-  /* width: 50px; */
-  text-align: center;
   border: none;
+  width: 50px;
+  margin: 0;
 }
 
 .product-detail-list-title {
@@ -542,14 +534,10 @@ button {
 
 .product-detail-table-content {
   font-size: 11px;
-  padding: 0 !important;
-  padding-top: 10px !important;
-  padding-bottom: 10px !important;
+  padding: 0;
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
   padding-left: 3px !important;
-}
-
-.date-input {
-  cursor: pointer;
 }
 
 .svg {
@@ -608,27 +596,25 @@ label {
   margin-bottom: 0px;
 }
 
-.form-group {
-  margin-bottom: 10px;
-}
-
-.card-body {
+.card-body, .modal-footer {
   padding-bottom: 5px;
   padding-top: 5px;
-}
-
-.modal-footer {
-  padding-top: 5px;
-  padding-bottom: 5px;
 }
 
 h5.card-title {
   padding-top: 20px;
 }
 
-input::-webkit-search-cancel-button,
-input::-webkit-calendar-picker-indicator {
+.clic-on-icon, .date-input, input::-webkit-search-cancel-button,
+input::-webkit-calendar-picker-indicator,
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
   cursor: pointer;
+}
+/* Estilos para las flechas de incremento y decremento en los inputs de tipo number */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  margin-left: 10px;
 }
 
 .suggestion-list {
@@ -649,10 +635,4 @@ input::-webkit-calendar-picker-indicator {
   visibility: hidden;
 }
 
-/* Estilos para las flechas de incremento y decremento en los inputs de tipo number */
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  margin-left: 10px;
-  cursor: pointer;
-}
 
