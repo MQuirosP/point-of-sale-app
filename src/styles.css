@@ -648,3 +648,11 @@ input::-webkit-calendar-picker-indicator {
   padding-right: -20px;
   visibility: hidden;
 }
+
+/* Estilos para las flechas de incremento y decremento en los inputs de tipo number */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
