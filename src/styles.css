@@ -105,12 +105,13 @@ header {
   border: 1px solid transparent;
 }
 
-a.dropdown-item {
+a.dropdown-item, option {
   font-style: italic;
 }
 
 .dropdown-item:hover,
-.dropdown-item:focus {
+.dropdown-item:focus,
+option:hover, option:focus {
   border: 1px solid white;
   font-style: normal;
   border-radius: 5px;
