@@ -192,7 +192,7 @@
                 </div>
               </div>
               <div class="form-group">
-                <label for="product_name">Nombre del producto:</label>
+                <label for="product_name">Producto:</label>
                 <input
                   type="search"
                   id="product_name"
@@ -214,7 +214,7 @@
                   (keydown)="handleKeyDown($event)"
                 />
                 <div
-                  class="suggestion-list position-fixed text-white bg-dark"
+                  class="suggestion-list position-fixed"
                   [style.width.px]="nameInput.offsetWidth"
                 >
                   <ul
@@ -231,9 +231,8 @@
                     >
                       <a
                         href="#"
-                        class="dropdown-item"
+                        class="dropdown-item italic-text"
                         (click)="handleSuggestionClick($event, suggestion)"
-                        style="color: #fff"
                         tabindex="-1"
                       >
                         {{ suggestion.name }}

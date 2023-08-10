@@ -101,24 +101,28 @@ header {
 }
 
 .dropdown-item {
-  opacity: 0.5;
   border: 1px solid transparent;
+  color: #000;
 }
 
-a.dropdown-item, option {
+
+option {
   font-style: italic;
+  color: #000;
+}
+
+.form-control option, div.suggestion-list{
+  background-color: #c7c3c3;
+  border-radius: 10px;
 }
 
 .dropdown-item:hover,
-.dropdown-item:focus,
-option:hover, option:focus {
-  border: 1px solid white;
-  font-style: normal;
-  border-radius: 5px;
-  background-color: rgb(197, 197, 197);
-  color: #000 !important;
+option:hover {
+  /* border-radius: 5px; */
+  background-color: rgb(129, 124, 124);
+  color: #fff !important;
   opacity: 1;
-  transition: 0.1s ease;
+  transition: all 0.1s ease;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2), -4px -4px -8px rgba(0, 0, 0, 0.2);
 }
 
@@ -536,8 +540,7 @@ button {
 
 .ng-select .ng-select-container  {            
   min-height: 38px;
-  border-radius: 5px;
-  border: 1px solid rgba(163, 185, 197, 0.719);
+  /* border: 1px solid rgba(163, 185, 197, 0.719); */
 }
 
 .ng-select.ng-invalid.ng-touched .ng-select-container {
@@ -552,46 +555,32 @@ button {
     -30px -30px -40px rgba(0, 255, 0, 1);
 }
 
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
-  background-color: rgb(51, 50, 50);
-  color: #b1abab !important;
-
+/* OJO AQUI */
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+  background-color: rgb(129, 124, 124); 
+  color: #fff !important;
+  font-style: italic;
   opacity: 1;
   transition: 0.15s ease;
-  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2), -4px -4px -8px rgba(0, 0, 0, 0.2);
 }
 
-.ng-clear-wrapper {
-  display: block;
-  color: blue;
+.ng-dropdown-panel .ng-dropdown-panel-items {
+border-radius: 10px;
+border-left: white;
+border-right: white;
 }
 
 .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
-  color: #dad3d3d8;
-  background-color: #000;
-  padding-left: 15px;
-  padding-right: 5px;
+  color: #000 !important;
   font-style: italic;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  background-color: rgb(197, 197, 197);
+  opacity: 1;
+  transition: all 0.1s ease;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2), -4px -4px -8px rgba(0, 0, 0, 0.2);
 }
 
 .ng-placeholder {
   font-style: italic !important;
-}
-
-
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
-  border-radius: 5px;
-  border: 1px solid white;
-  color: #000 !important;
-  background-color: rgb(197, 197, 197);
-  opacity: 1;
-  padding-left: 10px;
-  font-size: 1.05em;
-  font-style: normal;
-  transition: 0.1s ease;
-  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2), -4px -4px -8px rgba(0, 0, 0, 0.2);
 }
 
 .custom-input {
@@ -715,7 +704,7 @@ input::-webkit-input-placeholder {
 }
 
 .italic-text {
-  font-style: italic !important;
-  color: gray !important;
+  font-style: italic;
+  /* color: gray; */
 }
 
