@@ -3,39 +3,39 @@
   <div class="container">
     <div class="row align-items-center">
       <div class="col-md-6" [@fadeAnimation]>
-        <h1><i class="fas fa-list-check"></i> Mis reportes</h1>
+        <h1><i class="fas fa-list-check"></i>&nbsp;Mis reportes</h1>
       </div>
       <div class="col-md-6 d-none d-md-block d-flex text-right mt-3">
         <a
-            routerLink="/shopping-cart"
-            role="button"
-            type="submit"
-            class="btn btn-success border border-success shadow clic-on-image"
-            style="width: 140px"
-          >
-            <i class="fas fa-arrow-left"></i>
-            <span class="d-none d-md-inline">&nbsp;Mis ventas</span>
-          </a>
-          <a
-            routerLink="/home"
-            role="button"
-            type="submit"
-            class="btn btn-warning border border-warning shadow clic-on-image ml-2 mr-2"
-            style="width: 140px"
-          >
-            <i class="fas fa-home"></i>
-            <span class="d-none d-md-inline">&nbsp;Inicio</span>
-          </a>
-          <a
-            routerLink="/purchase-history"
-            role="button"
-            type="submit"
-            class="btn btn-success border border-success shadow clic-on-image"
-            style="width: 140px"
-          >
-            <span class="d-none d-md-inline">Mis compras&nbsp;</span>
-            <i class="fas fa-arrow-right"></i>
-          </a>
+          routerLink="/shopping-cart"
+          role="button"
+          type="submit"
+          class="btn btn-success border border-success shadow clic-on-image"
+          style="width: 140px"
+        >
+          <i class="fas fa-arrow-left"></i>
+          <span class="d-none d-md-inline">&nbsp;Mis ventas</span>
+        </a>
+        <a
+          routerLink="/home"
+          role="button"
+          type="submit"
+          class="btn btn-warning border border-warning shadow clic-on-image ml-2 mr-2"
+          style="width: 140px"
+        >
+          <i class="fas fa-home"></i>
+          <span class="d-none d-md-inline">&nbsp;Inicio</span>
+        </a>
+        <a
+          routerLink="/purchase-history"
+          role="button"
+          type="submit"
+          class="btn btn-success border border-success shadow clic-on-image"
+          style="width: 140px"
+        >
+          <span class="d-none d-md-inline">&nbsp;Mis compras&nbsp;</span>
+          <i class="fas fa-arrow-right"></i>
+        </a>
       </div>
     </div>
   </div>
@@ -65,7 +65,7 @@
         <div class="container">
           <div class="card shadow">
             <div class="card-header modal-header text-center">
-              <h3 class="h4"><i class="fas fa-shop"></i> Ventas</h3>
+              <h3 class="h4"><i class="fas fa-shop"></i>&nbspVentas</h3>
             </div>
             <div class="card-body">
               <fieldset class="row">
@@ -93,7 +93,7 @@
         <div class="container">
           <div class="card shadow">
             <div class="card-header modal-header text-center">
-              <h3 class="h4"> <i class="fas fa-bucket"></i> Compras</h3>
+              <h3 class="h4"><i class="fas fa-bucket"></i> Compras</h3>
             </div>
             <div class="card-body">
               <fieldset class="row">
@@ -106,6 +106,34 @@
                     class="btn btn-primary border border-primary shadow clic-on-image"
                     data-toggle="modal"
                     data-target="#purchasesReportModal"
+                  >
+                    Ver opciones
+                  </a>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="col-12 col-md-4 mt-4">
+      <section [@fadeAnimation]>
+        <div class="container">
+          <div class="card shadow">
+            <div class="card-header modal-header text-center">
+              <h3 class="h4"><i class="fas fa-list-numeric"></i> Existencias</h3>
+            </div>
+            <div class="card-body">
+              <fieldset class="row">
+                <legend class="text-center" style="font-size: 18px">
+                  Control de existencias y ajustes al inventario
+                </legend>
+                <div class="col-12 text-center">
+                  <a
+                    role="button"
+                    class="btn btn-primary border border-primary shadow clic-on-image"
+                    data-toggle="modal"
+                    data-target="#stockReportModal"
                   >
                     Ver opciones
                   </a>
@@ -131,11 +159,7 @@
           data-dismiss="modal"
           aria-label="Close"
         >
-          <span aria-hidden="true"
-            ><i
-              class="fas fa-close"
-            ></i
-          ></span>
+          <span aria-hidden="true"><i class="fas fa-close"></i></span>
         </button>
       </div>
       <div class="modal-body">
@@ -211,11 +235,7 @@
           data-dismiss="modal"
           aria-label="Close"
         >
-          <span aria-hidden="true"
-            ><i
-              class="fas fa-close"
-            ></i
-          ></span>
+          <span aria-hidden="true"><i class="fas fa-close"></i></span>
         </button>
       </div>
       <div class="modal-body">

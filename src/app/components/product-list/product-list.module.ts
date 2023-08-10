@@ -1,3 +1,4 @@
+import { NgSelectModule } from '@ng-select/ng-select';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -15,7 +16,7 @@ import { ProductsPipe } from 'src/app/pipes/products.pipe';
     FormsModule,
     NgbModule,
     ReactiveFormsModule,
-    
+    NgSelectModule,
   ],
 })
 export class ProductListModule {}

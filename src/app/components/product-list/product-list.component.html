@@ -25,7 +25,7 @@
 <!-- Tabla con la lista de productos -->
 <div class="container modal-container mt-4" [@fadeAnimation]>
   <div
-    class="modal-content modal-dialog-scrollable shadow"
+    class="modal-content modal-dialog-scrollable"
     style="max-width: 100%; margin: 0 auto"
   >
     <div class="card-header product-list-header border">
@@ -78,8 +78,18 @@
               <th class="text-left" style="max-width: 400px">Producto</th>
               <th class="text-right" style="min-width: 100px">Disponible</th>
               <th class="text-right" style="min-width: 100px">P. Compra</th>
-              <th class="text-right" style="min-width: 75px">Margen</th>
-              <th class="text-right" style="min-width: 75px">I.V.A.</th>
+              <th
+                class="text-right d-none d-md-table-cell"
+                style="min-width: 75px"
+              >
+                Margen
+              </th>
+              <th
+                class="text-right d-none d-md-table-cell"
+                style="min-width: 75px"
+              >
+                I.V.A.
+              </th>
               <th
                 class="text-right"
                 style="min-width: 100px; padding-right: 30px"
@@ -105,14 +115,14 @@
               >
                 <span
                   class="product-name"
-                  style="cursor: pointer; width: 75%;"
+                  style="cursor: pointer; width: 75%"
                   tabindex="-1"
                 >
                   {{ product.name }}
                 </span>
                 <span
                   class="utilitary-icons show-icons align-items-end"
-                  style="width: 20%;"
+                  style="width: 20%"
                   [ngClass]="{ 'show-icons': product.showIcons }"
                 >
                   <a
@@ -151,10 +161,16 @@
               <td class="text-right" style="min-width: 100px">
                 {{ product.purchase_price | currency : "CRC" : "₡" }}
               </td>
-              <td class="text-right" style="min-width: 75px">
+              <td
+                class="text-right d-none d-md-table-cell"
+                style="min-width: 75px"
+              >
                 {{ product.margin | number : "1.2-2" }} %
               </td>
-              <td class="text-right" style="min-width: 75px">
+              <td
+                class="text-right d-none d-md-table-cell"
+                style="min-width: 75px"
+              >
                 {{ product.taxPercentage | number : "1.1-1" }} %
               </td>
               <td
@@ -191,7 +207,7 @@
   aria-hidden="true"
 >
   <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content shadow">
+    <div class="modal-content">
       <div class="modal-header border">
         <h5 class="modal-title" id="productModalLabel">
           {{ modalTitle }} de producto
@@ -210,27 +226,50 @@
       </div>
       <div class="modal-body">
         <form [formGroup]="productForm">
-          <div class="form-group">
-            <label for="int_code">Código:</label>
-            <input
-              type="text"
-              class="form-control"
-              id="int_code"
-              formControlName="int_code"
-              name="int_code"
-              required
-              #codeInput
-              (input)="handleCodeInput($event.target)"
-              (keypress)="disableEnterKey($event)"
-              [ngClass]="{
-                'is-valid':
-                  productForm.get('int_code').touched &&
-                  productForm.get('int_code').valid,
-                'is-invalid':
-                  productForm.get('int_code').touched &&
-                  productForm.get('int_code').invalid
-              }"
-            />
+          <div class="form-row form-group">
+            <div class="col-md-6">
+              <label for="int_code">Código:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="int_code"
+                formControlName="int_code"
+                name="int_code"
+                required
+                #codeInput
+                (input)="handleCodeInput($event.target)"
+                (keypress)="disableEnterKey($event)"
+                [ngClass]="{
+                  'is-valid':
+                    productForm.get('int_code').touched &&
+                    productForm.get('int_code').valid,
+                  'is-invalid':
+                    productForm.get('int_code').touched &&
+                    productForm.get('int_code').invalid
+                }"
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="category_id">Categoría:</label>
+              <ng-select
+                [searchable]="true"
+                [placeholder]="'Seleccione categoría...'"
+                role="textbox"
+                formControlName="category_id"
+                [items]="categoryOptions"
+                bindValue="value"
+                bindLabel="label"
+                [ngClass]="{
+                  'ng-invalid ng-touched': productForm.get('category_id').touched && productForm.get('category_id').invalid,
+                  'ng-valid ng-touched': productForm.get('category_id').touched && productForm.get('category_id').valid
+                }"
+                required
+                [compareWith]="compareCategories"
+                [clearable]="true"
+                class="custom"
+              ></ng-select>
+            </div>
+            
           </div>
           <div class="form-group">
             <label for="productName">Nombre:</label>
@@ -415,7 +454,7 @@
     role="document"
     style="width: 300px"
   >
-    <div class="modal-content shadow">
+    <div class="modal-content">
       <div class="modal-header border">
         <h5 class="modal-title">Eliminar producto</h5>
         <button

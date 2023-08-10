@@ -1,3 +1,4 @@
+import { NgSelectModule } from '@ng-select/ng-select';
 import {
   Component,
   ElementRef,
@@ -17,7 +18,6 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { ProductCacheService } from 'src/app/services/product-cache.service';
 
 @Component({
   selector: 'app-product-list',
@@ -53,6 +53,11 @@ export class ProductListComponent implements OnInit {
 
   isTaxed: boolean;
 
+  categoryOptions = [
+    { value: '0', label: 'Consumo interno' },
+    { value: '1', label: 'Venta directa' }
+  ];
+
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private http: HttpClient,
@@ -64,6 +69,7 @@ export class ProductListComponent implements OnInit {
       int_code: [''],
       name: ['', Validators.required],
       description: ['', Validators.required],
+      category_id: ['', [Validators.required]],
       purchase_price: ['', Validators.required],
       sale_price: ['', Validators.required],
       taxes: [false],
@@ -185,55 +191,25 @@ export class ProductListComponent implements OnInit {
   filterProducts(search: string) {
     this.searchTerm = search;
     this.page = 0;
-
-    // if (!this.searchTerm) {
-    //   this.filteredProducts = [...this.products];
-    //   return;
-    // }
-
-
-    // const searchTermNormalized = this.searchTerm
-    //   ? this.searchTerm.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    //   : '';
-
-    // this.filteredProducts = this.products.filter((product: any) => {
-    //   const productNameNormalized = product.name
-    //     ? product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    //     : '';
-
-    //   const productCodeNormalized = product.int_code
-    //     ? product.int_code.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    //     : '';
-
-    //   const searchTermLower = searchTermNormalized.toLowerCase();
-
-    //   return (
-    //     productNameNormalized.toLowerCase().includes(searchTermLower) ||
-    //     productCodeNormalized.toLowerCase().includes(searchTermLower)
-    //   );
-    // });
-
     this.changeDetectorRef.detectChanges();
   }
 
   openProductModal(value: boolean, product_id: number) {
-    let selectedProductId = null;
+    // let selectedProductId = null;
     if (value && product_id) {
       this.modalTitle = value ? 'Edición' : 'Registro';
       this.modalActionLabel = value;
       this.changeDetectorRef.detectChanges();
       this.productModal.nativeElement.classList.add('show');
       this.productModal.nativeElement.style.display = 'block';
-      // this.productModal.nativeElement.classList.add('fade');
+      // setTimeout(() => {
+      //   selectedProductId = product_id;
+        
+      // }, 50)
+      
       setTimeout(() => {
-        selectedProductId = product_id;
-
-      }, 50)
-
-      setTimeout(() => {
-        this.getProductInfo(selectedProductId);
-        // this.calculateTotal(true);
-      }, 300);
+        this.getProductInfo(product_id);
+      }, 100);
     } else {
       this.modalTitle = value ? 'Edición' : 'Registro';
       this.modalActionLabel = !value;
@@ -241,9 +217,6 @@ export class ProductListComponent implements OnInit {
       this.changeDetectorRef.detectChanges();
       this.productModal.nativeElement.classList.toggle('show');
       this.productModal.nativeElement.style.display = 'block';
-      // this.productModal.nativeElement.classList.add('fade');
-      setTimeout(() => {
-      }, 50)
     }
   }
 
@@ -267,24 +240,31 @@ export class ProductListComponent implements OnInit {
     });
   }
 
+  compareCategories(category1: any, category2: any): boolean {
+    return category1 && category2 ? category1.value === category2.value : category1 === category2;
+  }
+
   private updateProductForm(product: any) {
     const {
       productId,
       int_code,
       name,
       description,
+      category_id,
       purchase_price,
       sale_price,
       taxes,
       margin,
       taxPercentage,
     } = product;
-
+  
+    const selectedCategory = this.categoryOptions.find(option => option.value == category_id);
     this.productForm.patchValue({
       productId,
       int_code,
       name,
       description,
+      category_id: selectedCategory,
       purchase_price,
       sale_price,
       taxes,
@@ -292,6 +272,7 @@ export class ProductListComponent implements OnInit {
       taxPercentage,
     });
   }
+  
 
   editProduct(productId: number) {
     if (this.productForm.invalid) {
@@ -346,7 +327,6 @@ export class ProductListComponent implements OnInit {
     this.productModal.nativeElement.classList.remove('show');
     this.productModal.nativeElement.style.display = 'none';
     this.searchTerm = '';
-    // this.filterProducts();
   }
 
   createProduct(event: Event) {
@@ -368,6 +348,7 @@ export class ProductListComponent implements OnInit {
       int_code: this.productForm.get('int_code').value,
       name: this.productForm.get('name').value,
       description: this.productForm.get('description').value,
+      category_id: this.productForm.get('category_id').value,
       purchase_price: this.productForm.get('purchase_price').value,
       sale_price: this.productForm.get('sale_price').value,
       taxes: this.productForm.get('taxes').value,

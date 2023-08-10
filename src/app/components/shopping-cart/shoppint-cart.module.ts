@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'; // Importa NgbModule aquí
 import { ShoppingCartComponent } from './shopping-cart.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [ShoppingCartComponent],
@@ -13,6 +14,7 @@ import { ShoppingCartComponent } from './shopping-cart.component';
     FormsModule,
     NgbModule,
     ReactiveFormsModule,
+    NgSelectModule,
   ],
 })
 export class ShoppingCartModule {}

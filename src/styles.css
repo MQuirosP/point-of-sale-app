@@ -9,6 +9,7 @@ html {
     -webkit-gradient(linear, right top, left top, from(#7b4397), to(#dc2430));
   background: url(src/assets/bg-pattern.png),
     linear-gradient(to left, #a8e6ce, #6d9bcc);
+    /* linear-gradient(to left, #9765a1, #ee1d1d); */
   overflow: visible;
   transition: opacity 100ms;
   z-index: 1;
@@ -496,10 +497,10 @@ button {
   pointer-events: none;
 }
 
-.form-control {
+/* .form-control {
   width: 100%;
-  padding: 10px;
-}
+  padding: 0 0 10px;
+} */
 
 .floating-label.active {
   top: 0;
@@ -525,6 +526,24 @@ button {
 .is-invalid {
   box-shadow: 5px 5px 10px rgba(255, 0, 0, 0.5),
     -5px -5px -10px rgba(255, 0, 0, 0.5);
+}
+
+.ng-select.custom .ng-select-container  {            
+  min-height: 38px;
+  border-radius: 3px;
+  box-shadow: none;
+}
+
+.ng-select.ng-invalid.ng-touched.custom .ng-select-container {
+  border-color: #e70303;
+  box-shadow:  20px 20px 30px rgba(255, 0, 0, 0.5),
+    -20px -20px -30px rgba(255, 0, 0, 0.5);
+}
+
+.ng-select.ng-valid.ng-touched.custom .ng-select-container {
+  border-color: #25a719;
+  box-shadow:  30px 30px 40px rgba(0, 255, 0, 1),
+    -30px -30px -40px rgba(0, 255, 0, 1);
 }
 
 .custom-input {
@@ -642,4 +661,13 @@ input[type="number"]::-webkit-outer-spin-button {
   visibility: hidden;
 }
 
+input::-webkit-input-placeholder {
+  color: gray;
+  font-style: italic;
+}
+
+.italic-text {
+  font-style: italic !important;
+  color: gray !important;
+}
 

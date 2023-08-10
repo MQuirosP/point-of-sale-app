@@ -5,6 +5,7 @@ export interface Products {
       description: string,
       quantity: number,
       purchase_price: number,
+      category_id: number,
       sale_price: number,
       taxes: boolean,
       taxPercentage: number
