@@ -26,6 +26,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ProductService } from 'src/app/services/product.service';
+import { NgSelectComponent } from '@ng-select/ng-select';
 
 interface ApiSaleResponse {
   success: boolean;
@@ -140,6 +141,7 @@ export class ShoppingCartComponent {
   @ViewChild('saleHistoryModal', { static: false })
   saleHistoryModal!: ElementRef;
   @ViewChild('nameInput') nameInput!: ElementRef;
+  @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
   selectedProduct: any;
   product_name: any;
   selectedIndex: number = -1;
@@ -186,7 +188,7 @@ export class ShoppingCartComponent {
         { value: this.getCurrentDate(), disabled: true },
         Validators.required,
       ],
-      product_name: ['', Validators.required],
+      product_name: ['Seleccione un producto...', Validators.required],
       product_price: ['', Validators.required],
       product_taxes: new FormControl({
         value: this.selectedProductTaxes,
@@ -296,12 +298,16 @@ export class ShoppingCartComponent {
     });
   }
 
-  searchProduct() {
-    const productNameControl = this.saleForm.get('product_name').value;
+  searchProduct(event: string) {
+
+    if(!event) {
+      return;
+    }
+    const productNameControl = event;
 
     const searchTerm = productNameControl?.toLowerCase().trim() || '';
     if (searchTerm === '') {
-      this.clearProductSuggestions();
+      this.clearProductForm();
       return;
     }
 
@@ -312,7 +318,7 @@ export class ShoppingCartComponent {
           this.updateProductSuggestions(products, searchTerm);
           this.selectSingleProduct();
         } else {
-          this.clearProductSuggestions();
+          this.clearProductForm()
         }
         this.updateSelectedProductPrice();
       },
@@ -350,9 +356,9 @@ export class ShoppingCartComponent {
 
   private selectSingleProduct() {
     if (this.productSuggestionList.length === 1) {
-      const suggestion = this.productSuggestionList[0];
-      this.selectProductSuggestion(suggestion, null);
-      this.selectedProduct = suggestion;
+      const product = this.productSuggestionList[0];
+      this.selectProductSuggestion(product);
+      this.selectedProduct = product;
     } else {
       this.selectedProduct = null;
     }
@@ -366,17 +372,10 @@ export class ShoppingCartComponent {
     }
   }
 
-  private clearProductSuggestions() {
-    this.saleForm.get('product_price').setValue(0);
-    this.productSuggestionList = [];
-    this.selectedProduct = null;
-    this.selectedProductTaxes = null;
-    this.selectedProductPrice = null;
-  }
 
-  selectProductSuggestion(product: any, event: Event) {
-    if (event) {
-      event.preventDefault();
+  selectProductSuggestion(product: any) {
+    if (!product) {
+      return
     }
     this.saleForm.get('product_name').setValue(product.name);
     this.int_code = product.int_code;
@@ -391,47 +390,23 @@ export class ShoppingCartComponent {
     }, 0);
   }
 
-  handleBarcodeInput(event: Event) {
-    const inputValue = (event.target as HTMLInputElement).value.trim();
-
-    if (inputValue) {
-      const matchingProduct = this.productSuggestionList.find(
-        (product: any) => {
-          return product.int_code === inputValue;
-        }
-      );
-
-      if (matchingProduct) {
-        this.selectProductSuggestion(matchingProduct, null);
-      }
+  handleSuggestionClick(product: any) {
+    if(!product) {
+      return;
     }
-  }
-
-  handleSuggestionClick(event: Event, suggestion: any) {
-    event.preventDefault();
-    event.stopPropagation();
-
-    const searchTerm = suggestion.name?.toLowerCase().trim() || '';
-    const suggestionName = suggestion.name.toLowerCase().trim();
-    this.int_code = suggestion.int_code;
-    this.selectedProductPrice = suggestion.sale_price;
+    const searchTerm = product.name?.toLowerCase().trim() || '';
+    const suggestionName = product.name.toLowerCase().trim();
+    this.int_code = product.int_code;
+    this.selectedProductPrice = product.sale_price;
 
     if (suggestionName === searchTerm) {
-      this.selectProductSuggestion(suggestion, null);
-      this.selectedProduct = suggestion;
+      this.selectProductSuggestion(product);
+      this.selectedProduct = product;
     } else {
       this.selectedProduct = null;
     }
 
     this.productSuggestionList = []; // Limpiar la lista de sugerencias
-  }
-
-  handleKeyDown(event: Event) {
-      if (this.selectedIndex !== -1) {
-        const selectedSuggestion =
-          this.productSuggestionList[this.selectedIndex];
-        this.handleSuggestionClick(event, selectedSuggestion);
-      }
   }
 
   isValidQuantity(): boolean {
@@ -494,10 +469,6 @@ export class ShoppingCartComponent {
         this.updateProductList(product);
         this.calculateTotalSaleAmount();
         this.clearProductForm();
-        this.clearProductSuggestions();
-        setTimeout(() => {
-          this.nameInput.nativeElement.focus();
-        }, 0);
       },
       error: (response: any) => {
         this.toastr.warning(
@@ -656,8 +627,9 @@ export class ShoppingCartComponent {
     this.selectedCustomer = null;
   }
 
-  private clearProductForm() {
-    this.saleForm.get('product_name')?.reset();
+  clearProductForm() {
+    this.ngSelectComponent.close();
+    this.saleForm.get('product_name').setValue(null);
     this.saleForm.get('product_taxes')?.reset();
     this.saleForm.get('product_price')?.reset();
     this.saleForm.get('product_quantity').setValue(1);
