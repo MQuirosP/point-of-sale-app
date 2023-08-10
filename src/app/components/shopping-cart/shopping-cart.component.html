@@ -193,25 +193,55 @@
               </div>
               <div class="form-group">
                 <label for="product_name">Nombre del producto:</label>
-                <ng-select
-                  [searchable]="true"
-                  [placeholder]="'Seleccione producto...'"
+                <input
+                  type="search"
+                  id="product_name"
                   formControlName="product_name"
-                  [items]="filteredProducts"
-                  bindValue="int_code"
-                  bindLabel="name"
+                  class="form-control datalist-no-arrow"
+                  (input)="searchProduct()"
+                  (focus)="handleBarcodeInput($event)"
+                  autocomplete="off"
+                  placeholder="Seleccione producto..."
                   [ngClass]="{
-                    'ng-invalid ng-touched': saleForm.get('product_name').touched && saleForm.get('product_name').invalid,
-                    'ng-valid ng-touched': saleForm.get('product_name').touched && saleForm.get('product_name').valid
+                    'is-valid':
+                      saleForm.get('product_name').touched &&
+                      saleForm.get('product_name').valid,
+                    'is-invalid':
+                      saleForm.get('product_name').touched &&
+                      saleForm.get('product_name').invalid
                   }"
-                  (search)="searchProduct($event.term)"
-                  [clearable]="true"
-                  class=""
-                  (change)="handleSuggestionClick($event)"
                   #nameInput
-                ></ng-select>
+                  (keydown)="handleKeyDown($event)"
+                />
+                <div
+                  class="suggestion-list position-fixed text-white bg-dark"
+                  [style.width.px]="nameInput.offsetWidth"
+                >
+                  <ul
+                    id="suggestionOptions"
+                    class="list-unstyled"
+                    style="margin: 0; padding: 0 1px"
+                  >
+                    <li
+                      *ngFor="
+                        let suggestion of productSuggestionList;
+                        let i = index
+                      "
+                      [class.selected]="selectedIndex === i"
+                    >
+                      <a
+                        href="#"
+                        class="dropdown-item"
+                        (click)="handleSuggestionClick($event, suggestion)"
+                        style="color: #fff"
+                        tabindex="-1"
+                      >
+                        {{ suggestion.name }}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </div>
-              
               <div class="form-group form-row">
                 <div class="col">
                   <label for="product_quantity">Cantidad:</label>

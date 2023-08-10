@@ -260,8 +260,12 @@
                 bindValue="value"
                 bindLabel="label"
                 [ngClass]="{
-                  'ng-invalid ng-touched': productForm.get('category_id').touched && productForm.get('category_id').invalid,
-                  'ng-valid ng-touched': productForm.get('category_id').touched && productForm.get('category_id').valid
+                  'ng-invalid ng-touched':
+                    productForm.get('category_id').touched &&
+                    productForm.get('category_id').invalid,
+                  'ng-valid ng-touched':
+                    productForm.get('category_id').touched &&
+                    productForm.get('category_id').valid
                 }"
                 required
                 [compareWith]="compareCategories"
@@ -269,7 +273,6 @@
                 class="custom"
               ></ng-select>
             </div>
-            
           </div>
           <div class="form-group">
             <label for="productName">Nombre:</label>
