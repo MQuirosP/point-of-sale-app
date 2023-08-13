@@ -95,11 +95,10 @@ export class ProductListComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    if(this.subscription) {
+    if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
-  
 
   // @HostListener('window:scroll', ['$event'])
   // onWindowScroll() {
@@ -170,7 +169,7 @@ export class ProductListComponent implements OnInit {
         }
       },
       error: (error) => {
-        this.toastr.error('Error al obtener productos.', error);
+        this.toastr.error('Error al obtener productos.', error.error);
       },
     });
   }
@@ -218,7 +217,7 @@ export class ProductListComponent implements OnInit {
         this.toggleIcons(product);
       }, 50);
       setTimeout(() => {
-        this.getProductInfo(product_id);
+        this.getProductInfo(product);
       }, 400);
     } else {
       this.modalTitle = value ? 'Edición' : 'Registro';
@@ -237,13 +236,16 @@ export class ProductListComponent implements OnInit {
     this.productModal.nativeElement.classList.add('closing');
     setTimeout(() => {
       this.productModal.nativeElement.classList.remove('show');
-      this.productModal.nativeElement.classList.remove('closing')
+      this.productModal.nativeElement.classList.remove('closing');
       this.productModal.nativeElement.style.display = 'none';
-    }, 300)
+    }, 300);
     this.searchTerm = '';
+    this.productInfo = null;
   }
 
-  getProductInfo(product_id: number) {
+  getProductInfo(product: Products) {
+    const product_id = product.productId;
+    this.productInfo = null;
     this.http.get(`${this.backendUrl}products/id/${product_id}`).subscribe({
       next: (response: any) => {
         if (response.success && response.message && response.message.product) {
@@ -277,7 +279,7 @@ export class ProductListComponent implements OnInit {
     const selectedCategory = this.categoryOptions.find(
       (option) => option.value === product.category_id
     );
-  
+
     this.productForm.patchValue({
       ...product,
       category_id: selectedCategory,
@@ -285,9 +287,29 @@ export class ProductListComponent implements OnInit {
   }
 
   editProduct() {
-    if (this.productForm.invalid) {
-      this.toastr.error('Por favor, completa todos los campos requeridos.');
-      return;
+    const controls = this.productForm.controls;
+
+    for (const field in controls) {
+      if (controls[field].invalid) {
+        let errorMessage = 'El campo es inválido.';
+
+        if (field === 'name') {
+          errorMessage = 'El campo Nombre es inválido.';
+        } else if (field === 'description') {
+          errorMessage = 'El campo Descripción es inválido.';
+        } else if (field === 'category_id') {
+          errorMessage = 'El campo Categoría es inválido.';
+        } else if (field === 'purchase_price') {
+          errorMessage = 'El campo Precio de Compra es inválido.';
+        } else if (field === 'sale_price') {
+          errorMessage = 'El campo Precio de Venta es inválido.';
+        } else if (field === 'margin') {
+          errorMessage = 'El campo Margen es inválido.';
+        }
+
+        this.toastr.error(errorMessage);
+        return;
+      }
     }
 
     const productData: Products = this.extractProductFormData();
@@ -296,24 +318,25 @@ export class ProductListComponent implements OnInit {
 
   private updateProduct(productData: Products) {
     const productId = productData.productId;
-  
+
     let category = this.productForm.get('category_id').value;
     if (typeof category === 'number') {
       productData.category_id = category;
     } else {
       productData.category_id = category.value;
     }
-  
+
     const propertiesChanged = Object.keys(productData).some((key) => {
       return productData[key] !== this.productInfo[key];
     });
-  
+
     if (!propertiesChanged) {
       this.toastr.info('No se realizó cambios en la información del producto.');
       return;
     }
-  
-    this.http.put(`${this.backendUrl}products/${productId}`, productData)
+
+    this.http
+      .put(`${this.backendUrl}products/${productId}`, productData)
       .pipe(
         tap((response: any) => {
           if (response.success) {
@@ -323,6 +346,7 @@ export class ProductListComponent implements OnInit {
             this.toastr.error('Error al actualizar el producto.');
           }
           this.refreshProductList();
+          this.productInfo = null;
         }),
         catchError((error: any) => {
           this.toastr.error('Error al actualizar el producto.', error);
@@ -397,7 +421,7 @@ export class ProductListComponent implements OnInit {
       sale_price: formValues.sale_price,
       taxes: formValues.taxes,
       margin: formValues.margin,
-      taxPercentage: formValues.taxPercentage,
+      taxPercentage: this.productForm.get('taxPercentage').value,
     };
   }
 
@@ -547,7 +571,7 @@ export class ProductListComponent implements OnInit {
   }
 
   closePasswordModal() {
-    this.deletePasswordModal.nativeElement.classList.add('closing')
+    this.deletePasswordModal.nativeElement.classList.add('closing');
     setTimeout(() => {
       this.deletePasswordModal.nativeElement.classList.remove('show');
       this.deletePasswordModal.nativeElement.classList.remove('closing');

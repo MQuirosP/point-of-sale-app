@@ -10,7 +10,6 @@ import { environment } from 'src/environments/environment';
 export class OptionsService {
 
   private registerStatusSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  // private backendUrl = 'http://localhost:3000/api/options';
   private backendUrl = `${environment.apiUrl}options`
   id = 1;
   
@@ -20,6 +19,10 @@ export class OptionsService {
 
   getRegisterStatus(): Observable<boolean> {
     return this.registerStatusSubject.asObservable().pipe(distinctUntilChanged());
+  }
+
+  setAllowRegisterStatus(status: boolean) {
+    this.registerStatusSubject.next(status);
   }
 
   fetchRegisterStatus(): Observable<boolean> {

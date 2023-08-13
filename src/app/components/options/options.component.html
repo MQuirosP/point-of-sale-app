@@ -842,7 +842,7 @@
                         class="ml-2 mr-3"
                         role="button"
                         (click)="
-                          openUserInfoModal(true, user.userId);
+                          openUserInfoModal(true, user);
                           this.editMode = true
                         "
                       >
@@ -1093,7 +1093,7 @@
       <div class="modal-body">
         <form
           [formGroup]="resetPasswordForm"
-          (ngSubmit)="resetPassword(this.userForm.get('username').value)"
+          (submit)="resetPassword(this.userForm.get('username').value)"
         >
           <div class="form-group">
             <label for="newPassword">Contraseña Nueva</label>
@@ -1135,9 +1135,8 @@
           </div>
           <div class="modal-footer">
             <button
-              type="button"
+              type="submit"
               class="btn btn-primary border border-primary clic-on-image"
-              (click)="resetPassword(this.userForm.get('username').value)"
             >
               Guardar
             </button>

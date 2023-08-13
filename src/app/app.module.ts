@@ -11,7 +11,7 @@ import { OptionsComponent } from './components/options/options.component';
 import { MainBoardComponent } from './components/main-board/main-board.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { FrontPanelComponent } from './components/front-panel/front-panel.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DigitalWatchComponent } from './components/digital-watch/digital-watch.component'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -33,6 +33,7 @@ import { PurchaseHistoryComponent } from './components/purchase-history/purchase
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.component';
 import { ProductsPipe } from './pipes/products.pipe';
+import { ErrorInterceptor } from './interceptors/error.interceptor';
 
 
 @NgModule({
@@ -72,7 +73,8 @@ import { ProductsPipe } from './pipes/products.pipe';
     SaleService,
     PurchaseService,
     OptionsService,
-    ProductCacheService
+    ProductCacheService,
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

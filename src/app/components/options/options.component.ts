@@ -706,9 +706,9 @@ export class OptionsComponent implements OnInit {
     }, 300);
   }
 
-  openUserInfoModal(value: any, userId: string) {
-    let selectedUserId = null;
-    if (value === true && userId) {
+  openUserInfoModal(value: any, user: any) {
+    let user_id = user.userId;
+    if (value === true && user_id) {
       this.modalTitle = value ? 'Edición' : 'Registro';
       this.modalActionLabel = value;
       this.changeDetectorRef.detectChanges();
@@ -717,9 +717,8 @@ export class OptionsComponent implements OnInit {
       setTimeout(() => {
         this.usersInfoModal.nativeElement.classList.toggle('show');
       }, 50);
-      selectedUserId = userId;
       setTimeout(() => {
-        this.getUserInfo(selectedUserId);
+        this.getUserInfo(user);
       }, 300);
     } else {
       this.modalTitle = value ? 'Edición' : 'Registro';
@@ -788,8 +787,9 @@ export class OptionsComponent implements OnInit {
     this.changeDetectorRef.detectChanges();
   }
 
-  getUserInfo(userId: number) {
-    this.http.get(`${this.backendUrl}users/id/${userId}`).subscribe({
+  getUserInfo(user: any) {
+    const user_id = user.userId;
+    this.http.get(`${this.backendUrl}users/id/${user_id}`).subscribe({
       next: (response: any) => {
         if (response.message.User) {
           const user = response.message.User;
@@ -981,7 +981,7 @@ export class OptionsComponent implements OnInit {
     this.resetPasswordModal.nativeElement.style.display = 'block';
     this.resetPasswordModal.nativeElement.classList.add('opening');
     setTimeout(() => {
-      this.resetPasswordModal.nativeElement.classList.toggle('show');
+      this.resetPasswordModal.nativeElement.classList.add('show');
     }, 50);
   }
 
@@ -991,10 +991,11 @@ export class OptionsComponent implements OnInit {
       this.resetPasswordModal.nativeElement.classList.remove('show');
       this.resetPasswordModal.nativeElement.classList.remove('closing');
       this.resetPasswordModal.nativeElement.style.display = 'none';
-    })
+    }, 300);
   }
 
   resetPassword(username: string) {
+    console.log(username);
     if (username === this.superUser) {
       this.toastr.warning(
         `No tiene permisos para cambiar la contraseña al usuario.`
