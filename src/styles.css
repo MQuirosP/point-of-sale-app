@@ -115,7 +115,6 @@ option {
   color: #000;
 }
 
-
 .form-control option,
 div.suggestion-list {
   background-color: #c7c3c3;
@@ -739,22 +738,20 @@ label {
   }
 }
 
-/* Aplicar la animación de entrada al modal */
 .modal.opening {
   animation: modalOpenAnimation 0.3s ease forwards;
-  opacity: 0; /* Establecer opacidad inicial antes de la animación */
-  transform: scale(0.8); /* Establecer escala inicial antes de la animación */
+  opacity: 0; 
+  transform: scale(0.8); 
 }
 
 .modal.closing {
   animation: modalCloseAnimation 0.3s ease forwards;
-  opacity: 1; /* Establecer opacidad inicial antes de la animación */
-  transform: scale(1); /* Establecer escala inicial antes de la animación */
+  opacity: 1; 
+  transform: scale(1); 
 }
 
-/* Resto de tus estilos y reglas */
 .show {
-  display: block !important; /* Anular la propiedad display:none; */
+  display: block !important; 
   opacity: 1;
   z-index: 999;
   transform: scale(1);
