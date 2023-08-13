@@ -102,8 +102,12 @@ header {
 }
 
 .dropdown-item {
+  color: #c0b5b5 !important;
+}
+
+.dropdown-item.italic-text {
   border: 1px solid transparent;
-  color: #c0b5b5 !important;;
+  color: #000 !important;
 }
 
 option {
@@ -111,14 +115,14 @@ option {
   color: #000;
 }
 
+
 .form-control option,
 div.suggestion-list {
   background-color: #c7c3c3;
   border-radius: 10px;
 }
 
-.dropdown-item:hover,
-option:hover {
+.dropdown-item:hover {
   /* border-radius: 5px; */
   background-color: rgb(129, 124, 124);
   color: #fff !important;

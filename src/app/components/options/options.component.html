@@ -510,36 +510,39 @@
                   *ngFor="let customer of filteredCustomers; let even = even"
                   [ngClass]="{ 'table-row-even': even, 'table-row-odd': !even }"
                 >
-                <td class="icon-container">
-                  <div class="product-name" (click)="toggleIcons(customer)">
-                    {{ customer.customer_name }} {{ customer.customer_first_lastname }}
-                  </div>
-                  <div
-                    class="utilitary-icons"
-                    [ngClass]="{ 'show-icons ': customer.showIcons }"
-                  >
-                    <a
-                      class="ml-3 mr-2"
-                      role="button"
-                      (click)="
-                        openCustomerInfoModal(true, customer);
-                        this.editMode = true
-                      "
+                  <td class="icon-container">
+                    <div class="product-name" (click)="toggleIcons(customer)">
+                      {{ customer.customer_name }}
+                      {{ customer.customer_first_lastname }}
+                      {{ customer.customer_second_lastname }},
+                      {{ customer.customer_dni }}
+                    </div>
+                    <div
+                      class="utilitary-icons"
+                      [ngClass]="{ 'show-icons ': customer.showIcons }"
                     >
-                      <i
-                        class="fa-solid fa-pen-to-square clic-on-icon"
-                        style="color: #1100fa; cursor: pointer"
-                      ></i>
-                    </a>
-                    <a class="mr-2" *ngIf="getUserRole() !== 'user'">
-                      <i
-                        class="fas fa-solid fa-trash clic-on-icon"
-                        (click)="deleteProvider(customer.customer_id)"
-                        style="color: #fa0000; cursor: pointer"
-                      ></i>
-                    </a>
-                  </div>
-                </td>
+                      <a
+                        class="ml-3 mr-2"
+                        role="button"
+                        (click)="
+                          openCustomerInfoModal(true, customer);
+                          this.editMode = true
+                        "
+                      >
+                        <i
+                          class="fa-solid fa-pen-to-square clic-on-icon"
+                          style="color: #1100fa; cursor: pointer"
+                        ></i>
+                      </a>
+                      <a class="mr-2" *ngIf="getUserRole() !== 'user'">
+                        <i
+                          class="fas fa-solid fa-trash clic-on-icon"
+                          (click)="deleteProvider(customer.customer_id)"
+                          style="color: #fa0000; cursor: pointer"
+                        ></i>
+                      </a>
+                    </div>
+                  </td>
                   <td class="text-left">
                     {{ customer.customer_email }}
                   </td>

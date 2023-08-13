@@ -24,6 +24,7 @@ const routes: Routes = [
   { path: 'reports', component: ReportsComponent, canActivate: [AuthGuard, RoleGuard] },
   { path: 'options', component: OptionsComponent, canActivate: [AuthGuard] },
   { path: 'product-list', loadChildren: () => import('./components/product-list/product-list.module').then(m => m.ProductListModule), canActivate: [AuthGuard]},
+  { path: 'not-found', component: NotFoundComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', component: NotFoundComponent },
   // { path: 'product-list', component: ProductListComponent, canActivate: [AuthGuard] },
