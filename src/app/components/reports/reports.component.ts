@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { style } from '@angular/animations';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { NgbCalendar, NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { fadeAnimation } from 'src/app/fadeAnimation';
 import { ReportsService } from 'src/app/services/reports.service';
@@ -10,6 +11,11 @@ import { ReportsService } from 'src/app/services/reports.service';
   animations: [fadeAnimation],
 })
 export class ReportsComponent {
+
+  @ViewChild('salesReportModal', { static: false }) salesReportModal!: ElementRef
+  @ViewChild('purchasesReportModal', { static: false }) purchasesReportModal!: ElementRef
+  @ViewChild('stockReportModal', { static: false }) stockReportModal!: ElementRef;
+
   currentDate: NgbDateStruct;
   startDate: NgbDateStruct;
   endDate: NgbDateStruct;
@@ -24,6 +30,40 @@ export class ReportsComponent {
     this.currentDate = this.calendar.getToday();
     this.startDate = this.calendar.getToday();
     this.endDate = this.calendar.getToday();
+  }
+
+  openSalesReportModal() {
+    this.salesReportModal.nativeElement.style.display = 'block';
+    this.salesReportModal.nativeElement.classList.add('opening');
+    setTimeout(() => {
+      this.salesReportModal.nativeElement.classList.add('show');
+    }, 50);
+  }
+
+  closeSalesReportModal() {
+    this.salesReportModal.nativeElement.classList.add('closing');
+    setTimeout(() => {
+      this.salesReportModal.nativeElement.classList.remove('show');
+      this.salesReportModal.nativeElement.classList.remove('closing');
+      this.salesReportModal.nativeElement.style.display = 'none';
+    }, 300);
+  }
+
+  openPurchasesReportModal() {
+    this.purchasesReportModal.nativeElement.style.display = 'block';
+    this.purchasesReportModal.nativeElement.classList.add('opening');
+    setTimeout(() => {
+      this.purchasesReportModal.nativeElement.classList.add('show');
+    }, 50);
+  }
+
+  closePurchasesReportModal() {
+    this.purchasesReportModal.nativeElement.classList.add('closing');
+    setTimeout(() => {
+      this.purchasesReportModal.nativeElement.classList.remove('show');
+      this.purchasesReportModal.nativeElement.classList.remove('closing');
+      this.purchasesReportModal.nativeElement.style.display = 'none';
+    }, 300);
   }
 
   getCurrentDate(): NgbDateStruct {

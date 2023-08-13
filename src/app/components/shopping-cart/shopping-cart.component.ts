@@ -216,27 +216,41 @@ export class ShoppingCartComponent {
 
   openSaleModal() {
     if (this.newSaleModal?.nativeElement) {
-      this.newSaleModal.nativeElement.classList.toggle('show');
       this.newSaleModal.nativeElement.style.display = 'block';
+      this.newSaleModal.nativeElement.classList.add('opening');
+      setTimeout(() => {
+        this.newSaleModal.nativeElement.classList.add('show');
+      }, 50);
     }
   }
 
   closeSaleModal() {
-    this.newSaleModal.nativeElement.classList.remove('show');
-    this.newSaleModal.nativeElement.style.display = 'none';
+    this.newSaleModal.nativeElement.classList.add('closing');
+    setTimeout(() => {
+      this.newSaleModal.nativeElement.classList.remove('show');
+      this.newSaleModal.nativeElement.classList.remove('closing');
+      this.newSaleModal.nativeElement.style.display = 'none';
+    }, 300);
     this.selectedCustomer = '';
   }
 
   openSaleHistoryModal() {
-    this.saleHistoryModal.nativeElement.classList.toggle('show');
     this.saleHistoryModal.nativeElement.style.display = 'block';
+    this.saleHistoryModal.nativeElement.classList.add('opening');
+    setTimeout(() => {
+      this.saleHistoryModal.nativeElement.classList.toggle('show');
+    }, 50);
     this.selectedDate = this.calendar.getToday();
     this.filterSalesByDate();
   }
 
   closeSaleHistoryModal() {
-    this.saleHistoryModal.nativeElement.classList.remove('show');
-    this.saleHistoryModal.nativeElement.style.display = 'none';
+    this.saleHistoryModal.nativeElement.classList.add('closing');
+    setTimeout(() => {
+      this.saleHistoryModal.nativeElement.classList.remove('show');
+      this.saleHistoryModal.nativeElement.classList.remove('closing')
+      this.saleHistoryModal.nativeElement.style.display = 'none';
+    }, 300);
     this.selectedDate = this.calendar.getToday();
   }
 

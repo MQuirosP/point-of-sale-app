@@ -254,42 +254,57 @@ export class OptionsComponent implements OnInit {
     });
   }
 
-  openCustomerInfoModal(value: any, customer_id: string) {
-    let selectedCustomerId = null;
+  openCustomerInfoModal(value: any, customer: any) {
+    let customer_id = customer.customer_id;
     if (value === true && customer_id) {
       this.modalTitle = value ? 'Edición' : 'Registro';
       this.modalActionLabel = value;
       this.changeDetectorRef.detectChanges();
-      this.customerInfoModal.nativeElement.classList.add('show');
       this.customerInfoModal.nativeElement.style.display = 'block';
-      selectedCustomerId = customer_id;
+      this.customerInfoModal.nativeElement.classList.add('opening');
       setTimeout(() => {
-        this.getCustomerInfo(selectedCustomerId);
-      }, 300);
+        this.customerInfoModal.nativeElement.classList.add('show');
+        this.getCustomerInfo(customer_id);
+        this.toggleIcons(customer)
+      }, 50);
     } else {
       this.modalTitle = value ? 'Edición' : 'Registro';
       this.modalActionLabel = !value;
       this.changeDetectorRef.detectChanges();
-      this.customerInfoModal.nativeElement.classList.add('show');
       this.customerInfoModal.nativeElement.style.display = 'block';
+      this.customerInfoModal.nativeElement.classList.add('opening');
+      setTimeout(() => {
+        this.customerInfoModal.nativeElement.classList.add('show');
+      }, 50);
     }
   }
 
   closeCustomerInfoModal() {
-    this.customerInfoModal.nativeElement.classList.remove('show');
-    this.customerInfoModal.nativeElement.style.display = 'none';
-    this.customerForm.reset();
+    this.customerInfoModal.nativeElement.classList.add('closing')
+    setTimeout(() => {
+      this.customerInfoModal.nativeElement.classList.remove('show');
+      this.customerInfoModal.nativeElement.classList.remove('closing');
+      this.customerInfoModal.nativeElement.style.display = 'none';
+      this.customerForm.reset();
+    }, 300);
     this.customerInfo = {};
   }
 
   openCustomerListModal() {
-    this.customerListModal.nativeElement.classList.toggle('show');
     this.customerListModal.nativeElement.style.display = 'block';
+    this.customerListModal.nativeElement.classList.add('opening');
+    setTimeout(() => {
+      this.customerListModal.nativeElement.classList.add('show');
+    }, 50);
   }
 
   closeCustomerListModal() {
-    this.customerListModal.nativeElement.classList.remove('show');
-    this.customerListModal.nativeElement.style.display = 'none';
+    this.customerListModal.nativeElement.classList.add('closing');
+    setTimeout(() => {
+      this.customerListModal.nativeElement.classList.remove('show');
+      this.customerListModal.nativeElement.classList.remove('closing');
+      this.customerListModal.nativeElement.style.display = 'none';
+    }, 300);
   }
 
   createCustomer() {
@@ -498,42 +513,61 @@ export class OptionsComponent implements OnInit {
     });
   }
 
-  openProviderInfoModal(value: any, provider_id: string) {
-    let selectedProviderId = null;
+  openProviderInfoModal(value: any, provider: any) {
+    let provider_id = provider.provider_id;
     if (value === true && provider_id) {
       this.modalTitle = value ? 'Edición' : 'Registro';
       this.modalActionLabel = value;
       this.changeDetectorRef.detectChanges();
-      this.providerInfoModal.nativeElement.classList.add('show');
       this.providerInfoModal.nativeElement.style.display = 'block';
-      selectedProviderId = provider_id;
+      this.providerInfoModal.nativeElement.classList.add('opening');
       setTimeout(() => {
-        this.getProviderInfo(selectedProviderId);
-      }, 300);
+        this.providerInfoModal.nativeElement.classList.add('show');
+        this.getProviderInfo(provider_id);
+        this.toggleIcons(provider)
+      }, 50);
     } else {
       this.modalTitle = value ? 'Edición' : 'Registro';
       this.modalActionLabel = !value;
       this.changeDetectorRef.detectChanges();
-      this.providerInfoModal.nativeElement.classList.add('show');
       this.providerInfoModal.nativeElement.style.display = 'block';
+      this.providerInfoModal.nativeElement.classList.add('opening');
+      setTimeout(() => {
+        this.providerInfoModal.nativeElement.classList.add('show');
+      }, 50);
     }
   }
 
   closeProviderInfoModal() {
-    this.providerInfoModal.nativeElement.classList.remove('show');
-    this.providerInfoModal.nativeElement.style.display = 'none';
-    this.providerForm.reset();
+    this.providerInfoModal.nativeElement.classList.add('closing');
+    setTimeout(() => {
+      this.providerInfoModal.nativeElement.classList.remove('show');
+      this.providerInfoModal.nativeElement.classList.remove('closing');
+      this.providerInfoModal.nativeElement.style.display = 'none';
+      this.providerForm.reset();
+    }, 300);
     this.providerInfo = {};
   }
 
   openProviderListModal() {
-    this.providerListModal.nativeElement.classList.toggle('show');
     this.providerListModal.nativeElement.style.display = 'block';
+    this.providerListModal.nativeElement.classList.add('opening');
+    setTimeout(() => {
+      this.providerListModal.nativeElement.classList.add('show');
+    }, 50);
   }
 
   closeProviderListModal() {
-    this.providerListModal.nativeElement.classList.remove('show');
-    this.providerListModal.nativeElement.style.display = 'none';
+    this.providerListModal.nativeElement.classList.add('closing');
+    setTimeout(() => {
+      this.providerListModal.nativeElement.classList.remove('show');
+      this.providerListModal.nativeElement.classList.remove('closing');
+      this.providerListModal.nativeElement.style.display = 'none';
+    }, 300);
+  }
+
+  toggleIcons(object: any) {
+    object.showIcons = !object.showIcons;
   }
 
   createProvider() {
@@ -656,13 +690,20 @@ export class OptionsComponent implements OnInit {
 
   // DE AQUÍ EN ADELANTE EXCLUSIVAMENTE USUARIOS
   openUsersListModal() {
-    this.usersListModal.nativeElement.classList.toggle('show');
     this.usersListModal.nativeElement.style.display = 'block';
+    this.usersListModal.nativeElement.classList.add('opening');
+    setTimeout(() => {
+      this.usersListModal.nativeElement.classList.toggle('show');
+    }, 50);
   }
 
   closeUsersListModal() {
-    this.usersListModal.nativeElement.classList.remove('show');
-    this.usersListModal.nativeElement.style.display = 'none';
+    this.usersListModal.nativeElement.classList.add('closing');
+    setTimeout(() => {
+      this.usersListModal.nativeElement.classList.remove('show');
+      this.usersListModal.nativeElement.classList.remove('closing');
+      this.usersListModal.nativeElement.style.display = 'none';
+    }, 300);
   }
 
   openUserInfoModal(value: any, userId: string) {
@@ -671,8 +712,11 @@ export class OptionsComponent implements OnInit {
       this.modalTitle = value ? 'Edición' : 'Registro';
       this.modalActionLabel = value;
       this.changeDetectorRef.detectChanges();
-      this.usersInfoModal.nativeElement.classList.toggle('show');
       this.usersInfoModal.nativeElement.style.display = 'block';
+      this.usersInfoModal.nativeElement.classList.add('opening');
+      setTimeout(() => {
+        this.usersInfoModal.nativeElement.classList.toggle('show');
+      }, 50);
       selectedUserId = userId;
       setTimeout(() => {
         this.getUserInfo(selectedUserId);
@@ -681,14 +725,21 @@ export class OptionsComponent implements OnInit {
       this.modalTitle = value ? 'Edición' : 'Registro';
       this.modalActionLabel = !value;
       this.changeDetectorRef.detectChanges();
-      this.usersInfoModal.nativeElement.classList.toggle('show');
       this.usersInfoModal.nativeElement.style.display = 'block';
+      this.usersInfoModal.nativeElement.classList.add('opening');
+      setTimeout(() => {
+        this.usersInfoModal.nativeElement.classList.toggle('show');
+      }, 50);
     }
   }
 
   closeUserInfoModal() {
-    this.usersInfoModal.nativeElement.classList.remove('show');
-    this.usersInfoModal.nativeElement.style.display = 'none';
+    this.usersInfoModal.nativeElement.classList.add('closing');
+    setTimeout(() => {
+      this.usersInfoModal.nativeElement.classList.remove('show');
+      this.usersInfoModal.nativeElement.classList.remove('closing');
+      this.usersInfoModal.nativeElement.style.display = 'none';
+    }, 300);
     this.userForm.reset();
     this.userInfo = {};
   }
@@ -927,13 +978,20 @@ export class OptionsComponent implements OnInit {
   }
 
   openResetPasswordModal() {
-    this.resetPasswordModal.nativeElement.classList.toggle('show');
     this.resetPasswordModal.nativeElement.style.display = 'block';
+    this.resetPasswordModal.nativeElement.classList.add('opening');
+    setTimeout(() => {
+      this.resetPasswordModal.nativeElement.classList.toggle('show');
+    }, 50);
   }
 
   closeResetPasswordModal() {
-    this.resetPasswordModal.nativeElement.classList.remove('show');
-    this.resetPasswordModal.nativeElement.style.display = 'none';
+    this.resetPasswordModal.nativeElement.classList.add('closing');
+    setTimeout(() => {
+      this.resetPasswordModal.nativeElement.classList.remove('show');
+      this.resetPasswordModal.nativeElement.classList.remove('closing');
+      this.resetPasswordModal.nativeElement.style.display = 'none';
+    })
   }
 
   resetPassword(username: string) {

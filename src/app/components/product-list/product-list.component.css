@@ -42,3 +42,26 @@ th {
   }
 }
 
+.icon-container {
+  position:initial;
+  width: 450px;
+  padding-left: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.utilitary-icons {
+  position: relative;
+  top: 0;
+  right: 0;
+  width: 100%;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+}
+
+.utilitary-icons.show-icons {
+  opacity: 1;
+  max-height: 100px; /* Ajusta la altura máxima según tus necesidades */
+}

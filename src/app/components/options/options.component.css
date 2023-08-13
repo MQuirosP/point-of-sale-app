@@ -11,3 +11,47 @@
 td {
   padding: 10px 10px;
 }
+
+/* Estilos para dispositivos móviles */
+@media screen and (max-width: 900px) {
+  .d-flex {
+    flex-wrap: wrap;
+  }
+
+  .product-name {
+    text-align: left;
+    width: 100%;
+    overflow: hidden;
+    white-space: normal;
+    text-overflow: ellipsis;
+  }
+
+  .product-icons {
+    flex: content;
+    justify-content: space-between;
+  }
+}
+
+.icon-container {
+  position:initial;
+  width: 450px;
+  padding-left: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.utilitary-icons {
+  position: relative;
+  top: 0;
+  right: 0;
+  width: 100%;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+}
+
+.utilitary-icons.show-icons {
+  opacity: 1;
+  max-height: 100px; /* Ajusta la altura máxima según tus necesidades */
+}

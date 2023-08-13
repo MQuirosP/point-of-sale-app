@@ -23,7 +23,7 @@
 </header>
 
 <!-- Tabla con la lista de productos -->
-<div class="container modal-container mt-4" [@fadeAnimation]>
+<div class="container mt-4" [@fadeAnimation]>
   <div
     class="modal-content modal-dialog-scrollable"
     style="max-width: 100%; margin: 0 auto"
@@ -39,9 +39,7 @@
           <div class="d-flex align-items-center">
             <button
               class="btn btn-primary border-primary shadow clic-on-image mr-4"
-              data-toggle="modal"
-              data-target="#productModal"
-              (click)="openProductModal(false, 0); this.editMode = false"
+              (click)="openProductModal(false, null); this.editMode = false"
               [disabled]="getUserRole() === 'user'"
             >
               Agregar
@@ -74,8 +72,12 @@
         <table class="table">
           <thead>
             <tr class="product-detail-table-titles">
-              <th class="text-left" style="min-width: 30px"></th>
-              <th class="text-left" style="max-width: 400px">Producto</th>
+              <th
+                class="text-left"
+                style="max-width: 400px; padding-left: 30px"
+              >
+                Producto
+              </th>
               <th class="text-right" style="min-width: 100px">Disponible</th>
               <th class="text-right" style="min-width: 100px">P. Compra</th>
               <th
@@ -92,7 +94,11 @@
               </th>
               <th
                 class="text-right"
-                style="min-width: 100px; padding-right: 30px"
+                style="
+                  min-width: 130px;
+                  padding-right: 30px;
+                  table-layout: fixed;
+                "
               >
                 P. Venta
               </th>
@@ -106,33 +112,19 @@
                 let even = even
               "
               [ngClass]="{ 'table-row-even': even, 'table-row-odd': !even }"
+              class="pl-4"
             >
-              <td class="product-code" style="min-width: 30px"></td>
-              <td
-                class="d-flex justify-content-between"
-                style="min-width: 400px"
-                (click)="product.showIcons = !product.showIcons"
-              >
-                <span
-                  class="product-name"
-                  style="cursor: pointer; width: 75%"
-                  tabindex="-1"
-                >
-                  {{ product.name }}
-                </span>
-                <span
-                  class="utilitary-icons show-icons align-items-end"
-                  style="width: 20%"
+              <td class="icon-container">
+                <div class="product-name" (click)="toggleIcons(product)">{{ product.name }}</div>
+                <div
+                  class="utilitary-icons"
                   [ngClass]="{ 'show-icons': product.showIcons }"
                 >
                   <a
                     role="button"
                     class="ml-3 mr-2"
-                    data-toggle="modal"
-                    data-target="#productModal"
                     (click)="
-                      openProductModal(true, product.productId);
-                      this.editMode = true
+                      openProductModal(true, product); this.editMode = true
                     "
                   >
                     <i
@@ -143,16 +135,14 @@
                   <a
                     class="mr-2"
                     *ngIf="getUserRole() !== 'user'"
-                    data-toggle="modal"
-                    data-target="#deletePasswordModal"
-                    (click)="openPasswordModal(product.int_code)"
+                    (click)="openPasswordModal(product)"
                   >
                     <i
                       class="fas fa-solid fa-trash clic-on-icon"
                       style="color: #fa0000; cursor: pointer"
                     ></i>
                   </a>
-                </span>
+                </div>
               </td>
 
               <td class="text-right" style="min-width: 100px">
@@ -175,7 +165,11 @@
               </td>
               <td
                 class="text-right price-cell"
-                style="min-width: 100px; padding-right: 30px"
+                style="
+                  min-width: 130px;
+                  padding-right: 30px;
+                  table-layout: fixed;
+                "
               >
                 {{ product.sale_price | currency : "CRC" : "₡" }}
               </td>
@@ -186,7 +180,7 @@
     </div>
   </div>
 </div>
-<div style="margin-bottom: 80px"></div>
+<div style="margin-bottom: 100px"></div>
 
 <!-- Botón para ir al principio de la lista -->
 <!-- <button
@@ -207,7 +201,7 @@
   aria-hidden="true"
 >
   <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
+    <div class="modal-content modal-shadow">
       <div class="modal-header border">
         <h5 class="modal-title" id="productModalLabel">
           {{ modalTitle }} de producto
@@ -216,7 +210,6 @@
           type="button"
           aria-label="Close"
           class="close clic-on-icon"
-          data-dismiss="modal"
           (click)="closeProductModal()"
         >
           <span aria-hidden="true">
@@ -238,7 +231,6 @@
                 required
                 #codeInput
                 (input)="handleCodeInput($event.target)"
-                (keypress)="disableEnterKey($event)"
                 [ngClass]="{
                   'is-valid':
                     productForm.get('int_code').touched &&
@@ -257,8 +249,8 @@
                 role="textbox"
                 formControlName="category_id"
                 [items]="categoryOptions"
-                bindValue="value"
-                bindLabel="label"
+                bindValue=value
+                bindLabel=label
                 [ngClass]="{
                   'ng-invalid ng-touched':
                     productForm.get('category_id').touched &&
@@ -415,7 +407,6 @@
               type="button"
               class="btn btn-primary shadow clic-on-image"
               (click)="createProduct($event)"
-              data-dismiss="modal"
             >
               Guardar
             </button>
@@ -423,14 +414,13 @@
               *ngIf="this.editMode === true && getUserRole() !== 'user'"
               type="button"
               class="btn btn-primary shadow clic-on-image"
-              (click)="editProduct(productForm.get('productId').value)"
+              (click)="editProduct()"
             >
-              Editar
+              Guardar
             </button>
             <button
               type="button"
               class="btn btn-secondary shadow clic-on-image"
-              data-dismiss="modal"
               (click)="closeProductModal()"
             >
               Cancelar
@@ -463,7 +453,6 @@
         <button
           class="close clic-on-icon"
           (click)="closePasswordModal()"
-          data-dismiss="modal"
         >
           <span aria-hidden="true"><i class="fas fa-close"></i></span>
         </button>
@@ -494,7 +483,6 @@
             <button
               type="submit"
               class="btn btn-primary clic-on-image"
-              data-dismiss="modal"
               (click)="deleteProduct(productForm.get('int_code').value)"
             >
               Guardar
@@ -503,7 +491,6 @@
               type="button"
               class="btn btn-secondary clic-on-image"
               (click)="closePasswordModal()"
-              data-dismiss="modal"
             >
               Cerrar
             </button>

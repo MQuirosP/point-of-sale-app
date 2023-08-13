@@ -108,8 +108,7 @@
                   <a
                     role="button"
                     class="btn btn-primary border border-primary clic-on-image"
-                    data-toggle="modal"
-                    data-target="#providerListModal"
+                    (click)="openProviderListModal()"
                   >
                     Ver lista
                   </a>
@@ -138,8 +137,7 @@
                   <a
                     role="button"
                     class="btn btn-primary border border-primary clic-on-image"
-                    data-toggle="modal"
-                    data-target="#customerListModal"
+                    (click)="openCustomerListModal()"
                   >
                     Ver lista
                   </a>
@@ -170,8 +168,7 @@
                   <a
                     role="button"
                     class="btn btn-primary border border-primary clic-on-image"
-                    data-toggle="modal"
-                    data-target="#usersListModal"
+                    (click)="openUsersListModal()"
                   >
                     Ver lista
                   </a>
@@ -183,7 +180,7 @@
       </section>
     </div>
   </div>
-  <div style="margin-bottom: 80px"></div>
+  <div style="margin-bottom: 100px"></div>
 </div>
 
 <!-- Modal para listado de proveedores -->
@@ -197,13 +194,12 @@
   aria-hidden="true"
 >
   <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
+    <div class="modal-content modal-shadow">
       <div class="modal-header border">
         <h5 class="modal-title">Mantenimiento de proveedores</h5>
         <button
           type="button"
           class="close clic-on-icon"
-          data-dismiss="modal"
           (click)="closeProviderListModal()"
           aria-label="Cerrar"
         >
@@ -239,43 +235,35 @@
                   *ngFor="let provider of filteredProviders; let even = even"
                   [ngClass]="{ 'table-row-even': even, 'table-row-odd': !even }"
                 >
-                  <td
-                    class="d-flex justify-content-between"
-                    (click)="provider.showIcons = !provider.showIcons"
-                  >
-                    <span class="" style="cursor: pointer" tabindex="0">
+                  <td class="icon-container">
+                    <div class="product-name" (click)="toggleIcons(provider)">
                       {{ provider.provider_name }}
-                    </span>
-                    <span
-                      class="utilitary-icons show-icons text-left"
-                      [ngClass]="{ 'show-icons': provider.showIcons }"
+                    </div>
+                    <div
+                      class="utilitary-icons"
+                      [ngClass]="{ 'show-icons ': provider.showIcons }"
                     >
                       <a
-                        class="ml-2 mr-3"
+                        class="ml-3 mr-2"
                         role="button"
-                        data-toggle="modal"
-                        data-target="#providerInfoModal"
                         (click)="
-                          openProviderInfoModal(true, provider.provider_id);
+                          openProviderInfoModal(true, provider);
                           this.editMode = true
                         "
                       >
                         <i
                           class="fa-solid fa-pen-to-square clic-on-icon"
-                          style="color: #1100fa"
+                          style="color: #1100fa; cursor: pointer"
                         ></i>
                       </a>
-                      <a
-                        *ngIf="getUserRole() !== 'user'"
-                        class="text-left"
-                        (click)="deleteProvider(provider.provider_id)"
-                      >
+                      <a class="mr-2" *ngIf="getUserRole() !== 'user'">
                         <i
                           class="fas fa-solid fa-trash clic-on-icon"
-                          style="color: #fa0000"
+                          (click)="deleteProvider(provider.provider_id)"
+                          style="color: #fa0000; cursor: pointer"
                         ></i>
                       </a>
-                    </span>
+                    </div>
                   </td>
                   <td class="text-left">
                     {{ provider.provider_email }}
@@ -294,8 +282,6 @@
           *ngIf="getUserRole() !== 'user'"
           type="button"
           class="btn btn-primary border border-primary clic-on-image"
-          data-toggle="modal"
-          data-target="#providerInfoModal"
           (click)="openProviderInfoModal(false, ''); this.editMode = false"
         >
           Agregar
@@ -303,7 +289,6 @@
         <button
           type="button"
           class="btn btn-secondary border border-secondary clic-on-image"
-          data-dismiss="modal"
           (click)="closeProviderListModal()"
         >
           Cerrar
@@ -324,7 +309,7 @@
   aria-hidden="true"
 >
   <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
+    <div class="modal-content modal-shadow">
       <div class="modal-header border">
         <h5 class="modal-title" id="providerInfoModalLabel">
           {{ modalTitle }} de proveedores
@@ -332,7 +317,6 @@
         <button
           type="button"
           class="close clic-on-icon"
-          data-dismiss="modal"
           aria-label="Close"
           (click)="closeProviderInfoModal()"
         >
@@ -449,7 +433,6 @@
               type="submit"
               class="btn btn-primary border border-primary clic-on-image"
               (click)="createProvider()"
-              data-dismiss="modal"
             >
               Guardar
             </button>
@@ -458,14 +441,12 @@
               type="submit"
               class="btn btn-primary border border-primary clic-on-image"
               (click)="editProvider(providerForm.get('provider_id').value)"
-              data-dismiss="modal"
             >
               Editar
             </button>
             <button
               type="button"
               class="btn btn-secondary border border-secondary clic-on-image ml-2"
-              data-dismiss="modal"
               (click)="closeProviderInfoModal()"
             >
               Cerrar
@@ -488,13 +469,12 @@
   aria-hidden="true"
 >
   <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
+    <div class="modal-content modal-shadow">
       <div class="modal-header border">
         <h5 class="modal-title">Mantenimiento de clientes</h5>
         <button
           type="button"
           class="close clic-on-icon"
-          data-dismiss="modal"
           (click)="closeCustomerListModal()"
           aria-label="Cerrar"
         >
@@ -530,49 +510,36 @@
                   *ngFor="let customer of filteredCustomers; let even = even"
                   [ngClass]="{ 'table-row-even': even, 'table-row-odd': !even }"
                 >
-                  <td
-                    class="d-flex justify-content-between"
-                    (click)="customer.showIcons = !customer.showIcons"
+                <td class="icon-container">
+                  <div class="product-name" (click)="toggleIcons(customer)">
+                    {{ customer.customer_name }} {{ customer.customer_first_lastname }}
+                  </div>
+                  <div
+                    class="utilitary-icons"
+                    [ngClass]="{ 'show-icons ': customer.showIcons }"
                   >
-                    <span
-                      class=""
-                      style="cursor: pointer"
-                      tabindex="-1"
+                    <a
+                      class="ml-3 mr-2"
+                      role="button"
+                      (click)="
+                        openCustomerInfoModal(true, customer);
+                        this.editMode = true
+                      "
                     >
-                      {{ customer.customer_name }}
-                      {{ customer.customer_first_lastname }}
-                    </span>
-                    <span
-                      class="utilitary-icons show-icons align-items-end"
-                      [ngClass]="{ 'show-icons': customer.showIcons }"
-                    >
-                      <a
-                        class="ml-2 mr-3"
-                        role="button"
-                        data-toggle="modal"
-                        data-target="#customerInfoModal"
-                        (click)="
-                          openCustomerInfoModal(true, customer.customer_id);
-                          this.editMode = true
-                        "
-                      >
-                        <i
-                          class="fa-solid fa-pen-to-square clic-on-icon"
-                          style="color: #1100fa;"
-                        ></i>
-                      </a>
-                      <a
-                        *ngIf="getUserRole() !== 'user'"
-                        class="text-left"
-                        (click)="deleteCustomer(customer.customer_id)"
-                      >
-                        <i
-                          class="fa-solid fa-trash clic-on-icon"
-                          style="color: #fa0000; cursor: pointer"
-                        ></i>
-                      </a>
-                    </span>
-                  </td>
+                      <i
+                        class="fa-solid fa-pen-to-square clic-on-icon"
+                        style="color: #1100fa; cursor: pointer"
+                      ></i>
+                    </a>
+                    <a class="mr-2" *ngIf="getUserRole() !== 'user'">
+                      <i
+                        class="fas fa-solid fa-trash clic-on-icon"
+                        (click)="deleteProvider(customer.customer_id)"
+                        style="color: #fa0000; cursor: pointer"
+                      ></i>
+                    </a>
+                  </div>
+                </td>
                   <td class="text-left">
                     {{ customer.customer_email }}
                   </td>
@@ -589,8 +556,6 @@
         <button
           type="button"
           class="btn btn-primary border border-primary clic-on-image"
-          data-toggle="modal"
-          data-target="#customerInfoModal"
           (click)="openCustomerInfoModal(false, ''); this.editMode = false"
         >
           Agregar
@@ -598,7 +563,6 @@
         <button
           type="button"
           class="btn btn-secondary border border-secondary clic-on-image"
-          data-dismiss="modal"
           (click)="closeCustomerListModal()"
         >
           Cerrar
@@ -619,7 +583,7 @@
   aria-hidden="true"
 >
   <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
+    <div class="modal-content modal-shadow">
       <div class="modal-header border">
         <h5 class="modal-title" id="customerInfoModalLabel">
           {{ modalTitle }} de clientes
@@ -627,7 +591,6 @@
         <button
           type="button"
           class="close clic-on-icon"
-          data-dismiss="modal"
           aria-label="Close"
           (click)="closeCustomerInfoModal()"
         >
@@ -784,7 +747,6 @@
               type="submit"
               class="btn btn-primary border border-primary clic-on-image"
               (click)="createCustomer()"
-              data-dismiss="modal"
             >
               Guardar
             </button>
@@ -792,7 +754,6 @@
               *ngIf="this.editMode === true"
               type="submit"
               class="btn btn-primary border border-primary clic-on-image"
-              data-dismiss="modal"
               (click)="editCustomer(customerForm.get('customer_id').value)"
             >
               Editar
@@ -800,7 +761,6 @@
             <button
               type="button"
               class="btn btn-secondary border border-secondary clic-on-image ml-2"
-              data-dismiss="modal"
               (click)="closeCustomerInfoModal()"
             >
               Cerrar
@@ -822,14 +782,13 @@
   aria-labelledby="usersListModalLabel"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-dialog-scrollable" role="document">
-    <div class="modal-content">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content modal-shadow">
       <div class="modal-header border">
         <h5 class="modal-title">Mantenimiento de usuarios</h5>
         <button
           type="button"
           class="close clic-on-icon"
-          data-dismiss="modal"
           (click)="closeUsersListModal()"
           aria-label="Cerrar"
         >
@@ -861,18 +820,15 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let user of filteredUsers; let even = even"
-                [ngClass]="{ 'table-row-even': even, 'table-row-odd': !even }"
+                <tr
+                  *ngFor="let user of filteredUsers; let even = even"
+                  [ngClass]="{ 'table-row-even': even, 'table-row-odd': !even }"
                 >
                   <td
                     class="bg-transparent d-flex justify-content-between"
                     (click)="user.showIcons = !user.showIcons"
                   >
-                    <span
-                      class=""
-                      style="cursor: pointer"
-                      tabindex="0"
-                    >
+                    <span class="" style="cursor: pointer" tabindex="-1">
                       {{ user.username }}
                     </span>
                     <span
@@ -882,8 +838,6 @@
                       <a
                         class="ml-2 mr-3"
                         role="button"
-                        data-toggle="modal"
-                        data-target="#usersInfoModal"
                         (click)="
                           openUserInfoModal(true, user.userId);
                           this.editMode = true
@@ -934,7 +888,6 @@
         <button
           type="button"
           class="btn btn-primary border border-primary clic-on-image"
-          data-dismiss="modal"
           routerLink="/register"
         >
           Agregar
@@ -942,7 +895,6 @@
         <button
           type="button"
           class="btn btn-secondary border border-secondary clic-on-image"
-          data-dismiss="modal"
           (click)="closeUsersListModal()"
         >
           Cerrar
@@ -963,7 +915,7 @@
   aria-hidden="true"
 >
   <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
+    <div class="modal-content modal-shadow">
       <div class="modal-header border">
         <h5 class="modal-title" id="userInfoModalLabel">
           {{ modalTitle }} de usuarios
@@ -971,7 +923,6 @@
         <button
           type="button"
           class="close clic-on-icon"
-          data-dismiss="modal"
           aria-label="Close"
           (click)="closeUserInfoModal()"
         >
@@ -1028,8 +979,6 @@
                 <button
                   type="button"
                   class="btn btn-primary border border-primary clic-on-image"
-                  data-toggle="modal"
-                  data-target="#resetPasswordModal"
                   (click)="openResetPasswordModal()"
                 >
                   Restablecer
@@ -1093,7 +1042,6 @@
               *ngIf="editMode"
               type="submit"
               class="btn btn-primary border border-primary clic-on-image"
-              data-dismiss="modal"
               (click)="editUser(userForm.get('userId').value)"
             >
               Guardar
@@ -1101,7 +1049,6 @@
             <button
               type="button"
               class="btn btn-secondary border border-secondary clic-on-image ml-2"
-              data-dismiss="modal"
               (click)="closeUserInfoModal()"
             >
               Cerrar
@@ -1124,7 +1071,7 @@
   aria-hidden="true"
 >
   <div class="modal-dialog" role="document" style="width: 300px">
-    <div class="modal-content">
+    <div class="modal-content modal-shadow">
       <div class="modal-header border">
         <h5 class="modal-title" id="resetPasswordModalLabel">
           Restablecer Contraseña
@@ -1132,7 +1079,6 @@
         <button
           type="button"
           class="close clic-on-icon"
-          data-dismiss="modal"
           aria-label="Close"
           (click)="closeResetPasswordModal()"
         >
@@ -1188,7 +1134,6 @@
             <button
               type="button"
               class="btn btn-primary border border-primary clic-on-image"
-              data-dismiss="modal"
               (click)="resetPassword(this.userForm.get('username').value)"
             >
               Guardar
@@ -1196,7 +1141,6 @@
             <button
               type="button"
               class="btn btn-secondary border border-secondary clic-on-image"
-              data-dismiss="modal"
               (click)="closeResetPasswordModal()"
             >
               Cerrar

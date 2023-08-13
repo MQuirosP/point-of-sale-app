@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { Products } from '../interfaces/products';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class ProductService {
   }
 
   getProductByIntCode(intCode: string) {
-    return this.http.get<any>(`${this.backendUrl}products/int_code/${intCode}`);
+    return this.http.get<Products>(`${this.backendUrl}products/int_code/${intCode}`);
   }
 
 }

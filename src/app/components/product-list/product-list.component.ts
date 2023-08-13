@@ -7,7 +7,7 @@ import {
   ChangeDetectorRef,
   HostListener,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, catchError, tap, timer } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { fadeAnimation } from 'src/app/fadeAnimation';
@@ -18,6 +18,8 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { Products } from 'src/app/interfaces/products';
+import { ProductService } from 'src/app/services/product.service';
 
 @Component({
   selector: 'app-product-list',
@@ -35,34 +37,37 @@ export class ProductListComponent implements OnInit {
   backendUrl: string = environment.apiUrl;
 
   subscription: Subscription = new Subscription();
+
   public products: any[] = [];
   public page: number = 0;
+
   filteredProducts: any[] = [];
   searchTerm: string = '';
-  currentSlide: number = 0;
+  // currentSlide: number = 0;
 
-  showScrollButton: boolean = false;
+  // showScrollButton: boolean = false;
 
   productForm: FormGroup;
   modalTitle: string;
   modalActionLabel: boolean = false;
   editMode: boolean = false;
-  productInfo: any = {};
+  productInfo: Products;
 
   password: string = '';
 
-  isTaxed: boolean;
+  // isTaxed: boolean;
 
   categoryOptions = [
-    { value: '0', label: 'Consumo interno' },
-    { value: '1', label: 'Venta directa' }
+    { value: 0, label: 'Consumo interno' },
+    { value: 1, label: 'Venta directa' },
   ];
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private http: HttpClient,
     private toastr: ToastrService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private productService: ProductService
   ) {
     this.productForm = this.formBuilder.group({
       productId: [0],
@@ -89,27 +94,33 @@ export class ProductListComponent implements OnInit {
     this.refreshProductList();
   }
 
-  @HostListener('window:scroll', ['$event'])
-  onWindowScroll() {
-    const scrollPos =
-      window.scrollY ||
-      document.documentElement.scrollTop ||
-      document.body.scrollTop ||
-      0;
-    this.showScrollButton = scrollPos > 0;
+  ngOnDestroy() {
+    if(this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
+  
+
+  // @HostListener('window:scroll', ['$event'])
+  // onWindowScroll() {
+  //   const scrollPos =
+  //     window.scrollY ||
+  //     document.documentElement.scrollTop ||
+  //     document.body.scrollTop ||
+  //     0;
+  //   this.showScrollButton = scrollPos > 0;
+  // }
 
   getUserRole(): string {
     return localStorage.getItem('role');
   }
-  
+
   nextPage() {
     this.page += 5;
   }
 
   prevPage() {
-    if ( this.page > 0 )
-      this.page -= 5;
+    if (this.page > 0) this.page -= 5;
   }
 
   toggleTaxPercentage() {
@@ -123,9 +134,9 @@ export class ProductListComponent implements OnInit {
     }
   }
 
-  isTaxPercentageDisabled() {
-    return !this.productForm.get('taxes').value;
-  }
+  // isTaxPercentageDisabled() {
+  //   return !this.productForm.get('taxes').value;
+  // }
 
   getTaxPercentageValue() {
     return this.productForm.get('taxes').value
@@ -133,9 +144,9 @@ export class ProductListComponent implements OnInit {
       : 0;
   }
 
-  scrollToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
+  // scrollToTop() {
+  //   window.scrollTo({ top: 0, behavior: 'smooth' });
+  // }
 
   loadData() {
     if (this.products.length > 0) {
@@ -194,30 +205,42 @@ export class ProductListComponent implements OnInit {
     this.changeDetectorRef.detectChanges();
   }
 
-  openProductModal(value: boolean, product_id: number) {
-    // let selectedProductId = null;
-    if (value && product_id) {
+  openProductModal(value: boolean, product: Products) {
+    if (value && product) {
+      const product_id = product.productId;
       this.modalTitle = value ? 'Edición' : 'Registro';
       this.modalActionLabel = value;
       this.changeDetectorRef.detectChanges();
-      this.productModal.nativeElement.classList.add('show');
       this.productModal.nativeElement.style.display = 'block';
-      // setTimeout(() => {
-      //   selectedProductId = product_id;
-        
-      // }, 50)
-      
+      this.productModal.nativeElement.classList.add('opening');
+      setTimeout(() => {
+        this.productModal.nativeElement.classList.add('show');
+        this.toggleIcons(product);
+      }, 50);
       setTimeout(() => {
         this.getProductInfo(product_id);
-      }, 100);
+      }, 400);
     } else {
       this.modalTitle = value ? 'Edición' : 'Registro';
       this.modalActionLabel = !value;
       this.productForm.reset();
       this.changeDetectorRef.detectChanges();
-      this.productModal.nativeElement.classList.toggle('show');
       this.productModal.nativeElement.style.display = 'block';
+      this.productModal.nativeElement.classList.add('opening');
+      setTimeout(() => {
+        this.productModal.nativeElement.classList.add('show');
+      }, 50);
     }
+  }
+
+  closeProductModal() {
+    this.productModal.nativeElement.classList.add('closing');
+    setTimeout(() => {
+      this.productModal.nativeElement.classList.remove('show');
+      this.productModal.nativeElement.classList.remove('closing')
+      this.productModal.nativeElement.style.display = 'none';
+    }, 300)
+    this.searchTerm = '';
   }
 
   getProductInfo(product_id: number) {
@@ -241,54 +264,58 @@ export class ProductListComponent implements OnInit {
   }
 
   compareCategories(category1: any, category2: any): boolean {
-    return category1 && category2 ? category1.value === category2.value : category1 === category2;
+    return category1 && category2
+      ? category1.value === category2.value
+      : category1 === category2;
   }
 
-  private updateProductForm(product: any) {
-    const {
-      productId,
-      int_code,
-      name,
-      description,
-      category_id,
-      purchase_price,
-      sale_price,
-      taxes,
-      margin,
-      taxPercentage,
-    } = product;
+  toggleIcons(product: any) {
+    product.showIcons = !product.showIcons;
+  }
+
+  private updateProductForm(product: Products) {
+    const selectedCategory = this.categoryOptions.find(
+      (option) => option.value === product.category_id
+    );
   
-    const selectedCategory = this.categoryOptions.find(option => option.value == category_id);
     this.productForm.patchValue({
-      productId,
-      int_code,
-      name,
-      description,
+      ...product,
       category_id: selectedCategory,
-      purchase_price,
-      sale_price,
-      taxes,
-      margin,
-      taxPercentage,
     });
   }
-  
 
-  editProduct(productId: number) {
+  editProduct() {
     if (this.productForm.invalid) {
       this.toastr.error('Por favor, completa todos los campos requeridos.');
       return;
     }
 
-    const productData = this.extractProductFormData();
-    this.updateProduct(productId, productData);
+    const productData: Products = this.extractProductFormData();
+    this.updateProduct(productData);
   }
 
-  private updateProduct(productId: number, productData: any) {
-    this.http
-      .put(`${this.backendUrl}products/${productId}`, productData)
-      .subscribe({
-        next: (response: any) => {
+  private updateProduct(productData: Products) {
+    const productId = productData.productId;
+  
+    let category = this.productForm.get('category_id').value;
+    if (typeof category === 'number') {
+      productData.category_id = category;
+    } else {
+      productData.category_id = category.value;
+    }
+  
+    const propertiesChanged = Object.keys(productData).some((key) => {
+      return productData[key] !== this.productInfo[key];
+    });
+  
+    if (!propertiesChanged) {
+      this.toastr.info('No se realizó cambios en la información del producto.');
+      return;
+    }
+  
+    this.http.put(`${this.backendUrl}products/${productId}`, productData)
+      .pipe(
+        tap((response: any) => {
           if (response.success) {
             this.toastr.success('Producto actualizado exitosamente.');
             this.updateLocalProduct(productId, productData);
@@ -296,14 +323,23 @@ export class ProductListComponent implements OnInit {
             this.toastr.error('Error al actualizar el producto.');
           }
           this.refreshProductList();
-        },
-        error: (error: any) => {
+        }),
+        catchError((error: any) => {
           this.toastr.error('Error al actualizar el producto.', error);
-        },
+          return [];
+        })
+      )
+      .subscribe(() => {
+        timer(500).subscribe(() => {
+          this.resetProductForm();
+          timer(1000).subscribe(() => {
+            this.closeProductModal();
+          });
+        });
       });
   }
 
-  private updateLocalProduct(productId: number, productData: any) {
+  private updateLocalProduct(productId: number, productData: Products) {
     this.filteredProducts = this.products.map((product) => {
       if (product.producId === productId) {
         return productData;
@@ -312,7 +348,7 @@ export class ProductListComponent implements OnInit {
     });
   }
 
-  updateProductList(updatedProduct: any) {
+  updateProductList(updatedProduct: Products) {
     const index = this.products.findIndex(
       (product) => product.int_code === updatedProduct.int_code
     );
@@ -323,41 +359,49 @@ export class ProductListComponent implements OnInit {
     this.loadData();
   }
 
-  closeProductModal() {
-    this.productModal.nativeElement.classList.remove('show');
-    this.productModal.nativeElement.style.display = 'none';
-    this.searchTerm = '';
-  }
-
   createProduct(event: Event) {
-    if (this.modalActionLabel) {
-      if (this.productForm.invalid) {
-        event.stopPropagation();
-        this.toastr.error('Por favor, completa todos los campos requeridos.');
-        return;
-      }
-
-      const productData = this.extractProductFormData();
-      this.saveProduct(productData);
-    } else {
+    if (this.productForm.invalid) {
+      event.stopPropagation();
+      this.toastr.error('Por favor, completa todos los campos requeridos.');
+      return;
     }
+
+    const productData: Products = this.extractProductFormData();
+    const productIntCode = productData.int_code;
+
+    this.productService.getProductByIntCode(productIntCode).subscribe({
+      next: (response: any) => {
+        if (response.success === true) {
+          this.toastr.error(
+            'Código de producto ya existe en la base de datos.'
+          );
+        } else if (response.success === false) {
+          this.saveProduct(productData);
+        }
+      },
+      error: (error: any) => {
+        this.toastr.error('No se pudo verificar el producto.');
+      },
+    });
   }
 
   private extractProductFormData() {
+    const formValues = this.productForm.value;
     return {
-      int_code: this.productForm.get('int_code').value,
-      name: this.productForm.get('name').value,
-      description: this.productForm.get('description').value,
-      category_id: this.productForm.get('category_id').value,
-      purchase_price: this.productForm.get('purchase_price').value,
-      sale_price: this.productForm.get('sale_price').value,
-      taxes: this.productForm.get('taxes').value,
-      margin: this.productForm.get('margin').value,
-      taxPercentage: this.productForm.get('taxPercentage').value,
+      productId: formValues.productId,
+      int_code: formValues.int_code,
+      name: formValues.name,
+      description: formValues.description,
+      category_id: formValues.category_id,
+      purchase_price: formValues.purchase_price,
+      sale_price: formValues.sale_price,
+      taxes: formValues.taxes,
+      margin: formValues.margin,
+      taxPercentage: formValues.taxPercentage,
     };
   }
 
-  private saveProduct(productData: any) {
+  private saveProduct(productData: Products) {
     this.changeDetectorRef.detectChanges();
     this.http.post(`${this.backendUrl}products`, productData).subscribe({
       next: (response: any) => {
@@ -371,7 +415,7 @@ export class ProductListComponent implements OnInit {
         }
       },
       error: (error: any) => {
-        this.toastr.error('Error al guardar el cliente.', error);
+        this.toastr.error('Error al guardar el nuevo producto.', error);
       },
     });
   }
@@ -480,45 +524,35 @@ export class ProductListComponent implements OnInit {
     });
   }
 
-  openPasswordModal(int_code: string) {
-    this.deletePasswordModal.nativeElement.classList.toggle('show');
+  openPasswordModal(product: Products) {
     this.deletePasswordModal.nativeElement.style.display = 'block';
-    this.http.get(`${this.backendUrl}products/int_code/${int_code}`).subscribe({
-      next: (response: any) => {
-        if (
-          response &&
-          response.message &&
-          response.message.product &&
-          response.message.product.int_code &&
-          response.message.product.name &&
-          response.message.product.description &&
-          response.message.product.sale_price
-        ) {
-          const product = response.message.product;
-          const { int_code, name, description, quantity, sale_price } = product;
+    this.deletePasswordModal.nativeElement.classList.add('opening');
+    setTimeout(() => {
+      this.deletePasswordModal.nativeElement.classList.add('show');
+    }, 50);
+    this.toggleIcons(product);
+    try {
+      const { int_code, name, description, quantity, sale_price } = product;
 
-          this.productForm.patchValue({
-            int_code,
-            name,
-            description,
-            quantity,
-            sale_price,
-          });
-        } else {
-          console.log('No se encontró el producto');
-          this.toastr.warning('Producto no encontrado.');
-        }
-      },
-      error: (error) => {
-        console.log('Error al obtener el producto', error);
-        this.toastr.error('Error al obtener el producto.');
-      },
-    });
+      this.productForm.patchValue({
+        int_code,
+        name,
+        description,
+        quantity,
+        sale_price,
+      });
+    } catch (error) {
+      this.toastr.error('No se pudo recuperar la información del producto.');
+    }
   }
 
   closePasswordModal() {
-    this.deletePasswordModal.nativeElement.classList.remove('show');
-    this.deletePasswordModal.nativeElement.style.display = 'none';
+    this.deletePasswordModal.nativeElement.classList.add('closing')
+    setTimeout(() => {
+      this.deletePasswordModal.nativeElement.classList.remove('show');
+      this.deletePasswordModal.nativeElement.classList.remove('closing');
+      this.deletePasswordModal.nativeElement.style.display = 'none';
+    }, 300);
   }
 
   limitDecimals(field: string): void {
@@ -532,12 +566,6 @@ export class ProductListComponent implements OnInit {
 
     if (code && code.length === expectedCodeLength) {
       this.nameInput.nativeElement.focus();
-    }
-  }
-
-  disableEnterKey(event: KeyboardEvent) {
-    if (event.key === 'Enter') {
-      event.preventDefault();
     }
   }
 }

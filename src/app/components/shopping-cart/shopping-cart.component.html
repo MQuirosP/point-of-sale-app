@@ -31,8 +31,7 @@
         <div class="d-flex">
           <a
             class="text-decoration-none"
-            data-toggle="modal"
-            data-target="#newSaleModal"
+            (click)="openSaleModal()"
           >
             <div class="card-body">
               <h5 class="card-title">Crear venta</h5>
@@ -54,9 +53,7 @@
         <div class="d-flex">
           <a
             class="text-decoration-none"
-            data-toggle="modal"
-            data-target="#saleHistoryModal"
-            (click)="getSalesHistory(getCurrentDate())"
+            (click)="openSaleHistoryModal()"
           >
             <div class="card-body">
               <h5 class="card-title">Mi historial</h5>
@@ -110,7 +107,7 @@
     role="dialog"
     aria-hidden="true"
   >
-    <div class="modal-dialog modal-lg shadow" role="document">
+    <div class="modal-dialog modal-lg modal-shadow" role="document">
       <div class="modal-content">
         <div class="modal-header border">
           <h5 class="modal-title">Registro de ventas</h5>
@@ -118,7 +115,6 @@
             <button
               type="button"
               class="close clic-on-icon"
-              data-dismiss="modal"
               aria-label="Close"
               (click)="closeSaleModal()"
             >
@@ -432,14 +428,14 @@
             type="button"
             class="btn btn-primary shadow clic-on-image"
             (click)="createSale($event)"
-            data-dismiss="modal"
+
           >
             Guardar venta
           </button>
           <button
             type="button"
             class="btn btn-secondary shadow clic-on-image"
-            data-dismiss="modal"
+
             (click)="closeSaleModal()"
           >
             Cerrar
@@ -460,14 +456,13 @@
   aria-labelledby="saleHistoryModal"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-dialog-scrollable shadow" role="document">
+  <div class="modal-dialog modal-dialog-scrollable modal-shadow" role="document">
     <div class="modal-content">
       <div class="modal-header border">
         <h5 class="modal-title">Historial de ventas</h5>
         <button
           type="button"
           class="close clic-on-icon"
-          data-dismiss="modal"
           aria-label="Close"
           (click)="closeSaleHistoryModal()"
         >
@@ -592,7 +587,7 @@
           <button
             type="button"
             class="btn btn-secondary clic-on-image"
-            data-dismiss="modal"
+
             (click)="closeSaleHistoryModal()"
           >
             Cerrar

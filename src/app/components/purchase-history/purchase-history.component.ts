@@ -72,42 +72,42 @@ interface Product {
   styleUrls: ['./purchase-history.component.css'],
   animations: [
     fadeAnimation,
-    trigger('slideInOut', [
-      state(
-        'in',
-        style({
-          transform: 'translateX(0)',
-          opacity: 1,
-        })
-      ),
-      state(
-        'out',
-        style({
-          transform: 'translateX(-100%)',
-          opacity: 0,
-        })
-      ),
-      transition('in => out', animate('200ms ease-out')),
-      transition('out => in', animate('200ms ease-in')),
-    ]),
-    trigger('slideOut', [
-      state(
-        'in',
-        style({
-          transform: 'translateX(0)',
-          opacity: 1,
-        })
-      ),
-      state(
-        'out',
-        style({
-          transform: 'translateX(100%)',
-          opacity: 0,
-        })
-      ),
-      transition('in => out', animate('200ms ease-out')),
-      transition('out => in', animate('200ms ease-in')),
-    ]),
+    // trigger('slideInOut', [
+    //   state(
+    //     'in',
+    //     style({
+    //       transform: 'translateX(0)',
+    //       opacity: 1,
+    //     })
+    //   ),
+    //   state(
+    //     'out',
+    //     style({
+    //       transform: 'translateX(-100%)',
+    //       opacity: 0,
+    //     })
+    //   ),
+    //   transition('in => out', animate('200ms ease-out')),
+    //   transition('out => in', animate('200ms ease-in')),
+    // ]),
+    // trigger('slideOut', [
+    //   state(
+    //     'in',
+    //     style({
+    //       transform: 'translateX(0)',
+    //       opacity: 1,
+    //     })
+    //   ),
+    //   state(
+    //     'out',
+    //     style({
+    //       transform: 'translateX(100%)',
+    //       opacity: 0,
+    //     })
+    //   ),
+    //   transition('in => out', animate('200ms ease-out')),
+    //   transition('out => in', animate('200ms ease-in')),
+    // ]),
   ],
 })
 export class PurchaseHistoryComponent {
@@ -173,11 +173,11 @@ export class PurchaseHistoryComponent {
   }
 
   ngOnInit() {
-    this.modalService.showNewProductModal.subscribe((show: boolean) => {
-      if (show) {
-        this.openPurchaseModal();
-      }
-    });
+    // this.modalService.showNewProductModal.subscribe((show: boolean) => {
+    //   if (show) {
+    //     this.openPurchaseModal();
+    //   }
+    // });
     this.selectedDate = this.calendar.getToday();
 
     // DEFINICIÓN FORMULARIO PARA COMPRAS
@@ -218,25 +218,39 @@ export class PurchaseHistoryComponent {
   }
 
   openPurchaseModal() {
-    this.newPurchaseModal.nativeElement.classList.toggle('show');
     this.newPurchaseModal.nativeElement.style.display = 'block';
+    this.newPurchaseModal.nativeElement.classList.add('opening');
+    setTimeout(() => {
+      this.newPurchaseModal.nativeElement.classList.add('show');
+    }, 50);
   }
 
   closePurchaseModal() {
     this.newPurchaseModal.nativeElement.classList.remove('show');
-    this.newPurchaseModal.nativeElement.style.display = 'none';
+    this.newPurchaseModal.nativeElement.classList.add('closing');
+    setTimeout(() => {
+      this.newPurchaseModal.nativeElement.classList.remove('closing');
+      this.newPurchaseModal.nativeElement.style.display = 'none';
+    }, 300);
   }
 
   openPurchaseHistoryModal() {
-    this.purchaseHistoryModal.nativeElement.classList.toggle('show');
     this.purchaseHistoryModal.nativeElement.style.display = 'block';
+    this.purchaseHistoryModal.nativeElement.classList.add('opening');
+    setTimeout(() => {
+      this.purchaseHistoryModal.nativeElement.classList.add('show');
+    });
     this.selectedDate = this.calendar.getToday();
     this.getPurchasesHistory(this.date);
   }
 
   closePurchaseHistoryModal() {
-    this.purchaseHistoryModal.nativeElement.classList.remove('show');
-    this.purchaseHistoryModal.nativeElement.style.display = 'none';
+    this.purchaseHistoryModal.nativeElement.classList.add('closing');
+    setTimeout(() => {
+      this.purchaseHistoryModal.nativeElement.classList.remove('show');
+      this.purchaseHistoryModal.nativeElement.classList.remove('closing');
+      this.purchaseHistoryModal.nativeElement.style.display = 'none';
+    });
     this.selectedDate = this.calendar.getToday();
   }
 

@@ -30,8 +30,7 @@
         <div class="d-flex">
           <a
             class="text-decoration-none"
-            data-toggle="modal"
-            data-target="#newPurchaseModal"
+            (click)="openPurchaseModal()"
           >
             <div class="card-body">
               <h5 class="card-title">Crear compra</h5>
@@ -52,8 +51,6 @@
       >
         <div class="d-flex">
           <a
-            data-toggle="modal"
-            data-target="#purchaseHistoryModal"
             (click)="getPurchasesHistory(getCurrentDate())"
             class="text-decoration-none"
           >
@@ -116,7 +113,6 @@
           <button
             type="button"
             class="close clic-on-icon"
-            data-dismiss="modal"
             aria-label="Close"
             (click)="closePurchaseModal()"
           >
@@ -449,16 +445,13 @@
             type="button"
             class="btn btn-primary shadow clic-on-image"
             (click)="createPurchase($event)"
-            data-dismiss="modal"
           >
             Guardar
           </button>
           <button
             type="button"
             class="btn btn-secondary clic-on-image"
-            data-dismiss="modal"
             (click)="closePurchaseModal()"
-            data-dismiss="modal"
           >
             Cancelar
           </button>
@@ -485,7 +478,6 @@
         <button
           type="button"
           class="close clic-on-icon"
-          data-dismiss="modal"
           aria-label="Close"
           (click)="closePurchaseHistoryModal()"
         >
@@ -609,7 +601,6 @@
           <button
             type="button"
             class="btn btn-secondary shadow clic-on-image"
-            data-dismiss="modal"
             (click)="closePurchaseHistoryModal()"
           >
             Cerrar
