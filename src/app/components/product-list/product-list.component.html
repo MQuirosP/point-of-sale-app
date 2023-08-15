@@ -118,7 +118,7 @@
                 <div class="product-name" (click)="toggleIcons(product)">{{ product.name }}</div>
                 <div
                   class="utilitary-icons"
-                  [ngClass]="{ 'show-icons': product.showIcons }"
+                  [ngClass]="{ 'show-icons': product.showIcons, 'hide-icons': !product.showIcons }"
                 >
                   <a
                     role="button"

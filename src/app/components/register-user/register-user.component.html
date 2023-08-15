@@ -120,13 +120,21 @@
                 <label for="email" class="floating-label">Email:</label>
                 <input
                   type="email"
-                  class="form-control shadow"
+                  class="form-control"
                   id="email"
                   formControlName="email"
                   autocomplete="off"
                   (focus)="addFloatingLabelClass('email')"
                   (blur)="removeFloatingLabelClass('email')"
                   style="margin-bottom: 20px"
+                  [ngClass]="{
+                    'is-valid':
+                      newUserForm.get('email').touched &&
+                      newUserForm.get('email').valid,
+                    'is-invalid':
+                      newUserForm.get('email').touched &&
+                      newUserForm.get('email').invalid
+                  }"
                 />
               </div>
               <div class="card-footer text-center">

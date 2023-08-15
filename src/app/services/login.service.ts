@@ -98,9 +98,7 @@ export class LoginService {
           this.setLoggedIn(false, '', '');
           console.log(error);
           this.toastr.error(
-            `Error registrando el usuario ${this.capitalizeFirstLetter(
-              username
-            )}. Valide las credenciales.`
+            `Error autenticando el usuario. Valide las credenciales.`
           );
           return of(null);
         })

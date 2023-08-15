@@ -35,7 +35,7 @@
     >
       <form (ngSubmit)="onSubmit()">
         <div class="card-header modal-header">
-          <h4 class="text-center">Inicio de sesión</h4>
+          <h4 class="text-center"><i class="fas fa-check-circle"></i>&nbsp;Inicio de sesión</h4>
         </div>
         <div class="card-body">
           <div class="form-group">
@@ -67,7 +67,7 @@
             />
           </div>
           <div class="card-footer text-center" style="margin-top: 25px;">
-            <button type="submit" class="btn btn-primary clic-on-image">
+            <button type="submit" class="btn btn-primary clic-on-image" [disabled]="!password || !username">
               Login
             </button>
           </div>

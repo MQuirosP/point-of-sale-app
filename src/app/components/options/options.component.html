@@ -1121,7 +1121,7 @@
               class="form-control"
               id="confirmPassword-reset"
               formControlName="confirmPassword"
-              placeholder="Confirma tu contraseña"
+              placeholder="Confirma tu nueva contraseña"
               required
               [ngClass]="{
                 'is-valid':
@@ -1137,6 +1137,7 @@
             <button
               type="submit"
               class="btn btn-primary border border-primary clic-on-image"
+              [disabled]="resetPasswordForm.invalid"
             >
               Guardar
             </button>
