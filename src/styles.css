@@ -733,13 +733,13 @@ label {
 }
 
 .modal.opening {
-  animation: modalOpenAnimation 0.3s ease forwards;
+  animation: modalOpenAnimation 0.5s ease-in-out forwards;
   opacity: 0; 
   transform: scale(0.5); 
 }
 
 .modal.closing {
-  animation: modalCloseAnimation 0.3s ease forwards;
+  animation: modalCloseAnimation 0.5s ease-out forwards;
   opacity: 1; 
   transform: scale(1); 
 }
@@ -748,8 +748,8 @@ label {
   display: block !important; 
   opacity: 1;
   z-index: 999;
-  transform: scale(1);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  /* transform: scale(1); */
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease;
   /* background-color: #343a40d7; */
 }
 
