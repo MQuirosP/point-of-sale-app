@@ -51,7 +51,7 @@
       >
         <div class="d-flex">
           <a
-            (click)="getPurchasesHistory(getCurrentDate())"
+            (click)="openPurchaseHistoryModal()"
             class="text-decoration-none"
           >
             <div class="card-body">
@@ -106,7 +106,7 @@
     role="dialog"
     aria-hidden="true"
   >
-    <div class="modal-dialog modal-lg shadow" role="document">
+    <div class="modal-dialog modal-lg modal-shadow" role="document">
       <div class="modal-content">
         <div class="modal-header border">
           <h5 class="modal-title">Registro de compras</h5>
@@ -471,7 +471,7 @@
   aria-labelledby="purchaseHistoryModal"
   aria-hidden="true"
 >
-  <div class="modal-dialog shadow modal-dialog-scrollable" role="document">
+  <div class="modal-dialog modal-shadow modal-dialog-scrollable" role="document">
     <div class="modal-content">
       <div class="modal-header border">
         <h5 class="modal-title">Historial de compras</h5>

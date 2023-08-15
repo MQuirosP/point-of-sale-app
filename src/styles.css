@@ -697,14 +697,8 @@ button {
   padding: 10px 10px;
 }
 
-.modal-content {
-  background-color: #ffffff;
-  /* box-shadow: inset 0 0 10px rgb(245, 241, 241), 0 0 10px rgb(248, 246, 246),
-    0 0 15px rgba(105, 104, 104, 0.527), 0 0 20px rgba(248, 248, 248, 0.137); */
-}
-
 .modal-shadow {
-  box-shadow: 0px 0px 50px rgba(36, 35, 35, 0.753);
+  box-shadow: 0px 0px 50px rgba(36, 35, 35, 0.897);
 }
 
 .fa-close {
@@ -719,7 +713,7 @@ label {
 @keyframes modalOpenAnimation {
   0% {
     opacity: 0;
-    transform: scale(0.8);
+    transform: scale(0.5);
   }
   100% {
     opacity: 1;
@@ -741,7 +735,7 @@ label {
 .modal.opening {
   animation: modalOpenAnimation 0.3s ease forwards;
   opacity: 0; 
-  transform: scale(0.8); 
+  transform: scale(0.5); 
 }
 
 .modal.closing {
@@ -756,6 +750,10 @@ label {
   z-index: 999;
   transform: scale(1);
   transition: opacity 0.3s ease, transform 0.3s ease;
+  /* background-color: #343a40d7; */
+}
+
+.modal-background {
   background-color: #343a40d7;
 }
 

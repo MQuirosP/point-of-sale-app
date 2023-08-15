@@ -261,7 +261,7 @@ export class OptionsComponent implements OnInit {
       this.modalActionLabel = value;
       this.changeDetectorRef.detectChanges();
       this.customerInfoModal.nativeElement.style.display = 'block';
-      this.customerInfoModal.nativeElement.classList.add('opening');
+      this.customerInfoModal.nativeElement.classList.add('opening', 'modal-background');
       setTimeout(() => {
         this.customerInfoModal.nativeElement.classList.add('show');
         this.getCustomerInfo(customer_id);
@@ -272,7 +272,7 @@ export class OptionsComponent implements OnInit {
       this.modalActionLabel = !value;
       this.changeDetectorRef.detectChanges();
       this.customerInfoModal.nativeElement.style.display = 'block';
-      this.customerInfoModal.nativeElement.classList.add('opening');
+      this.customerInfoModal.nativeElement.classList.add('opening', 'modal-background');
       setTimeout(() => {
         this.customerInfoModal.nativeElement.classList.add('show');
       }, 50);
@@ -520,7 +520,7 @@ export class OptionsComponent implements OnInit {
       this.modalActionLabel = value;
       this.changeDetectorRef.detectChanges();
       this.providerInfoModal.nativeElement.style.display = 'block';
-      this.providerInfoModal.nativeElement.classList.add('opening');
+      this.providerInfoModal.nativeElement.classList.add('opening', 'modal-background');
       setTimeout(() => {
         this.providerInfoModal.nativeElement.classList.add('show');
         this.getProviderInfo(provider_id);
@@ -531,7 +531,7 @@ export class OptionsComponent implements OnInit {
       this.modalActionLabel = !value;
       this.changeDetectorRef.detectChanges();
       this.providerInfoModal.nativeElement.style.display = 'block';
-      this.providerInfoModal.nativeElement.classList.add('opening');
+      this.providerInfoModal.nativeElement.classList.add('opening', 'modal-background');
       setTimeout(() => {
         this.providerInfoModal.nativeElement.classList.add('show');
       }, 50);
@@ -693,7 +693,7 @@ export class OptionsComponent implements OnInit {
     this.usersListModal.nativeElement.style.display = 'block';
     this.usersListModal.nativeElement.classList.add('opening');
     setTimeout(() => {
-      this.usersListModal.nativeElement.classList.toggle('show');
+      this.usersListModal.nativeElement.classList.add('show');
     }, 50);
   }
 
@@ -713,9 +713,9 @@ export class OptionsComponent implements OnInit {
       this.modalActionLabel = value;
       this.changeDetectorRef.detectChanges();
       this.usersInfoModal.nativeElement.style.display = 'block';
-      this.usersInfoModal.nativeElement.classList.add('opening');
+      this.usersInfoModal.nativeElement.classList.add('opening', 'modal-background');
       setTimeout(() => {
-        this.usersInfoModal.nativeElement.classList.toggle('show');
+        this.usersInfoModal.nativeElement.classList.add('show');
       }, 50);
       setTimeout(() => {
         this.getUserInfo(user);
@@ -725,9 +725,9 @@ export class OptionsComponent implements OnInit {
       this.modalActionLabel = !value;
       this.changeDetectorRef.detectChanges();
       this.usersInfoModal.nativeElement.style.display = 'block';
-      this.usersInfoModal.nativeElement.classList.add('opening');
+      this.usersInfoModal.nativeElement.classList.add('opening', 'modal-background');
       setTimeout(() => {
-        this.usersInfoModal.nativeElement.classList.toggle('show');
+        this.usersInfoModal.nativeElement.classList.add('show');
       }, 50);
     }
   }

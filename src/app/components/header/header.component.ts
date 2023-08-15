@@ -1,5 +1,12 @@
 import { style } from '@angular/animations';
-import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { LoginService } from 'src/app/services/login.service';
 import { Observable, Subscription, switchMap } from 'rxjs';
 import { fadeAnimation } from 'src/app/fadeAnimation';
@@ -15,7 +22,8 @@ import { ProductCacheService } from 'src/app/services/product-cache.service';
   animations: [fadeAnimation],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  @ViewChild('changePasswordModal', { static: false }) passwordModal!: ElementRef;
+  @ViewChild('changePasswordModal', { static: false })
+  passwordModal!: ElementRef;
 
   user: string = '';
   isLoggedIn$: Observable<boolean>;
@@ -29,7 +37,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   confirmPasswordTouched = false;
 
   passwordForm: FormGroup;
-
 
   constructor(
     private authService: LoginService,
@@ -74,23 +81,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   openChangePasswordModal() {
-  this.passwordModal.nativeElement.style.display = "block";
-  this.passwordModal.nativeElement.classList.add('opening');
-  setTimeout(() => {
-    this.passwordModal.nativeElement.classList.add('show');
-  }, 50);
-}
+    this.passwordModal.nativeElement.style.display = 'block';
+    this.passwordModal.nativeElement.classList.add('opening');
+    setTimeout(() => {
+      this.passwordModal.nativeElement.classList.add('show');
+    }, 50);
+  }
 
-closeChangePasswordModal() {
-  this.passwordModal.nativeElement.classList.add('closing');
-  setTimeout(() => {
-    this.passwordModal.nativeElement.classList.remove('show');
-    this.passwordModal.nativeElement.classList.remove('closing');
-    this.passwordModal.nativeElement.style.display = 'none';
-  }, 300); 
-  this.resetForm();
-}
-
+  closeChangePasswordModal() {
+    this.passwordModal.nativeElement.classList.add('closing');
+    setTimeout(() => {
+      this.passwordModal.nativeElement.classList.remove('show');
+      this.passwordModal.nativeElement.classList.remove('closing');
+      this.passwordModal.nativeElement.style.display = 'none';
+    }, 300);
+    this.resetForm();
+  }
 
   onSubmit() {
     if (this.passwordForm.invalid) {
