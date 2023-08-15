@@ -32,7 +32,7 @@
       <div class="row">
         <div class="col-md-6 align-items-center">
           <!-- Encabezado del listado -->
-          <h4 class="h4">Lista de productos</h4>
+          <h4 class="h4"><i class="fas fa-list-check"></i>&nbsp;Lista de productos</h4>
         </div>
         <div class="col-md-6 d-flex justify-content-md-end">
           <!-- Contenedor de los botones Agregar, Anterior y Siguiente -->
@@ -203,8 +203,9 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content modal-shadow">
       <div class="modal-header border">
+        
         <h5 class="modal-title" id="productModalLabel">
-          {{ modalTitle }} de producto
+          <i class="fas fa-edit"></i>&nbsp;{{ modalTitle }} de producto
         </h5>
         <button
           type="button"
@@ -449,7 +450,7 @@
   >
     <div class="modal-content modal-shadow">
       <div class="modal-header border">
-        <h5 class="modal-title">Eliminar producto</h5>
+        <h5 class="modal-title"><i class="fas fa-eraser"></i> Eliminar producto</h5>
         <button
           class="close clic-on-icon"
           (click)="closePasswordModal()"
