@@ -8,8 +8,8 @@
   } */
 
 td {
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 
 th {
@@ -17,10 +17,10 @@ th {
   padding-bottom: 8px;
 }
 
-.product-list-header {
+/* .product-list-header {
   padding-top: 8px;
   padding-bottom: 8px;
-}
+} */
 
 /* Estilos para dispositivos móviles */
 @media screen and (max-width: 900px) {
@@ -43,7 +43,7 @@ th {
 }
 
 .icon-container {
-  position:initial;
+  position: initial;
   width: 450px;
   padding-left: 30px;
   cursor: pointer;
@@ -66,4 +66,3 @@ th {
   max-height: 100px; /* Ajusta la altura máxima según tus necesidades */
   transition: max-height 0.3s ease, opacity 0.3s ease;
 }
-
