@@ -34,7 +34,7 @@ td {
 
 .icon-container {
   position:initial;
-  width: 450px;
+  width: 300px;
   padding-left: 30px;
   cursor: pointer;
   transition: background-color 0.3s ease;
