@@ -210,7 +210,7 @@
                   (keydown)="handleKeyDown($event)"
                 />
                 <div
-                  class="suggestion-list position-fixed text-white bg-dark"
+                  class="suggestion-list position-fixed"
                   [style.width.px]="nameInput.offsetWidth"
                 >
                   <ul
@@ -227,7 +227,7 @@
                     >
                       <a
                         href="#"
-                        class="dropdown-item"
+                        class="dropdown-item italic-text"
                         style="color: black"
                         (click)="handleSuggestionClick($event, suggestion)"
                         style="color: #fff"

@@ -48,7 +48,7 @@
                 class="carousel-item pt-2"
                 [class.active]="i === 0"
               >
-                <div class="row">
+                <div class="row" style="font-size: 0.5rem;">
                   <div
                     class="col-7 text-left"
                     style="align-items: center; margin: auto 0"
@@ -60,7 +60,7 @@
                         text-shadow: 2px 2px 2px darkgray;
                       "
                     >
-                      {{ product.name }}
+                      <span class="product-card">{{ product.name }}</span>
                     </h4>
                   </div>
                   <div class="col-5">
@@ -71,7 +71,7 @@
                         text-shadow: 2px 2px 2px darkgray;
                       "
                     >
-                      Precio:
+                      <span class="product-card">Precio:</span>
                     </h5>
                     <p
                       class="text-right mr-1"
@@ -82,9 +82,11 @@
                         text-shadow: 2px 2px 2px darkgray;
                       "
                     >
-                      {{
-                        product.sale_price | currency : "CRC" : "₡" : "1.0-0"
-                      }}
+                      <span class="product-card">
+                        {{
+                          product.sale_price | currency : "CRC" : "₡" : "1.0-0"
+                        }}
+                      </span>
                     </p>
                   </div>
                 </div>
