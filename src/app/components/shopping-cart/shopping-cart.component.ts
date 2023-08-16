@@ -7,7 +7,7 @@ import {
   NgbDateParserFormatter,
 } from '@ng-bootstrap/ng-bootstrap';
 import { ModalService } from '../../services/modalService';
-import { fadeAnimation } from 'src/app/fadeAnimation';
+import { fadeAnimation } from 'src/app/animations/fadeAnimation';
 import { ToastrService } from 'ngx-toastr';
 import { TicketService } from 'src/app/services/ticket.service';
 import { SaleService } from 'src/app/services/sale.service';

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { fadeAnimation } from 'src/app/fadeAnimation';
+import { fadeAnimation } from 'src/app/animations/fadeAnimation';
 import { LoginService } from 'src/app/services/login.service';
 
 

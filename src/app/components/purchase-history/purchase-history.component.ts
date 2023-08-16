@@ -8,7 +8,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, forkJoin, throwError } from 'rxjs';
 import { ModalService } from 'src/app/services/modalService';
-import { fadeAnimation } from 'src/app/fadeAnimation';
+import { fadeAnimation } from 'src/app/animations/fadeAnimation';
 import { ToastrService } from 'ngx-toastr';
 import { PurchaseService } from 'src/app/services/purchase.service';
 import {

@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { ModalService } from '../../services/modalService';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { fadeAnimation } from 'src/app/fadeAnimation';
+import { fadeAnimation } from 'src/app/animations/fadeAnimation';
 import { ProductCacheService } from 'src/app/services/product-cache.service';
 import { Router } from '@angular/router';
 

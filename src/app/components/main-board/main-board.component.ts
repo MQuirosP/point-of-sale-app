@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { fadeAnimation } from 'src/app/fadeAnimation';
+import { fadeAnimation } from 'src/app/animations/fadeAnimation';
 
 @Component({
   selector: 'app-main-board',

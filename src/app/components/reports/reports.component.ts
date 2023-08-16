@@ -1,7 +1,7 @@
 import { style } from '@angular/animations';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { NgbCalendar, NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-import { fadeAnimation } from 'src/app/fadeAnimation';
+import { fadeAnimation } from 'src/app/animations/fadeAnimation';
 import { ReportsService } from 'src/app/services/reports.service';
 
 @Component({
