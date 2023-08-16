@@ -105,7 +105,7 @@ header {
   color: #c0b5b5 !important;
 }
 
-.dropdown-item.italic-text {
+a.dropdown-item {
   border: 1px solid transparent;
   color: #000 !important;
 }
@@ -121,8 +121,18 @@ div.suggestion-list {
   border-radius: 10px;
 }
 
+.suggestion-list {
+  z-index: 999;
+  max-height: 300px;
+  border-radius: 3px;
+  overflow-y: auto;
+}
+
+.suggestion-list::-webkit-scrollbar-corner {
+  border-radius: 10px;
+}
+
 .dropdown-item:hover {
-  /* border-radius: 5px; */
   background-color: rgb(129, 124, 124);
   color: #fff !important;
   opacity: 1;
@@ -133,9 +143,7 @@ div.suggestion-list {
 @media (max-width: 767px) {
   #navbarCollapse {
     position: relative;
-    /* top: 60px; */
     right: 0px;
-    /* background-color: black; */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     z-index: 999;
     max-height: auto;
@@ -149,8 +157,6 @@ div.suggestion-list {
     position: relative;
     top: 0px;
     right: 0px;
-    /* background-color: black; */
-    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); */
     z-index: 999;
     max-height: calc(100vh - 40px);
   }
@@ -171,16 +177,13 @@ div.suggestion-list {
 .footer {
   background-color: #ecc68e;
   position: fixed;
-  /* margin-top: 30px; */
   bottom: 0;
-  /* left: 0; */
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-top: 5px;
   padding-bottom: 5px;
-  /* transition: height 0.3s ease; */
 }
 
 .footer .lead {
@@ -216,13 +219,10 @@ div.suggestion-list {
 }
 
 .customShadow {
-  /* box-shadow: 2px rgba(139, 138, 138, 0.8); */
-  /* transform: scale(1); */
   border-radius: 10px;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 .customShadow:hover {
-  /* color: rgb(109, 150, 184); */
   box-shadow: 5px 5px 5px rgb(56, 55, 55);
   transform: scale(1.05);
   transition: box-shadow 0.3s ease, transform 0.3s ease;
@@ -240,7 +240,6 @@ div.suggestion-list {
 }
 
 .front-panel-image {
-  /* margin: 20px; */
   width: 120px;
   height: 90px;
 }
@@ -314,10 +313,6 @@ div.suggestion-list {
   left: 0;
   right: 0;
 }
-
-/* .row {
-  margin-top: -5px;
-} */
 
 .carousel-control-prev,
 .carousel-control-next {
@@ -776,13 +771,6 @@ input[type="number"]::-webkit-outer-spin-button {
   margin-left: 10px;
 }
 
-.suggestion-list {
-  z-index: 999;
-  max-height: 300px;
-  border-radius: 3px;
-  overflow-y: auto;
-  border-right: 1px solid darkgray;
-}
 
 .datalist-no-arrow::-webkit-calendar-picker-indicator {
   opacity: 0;
