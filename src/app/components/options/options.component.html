@@ -208,10 +208,10 @@
       </div>
       <div class="modal-body">
         <!-- Contenido del modal -->
-        <div class="mb-3">
+        <div class="mb-3 col-md-4">
           <label for="providerSearch">Buscar proveedor:</label>
           <input
-            type="text"
+            type="search"
             id="providerSearch"
             [(ngModel)]="searchTermProvider"
             (ngModelChange)="filterProviders()"
@@ -225,7 +225,7 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th>Nombre</th>
+                  <th style="min-width: 200px;">Nombre</th>
                   <th>Email</th>
                   <th>Teléfono</th>
                 </tr>
@@ -483,10 +483,10 @@
       </div>
       <div class="modal-body">
         <!-- Contenido del modal -->
-        <div class="mb-3">
+        <div class="mb-3 col-md-4">
           <label for="customerSearch">Buscar cliente:</label>
           <input
-            type="text"
+            type="search"
             id="customerSearch"
             [(ngModel)]="searchTermCustomer"
             (ngModelChange)="filterCustomers()"
@@ -500,7 +500,7 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th>Nombre</th>
+                  <th style="min-width: 200px;">Nombre</th>
                   <th>Email</th>
                   <th>Teléfono</th>
                 </tr>
@@ -800,10 +800,10 @@
       </div>
       <div class="modal-body">
         <!-- Contenido del modal -->
-        <div class="mb-3">
+        <div class="mb-3 col-md-8">
           <label for="userSearch">Buscar usuario:</label>
           <input
-            type="text"
+            type="search"
             id="userSearch"
             [(ngModel)]="searchTermUser"
             (ngModelChange)="filterUsers()"
@@ -817,7 +817,7 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th>Usuario</th>
+                  <th style="min-width: 200px;">Usuario</th>
                   <th>Rol</th>
                   <th>Status</th>
                 </tr>
@@ -831,7 +831,7 @@
                     class="bg-transparent d-flex justify-content-between"
                     (click)="user.showIcons = !user.showIcons"
                   >
-                    <span class="" style="cursor: pointer" tabindex="-1">
+                    <span class="" style="cursor: pointer; min-width: 150px;" tabindex="-1">
                       {{ user.username }}
                     </span>
                     <span
