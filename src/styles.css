@@ -101,13 +101,9 @@ header {
   overflow: hidden;
 }
 
-.dropdown-item {
-  color: #c0b5b5 !important;
-}
-
-a.dropdown-item {
+div.dropdown-menu > .dropdown-item {
   border: 1px solid transparent;
-  color: #000 !important;
+  color: #c0b5b5 !important;
 }
 
 option {
@@ -132,7 +128,8 @@ div.suggestion-list {
   border-radius: 10px;
 }
 
-.dropdown-item:hover {
+.dropdown-item:hover,
+div.dropdown-menu > .dropdown-item:hover {
   background-color: rgb(129, 124, 124);
   color: #fff !important;
   opacity: 1;
@@ -166,7 +163,7 @@ div.suggestion-list {
   .product-card {
     font-size: 1.8vw;
   }
-} 
+}
 
 #pie-pagina {
   box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.85);
@@ -501,11 +498,6 @@ button {
   pointer-events: none;
 }
 
-/* .form-control {
-  width: 100%;
-  padding: 0 0 10px;
-} */
-
 .floating-label.active {
   top: 0;
   left: 0px;
@@ -519,7 +511,7 @@ button {
 }
 
 .quantity-input {
-  padding-right: 2rem; /* Ajusta el valor según tus necesidades */
+  padding-right: 2rem;
 }
 
 .is-valid {
@@ -534,7 +526,6 @@ button {
 
 .ng-select .ng-select-container {
   min-height: 38px;
-  /* border: 1px solid rgba(163, 185, 197, 0.719); */
 }
 
 .ng-select.ng-invalid.ng-touched .ng-select-container {
@@ -657,8 +648,6 @@ button {
   font-weight: bold;
   font-size: 14px;
   font-family: monospace;
-  /* letter-spacing: 0.9px; */
-  /* text-shadow: 2px 2px 2px rgb(110, 88, 88); */
 }
 
 .total-box {
@@ -675,7 +664,6 @@ button {
 
 .total-box-titles {
   font-size: 1.05rem;
-  /* text-shadow: 2px 2px 2px rgb(110, 88, 88); */
   text-align: center;
 }
 
@@ -699,7 +687,7 @@ label {
   margin-bottom: 0px;
 }
 
-/* Definir la animación para abrir el modal */
+/* Animación para abrir el modal */
 @keyframes modalOpenAnimation {
   0% {
     opacity: 0;
@@ -723,24 +711,22 @@ label {
 }
 
 .modal.opening {
-  animation: modalOpenAnimation 0.5s ease-in-out forwards;
-  opacity: 0; 
-  transform: scale(0.5); 
+  animation: modalOpenAnimation 0.4s ease-in-out forwards;
+  opacity: 0;
+  transform: scale(0.5);
 }
 
 .modal.closing {
-  animation: modalCloseAnimation 0.5s ease-out forwards;
-  opacity: 1; 
-  transform: scale(1); 
+  animation: modalCloseAnimation 0.4s ease-out forwards;
+  opacity: 1;
+  transform: scale(1);
 }
 
 .show {
-  display: block !important; 
+  display: block !important;
   opacity: 1;
   z-index: 999;
-  /* transform: scale(1); */
   transition: opacity 0.3s ease-in-out, transform 0.3s ease;
-  /* background-color: #343a40d7; */
 }
 
 .modal-background {
@@ -771,7 +757,6 @@ input[type="number"]::-webkit-outer-spin-button {
   margin-left: 10px;
 }
 
-
 .datalist-no-arrow::-webkit-calendar-picker-indicator {
   opacity: 0;
   display: none;
@@ -789,5 +774,4 @@ input::-webkit-input-placeholder {
 
 .italic-text {
   font-style: italic;
-  /* color: gray; */
 }
