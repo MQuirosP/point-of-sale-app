@@ -26,7 +26,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ProductService } from 'src/app/services/product.service';
-import { productAnimations } from 'src/app/product-list-animation';
+import { productAnimations } from 'src/app/animations/product-list-animation';
 
 interface ApiSaleResponse {
   success: boolean;
@@ -56,42 +56,6 @@ interface Product {
   styleUrls: ['./shopping-cart.component.css'],
   animations: [
     fadeAnimation, productAnimations
-    // trigger('slideInOut', [
-    //   state(
-    //     'in',
-    //     style({
-    //       transform: 'translateX(0)',
-    //       opacity: 1,
-    //     })
-    //   ),
-    //   state(
-    //     'out',
-    //     style({
-    //       transform: 'translateX(-100%)',
-    //       opacity: 0,
-    //     })
-    //   ),
-    //   transition('in => out', animate('200ms ease-out')),
-    //   transition('out => in', animate('200ms ease-in')),
-    // ]),
-    // trigger('slideOut', [
-    //   state(
-    //     'in',
-    //     style({
-    //       transform: 'translateX(0)',
-    //       opacity: 1,
-    //     })
-    //   ),
-    //   state(
-    //     'out',
-    //     style({
-    //       transform: 'translateX(100%)',
-    //       opacity: 0,
-    //     })
-    //   ),
-    //   transition('in => out', animate('200ms ease-out')),
-    //   transition('out => in', animate('200ms ease-in')),
-    // ]),
   ],
 })
 export class ShoppingCartComponent {
