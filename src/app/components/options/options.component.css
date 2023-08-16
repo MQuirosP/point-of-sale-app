@@ -24,6 +24,8 @@ td {
     overflow: hidden;
     white-space: normal;
     text-overflow: ellipsis;
+    max-width: 250px;
+    cursor: pointer;
   }
 
   .product-icons {
@@ -32,10 +34,13 @@ td {
   }
 }
 
+.product-name {
+  max-width: 250px;
+}
+
 .icon-container {
-  position:initial;
+  position: initial;
   width: 300px;
-  padding-left: 30px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
@@ -54,4 +59,9 @@ td {
 .utilitary-icons.show-icons {
   opacity: 1;
   max-height: 100px; /* Ajusta la altura máxima según tus necesidades */
+}
+
+.cell-width-title-names {
+  margin-left: 30px;
+  min-width: 200px;
 }

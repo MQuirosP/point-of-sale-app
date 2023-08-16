@@ -225,7 +225,7 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th style="min-width: 200px;">Nombre</th>
+                  <th class="cell-width-titles-names">Nombre</th>
                   <th>Email</th>
                   <th>Teléfono</th>
                 </tr>
@@ -235,8 +235,8 @@
                   *ngFor="let provider of filteredProviders; let even = even"
                   [ngClass]="{ 'table-row-even': even, 'table-row-odd': !even }"
                 >
-                  <td class="icon-container">
-                    <div class="product-name" (click)="toggleIcons(provider)">
+                  <td class="product-name">
+                    <div class="icon-container" (click)="toggleIcons(provider)">
                       {{ provider.provider_name }}
                     </div>
                     <div
@@ -500,7 +500,7 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th style="min-width: 200px;">Nombre</th>
+                  <th class="cell-width-titles-names">Nombre</th>
                   <th>Email</th>
                   <th>Teléfono</th>
                 </tr>
@@ -510,8 +510,8 @@
                   *ngFor="let customer of filteredCustomers; let even = even"
                   [ngClass]="{ 'table-row-even': even, 'table-row-odd': !even }"
                 >
-                  <td class="icon-container">
-                    <div class="product-name" (click)="toggleIcons(customer)">
+                  <td class="product-name">
+                    <div class="icon-container" (click)="toggleIcons(customer)">
                       {{ customer.customer_name }}
                       {{ customer.customer_first_lastname }}
                       {{ customer.customer_second_lastname }},
@@ -817,7 +817,7 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th style="min-width: 200px;">Usuario</th>
+                  <th class="cell-width-title-names">Usuario</th>
                   <th>Rol</th>
                   <th>Status</th>
                 </tr>
@@ -879,15 +879,6 @@
         </div>
       </div>
       <div class="modal-footer">
-        <!-- <button
-          type="button"
-          class="btn btn-primary clic-on-image"
-          data-toggle="modal"
-          data-target="#userInfoModal"
-          (click)="openUserInfoModal(false, ''); this.editMode = false"
-        >
-          Nuevo
-        </button> -->
         <button
           type="button"
           class="btn btn-primary border border-primary clic-on-image"
