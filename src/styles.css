@@ -37,6 +37,13 @@ body {
   height: auto;
 }
 
+.login-box {
+  border-radius: 10px;
+  height: 100%;
+  overflow: hidden;
+  max-width: 300px;
+}
+
 .main-board-style {
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.85);
   -webkit-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.85);
@@ -289,7 +296,6 @@ div.dropdown-menu > .dropdown-item:hover {
   background-color: white;
   border: 1px solid rgb(33, 161, 161);
   border-radius: 3px;
-  /* min-width: 350px; */
   width: 90%;
   box-shadow: 2px 2px 2px rgb(90, 125, 170);
   padding-left: 5px;
