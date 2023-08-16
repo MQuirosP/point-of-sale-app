@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ModalService } from '../../services/modalService';
 import { HttpClient } from '@angular/common/http';
@@ -31,6 +31,7 @@ export class FrontPanelComponent {
     private http: HttpClient,
     private productCacheService: ProductCacheService,
     private router: Router,
+    private ngZone: NgZone,
   ) {}
 
   ngOnInit(): void {
@@ -85,11 +86,13 @@ export class FrontPanelComponent {
 
   filterProducts() {
     if (!this.searchTerm) {
-      this.filteredProducts = [...this.products];
+      this.dataLoaded = false;
+      this.loadDataFromCache();
+      // this.filteredProducts = [...this.products];
       return;
     }
 
-    const searchTermNormalized = this.searchTerm
+    const searchTermNormalized = this.searchTerm.toLowerCase()
       ? this.searchTerm.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
       : '';
 
@@ -109,8 +112,9 @@ export class FrontPanelComponent {
         productCodeNormalized.toLowerCase().includes(searchTermLower)
       );
     });
-
-    this.changeDetectorRef.detectChanges();
+    this.ngZone.run(() => {
+      this.changeDetectorRef.detectChanges();
+    })
   }
 
   openSaleModal() {
