@@ -33,21 +33,6 @@
   </div>
 </header>
 
-<!-- Botones -->
-<!-- <div class="container">
-  <section id="actions" class="py-4 bg-transparent" [@fadeAnimation]>
-    <div class="container">
-      <div class="row">
-        <div
-          class="col-12 col-md-4 d-flex justify-content-center align-items-center"
-        >
-          
-        </div>
-      </div>
-    </div>
-  </section>
-</div> -->
-
 <!-- Tarjetas registro de usuarios, Proveedores y clientes -->
 <div class="container">
   <div class="row">
@@ -62,10 +47,10 @@
             </div>
             <div class="card-body" style="margin-bottom: 14px">
               <fieldset class="row">
-                <legend class="text-center" style="font-size: 18px">
+                <legend class="text-center options-card-body-text">
                   Activar el registro de usuarios.
                 </legend>
-                <div class="container text-center">
+                <div class="container d-flex text-center options-button-container">
                   <label class="form-check-label" style="cursor: pointer">
                     <input
                       *ngIf="getUserRole() !== 'user'"
@@ -101,10 +86,10 @@
             </div>
             <div class="card-body">
               <fieldset class="row">
-                <legend class="text-center" style="font-size: 18px">
+                <legend class="text-center options-card-body-text">
                   Mantenimiento de proveedores
                 </legend>
-                <div class="col-12 text-center">
+                <div class="col-12 text-center options-button-container">
                   <a
                     role="button"
                     class="btn btn-primary border border-primary clic-on-image"
@@ -130,10 +115,10 @@
             </div>
             <div class="card-body">
               <fieldset class="row">
-                <legend class="text-center" style="font-size: 18px">
+                <legend class="text-center options-card-body-text">
                   Mantenimiento de clientes
                 </legend>
-                <div class="col-12 text-center">
+                <div class="col-12 text-center options-button-container">
                   <a
                     role="button"
                     class="btn btn-primary border border-primary clic-on-image"
@@ -164,7 +149,7 @@
                 <legend class="text-center" style="font-size: 18px">
                   Mantenimiento de usuarios
                 </legend>
-                <div class="col-12 text-center">
+                <div class="col-12 text-center options-button-container">
                   <a
                     role="button"
                     class="btn btn-primary border border-primary clic-on-image"

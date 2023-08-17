@@ -41,22 +41,6 @@
   </div>
 </header>
 
-<!-- Seccion de botones opciones -->
-<!-- <div class="container">
-  <section id="actions" class="py-4 bg-transparent" [@fadeAnimation]>
-    <div class="container">
-      <div
-        class="row justify-content-center"
-        style="width: 50%; margin-left: 25%"
-      >
-        <div class="col col-md-12 d-flex justify-content-between">
-          
-        </div>
-      </div>
-    </div>
-  </section>
-</div> -->
-
 <!-- Tarjetas para selección de Ventas/Compras -->
 <div class="container" [@fadeAnimation]>
   <div class="row justify-content-center">
@@ -154,8 +138,8 @@
   role="dialog"
   #salesReportModal
 >
-  <div class="modal-dialog modal-shadow" role="document">
-    <div class="modal-content">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content modal-shadow">
       <div class="modal-header border">
         <h5 class="modal-title"><i class="fas fa-server"></i>&nbsp;Generar Reporte de Ventas</h5>
         <button
@@ -174,7 +158,7 @@
               <label for="startDate">Fecha inicial:</label>
               <input
                 type="date"
-                class="form-control input-group-text"
+                class="form-control input-group-text shadow"
                 id="salesStartDate"
                 name="startDate"
                 [(ngModel)]="startDate"
@@ -188,7 +172,7 @@
               <label for="endDate">Fecha final:</label>
               <input
                 type="date"
-                class="form-control input-group-text"
+                class="form-control input-group-text shadow"
                 id="salesEndDate"
                 name="endDate"
                 [(ngModel)]="endDate"
@@ -236,8 +220,8 @@
   role="dialog"
   #purchasesReportModal
 >
-  <div class="modal-dialog modal-shadow" role="document">
-    <div class="modal-content">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content modal-shadow">
       <div class="modal-header border">
         <h5 class="modal-title"><i class="fas fa-server"></i>&nbsp;Generar Reporte de Compras</h5>
         <button
@@ -256,7 +240,7 @@
               <label for="startDate">Fecha inicial:</label>
               <input
                 type="date"
-                class="form-control input-group-text"
+                class="form-control input-group-text shadow"
                 id="purchasesStartDate"
                 name="startDate"
                 [(ngModel)]="startDate"
@@ -270,7 +254,7 @@
               <label for="endDate">Fecha final:</label>
               <input
                 type="date"
-                class="form-control input-group-text"
+                class="form-control input-group-text shadow"
                 id="purchasesEndDate"
                 name="endDate"
                 [(ngModel)]="endDate"

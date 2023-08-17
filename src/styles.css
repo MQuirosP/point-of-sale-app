@@ -794,3 +794,15 @@ input::-webkit-input-placeholder {
 .italic-text {
   font-style: italic;
 }
+
+.options-card-body-text {
+  font-size: 18px;
+}
+
+.options-button-container {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  bottom: 30px;
+}
