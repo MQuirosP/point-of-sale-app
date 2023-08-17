@@ -29,10 +29,7 @@
         class="card shadow card-height border col-md-8 mt-4 customShadow bg-custom clic-on-image"
       >
         <div class="d-flex">
-          <a
-            class="text-decoration-none"
-            (click)="openSaleModal()"
-          >
+          <a class="text-decoration-none" (click)="openSaleModal()">
             <div class="card-body">
               <h5 class="card-title">Crear venta</h5>
               <img
@@ -51,10 +48,7 @@
         class="card shadow card-height border col-md-8 mt-4 customShadow bg-custom clic-on-image"
       >
         <div class="d-flex">
-          <a
-            class="text-decoration-none"
-            (click)="openSaleHistoryModal()"
-          >
+          <a class="text-decoration-none" (click)="openSaleHistoryModal()">
             <div class="card-body">
               <h5 class="card-title">Mi historial</h5>
               <img src="../../../assets/list.gif" alt="" class="svg" />
@@ -110,7 +104,9 @@
     <div class="modal-dialog modal-lg modal-shadow" role="document">
       <div class="modal-content">
         <div class="modal-header border">
-          <h5 class="modal-title"><i class="fas fa-edit"></i>&nbsp;Registro de ventas</h5>
+          <h5 class="modal-title">
+            <i class="fas fa-edit"></i>&nbsp;Registro de ventas
+          </h5>
           <div>
             <button
               type="button"
@@ -223,12 +219,12 @@
                         let suggestion of productSuggestionList;
                         let i = index
                       "
-                      >
+                    >
                       <a
-                      href="#"
-                      class="dropdown-item "
-                      (click)="handleSuggestionClick($event, suggestion)"
-                      [class.selected]="selectedIndex === i"
+                        href="#"
+                        class="dropdown-item"
+                        (click)="handleSuggestionClick($event, suggestion)"
+                        [class.selected]="selectedIndex === i"
                         tabindex="0"
                       >
                         {{ suggestion.name }}
@@ -428,14 +424,12 @@
             type="button"
             class="btn btn-primary shadow clic-on-image"
             (click)="createSale($event)"
-
           >
             Guardar
           </button>
           <button
             type="button"
             class="btn btn-secondary shadow clic-on-image"
-
             (click)="closeSaleModal()"
           >
             Cerrar
@@ -459,7 +453,9 @@
   <div class="modal-dialog modal-dialog-scrollable" role="document">
     <div class="modal-content modal-shadow">
       <div class="modal-header border">
-        <h5 class="modal-title"><i class="fas fa-history"></i>&nbsp;Historial de ventas</h5>
+        <h5 class="modal-title">
+          <i class="fas fa-history"></i>&nbsp;Historial de ventas
+        </h5>
         <button
           type="button"
           class="close clic-on-icon"
@@ -472,7 +468,7 @@
       <div class="modal-body">
         <div
           class="container input-group d-flex justify-content-center mx-auto sticky-top"
-          style="max-width: 170px;"
+          style="max-width: 170px"
         >
           <input
             type="date"
@@ -586,7 +582,6 @@
           <button
             type="button"
             class="btn btn-secondary clic-on-image"
-
             (click)="closeSaleHistoryModal()"
           >
             Cerrar

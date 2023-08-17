@@ -28,10 +28,7 @@
         class="card shadow card-height border col-md-8 mt-4 customShadow bg-custom clic-on-image"
       >
         <div class="d-flex">
-          <a
-            class="text-decoration-none"
-            (click)="openPurchaseModal()"
-          >
+          <a class="text-decoration-none" (click)="openPurchaseModal()">
             <div class="card-body">
               <h5 class="card-title">Crear compra</h5>
               <img
@@ -50,10 +47,7 @@
         class="card shadow card-height border col-md-8 mt-4 customShadow bg-custom clic-on-image"
       >
         <div class="d-flex">
-          <a
-            (click)="openPurchaseHistoryModal()"
-            class="text-decoration-none"
-          >
+          <a (click)="openPurchaseHistoryModal()" class="text-decoration-none">
             <div class="card-body">
               <h5 class="card-title">Mi historial</h5>
               <img src="../../../assets/list.gif" alt="" class="svg" />
@@ -109,7 +103,9 @@
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content modal-shadow">
         <div class="modal-header border">
-          <h5 class="modal-title"><i class="fas fa-edit"></i>&nbsp;Registro de compras</h5>
+          <h5 class="modal-title">
+            <i class="fas fa-edit"></i>&nbsp;Registro de compras
+          </h5>
           <button
             type="button"
             class="close clic-on-icon"
@@ -223,13 +219,13 @@
                         let suggestion of productSuggestionList;
                         let i = index
                       "
-                      >
+                    >
                       <a
-                      href="#"
-                      class="dropdown-item"
-                      style="color: black"
-                      (click)="handleSuggestionClick($event, suggestion)"
-                      [class.selected]="selectedIndex === i"
+                        href="#"
+                        class="dropdown-item"
+                        style="color: black"
+                        (click)="handleSuggestionClick($event, suggestion)"
+                        [class.selected]="selectedIndex === i"
                         tabindex="0"
                       >
                         {{ suggestion.name }}
@@ -470,10 +466,12 @@
   aria-labelledby="purchaseHistoryModal"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-shadow modal-dialog-scrollable" role="document">
-    <div class="modal-content">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content modal-shadow">
       <div class="modal-header border">
-        <h5 class="modal-title"><i class="fas fa-history"></i>&nbsp;Historial de compras</h5>
+        <h5 class="modal-title">
+          <i class="fas fa-history"></i>&nbsp;Historial de compras
+        </h5>
         <button
           type="button"
           class="close clic-on-icon"
@@ -485,22 +483,21 @@
       </div>
       <div class="modal-body">
         <div
-          class="input-group d-flex justify-content-center mx-auto"
-          style="max-width: 160px"
+          class="container input-group d-flex justify-content-center mx-auto sticky-top"
+          style="max-width: 170px"
         >
           <input
             type="date"
-            class="form-control input-group-text"
+            class="form-control input-group-text shadow"
             [(ngModel)]="selectedDate"
             (ngModelChange)="filterPurchasesByDate()"
             ngbDatepicker
             #datepicker="ngbDatepicker"
-            style="width: 160px"
             [max]="getCurrentDateString()"
           />
         </div>
 
-        <div class="modal-body">
+        <div class="container">
           <!-- Aquí se muestra la lista de compras -->
           <div *ngFor="let purchase of purchases" class="sale-card">
             <span
@@ -566,8 +563,7 @@
                   "
                   class="btn btn-danger shadow clic-on-image"
                   (click)="
-                    cancelPurchase(purchase);
-                    togglePurchaseDetails(purchase)
+                    cancelPurchase(purchase); togglePurchaseDetails(purchase)
                   "
                 >
                   Anular
