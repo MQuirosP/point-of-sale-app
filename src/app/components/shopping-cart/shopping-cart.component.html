@@ -456,8 +456,8 @@
   aria-labelledby="saleHistoryModal"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-dialog-scrollable modal-shadow" role="document">
-    <div class="modal-content">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content modal-shadow">
       <div class="modal-header border">
         <h5 class="modal-title"><i class="fas fa-history"></i>&nbsp;Historial de ventas</h5>
         <button
@@ -471,22 +471,21 @@
       </div>
       <div class="modal-body">
         <div
-          class="input-group d-flex justify-content-center mx-auto"
-          style="max-width: 160px"
+          class="container input-group d-flex justify-content-center mx-auto sticky-top"
+          style="max-width: 170px;"
         >
           <input
             type="date"
-            class="form-control input-group-text"
+            class="form-control input-group-text shadow"
             [(ngModel)]="selectedDate"
             (ngModelChange)="filterSalesByDate()"
             ngbDatepicker
             #datepicker="ngbDatepicker"
-            style="width: 160px"
             [max]="getCurrentDateString()"
           />
         </div>
 
-        <div class="modal-body">
+        <div class="container">
           <!-- Aquí se muestra la lista de ventas -->
           <div *ngFor="let sale of sales" class="sale-card">
             <span
