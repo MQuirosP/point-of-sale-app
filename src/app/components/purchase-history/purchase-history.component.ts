@@ -18,13 +18,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { ProductCacheService } from 'src/app/services/product-cache.service';
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
 import { ProductService } from 'src/app/services/product.service';
 import { productAnimations } from 'src/app/animations/product-list-animation';
 

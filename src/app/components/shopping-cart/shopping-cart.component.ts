@@ -13,13 +13,6 @@ import { TicketService } from 'src/app/services/ticket.service';
 import { SaleService } from 'src/app/services/sale.service';
 import { Subscription } from 'rxjs';
 import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
-import {
   FormBuilder,
   FormControl,
   FormGroup,
