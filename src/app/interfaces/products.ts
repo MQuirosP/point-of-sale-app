@@ -2,16 +2,22 @@ export interface Products {
   productId?: number;
   int_code?: string;
   name: string;
-  description: string;
+  description?: string;
   quantity?: number;
-  purchase_price: number;
+  price?: number;
   category_id: number;
   category_name?: string;
   sale_price: number;
+  purchase_price?: number;
   taxes: boolean;
+  taxes_amount?: number;
+  sub_total?: number;
+  total?: number;
   taxPercentage: number;
   margin: number;
   showIcons?: boolean;
+  isRemoved?: boolean;
+  isNew?: boolean;
 }
 
 export interface allProducts {

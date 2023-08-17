@@ -108,10 +108,14 @@ header {
   overflow: hidden;
 }
 
-div.dropdown-menu > .dropdown-item {
+div.dropdown-menu > a.dropdown-item {
   border: 1px solid transparent;
   color: #c0b5b5 !important;
 }
+
+/* div.dropdown-item > a.dropdown-item:hover {
+  color: #000 !important;
+} */
 
 option {
   font-style: italic;
@@ -137,6 +141,15 @@ div.suggestion-list {
 
 .dropdown-item:hover,
 div.dropdown-menu > .dropdown-item:hover {
+  background-color: rgb(129, 124, 124);
+  color: #fff !important;
+  opacity: 1;
+  transition: all 0.1s ease;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2), -4px -4px -8px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-item.selected,
+div.dropdown-menu > .dropdown-item.selected {
   background-color: rgb(129, 124, 124);
   color: #fff !important;
   opacity: 1;

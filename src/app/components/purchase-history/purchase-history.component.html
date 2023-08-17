@@ -106,8 +106,8 @@
     role="dialog"
     aria-hidden="true"
   >
-    <div class="modal-dialog modal-lg modal-shadow" role="document">
-      <div class="modal-content">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content modal-shadow">
         <div class="modal-header border">
           <h5 class="modal-title"><i class="fas fa-edit"></i>&nbsp;Registro de compras</h5>
           <button
@@ -223,14 +223,14 @@
                         let suggestion of productSuggestionList;
                         let i = index
                       "
-                      [class.selected]="selectedIndex === i"
-                    >
+                      >
                       <a
-                        href="#"
-                        class="dropdown-item"
-                        style="color: black"
-                        (click)="handleSuggestionClick($event, suggestion)"
-                        tabindex="-1"
+                      href="#"
+                      class="dropdown-item"
+                      style="color: black"
+                      (click)="handleSuggestionClick($event, suggestion)"
+                      [class.selected]="selectedIndex === i"
+                        tabindex="0"
                       >
                         {{ suggestion.name }}
                       </a>

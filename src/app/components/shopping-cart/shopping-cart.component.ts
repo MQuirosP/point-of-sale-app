@@ -27,6 +27,8 @@ import {
 } from '@angular/forms';
 import { ProductService } from 'src/app/services/product.service';
 import { productAnimations } from 'src/app/animations/product-list-animation';
+import { Products } from 'src/app/interfaces/products';
+import { Sales } from 'src/app/interfaces/sales';
 
 interface ApiSaleResponse {
   success: boolean;
@@ -35,20 +37,6 @@ interface ApiSaleResponse {
   };
 }
 
-interface Product {
-  productId: number;
-  int_code: any;
-  name: any;
-  price: any;
-  quantity: any;
-  taxPercentage: number;
-  taxes: boolean;
-  taxes_amount?: number;
-  sub_total?: number;
-  total?: number;
-  isNew?: boolean;
-  isRemoved?: boolean;
-}
 
 @Component({
   selector: 'app-shopping-cart',
@@ -88,8 +76,8 @@ export class ShoppingCartComponent {
   filteredProducts: any[] = [];
 
   // Consultar las ventas
-  sales: any[] = [];
-  sale: any[] = [];
+  sales: Sales[] = [];
+  sale: Sales[] = [];
 
   // Consultar clientes
   selectedCustomer: any;
@@ -234,7 +222,7 @@ export class ShoppingCartComponent {
         }
         if (response.success) {
           this.sales = response.message?.Sales || [];
-          this.sales.forEach((sale: any) => {
+          this.sales.forEach((sale: Sales) => {
             sale.showDetails = false;
           });
 
@@ -353,7 +341,7 @@ export class ShoppingCartComponent {
     this.selectedProductPrice = null;
   }
 
-  selectProductSuggestion(product: any, event: Event) {
+  selectProductSuggestion(product: Products, event: Event) {
     if (event) {
       event.preventDefault();
     }
@@ -403,14 +391,27 @@ export class ShoppingCartComponent {
     }
 
     this.productSuggestionList = []; // Limpiar la lista de sugerencias
+    this.selectedIndex = -1;
   }
 
-  handleKeyDown(event: Event) {
-      if (this.selectedIndex !== -1) {
-        const selectedSuggestion =
-          this.productSuggestionList[this.selectedIndex];
-        this.handleSuggestionClick(event, selectedSuggestion);
+  handleKeyDown(event: KeyboardEvent) {
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      event.preventDefault();
+      if (this.productSuggestionList.length > 0) {
+        if (event.key === 'ArrowDown') {
+          this.selectedIndex = (this.selectedIndex + 1) % this.productSuggestionList.length;
+        } else if (event.key === 'ArrowUp') {
+          this.selectedIndex =
+            (this.selectedIndex - 1 + this.productSuggestionList.length) %
+            this.productSuggestionList.length;
+        }
       }
+    } else if (event.key === 'Enter') {
+      event.preventDefault();
+      if (this.selectedIndex !== -1) {
+        this.handleSuggestionClick(event, this.productSuggestionList[this.selectedIndex]);
+      }
+    }
   }
 
   isValidQuantity(): boolean {
@@ -451,7 +452,7 @@ export class ShoppingCartComponent {
           productQuantity
         );
 
-        const product: Product = {
+        const product: Products = {
           productId: productData.productId,
           int_code: this.int_code,
           name: productName,
@@ -462,6 +463,10 @@ export class ShoppingCartComponent {
           taxes_amount: taxesAmount,
           sub_total: subTotal,
           isNew: true,
+          description: '',
+          category_id: 0,
+          sale_price: 0,
+          margin: 0
         };
 
         product.total = product.sub_total + product.taxes_amount;
@@ -487,7 +492,7 @@ export class ShoppingCartComponent {
   }
 
   private calculateProductAmounts(
-    productData: any,
+    productData: Products,
     productQuantity: number
   ): { taxesAmount: number; subTotal: number } {
     let taxesAmount = 0;
@@ -506,7 +511,7 @@ export class ShoppingCartComponent {
     return { taxesAmount, subTotal };
   }
 
-  private updateProductList(product: Product) {
+  private updateProductList(product: Products) {
     if (product.total !== 0) {
       const existingProductIndex = this.productList.findIndex(
         (p) => p.int_code === product.int_code
@@ -546,7 +551,7 @@ export class ShoppingCartComponent {
     this.totalSaleAmount = +this.totalTaxesAmount + this.subTotalSaleAmount;
   }
 
-  removeProduct(product: any) {
+  removeProduct(product: Products) {
     if (product.isRemoved) return;
 
     product.isRemoved = true;
@@ -560,7 +565,7 @@ export class ShoppingCartComponent {
     }, 200);
   }
 
-  createSale(event: Event) {
+  createSale(event: Event): void {
     if (this.saleForm.get('customer_name').valid) {
       const customerFullName = this.saleForm.get('customer_name').value;
       const sale = this.buildSaleObject(customerFullName);
@@ -597,7 +602,7 @@ export class ShoppingCartComponent {
     }));
   }
 
-  private saveSale(sale: any) {
+  private saveSale(sale: Sales): void {
     this.saleService.createSale(sale).subscribe({
       next: () => {
         this.handleSaleCreationSuccess();
@@ -608,7 +613,7 @@ export class ShoppingCartComponent {
     });
   }
 
-  private handleSaleCreationSuccess() {
+  private handleSaleCreationSuccess(): void {
     this.toastr.success('La venta ha sido guardada exitosamente.');
     this.date = this.getCurrentDate();
     this.getSalesHistory(this.date);
@@ -620,13 +625,13 @@ export class ShoppingCartComponent {
     this.closeSaleModal();
   }
 
-  private handleSaleCreationError() {
+  private handleSaleCreationError(): void {
     this.toastr.error(
       'Ocurrió un error al guardar la venta. Por favor inténtalo nuevamente.'
     );
   }
 
-  private clearSaleFormData() {
+  private clearSaleFormData(): void {
     this.saleForm.get('customer_name')?.reset();
     this.totalTaxesAmount = 0;
     this.subTotalSaleAmount = 0;
@@ -635,7 +640,7 @@ export class ShoppingCartComponent {
     this.selectedCustomer = null;
   }
 
-  private clearProductForm() {
+  private clearProductForm(): void {
     this.saleForm.get('product_name')?.reset();
     this.saleForm.get('product_taxes')?.reset();
     this.saleForm.get('product_price')?.reset();
@@ -644,11 +649,11 @@ export class ShoppingCartComponent {
     this.selectedProduct = null;
   }
 
-  updateProduct(product: any, event: Event) {
+  updateProduct(product: Products, event: Event): void {
     const newQuantity = (event.target as HTMLInputElement).valueAsNumber;
 
     const productIndex = this.productList.findIndex(
-      (p: any) => p.int_code === product.int_code
+      (p: Products) => p.int_code === product.int_code
     );
 
     if (productIndex !== -1) {
@@ -661,13 +666,11 @@ export class ShoppingCartComponent {
   }
 
   private getProductDataAndUpdateProductList(
-    product: any,
+    product: Products,
     newQuantity: number,
     productIndex: number
-  ) {
-    this.http
-      .get(`${this.backendUrl}products/int_code/${product.int_code}`, {})
-      .subscribe({
+  ): void {
+    this.productService.getProductByIntCode(product.int_code).subscribe({
         next: (response: any) => {
           const productData = response.message.product;
 
@@ -689,7 +692,8 @@ export class ShoppingCartComponent {
       });
   }
 
-  cancelSale(doc_number: string) {
+  cancelSale(sale: Sales): void {
+    const doc_number = sale.doc_number;
     this.saleService.cancelSale(doc_number).subscribe({
       next: (response: any) => {
         this.toastr.success(`Venta #${doc_number} anulada exitosamente.`);
@@ -730,7 +734,7 @@ export class ShoppingCartComponent {
     );
   }
 
-  filterSalesByDate() {
+  filterSalesByDate(): void {
     if (this.selectedDate) {
       const selectedDate = new Date(
         this.selectedDate.year,
@@ -755,15 +759,15 @@ export class ShoppingCartComponent {
     }
   }
 
-  toggleSaleDetails(sale: any) {
+  toggleSaleDetails(sale: Sales): void {
     sale.showDetails = !sale.showDetails;
   }
 
-  generateTicket(doc_number: string) {
+  generateTicket(doc_number: string): void {
     this.ticketService.generateTicket(doc_number);
   }
 
-  fetchCustomers() {
+  fetchCustomers(): void {
     this.saleService.getCustomers().subscribe({
       next: (response: any) => {
         const customers = response?.message?.customers;
@@ -780,7 +784,7 @@ export class ShoppingCartComponent {
     });
   }
 
-  searchCustomers(event: Event) {
+  searchCustomers(event: Event): void {
     const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
 
     if (Array.isArray(this.customersList) && this.customersList.length > 0) {

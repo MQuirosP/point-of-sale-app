@@ -385,25 +385,25 @@ export class PurchaseHistoryComponent {
     }
 
     this.productSuggestionList = [];
+    this.selectedIndex = -1;
   }
 
   handleKeyDown(event: KeyboardEvent) {
-    if (event.key === 'ArrowDown') {
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       event.preventDefault();
-      if (this.selectedIndex < this.productSuggestionList.length - 1) {
-        this.selectedIndex++;
-      }
-    } else if (event.key === 'ArrowUp') {
-      event.preventDefault();
-      if (this.selectedIndex > 0) {
-        this.selectedIndex--;
+      if (this.productSuggestionList.length > 0) {
+        if (event.key === 'ArrowDown') {
+          this.selectedIndex = (this.selectedIndex + 1) % this.productSuggestionList.length;
+        } else if (event.key === 'ArrowUp') {
+          this.selectedIndex =
+            (this.selectedIndex - 1 + this.productSuggestionList.length) %
+            this.productSuggestionList.length;
+        }
       }
     } else if (event.key === 'Enter') {
       event.preventDefault();
       if (this.selectedIndex !== -1) {
-        const selectedSuggestion =
-          this.productSuggestionList[this.selectedIndex];
-        this.handleSuggestionClick(event, selectedSuggestion);
+        this.handleSuggestionClick(event, this.productSuggestionList[this.selectedIndex]);
       }
     }
   }

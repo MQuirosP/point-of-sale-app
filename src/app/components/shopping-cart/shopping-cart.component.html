@@ -223,13 +223,13 @@
                         let suggestion of productSuggestionList;
                         let i = index
                       "
-                      [class.selected]="selectedIndex === i"
-                    >
+                      >
                       <a
-                        href="#"
-                        class="dropdown-item "
-                        (click)="handleSuggestionClick($event, suggestion)"
-                        tabindex="-1"
+                      href="#"
+                      class="dropdown-item "
+                      (click)="handleSuggestionClick($event, suggestion)"
+                      [class.selected]="selectedIndex === i"
+                        tabindex="0"
                       >
                         {{ suggestion.name }}
                       </a>
@@ -548,7 +548,7 @@
                     sale.status === 'aceptado' && isCurrentDate(sale.createdAt)
                   "
                   class="btn btn-danger clic-on-image mr-2"
-                  (click)="cancelSale(sale.doc_number); toggleSaleDetails(sale)"
+                  (click)="cancelSale(sale); toggleSaleDetails(sale)"
                 >
                   Anular
                 </button>
