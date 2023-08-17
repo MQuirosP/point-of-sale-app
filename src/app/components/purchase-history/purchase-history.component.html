@@ -482,20 +482,26 @@
         </button>
       </div>
       <div class="modal-body">
-        <div
-          class="container input-group d-flex justify-content-center mx-auto sticky-top"
-          style="max-width: 170px"
-        >
-          <input
-            type="date"
-            class="form-control input-group-text shadow"
-            [(ngModel)]="selectedDate"
-            (ngModelChange)="filterPurchasesByDate()"
-            ngbDatepicker
-            #datepicker="ngbDatepicker"
-            [max]="getCurrentDateString()"
-          />
-        </div>
+        <form>
+          <div class="row d-flex justify-content-center">
+            <div
+              class="form-group sticky-top"
+              style="max-width: 170px"
+            >
+            <label for="purchase-date">Seleccione la fecha:</label>
+              <input
+                type="date"
+                name="purchase-date"
+                class="form-control input-group-text shadow mb-3"
+                [(ngModel)]="selectedDate"
+                (ngModelChange)="filterPurchasesByDate()"
+                ngbDatepicker
+                #datepicker="ngbDatepicker"
+                [max]="getCurrentDateString()"
+              />
+            </div>
+          </div>
+        </form>
 
         <div class="container">
           <!-- Aquí se muestra la lista de compras -->

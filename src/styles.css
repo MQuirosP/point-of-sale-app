@@ -54,7 +54,7 @@ body {
   background-color: #f0f0f0;
 }
 
-header {
+#main-header {
   padding-top: 5px;
   min-height: 80px;
 }
@@ -797,12 +797,13 @@ input::-webkit-input-placeholder {
 
 .options-card-body-text {
   font-size: 18px;
+  display: block;
+  padding: 10px 0;
 }
 
 .options-button-container {
-  position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
-  bottom: 30px;
+  margin-top: auto;
 }
