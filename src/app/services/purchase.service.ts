@@ -47,7 +47,8 @@ export class PurchaseService {
     return this.http.post(`${this.backendUrl}purchases`, purchase);
   }
 
-  checkPurchaseDocNumber(purchase: Purchase): Promise<boolean> {
+  checkPurchaseDocNumber(purchase: string): Promise<boolean> {
+    console.log(purchase);
   
     return new Promise<boolean>((resolve, reject) => {
       this.http.get<Purchase>(`${this.backendUrl}purchases/doc_number/${purchase}`).subscribe({

@@ -19,8 +19,7 @@ import {
 } from '@angular/forms';
 import { ProductCacheService } from 'src/app/services/product-cache.service';
 import { ProductService } from 'src/app/services/product.service';
-import { productAnimations } from 'src/app/animations/product-list-animation';
-import { Products } from 'src/app/interfaces/products';
+import { productAnimations } from 'src/app/animations/product-list-animation'
 import { Purchase } from 'src/app/interfaces/purchases';
 
 interface ApiPurchaseResponse {
@@ -37,12 +36,62 @@ interface ApiProviderResponse {
   };
 }
 
+interface Product {
+  productId: number;
+  int_code: any;
+  name: any;
+  price: any;
+  quantity: any;
+  taxes: boolean;
+  taxPercentage: number;
+  taxes_amount?: number;
+  sub_total?: number;
+  isNew?: boolean;
+  isRemoved?: boolean;
+}
+
 @Component({
   selector: 'app-purchase-history',
   templateUrl: './purchase-history.component.html',
   styleUrls: ['./purchase-history.component.css'],
   animations: [
     fadeAnimation, productAnimations,
+    // trigger('slideInOut', [
+    //   state(
+    //     'in',
+    //     style({
+    //       transform: 'translateX(0)',
+    //       opacity: 1,
+    //     })
+    //   ),
+    //   state(
+    //     'out',
+    //     style({
+    //       transform: 'translateX(-100%)',
+    //       opacity: 0,
+    //     })
+    //   ),
+    //   transition('in => out', animate('200ms ease-out')),
+    //   transition('out => in', animate('200ms ease-in')),
+    // ]),
+    // trigger('slideOut', [
+    //   state(
+    //     'in',
+    //     style({
+    //       transform: 'translateX(0)',
+    //       opacity: 1,
+    //     })
+    //   ),
+    //   state(
+    //     'out',
+    //     style({
+    //       transform: 'translateX(100%)',
+    //       opacity: 0,
+    //     })
+    //   ),
+    //   transition('in => out', animate('200ms ease-out')),
+    //   transition('out => in', animate('200ms ease-in')),
+    // ]),
   ],
 })
 export class PurchaseHistoryComponent {
@@ -72,8 +121,8 @@ export class PurchaseHistoryComponent {
   TAXES: number = 0.13;
 
   // Consultar las compras
-  purchases: Purchase[] = [];
-  purchase: Purchase[] = [];
+  purchases: any[] = [];
+  purchase: any[] = [];
 
   // Consultar proveedores
   provider_id: number = 0;
@@ -108,6 +157,11 @@ export class PurchaseHistoryComponent {
   }
 
   ngOnInit() {
+    // this.modalService.showNewProductModal.subscribe((show: boolean) => {
+    //   if (show) {
+    //     this.openPurchaseModal();
+    //   }
+    // });
     this.selectedDate = this.calendar.getToday();
 
     // DEFINICIÓN FORMULARIO PARA COMPRAS
@@ -147,7 +201,7 @@ export class PurchaseHistoryComponent {
     return this.dateFormatter.format(currentDate);
   }
 
-  openPurchaseModal(): void {
+  openPurchaseModal() {
     this.newPurchaseModal.nativeElement.style.display = 'block';
     this.newPurchaseModal.nativeElement.classList.add('opening');
     setTimeout(() => {
@@ -155,7 +209,7 @@ export class PurchaseHistoryComponent {
     }, 50);
   }
 
-  closePurchaseModal(): void {
+  closePurchaseModal() {
     this.newPurchaseModal.nativeElement.classList.remove('show');
     this.newPurchaseModal.nativeElement.classList.add('closing');
     setTimeout(() => {
@@ -164,7 +218,7 @@ export class PurchaseHistoryComponent {
     }, 300);
   }
 
-  openPurchaseHistoryModal(): void {
+  openPurchaseHistoryModal() {
     this.purchaseHistoryModal.nativeElement.style.display = 'block';
     this.purchaseHistoryModal.nativeElement.classList.add('opening');
     setTimeout(() => {
@@ -174,7 +228,7 @@ export class PurchaseHistoryComponent {
     this.getPurchasesHistory(this.date);
   }
 
-  closePurchaseHistoryModal(): void {
+  closePurchaseHistoryModal() {
     this.purchaseHistoryModal.nativeElement.classList.add('closing');
     setTimeout(() => {
       this.purchaseHistoryModal.nativeElement.classList.remove('show');
@@ -195,7 +249,7 @@ export class PurchaseHistoryComponent {
     );
   }
 
-  getPurchasesHistory(selectedDate: string): void {
+  getPurchasesHistory(selectedDate: string) {
     if (!selectedDate) {
       console.log('Fecha no especificada', selectedDate);
       return;
@@ -223,7 +277,7 @@ export class PurchaseHistoryComponent {
     });
   }
 
-  searchProduct(): void {
+  searchProduct() {
     const productNameControl = this.purchaseForm.get('product_name').value;
 
     const searchTerm = productNameControl?.toLowerCase().trim() || '';
@@ -275,7 +329,7 @@ export class PurchaseHistoryComponent {
     });
   }
 
-  private selectSingleProduct(): void {
+  private selectSingleProduct() {
     if (this.productSuggestionList.length === 1) {
       const suggestion = this.productSuggestionList[0];
       this.selectProductSuggestion(suggestion, null);
@@ -285,7 +339,7 @@ export class PurchaseHistoryComponent {
     }
   }
 
-  private updateSelectedProductPrice(): void {
+  private updateSelectedProductPrice() {
     if (!this.selectedProduct) {
       this.selectedProductPrice = null;
     } else {
@@ -293,14 +347,14 @@ export class PurchaseHistoryComponent {
     }
   }
 
-  private clearProductSuggestions(): void {
+  private clearProductSuggestions() {
     this.productSuggestionList = [];
     this.selectedProduct = null;
     this.selectedProductTaxes = null;
     this.selectedProductPrice = null;
   }
 
-  private selectProductSuggestion(product: Products, event: Event): void {
+  private selectProductSuggestion(product: any, event: Event) {
     if (event) {
       event.preventDefault();
     }
@@ -316,7 +370,7 @@ export class PurchaseHistoryComponent {
     }, 0);
   }
 
-  handleBarcodeInput(event: Event): void {
+  handleBarcodeInput(event: Event) {
     const inputValue = (event.target as HTMLInputElement).value.trim();
 
     if (inputValue) {
@@ -333,7 +387,7 @@ export class PurchaseHistoryComponent {
     }
   }
 
-  handleSuggestionClick(event: Event, suggestion: any): void {
+  handleSuggestionClick(event: Event, suggestion: any) {
     event.preventDefault();
     event.stopPropagation();
 
@@ -350,30 +404,30 @@ export class PurchaseHistoryComponent {
     }
 
     this.productSuggestionList = [];
-    this.selectedIndex = -1;
   }
 
-  handleKeyDown(event: KeyboardEvent): void {
-    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+  handleKeyDown(event: KeyboardEvent) {
+    if (event.key === 'ArrowDown') {
       event.preventDefault();
-      if (this.productSuggestionList.length > 0) {
-        if (event.key === 'ArrowDown') {
-          this.selectedIndex = (this.selectedIndex + 1) % this.productSuggestionList.length;
-        } else if (event.key === 'ArrowUp') {
-          this.selectedIndex =
-            (this.selectedIndex - 1 + this.productSuggestionList.length) %
-            this.productSuggestionList.length;
-        }
+      if (this.selectedIndex < this.productSuggestionList.length - 1) {
+        this.selectedIndex++;
+      }
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      if (this.selectedIndex > 0) {
+        this.selectedIndex--;
       }
     } else if (event.key === 'Enter') {
       event.preventDefault();
       if (this.selectedIndex !== -1) {
-        this.handleSuggestionClick(event, this.productSuggestionList[this.selectedIndex]);
+        const selectedSuggestion =
+          this.productSuggestionList[this.selectedIndex];
+        this.handleSuggestionClick(event, selectedSuggestion);
       }
     }
   }
 
-  addProduct(): void {
+  addProduct() {
     const productName = this.purchaseForm.get('product_name');
     const productQuantity = this.purchaseForm.get('product_quantity');
     const productNewPrice = this.purchaseForm.get('product_new_price');
@@ -400,7 +454,7 @@ export class PurchaseHistoryComponent {
     const taxPercent = productFromCache.taxPercentage;
     const productId = productFromCache.productId;
 
-    const product: Products = {
+    const product: Product = {
       productId: productId,
       int_code: this.int_code,
       name: productName?.value,
@@ -409,9 +463,6 @@ export class PurchaseHistoryComponent {
       taxes: this.selectedProductTaxes,
       isNew: true,
       taxPercentage: taxPercent,
-      category_id: 0,
-      sale_price: 0,
-      margin: 0
     };
 
     this.calculateProductAmounts(product, taxPercent);
@@ -422,14 +473,14 @@ export class PurchaseHistoryComponent {
     this.nameInput.nativeElement.focus();
   }
 
-  private getProductFromCache(intCode: any): Products | undefined {
+  private getProductFromCache(intCode: any): Product | undefined {
     const cachedProducts = this.productCache.getCachedProducts();
     return cachedProducts.find(
-      (product: Products) => product.int_code === intCode
+      (product: Product) => product.int_code === intCode
     );
   }
 
-  private calculateProductAmounts(product: Products, taxPercent: number) {
+  private calculateProductAmounts(product: Product, taxPercent: number) {
     if (product.taxes) {
       const priceWithTaxes = product.price / (1 - taxPercent / 100);
       const taxesPerItem = priceWithTaxes - product.price;
@@ -441,7 +492,7 @@ export class PurchaseHistoryComponent {
     }
   }
 
-  private calculateTotalPurchaseAmount(): void {
+  private calculateTotalPurchaseAmount() {
     this.subTotalPurchaseAmount = this.productList.reduce(
       (subTotal, product) => subTotal + product.sub_total,
       0
@@ -456,7 +507,7 @@ export class PurchaseHistoryComponent {
       this.subTotalPurchaseAmount + this.totalTaxesAmount;
   }
 
-  private resetFormFields(): void {
+  private resetFormFields() {
     this.purchaseForm.get('product_name')?.reset();
     this.purchaseForm.get('product_new_price')?.reset();
     this.purchaseForm.get('product_quantity')?.reset();
@@ -464,7 +515,7 @@ export class PurchaseHistoryComponent {
     this.selectedProductTaxes = false;
   }
 
-  removeProduct(product: Products): void {
+  removeProduct(product: any) {
     if (product.isRemoved) return;
 
     product.isRemoved = true;
@@ -478,7 +529,7 @@ export class PurchaseHistoryComponent {
     const index = this.productList.indexOf(product);
   }
 
-  async createPurchase(event: Event): Promise<void> {
+  async createPurchase(event: Event) {
     const providerName = this.purchaseForm.get('provider_name');
 
     if (providerName.invalid) {
@@ -567,7 +618,7 @@ export class PurchaseHistoryComponent {
     return forkJoin(updateRequests);
   }
 
-  private savePurchase(event: Event): void {
+  private savePurchase(event: Event) {
     const purchase: Purchase = {
       providerId: this.provider_id,
       provider_name: this.purchaseForm.get('provider_name').value,
@@ -576,13 +627,7 @@ export class PurchaseHistoryComponent {
       status: 'aceptado',
       sub_total: this.subTotalPurchaseAmount,
       taxes_amount: this.totalTaxesAmount || 0,
-      purchaseItems: this.productList.map((product) => ({ ...product })),
-      createdAt: '',
-      purchaseId: 0,
-      showDetails: false,
-      total: 0,
-      updatedAt: '',
-      products: []
+      products: this.productList.map((product) => ({ ...product })),
     };
 
     this.purchaseService.createPurchase(purchase).subscribe({
@@ -602,7 +647,7 @@ export class PurchaseHistoryComponent {
     });
   }
 
-  private resetForm(): void {
+  private resetForm() {
     this.purchaseForm.reset();
     this.subTotalPurchaseAmount = 0;
     this.totalTaxesAmount = 0;
@@ -643,7 +688,7 @@ export class PurchaseHistoryComponent {
     return value < 10 ? `0${value}` : `${value}`;
   }
 
-  filterPurchasesByDate(): void {
+  filterPurchasesByDate() {
     if (this.selectedDate) {
       const selectedDate = new Date(
         this.selectedDate.year,
@@ -668,11 +713,11 @@ export class PurchaseHistoryComponent {
     }
   }
 
-  togglePurchaseDetails(purchase: Purchase): void {
+  togglePurchaseDetails(purchase: any) {
     purchase.showDetails = !purchase.showDetails;
   }
 
-  fetchProviders(): void {
+  fetchProviders() {
     this.purchaseService.getProviders().subscribe({
       next: (response: any) => {
         const providers = response?.message?.providers;
@@ -689,7 +734,7 @@ export class PurchaseHistoryComponent {
     });
   }
 
-  searchProviders(event: Event): void {
+  searchProviders(event: Event) {
     const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
     if (Array.isArray(this.providersList) && this.providersList.length > 0) {
       this.providerSuggestionList = this.providersList.filter(

@@ -1,21 +1,17 @@
+import { Products } from "./products";
+
 export interface Purchase {
-  createdAt: string;
-  doc_number: string;
+  providerId: number;
   provider_name: string;
-  purchaseId: number;
-  purchaseItems: PurchaseItem[];
-  showDetails: boolean;
+  paymentMethod: string;
+  doc_number: string;
   status: string;
   sub_total: number;
   taxes_amount: number;
-  total: number;
-  updatedAt: string;
-  providerId: number;
-  paymentMethod: string;
-  products: [];
+  products: any[];
 }
 
-export interface PurchaseItem {
+export interface PurchaseItem extends Products {
   int_code: string;
   name: string;
   purchase_price: number;
