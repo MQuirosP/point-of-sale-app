@@ -55,10 +55,7 @@ interface ApiProviderResponse {
   selector: 'app-purchase-history',
   templateUrl: './purchase-history.component.html',
   styleUrls: ['./purchase-history.component.css'],
-  animations: [
-    fadeAnimation,
-    productAnimations,
-  ],
+  animations: [fadeAnimation, productAnimations],
 })
 export class PurchaseHistoryComponent {
   selectedDate: NgbDateStruct | any;
@@ -391,10 +388,7 @@ export class PurchaseHistoryComponent {
     const productQuantity = this.purchaseForm.get('product_quantity');
     const productNewPrice = this.purchaseForm.get('product_new_price');
 
-    if (
-      productQuantity?.invalid ||
-      productNewPrice?.invalid
-    ) {
+    if (productQuantity?.invalid || productNewPrice?.invalid) {
       this.toastr.warning(
         'Por favor revise la cantidad y el precio actual del producto.'
       );
@@ -597,7 +591,7 @@ export class PurchaseHistoryComponent {
       taxes_amount: this.totalTaxesAmount || 0,
       purchaseItems: this.productList.map((product) => ({ ...product })),
       createdAt: '',
-      total: 0
+      total: 0,
     };
 
     this.purchaseService.createPurchase(purchase).subscribe({
