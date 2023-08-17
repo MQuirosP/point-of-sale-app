@@ -19,8 +19,9 @@ import {
 } from '@angular/forms';
 import { ProductCacheService } from 'src/app/services/product-cache.service';
 import { ProductService } from 'src/app/services/product.service';
-import { productAnimations } from 'src/app/animations/product-list-animation'
+import { productAnimations } from 'src/app/animations/product-list-animation';
 import { Purchase } from 'src/app/interfaces/purchases';
+import { Products } from 'src/app/interfaces/products';
 
 interface ApiPurchaseResponse {
   success: boolean;
@@ -36,26 +37,27 @@ interface ApiProviderResponse {
   };
 }
 
-interface Product {
-  productId: number;
-  int_code: any;
-  name: any;
-  price: any;
-  quantity: any;
-  taxes: boolean;
-  taxPercentage: number;
-  taxes_amount?: number;
-  sub_total?: number;
-  isNew?: boolean;
-  isRemoved?: boolean;
-}
+// interface Product {
+//   productId: number;
+//   int_code: any;
+//   name: any;
+//   price: any;
+//   quantity: any;
+//   taxes: boolean;
+//   taxPercentage: number;
+//   taxes_amount?: number;
+//   sub_total?: number;
+//   isNew?: boolean;
+//   isRemoved?: boolean;
+// }
 
 @Component({
   selector: 'app-purchase-history',
   templateUrl: './purchase-history.component.html',
   styleUrls: ['./purchase-history.component.css'],
   animations: [
-    fadeAnimation, productAnimations,
+    fadeAnimation,
+    productAnimations,
     // trigger('slideInOut', [
     //   state(
     //     'in',
@@ -428,44 +430,52 @@ export class PurchaseHistoryComponent {
   }
 
   addProduct() {
-    const productName = this.purchaseForm.get('product_name');
     const productQuantity = this.purchaseForm.get('product_quantity');
     const productNewPrice = this.purchaseForm.get('product_new_price');
 
     if (
-      productName?.invalid ||
       productQuantity?.invalid ||
       productNewPrice?.invalid
     ) {
       this.toastr.warning(
-        'Se debe seleccionar un producto para agregar a la lista.'
+        'Por favor revise la cantidad y el precio actual del producto.'
       );
       return;
     }
 
-    const productIntCode = this.int_code;
+    const productIntCode = this.selectedProduct.int_code;
     const productFromCache = this.getProductFromCache(productIntCode);
 
     if (!productFromCache) {
-      this.toastr.error('El producto no se encuentra en la caché.');
+      this.toastr.error('El producto no se encuentra en la base de datos.');
       return;
     }
 
-    const taxPercent = productFromCache.taxPercentage;
-    const productId = productFromCache.productId;
+    const {
+      productId,
+      int_code,
+      name,
+      taxPercentage,
+      category_id,
+      sale_price,
+      margin,
+    } = this.selectedProduct;
 
-    const product: Product = {
-      productId: productId,
-      int_code: this.int_code,
-      name: productName?.value,
+    const product: Products = {
+      productId,
+      int_code,
+      name,
       price: productNewPrice?.value,
       quantity: productQuantity?.value,
       taxes: this.selectedProductTaxes,
       isNew: true,
-      taxPercentage: taxPercent,
+      taxPercentage,
+      category_id,
+      sale_price,
+      margin,
     };
 
-    this.calculateProductAmounts(product, taxPercent);
+    this.calculateProductAmounts(product, taxPercentage);
     this.productList.push(product);
     product.isNew = false;
     this.calculateTotalPurchaseAmount();
@@ -473,14 +483,14 @@ export class PurchaseHistoryComponent {
     this.nameInput.nativeElement.focus();
   }
 
-  private getProductFromCache(intCode: any): Product | undefined {
+  private getProductFromCache(intCode: any): Products | undefined {
     const cachedProducts = this.productCache.getCachedProducts();
     return cachedProducts.find(
-      (product: Product) => product.int_code === intCode
+      (product: Products) => product.int_code === intCode
     );
   }
 
-  private calculateProductAmounts(product: Product, taxPercent: number) {
+  private calculateProductAmounts(product: Products, taxPercent: number) {
     if (product.taxes) {
       const priceWithTaxes = product.price / (1 - taxPercent / 100);
       const taxesPerItem = priceWithTaxes - product.price;
