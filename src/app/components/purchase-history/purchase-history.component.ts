@@ -58,42 +58,6 @@ interface ApiProviderResponse {
   animations: [
     fadeAnimation,
     productAnimations,
-    // trigger('slideInOut', [
-    //   state(
-    //     'in',
-    //     style({
-    //       transform: 'translateX(0)',
-    //       opacity: 1,
-    //     })
-    //   ),
-    //   state(
-    //     'out',
-    //     style({
-    //       transform: 'translateX(-100%)',
-    //       opacity: 0,
-    //     })
-    //   ),
-    //   transition('in => out', animate('200ms ease-out')),
-    //   transition('out => in', animate('200ms ease-in')),
-    // ]),
-    // trigger('slideOut', [
-    //   state(
-    //     'in',
-    //     style({
-    //       transform: 'translateX(0)',
-    //       opacity: 1,
-    //     })
-    //   ),
-    //   state(
-    //     'out',
-    //     style({
-    //       transform: 'translateX(100%)',
-    //       opacity: 0,
-    //     })
-    //   ),
-    //   transition('in => out', animate('200ms ease-out')),
-    //   transition('out => in', animate('200ms ease-in')),
-    // ]),
   ],
 })
 export class PurchaseHistoryComponent {
@@ -104,8 +68,8 @@ export class PurchaseHistoryComponent {
   backendUrl: string = environment.apiUrl;
 
   // Crear compras
-  int_code: string = '';
-  product_name: string = '';
+  // int_code: string = '';
+  // product_name: string = '';
   selectedProductPrice: number = 0;
   selectedProductTaxes: boolean;
   selectedProduct: any;
@@ -145,7 +109,6 @@ export class PurchaseHistoryComponent {
 
   constructor(
     private http: HttpClient,
-    private modalService: ModalService,
     private calendar: NgbCalendar,
     private dateFormatter: NgbDateParserFormatter,
     private toastr: ToastrService,
@@ -159,11 +122,6 @@ export class PurchaseHistoryComponent {
   }
 
   ngOnInit() {
-    // this.modalService.showNewProductModal.subscribe((show: boolean) => {
-    //   if (show) {
-    //     this.openPurchaseModal();
-    //   }
-    // });
     this.selectedDate = this.calendar.getToday();
 
     // DEFINICIÓN FORMULARIO PARA COMPRAS
@@ -306,7 +264,7 @@ export class PurchaseHistoryComponent {
     });
   }
 
-  private updateProductSuggestions(products: any[], searchTerm: string) {
+  private updateProductSuggestions(products: Products[], searchTerm: string) {
     const searchTermNormalized = searchTerm
       ? searchTerm.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
       : '';
@@ -316,7 +274,7 @@ export class PurchaseHistoryComponent {
 
     const regex = new RegExp(searchPattern);
 
-    this.productSuggestionList = products.filter((product: any) => {
+    this.productSuggestionList = products.filter((product: Products) => {
       const productNameNormalized = product.name
         ? product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
         : '';
@@ -361,8 +319,8 @@ export class PurchaseHistoryComponent {
       event.preventDefault();
     }
     this.purchaseForm.get('product_name').setValue(product.name);
-    this.int_code = product.int_code;
-    this.product_name = product.name;
+    // this.int_code = product.int_code;
+    // this.product_name = product.name;
     this.selectedProductTaxes = product.taxes;
     this.selectedProductPrice = product.purchase_price;
     this.selectedProduct = product;
@@ -395,7 +353,7 @@ export class PurchaseHistoryComponent {
 
     const searchTerm = suggestion.name?.toLowerCase().trim() || '';
     const suggestionName = suggestion.name.toLowerCase().trim();
-    this.int_code = suggestion.int_code;
+    // this.int_code = suggestion.int_code;
     this.selectedProductPrice = suggestion.sale_price;
 
     if (suggestionName === searchTerm) {
@@ -540,7 +498,7 @@ export class PurchaseHistoryComponent {
   }
 
   async createPurchase(event: Event) {
-    const providerName = this.purchaseForm.get('provider_name');
+    const providerName = this.selectedProvider;
 
     if (providerName.invalid) {
       this.toastr.warning('Seleccione un proveedor.');
@@ -637,7 +595,9 @@ export class PurchaseHistoryComponent {
       status: 'aceptado',
       sub_total: this.subTotalPurchaseAmount,
       taxes_amount: this.totalTaxesAmount || 0,
-      products: this.productList.map((product) => ({ ...product })),
+      purchaseItems: this.productList.map((product) => ({ ...product })),
+      createdAt: '',
+      total: 0
     };
 
     this.purchaseService.createPurchase(purchase).subscribe({

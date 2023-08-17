@@ -8,7 +8,11 @@ export interface Purchase {
   status: string;
   sub_total: number;
   taxes_amount: number;
-  products: any[];
+  // products: any[];
+  showDetails?: boolean;
+  createdAt: string;
+  purchaseItems: PurchaseItem[];
+  total: number
 }
 
 export interface PurchaseItem extends Products {

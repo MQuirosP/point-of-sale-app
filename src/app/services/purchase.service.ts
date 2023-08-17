@@ -3,17 +3,18 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Purchase } from '../interfaces/purchases';
 
-interface Purchase {
-  providerId: number;
-  provider_name: string;
-  paymentMethod: string;
-  doc_number: string;
-  status: string;
-  sub_total: number;
-  taxes_amount: number;
-  products: Product[];
-}
+// interface Purchase {
+//   providerId: number;
+//   provider_name: string;
+//   paymentMethod: string;
+//   doc_number: string;
+//   status: string;
+//   sub_total: number;
+//   taxes_amount: number;
+//   purchaseItems: Product[];
+// }
 
 interface ApiPurchaseResponse {
   success: boolean;
@@ -48,7 +49,6 @@ export class PurchaseService {
   }
 
   checkPurchaseDocNumber(purchase: string): Promise<boolean> {
-    console.log(purchase);
   
     return new Promise<boolean>((resolve, reject) => {
       this.http.get<Purchase>(`${this.backendUrl}purchases/doc_number/${purchase}`).subscribe({
