@@ -26,10 +26,9 @@ import { Sales } from 'src/app/interfaces/sales';
 interface ApiSaleResponse {
   success: boolean;
   message: {
-    Sales: any[];
+    Sales: Sales[];
   };
 }
-
 
 @Component({
   selector: 'app-shopping-cart',
@@ -91,7 +90,6 @@ export class ShoppingCartComponent {
   selectedIndex: number = -1;
 
   constructor(
-    private http: HttpClient,
     private modalService: ModalService,
     private calendar: NgbCalendar,
     private dateParser: NgbDateParserFormatter,
@@ -160,7 +158,7 @@ export class ShoppingCartComponent {
     return this.dateFormatter.format(currentDate);
   }
 
-  openSaleModal() {
+  openSaleModal(): void {
     if (this.newSaleModal?.nativeElement) {
       this.newSaleModal.nativeElement.style.display = 'block';
       this.newSaleModal.nativeElement.classList.add('opening');
@@ -170,7 +168,7 @@ export class ShoppingCartComponent {
     }
   }
 
-  closeSaleModal() {
+  closeSaleModal(): void {
     this.newSaleModal.nativeElement.classList.add('closing');
     setTimeout(() => {
       this.newSaleModal.nativeElement.classList.remove('show');
@@ -180,7 +178,7 @@ export class ShoppingCartComponent {
     this.selectedCustomer = '';
   }
 
-  openSaleHistoryModal() {
+  openSaleHistoryModal(): void {
     this.saleHistoryModal.nativeElement.style.display = 'block';
     this.saleHistoryModal.nativeElement.classList.add('opening');
     setTimeout(() => {
@@ -190,7 +188,7 @@ export class ShoppingCartComponent {
     this.filterSalesByDate();
   }
 
-  closeSaleHistoryModal() {
+  closeSaleHistoryModal(): void {
     this.saleHistoryModal.nativeElement.classList.add('closing');
     setTimeout(() => {
       this.saleHistoryModal.nativeElement.classList.remove('show');
@@ -200,7 +198,7 @@ export class ShoppingCartComponent {
     this.selectedDate = this.calendar.getToday();
   }
 
-  getSalesHistory(selectedDate: string) {
+  getSalesHistory(selectedDate: string): void {
     if (!selectedDate) {
       console.log('Fecha no especificada', selectedDate);
       return;
@@ -234,7 +232,7 @@ export class ShoppingCartComponent {
   }
 
   // Método para obtener la lista de productos
-  getProductList() {
+  getProductList(): void {
     this.productService.getProducts().subscribe({
       next: (response: any) => {
         const products = response?.message?.products;
@@ -256,7 +254,7 @@ export class ShoppingCartComponent {
     });
   }
 
-  searchProduct() {
+  searchProduct(): void {
     const productNameControl = this.saleForm.get('product_name').value;
 
     const searchTerm = productNameControl?.toLowerCase().trim() || '';
@@ -283,7 +281,7 @@ export class ShoppingCartComponent {
     });
   }
 
-  private updateProductSuggestions(products: any[], searchTerm: string) {
+  private updateProductSuggestions(products: Products[], searchTerm: string) {
     const searchTermNormalized = searchTerm
       ? searchTerm.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
       : '';
@@ -293,7 +291,7 @@ export class ShoppingCartComponent {
 
     const regex = new RegExp(searchPattern);
 
-    this.productSuggestionList = products.filter((product: any) => {
+    this.productSuggestionList = products.filter((product: Products) => {
       const productNameNormalized = product.name
         ? product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
         : '';
@@ -308,7 +306,7 @@ export class ShoppingCartComponent {
     });
   }
 
-  private selectSingleProduct() {
+  private selectSingleProduct(): void {
     if (this.productSuggestionList.length === 1) {
       const suggestion = this.productSuggestionList[0];
       this.selectProductSuggestion(suggestion, null);
@@ -318,7 +316,7 @@ export class ShoppingCartComponent {
     }
   }
 
-  private updateSelectedProductPrice() {
+  private updateSelectedProductPrice(): void {
     if (!this.selectedProduct) {
       this.selectedProductPrice = null;
     } else {
@@ -326,7 +324,7 @@ export class ShoppingCartComponent {
     }
   }
 
-  private clearProductSuggestions() {
+  private clearProductSuggestions(): void {
     this.saleForm.get('product_price').setValue(0);
     this.productSuggestionList = [];
     this.selectedProduct = null;
@@ -334,7 +332,7 @@ export class ShoppingCartComponent {
     this.selectedProductPrice = null;
   }
 
-  selectProductSuggestion(product: Products, event: Event) {
+  selectProductSuggestion(product: Products, event: Event): void {
     if (event) {
       event.preventDefault();
     }
@@ -356,7 +354,7 @@ export class ShoppingCartComponent {
 
     if (inputValue) {
       const matchingProduct = this.productSuggestionList.find(
-        (product: any) => {
+        (product: Products) => {
           return product.int_code === inputValue;
         }
       );
@@ -367,7 +365,7 @@ export class ShoppingCartComponent {
     }
   }
 
-  handleSuggestionClick(event: Event, suggestion: any) {
+  handleSuggestionClick(event: Event, suggestion: Products) {
     event.preventDefault();
     event.stopPropagation();
 
@@ -387,7 +385,7 @@ export class ShoppingCartComponent {
     this.selectedIndex = -1;
   }
 
-  handleKeyDown(event: KeyboardEvent) {
+  handleKeyDown(event: KeyboardEvent): void {
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       event.preventDefault();
       if (this.productSuggestionList.length > 0) {
