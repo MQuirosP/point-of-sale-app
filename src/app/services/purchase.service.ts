@@ -5,30 +5,11 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Purchase } from '../interfaces/purchases';
 
-// interface Purchase {
-//   providerId: number;
-//   provider_name: string;
-//   paymentMethod: string;
-//   doc_number: string;
-//   status: string;
-//   sub_total: number;
-//   taxes_amount: number;
-//   purchaseItems: Product[];
-// }
-
 interface ApiPurchaseResponse {
   success: boolean;
   message: {
     Purchases: any[];
   };
-}
-
-interface Product {
-  int_code: number;
-  quantity: number;
-  price: number;
-  taxes_amount?: number;
-  sub_total?: number;
 }
 
 @Injectable({
@@ -37,11 +18,10 @@ interface Product {
 
 
 export class PurchaseService {
-  private backendUrl = environment.apiUrl; // URL del endpoint para crear compras
+  private backendUrl = environment.apiUrl; // URL de la api
 
   constructor(
     private http: HttpClient,
-    private toastr: ToastrService,
     ) {}
 
   createPurchase(purchase: Purchase): Observable<any> {

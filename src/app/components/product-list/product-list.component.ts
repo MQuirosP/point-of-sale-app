@@ -1,15 +1,13 @@
-import { NgSelectModule } from '@ng-select/ng-select';
 import {
   Component,
   ElementRef,
   OnInit,
   ViewChild,
   ChangeDetectorRef,
-  HostListener,
 } from '@angular/core';
 import { Subscription, catchError, tap, timer } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { fadeAnimation } from 'src/app/animations/fadeAnimation';
 import { ToastrService } from 'ngx-toastr';
 import {
@@ -34,8 +32,6 @@ export class ProductListComponent implements OnInit {
   @ViewChild('codeInput') codeInput: ElementRef;
   @ViewChild('nameInput') nameInput: ElementRef;
 
-  backendUrl: string = environment.apiUrl;
-
   subscription: Subscription = new Subscription();
 
   public products: any[] = [];
@@ -43,9 +39,6 @@ export class ProductListComponent implements OnInit {
 
   filteredProducts: any[] = [];
   searchTerm: string = '';
-  // currentSlide: number = 0;
-
-  // showScrollButton: boolean = false;
 
   productForm: FormGroup;
   modalTitle: string;
@@ -55,8 +48,6 @@ export class ProductListComponent implements OnInit {
 
   password: string = '';
 
-  // isTaxed: boolean;
-
   categoryOptions = [
     { value: 0, label: 'Consumo interno' },
     { value: 1, label: 'Venta directa' },
@@ -64,7 +55,6 @@ export class ProductListComponent implements OnInit {
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
-    private http: HttpClient,
     private toastr: ToastrService,
     private formBuilder: FormBuilder,
     private productService: ProductService
@@ -100,16 +90,6 @@ export class ProductListComponent implements OnInit {
     }
   }
 
-  // @HostListener('window:scroll', ['$event'])
-  // onWindowScroll() {
-  //   const scrollPos =
-  //     window.scrollY ||
-  //     document.documentElement.scrollTop ||
-  //     document.body.scrollTop ||
-  //     0;
-  //   this.showScrollButton = scrollPos > 0;
-  // }
-
   getUserRole(): string {
     return localStorage.getItem('role');
   }
@@ -133,26 +113,18 @@ export class ProductListComponent implements OnInit {
     }
   }
 
-  // isTaxPercentageDisabled() {
-  //   return !this.productForm.get('taxes').value;
-  // }
-
   getTaxPercentageValue() {
     return this.productForm.get('taxes').value
       ? this.productForm.get('taxPercentage').value
       : 0;
   }
 
-  // scrollToTop() {
-  //   window.scrollTo({ top: 0, behavior: 'smooth' });
-  // }
-
   loadData() {
     if (this.products.length > 0) {
       return;
     }
 
-    this.subscription = this.http.get(`${this.backendUrl}products`).subscribe({
+    this.subscription = this.productService.getProducts().subscribe({
       next: (response: any) => {
         if (
           response &&
@@ -175,7 +147,7 @@ export class ProductListComponent implements OnInit {
   }
 
   refreshProductList() {
-    this.http.get(`${this.backendUrl}products`).subscribe({
+    this.productService.getProducts().subscribe({
       next: (response: any) => {
         if (
           response &&
@@ -206,7 +178,6 @@ export class ProductListComponent implements OnInit {
 
   openProductModal(value: boolean, product: Products) {
     if (value && product) {
-      const product_id = product.productId;
       this.modalTitle = value ? 'Edición' : 'Registro';
       this.modalActionLabel = value;
       this.changeDetectorRef.detectChanges();
@@ -244,9 +215,8 @@ export class ProductListComponent implements OnInit {
   }
 
   getProductInfo(product: Products) {
-    const product_id = product.productId;
     this.productInfo = null;
-    this.http.get(`${this.backendUrl}products/id/${product_id}`).subscribe({
+    this.productService.getProductById(product).subscribe({
       next: (response: any) => {
         if (response.success && response.message && response.message.product) {
           const product = response.message.product;
@@ -311,7 +281,6 @@ export class ProductListComponent implements OnInit {
         return;
       }
     }
-
     const productData: Products = this.extractProductFormData();
     this.updateProduct(productData);
   }
@@ -335,32 +304,24 @@ export class ProductListComponent implements OnInit {
       return;
     }
 
-    this.http
-      .put(`${this.backendUrl}products/${productId}`, productData)
-      .pipe(
-        tap((response: any) => {
-          if (response.success) {
-            this.toastr.success('Producto actualizado exitosamente.');
-            this.updateLocalProduct(productId, productData);
-          } else {
-            this.toastr.error('Error al actualizar el producto.');
-          }
-          this.refreshProductList();
-          this.productInfo = null;
-        }),
-        catchError((error: any) => {
-          this.toastr.error('Error al actualizar el producto.', error);
-          return [];
-        })
-      )
-      .subscribe(() => {
-        timer(500).subscribe(() => {
-          this.resetProductForm();
-          timer(1000).subscribe(() => {
-            this.closeProductModal();
-          });
-        });
-      });
+    this.productService.updateProduct(productId, productData).subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.toastr.success('Producto actualizado exitosamente.');
+          this.updateLocalProduct(productId, productData);
+        } else {
+          this.toastr.error('Error al actualizar el producto.');
+        }
+        this.refreshProductList();
+        this.productInfo = null;
+      },
+      error: (error: any) => {
+        this.toastr.error('Error al actualizar el producto.', error);
+      }
+    });
+
+    this.resetProductForm();
+    this.closeProductModal();
   }
 
   private updateLocalProduct(productId: number, productData: Products) {
@@ -427,11 +388,12 @@ export class ProductListComponent implements OnInit {
 
   private saveProduct(productData: Products) {
     this.changeDetectorRef.detectChanges();
-    this.http.post(`${this.backendUrl}products`, productData).subscribe({
+
+    this.productService.saveProduct(productData).subscribe({
       next: (response: any) => {
         if (response.success) {
-          this.toastr.success('Producto guardado exitosamente.'),
-            this.resetProductForm();
+          this.toastr.success('Producto guardado exitosamente.');
+          this.resetProductForm();
           this.refreshProductList();
           this.closeProductModal();
         } else {
@@ -513,18 +475,8 @@ export class ProductListComponent implements OnInit {
 
   deleteProduct(intCode: string) {
     const password = this.password;
-    const url = `${this.backendUrl}products/${intCode}`;
 
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-      body: {
-        password: password,
-      },
-    };
-
-    this.http.delete(url, httpOptions).subscribe({
+    this.productService.deleteProduct(intCode, password).subscribe({
       next: (response: any) => {
         if (response.success) {
           this.toastr.success(`Producto eliminado satisfactoriamente.`);
