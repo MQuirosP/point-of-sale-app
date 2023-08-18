@@ -204,7 +204,14 @@
                   }"
                   #nameInput
                   (keydown)="handleKeyDown($event)"
+                  capture="environment"
+                  accept="image/*"
                 />
+                <div class="d-none">
+                  <button (click)="toggleCamera()">Abrir Cámara</button>
+                  <!-- Mostrar el video de la cámara -->
+                  <video #video autoplay [hidden]="!isScanning" [style.width.px]="300"></video>
+                </div>
                 <div
                   class="suggestion-list position-fixed"
                   [style.width.px]="nameInput.offsetWidth"
@@ -468,11 +475,8 @@
       <div class="modal-body">
         <form>
           <div class="row d-flex justify-content-center">
-            <div
-              class="form-group sticky-top"
-              style="max-width: 170px"
-            >
-            <label for="sale-date">Seleccione la fecha:</label>
+            <div class="form-group sticky-top" style="max-width: 170px">
+              <label for="sale-date">Seleccione la fecha:</label>
               <input
                 type="date"
                 name="sale-date"

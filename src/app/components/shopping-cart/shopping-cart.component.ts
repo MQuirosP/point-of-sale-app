@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Quagga } from 'quagga';
 import { environment } from 'src/environments/environment';
 import {
   NgbDateStruct,
@@ -34,9 +34,7 @@ interface ApiSaleResponse {
   selector: 'app-shopping-cart',
   templateUrl: './shopping-cart.component.html',
   styleUrls: ['./shopping-cart.component.css'],
-  animations: [
-    fadeAnimation, productAnimations
-  ],
+  animations: [fadeAnimation, productAnimations],
 })
 export class ShoppingCartComponent {
   selectedDate: NgbDateStruct;
@@ -85,6 +83,8 @@ export class ShoppingCartComponent {
   @ViewChild('saleHistoryModal', { static: false })
   saleHistoryModal!: ElementRef;
   @ViewChild('nameInput') nameInput!: ElementRef;
+  @ViewChild('video') videoElement: ElementRef<HTMLVideoElement>;
+  isScanning: boolean = false;
   selectedProduct: any;
   product_name: any;
   selectedIndex: number = -1;
@@ -153,6 +153,88 @@ export class ShoppingCartComponent {
     }
   }
 
+  toggleCamera() {
+    if (!this.isScanning) {
+      this.startScanning();
+    } else {
+      this.stopScanning();
+    }
+  }
+
+  startScanning() {
+    const video = this.videoElement.nativeElement;
+
+    // Verifica si el navegador admite la API de getUserMedia
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices
+        .getUserMedia({ video: true })
+        .then((stream) => {
+          this.isScanning = true;
+          video.srcObject = stream;
+          video.play();
+
+          const onDetected = (result) => {
+            this.saleForm.get('product_name').setValue(result.codeResult.code);
+            this.stopScanning();
+          };
+
+          const scanner = Quagga.decoder({
+            readers: [
+              'code_128_reader',
+              'ean_reader',
+              'ean_8_reader',
+              'code_39_reader',
+              'code_39_vin_reader',
+              'codabar_reader',
+              'upc_reader',
+              'upc_e_reader',
+              'i2of5_reader',
+            ],
+            debug: {
+              showCanvas: true,
+              showPatches: true,
+              showFoundPatches: true,
+              showSkeleton: true,
+              showLabels: true,
+              showPatchLabels: true,
+              showRemainingPatchLabels: true,
+              boxFromPatches: {
+                showTransformed: true,
+                showTransformedBox: true,
+                showBB: true,
+              },
+            },
+          })
+            .locator({ patchSize: 'medium' })
+            .fromVideo(video, {
+              constraints: {
+                width: 800,
+                height: 600,
+                facingMode: 'environment',
+              },
+            });
+
+          scanner.addEventListener('detected', onDetected);
+          scanner.start();
+        })
+        .catch((error) => {
+          console.error('Error al acceder a la cámara:', error);
+        });
+    } else {
+      console.error('El navegador no admite la API de getUserMedia');
+    }
+  }
+
+  stopScanning() {
+    this.isScanning = false;
+    const video = this.videoElement.nativeElement;
+    if (video.srcObject) {
+      const stream = video.srcObject as MediaStream;
+      stream.getTracks().forEach((track) => track.stop());
+      video.srcObject = null;
+    }
+  }
+
   getCurrentDateString(): string {
     const currentDate = this.calendar.getToday();
     return this.dateFormatter.format(currentDate);
@@ -192,7 +274,7 @@ export class ShoppingCartComponent {
     this.saleHistoryModal.nativeElement.classList.add('closing');
     setTimeout(() => {
       this.saleHistoryModal.nativeElement.classList.remove('show');
-      this.saleHistoryModal.nativeElement.classList.remove('closing')
+      this.saleHistoryModal.nativeElement.classList.remove('closing');
       this.saleHistoryModal.nativeElement.style.display = 'none';
     }, 300);
     this.selectedDate = this.calendar.getToday();
@@ -390,7 +472,8 @@ export class ShoppingCartComponent {
       event.preventDefault();
       if (this.productSuggestionList.length > 0) {
         if (event.key === 'ArrowDown') {
-          this.selectedIndex = (this.selectedIndex + 1) % this.productSuggestionList.length;
+          this.selectedIndex =
+            (this.selectedIndex + 1) % this.productSuggestionList.length;
         } else if (event.key === 'ArrowUp') {
           this.selectedIndex =
             (this.selectedIndex - 1 + this.productSuggestionList.length) %
@@ -400,7 +483,10 @@ export class ShoppingCartComponent {
     } else if (event.key === 'Enter') {
       event.preventDefault();
       if (this.selectedIndex !== -1) {
-        this.handleSuggestionClick(event, this.productSuggestionList[this.selectedIndex]);
+        this.handleSuggestionClick(
+          event,
+          this.productSuggestionList[this.selectedIndex]
+        );
       }
     }
   }
@@ -457,7 +543,7 @@ export class ShoppingCartComponent {
           description: '',
           category_id: 0,
           sale_price: 0,
-          margin: 0
+          margin: 0,
         };
 
         product.total = product.sub_total + product.taxes_amount;
@@ -662,25 +748,24 @@ export class ShoppingCartComponent {
     productIndex: number
   ): void {
     this.productService.getProductByIntCode(product.int_code).subscribe({
-        next: (response: any) => {
-          const productData = response.message.product;
+      next: (response: any) => {
+        const productData = response.message.product;
 
-          const taxesAmount =
-            productData.purchase_price / (1 - productData.taxPercentage / 100) -
-            productData.purchase_price;
-          const subTotal = productData.sale_price - taxesAmount;
+        const taxesAmount =
+          productData.purchase_price / (1 - productData.taxPercentage / 100) -
+          productData.purchase_price;
+        const subTotal = productData.sale_price - taxesAmount;
 
-          this.productList[productIndex].quantity = newQuantity;
-          this.productList[productIndex].taxes_amount =
-            taxesAmount * newQuantity;
-          this.productList[productIndex].sub_total = subTotal * newQuantity;
-          this.productList[productIndex].total =
-            this.productList[productIndex].sub_total +
-            this.productList[productIndex].taxes_amount;
+        this.productList[productIndex].quantity = newQuantity;
+        this.productList[productIndex].taxes_amount = taxesAmount * newQuantity;
+        this.productList[productIndex].sub_total = subTotal * newQuantity;
+        this.productList[productIndex].total =
+          this.productList[productIndex].sub_total +
+          this.productList[productIndex].taxes_amount;
 
-          this.calculateTotalSaleAmount();
-        },
-      });
+        this.calculateTotalSaleAmount();
+      },
+    });
   }
 
   cancelSale(sale: Sales): void {
