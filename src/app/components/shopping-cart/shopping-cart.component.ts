@@ -501,7 +501,6 @@ export class ShoppingCartComponent {
     }
   }
 
-
   isValidQuantity(): boolean {
     return this.quantity > 0;
   }
@@ -551,10 +550,10 @@ export class ShoppingCartComponent {
           taxes_amount: taxesAmount,
           sub_total: subTotal,
           isNew: true,
-          description: '',
-          category_id: 0,
-          sale_price: 0,
-          margin: 0,
+          description: productData.description,
+          category_id: productData.category_id,
+          sale_price: productData.sale_price,
+          margin: productData.margin,
         };
 
         product.total = product.sub_total + product.taxes_amount;
