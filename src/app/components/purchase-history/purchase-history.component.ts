@@ -363,27 +363,40 @@ export class PurchaseHistoryComponent {
     this.productSuggestionList = [];
   }
 
-  handleKeyDown(event: KeyboardEvent) {
-    if (event.key === 'ArrowDown') {
+  handleKeyDown(event: KeyboardEvent): void {
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       event.preventDefault();
-      if (this.selectedIndex < this.productSuggestionList.length - 1) {
-        this.selectedIndex++;
-      }
-    } else if (event.key === 'ArrowUp') {
-      event.preventDefault();
-      if (this.selectedIndex > 0) {
-        this.selectedIndex--;
+      if (this.productSuggestionList.length > 0) {
+        if (event.key === 'ArrowDown') {
+          this.selectedIndex =
+            (this.selectedIndex + 1) % this.productSuggestionList.length;
+        } else if (event.key === 'ArrowUp') {
+          this.selectedIndex =
+            (this.selectedIndex - 1 + this.productSuggestionList.length) %
+            this.productSuggestionList.length;
+        }
+  
+        // Scroll 
+        const suggestionElement = document.querySelector('.selected');
+        if (suggestionElement) {
+          suggestionElement.scrollIntoView({
+            behavior: 'smooth', 
+            block: 'center', 
+            inline: 'center', 
+          });
+        }
       }
     } else if (event.key === 'Enter') {
       event.preventDefault();
       if (this.selectedIndex !== -1) {
-        const selectedSuggestion =
-          this.productSuggestionList[this.selectedIndex];
-        this.handleSuggestionClick(event, selectedSuggestion);
+        this.handleSuggestionClick(
+          event,
+          this.productSuggestionList[this.selectedIndex]
+        );
       }
     }
   }
-
+  
   addProduct() {
     const productQuantity = this.purchaseForm.get('product_quantity');
     const productNewPrice = this.purchaseForm.get('product_new_price');

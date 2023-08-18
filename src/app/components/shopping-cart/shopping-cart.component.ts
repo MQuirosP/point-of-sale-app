@@ -479,6 +479,16 @@ export class ShoppingCartComponent {
             (this.selectedIndex - 1 + this.productSuggestionList.length) %
             this.productSuggestionList.length;
         }
+  
+        // Scroll 
+        const suggestionElement = document.querySelector('.selected');
+        if (suggestionElement) {
+          suggestionElement.scrollIntoView({
+            behavior: 'smooth', 
+            block: 'center', 
+            inline: 'center', 
+          });
+        }
       }
     } else if (event.key === 'Enter') {
       event.preventDefault();
@@ -490,6 +500,7 @@ export class ShoppingCartComponent {
       }
     }
   }
+
 
   isValidQuantity(): boolean {
     return this.quantity > 0;
