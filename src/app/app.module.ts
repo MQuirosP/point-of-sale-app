@@ -34,6 +34,7 @@ import { ProductListComponent } from './components/product-list/product-list.com
 import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.component';
 import { ProductsPipe } from './pipes/products.pipe';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 
 @NgModule({
@@ -74,7 +75,8 @@ import { ErrorInterceptor } from './interceptors/error.interceptor';
     PurchaseService,
     OptionsService,
     ProductCacheService,
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
   ],
   bootstrap: [AppComponent]
 })

@@ -42,6 +42,7 @@ export class ProductService {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${environment.token}`
       }),
       body: {
         password: password,
