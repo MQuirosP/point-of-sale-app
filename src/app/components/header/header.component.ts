@@ -41,7 +41,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     private authService: LoginService,
     private optionsService: OptionsService,
-    private cdr: ChangeDetectorRef,
+    private changeDetectorReference: ChangeDetectorRef,
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
     private productCache: ProductCacheService
@@ -66,8 +66,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }
     );
     this.optionsService.fetchRegisterStatus().subscribe((status) => {
-      this.allowRegisterUsers$ = this.optionsService.getRegisterStatus();
-      this.cdr.detectChanges();
+      this.allowRegisterUsers$ = this.optionsService.fetchRegisterStatus();
+      this.changeDetectorReference.detectChanges();
     });
     this.passwordForm = this.formBuilder.group({
       currentPassword: ['', Validators.required],

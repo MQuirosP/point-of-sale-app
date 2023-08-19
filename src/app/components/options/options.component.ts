@@ -117,8 +117,9 @@ export class OptionsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.optionService.getRegisterStatus().subscribe((status: boolean) => {
+    this.optionService.fetchRegisterStatus().subscribe((status: boolean) => {
       this.activateRegister = status;
+      this.changeDetectorRef.detectChanges();
     });
     this.getProviderList();
     this.getCustomerList();
@@ -126,6 +127,9 @@ export class OptionsComponent implements OnInit {
     this.filterProviders();
     this.getUserList();
     this.filterUsers();
+  }
+  
+  ngAfterViewInit() {
   }
 
   getUserRole(): string {

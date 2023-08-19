@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const authToken = environment.token;
+    const authToken = localStorage.getItem('token');
 
     if (authToken) {
       const authRequest = request.clone({

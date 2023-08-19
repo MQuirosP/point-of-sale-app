@@ -17,9 +17,9 @@ export class OptionsService {
     private http: HttpClient,
   ) { }
 
-  getRegisterStatus(): Observable<boolean> {
-    return this.registerStatusSubject.asObservable().pipe(distinctUntilChanged());
-  }
+  // getRegisterStatus(): Observable<boolean> {
+  //   return this.registerStatusSubject.asObservable().pipe(distinctUntilChanged());
+  // }
 
   setAllowRegisterStatus(status: boolean) {
     this.registerStatusSubject.next(status);
