@@ -32,7 +32,9 @@
       <div class="row">
         <div class="col-md-6 align-items-center">
           <!-- Encabezado del listado -->
-          <h4 class="h4"><i class="fas fa-list-check"></i>&nbsp;Lista de productos</h4>
+          <h4 class="h4">
+            <i class="fas fa-list-check"></i>&nbsp;Lista de productos
+          </h4>
         </div>
         <div class="col-md-6 d-flex justify-content-md-end">
           <!-- Contenedor de los botones Agregar, Anterior y Siguiente -->
@@ -115,14 +117,19 @@
               class="pl-4"
             >
               <td class="icon-container">
-                <div class="product-name" (click)="toggleIcons(product)">{{ product.name }}</div>
+                <div class="product-name" (click)="toggleIcons(product)">
+                  {{ product.name }}
+                </div>
                 <div
                   class="utilitary-icons"
-                  [ngClass]="{ 'show-icons': product.showIcons, 'hide-icons': !product.showIcons }"
+                  [ngClass]="{
+                    'show-icons': product.showIcons,
+                    'hide-icons': !product.showIcons
+                  }"
                 >
                   <a
                     role="button"
-                    class="ml-3 mr-2"
+                    class="ml-3 mr-3"
                     (click)="
                       openProductModal(true, product); this.editMode = true
                     "
@@ -195,7 +202,6 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content modal-shadow">
       <div class="modal-header border">
-        
         <h5 class="modal-title" id="productModalLabel">
           <i class="fas fa-edit"></i>&nbsp;{{ modalTitle }} de producto
         </h5>
@@ -242,8 +248,8 @@
                 role="textbox"
                 formControlName="category_id"
                 [items]="categoryOptions"
-                bindValue=value
-                bindLabel=label
+                bindValue="value"
+                bindLabel="label"
                 [ngClass]="{
                   'ng-invalid ng-touched':
                     productForm.get('category_id').touched &&
@@ -442,11 +448,10 @@
   >
     <div class="modal-content modal-shadow">
       <div class="modal-header border">
-        <h5 class="modal-title"><i class="fas fa-eraser"></i> Eliminar producto</h5>
-        <button
-          class="close clic-on-icon"
-          (click)="closePasswordModal()"
-        >
+        <h5 class="modal-title">
+          <i class="fas fa-eraser"></i> Eliminar producto
+        </h5>
+        <button class="close clic-on-icon" (click)="closePasswordModal()">
           <span aria-hidden="true"><i class="fas fa-close"></i></span>
         </button>
       </div>
