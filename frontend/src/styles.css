@@ -130,7 +130,7 @@ div.suggestion-list {
 
 .suggestion-list {
   z-index: 999;
-  max-height: 300px;
+  max-height: 200px;
   border-radius: 3px;
   overflow-y: auto;
 }
