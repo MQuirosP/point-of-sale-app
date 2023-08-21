@@ -4,7 +4,7 @@
   "main": "main.js",
   "scripts": {
     "start": "node app.js",
-    "debug": "DEBUG=* nodemon app.js",
+    "debug": "set DEBUG=* && nodemon app.js",
     "dev": "NODE_ENV=development nodemon app.js",
     "electron": "electron .",
     "electron-build": "electron-packager . my-app --platform=win32 --arch=x64"
