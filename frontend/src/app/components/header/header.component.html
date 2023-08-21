@@ -1,0 +1,278 @@
+<!-- Barra de navegación principal -->
+<nav
+  class="navbar navbar-expand-sm navbar-dark bg-dark p-0"
+  [@fadeAnimation]
+  style="min-height: 50px"
+>
+  <div class="container d-flex">
+    <a
+      routerLink="/home"
+      class="navbar-brand text-uppercase"
+      style="cursor: pointer; font-size: 2rem"
+      >Verdulería Sol</a
+    >
+    <button
+      class="navbar-toggler collapsed mr-1"
+      data-toggle="collapse"
+      data-target="#navbarCollapse"
+    >
+      <span class="navbar-toggler-icon"></span>
+      <span></span>
+      <span></span>
+    </button>
+    <div
+      class="collapse navbar-collapse bg-dark top-50 right-0"
+      id="navbarCollapse"
+    >
+      <div class="navbar-nav me-auto">
+        <ul *ngIf="isLoggedIn$ | async" class="navbar-nav">
+          <li class="nav-item px-2">
+            <a
+              routerLink="/home"
+              class="nav-link"
+              routerLinkActive="router-link-active"
+              >Inicio</a
+            >
+          </li>
+          <li class="nav-item px-2">
+            <a
+              routerLink="/product-list"
+              class="nav-link"
+              routerLinkActive="router-link-active"
+              >Productos</a
+            >
+          </li>
+          <li class="nav-item px-2">
+            <a
+              routerLink="/reports"
+              class="nav-link"
+              routerLinkActive="router-link-active"
+              >Reportes</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="navbar-nav ml-auto">
+        <div class="navbar-nav">
+          <ul class="navbar-nav ms-auto">
+            <li *ngIf="isLoggedIn$ | async" class="dropdown px-2">
+              <a
+                href="#"
+                class="nav-link dropdown-toggle"
+                data-toggle="dropdown"
+              >
+                <i class="fas fa-user-check"></i> Bienvenido {{ user }}
+              </a>
+              <div class="dropdown-menu shadow bg-dark">
+                <a
+                  class="dropdown-item"
+                  style="cursor: pointer"
+                  (click)="openChangePasswordModal()"
+                >
+                  <i class="fa-solid fa-pen-to-square"></i> Cambiar contraseña
+                </a>
+                <a routerLink="/options" class="dropdown-item">
+                  <i class="fa-solid fa-cog"></i> Configuración
+                </a>
+                <a
+                  *ngIf="getUserRole() === 'administrator'"
+                  class="dropdown-item"
+                  (click)="createBackup()"
+                  style="cursor: pointer"
+                >
+                  <i class="fa-solid fa-database"></i> Respaldar BD
+                </a>
+              </div>
+            </li>
+
+            <!-- Componente Login -->
+            <li *ngIf="!(isLoggedIn$ | async)" class="nav-item px-2">
+              <a
+                routerLink="/login"
+                class="nav-link"
+                routerLinkActive="router-link-active"
+              >
+                <i class="fas fa-user"></i> Ingreso
+              </a>
+            </li>
+            <li *ngIf="isLoggedIn$ | async" class="">
+              <a
+                style="cursor: pointer"
+                class="nav-link px-2"
+                (click)="onLogout()"
+              >
+                <i class="fas fa-user-times"></i> Salir
+              </a>
+            </li>
+            <!-- Registro usuarios -->
+            <li
+              *ngIf="!(isLoggedIn$ | async) && (allowRegisterUsers$ | async)"
+              class="nav-item"
+            >
+              <a
+                routerLink="/register"
+                class="nav-link px-2"
+                routerLinkActive="router-link-active"
+              >
+                <i class="fas fa-users"></i> Registrarse
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Modal para cambio de contraseña -->
+<div
+  class="modal fade"
+  id="changePasswordModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="changePasswordModalLabel"
+  aria-hidden="true"
+  #changePasswordModal
+>
+  <div class="modal-dialog modal-dialog-centered" role="document" style="width: 300px">
+    <div class="modal-content modal-shadow">
+      <div class="modal-header border">
+        <h5 class="modal-title" id="changePasswordModalLabel">
+          <i class="fas fa-user-secret"></i>&nbsp;Cambio de Contraseña
+        </h5>
+        <button
+          type="button"
+          class="close clic-on-icon"
+          aria-label="Close"
+          (click)="closeChangePasswordModal()"
+        >
+          <span
+            ><i
+              class="fas fa-close"
+            ></i
+          ></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="passwordForm" (ngSubmit)="onSubmit()">
+          <div class="form-group" style="margin-top: 15px">
+            <label
+              for="currentPassword"
+              class="floating-label"
+              [class.active]="
+                currentPasswordTouched ||
+                passwordForm.get('currentPassword').value
+              "
+              >Contraseña actual:</label
+            >
+            <input
+              type="password"
+              id="currentPassword"
+              class="form-control shadow"
+              formControlName="currentPassword"
+              (focus)="currentPasswordTouched = true"
+              (blur)="currentPasswordTouched = false"
+              autocomplete="false"
+            />
+            <div
+              *ngIf="
+                passwordForm.get('currentPassword').invalid &&
+                (passwordForm.get('currentPassword').dirty ||
+                  passwordForm.get('currentPassword').touched)
+              "
+            >
+              <div
+                *ngIf="passwordForm.get('currentPassword').hasError('required')"
+                class="error-message"
+              >
+                Contraseña actual es requerida.
+              </div>
+            </div>
+          </div>
+          <div class="form-group" style="margin-top: 40px">
+            <label
+              for="newPassword"
+              class="floating-label"
+              [class.active]="
+                newPasswordTouched || passwordForm.get('newPassword').value
+              "
+              >Nueva contraseña:</label
+            >
+            <input
+              type="password"
+              id="newPassword"
+              class="form-control shadow"
+              formControlName="newPassword"
+              (focus)="newPasswordTouched = true"
+              (blur)="newPasswordTouched = false"
+              autocomplete="false"
+            />
+            <div
+              *ngIf="
+                passwordForm.get('newPassword').invalid &&
+                (passwordForm.get('newPassword').dirty ||
+                  passwordForm.get('newPassword').touched)
+              "
+            >
+              <div
+                *ngIf="passwordForm.get('newPassword').hasError('required')"
+                class="error-message"
+              >
+                Nueva contraseña es requerida.
+              </div>
+            </div>
+          </div>
+          <div class="form-group" style="margin-top: 40px">
+            <label
+              for="confirmPassword"
+              class="floating-label"
+              [class.active]="
+                confirmPasswordTouched ||
+                passwordForm.get('confirmPassword').value
+              "
+              >Confirmar contraseña:</label
+            >
+            <input
+              type="password"
+              id="confirmPassword"
+              class="form-control shadow"
+              formControlName="confirmPassword"
+              (focus)="confirmPasswordTouched = true"
+              (blur)="confirmPasswordTouched = false"
+            />
+            <div
+              *ngIf="
+                passwordForm.get('confirmPassword').invalid &&
+                (passwordForm.get('confirmPassword').dirty ||
+                  passwordForm.get('confirmPassword').touched)
+              "
+            >
+              <div
+                *ngIf="passwordForm.get('confirmPassword').hasError('required')"
+                class="error-message"
+              >
+                Confirmar contraseña es requerida.
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer mt-4">
+            <button
+              type="submit"
+              class="btn btn-primary shadow clic-on-image"
+              [disabled]="passwordForm.invalid"
+            >
+              Guardar
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary shadow clic-on-image"
+              (click)="closeChangePasswordModal()"
+            >
+              Cerrar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

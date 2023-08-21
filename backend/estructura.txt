@@ -1,0 +1,39 @@
+Listado de rutas de carpetas para el volumen Windows
+El n·mero de serie del volumen es AC6A-8FA2
+C:.
+ª   estructura.txt
+ª   
++---src
+    ª   routes.js
+    ª   
+    +---config
+    ª       config.json
+    ª       
+    +---controllers
+    ª       productController.js
+    ª       purchaseController.js
+    ª       
+    +---database
+    ª   ª   sequelize.js
+    ª   ª   
+    ª   +---migrations
+    ª   ª       20230506020728-add_quantity_to_products.js
+    ª   ª       
+    ª   +---models
+    ª   ª       index.js
+    ª   ª       product.js
+    ª   ª       purchase.js
+    ª   ª       sales.js
+    ª   ª       
+    ª   +---seeders
+    +---services
+    ª       productService.js
+    ª       purchaseService.js
+    ª       
+    +---utils
+            externalData.js
+            loadProducts.js
+            logger.js
+            Precios Cenada.csv
+            responseUtils.js
+            

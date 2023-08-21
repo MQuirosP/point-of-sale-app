@@ -1,0 +1,85 @@
+Listado de rutas de carpetas para el volumen Windows
+El n·mero de serie del volumen es AC6A-8FA2
+C:.
+ª   app-routing.module.ts
+ª   app.component.css
+ª   app.component.html
+ª   app.component.spec.ts
+ª   app.component.ts
+ª   app.module.ts
+ª   db.js
+ª   frontend.txt
+ª   
++---components
+    +---footer
+    ª       footer.component.css
+    ª       footer.component.html
+    ª       footer.component.spec.ts
+    ª       footer.component.ts
+    ª       
+    +---header
+    ª       header.component.css
+    ª       header.component.html
+    ª       header.component.spec.ts
+    ª       header.component.ts
+    ª       
+    +---login
+    ª       login.component.css
+    ª       login.component.html
+    ª       login.component.spec.ts
+    ª       login.component.ts
+    ª       
+    +---main-board
+    ª       main-board.component.css
+    ª       main-board.component.html
+    ª       main-board.component.spec.ts
+    ª       main-board.component.ts
+    ª       
+    +---not-found
+    ª       not-found.component.css
+    ª       not-found.component.html
+    ª       not-found.component.spec.ts
+    ª       not-found.component.ts
+    ª       
+    +---options
+    ª       options.component.css
+    ª       options.component.html
+    ª       options.component.spec.ts
+    ª       options.component.ts
+    ª       
+    +---product-details
+    ª       product-details.component.css
+    ª       product-details.component.html
+    ª       product-details.component.spec.ts
+    ª       product-details.component.ts
+    ª       
+    +---product-list
+    ª       product-list.component.css
+    ª       product-list.component.html
+    ª       product-list.component.spec.ts
+    ª       product-list.component.ts
+    ª       
+    +---purchase-history
+    ª       purchase-history.component.css
+    ª       purchase-history.component.html
+    ª       purchase-history.component.spec.ts
+    ª       purchase-history.component.ts
+    ª       
+    +---sales-history
+    ª       sales-history.component.css
+    ª       sales-history.component.html
+    ª       sales-history.component.spec.ts
+    ª       sales-history.component.ts
+    ª       
+    +---shopping-cart
+    ª       shopping-cart.component.css
+    ª       shopping-cart.component.html
+    ª       shopping-cart.component.spec.ts
+    ª       shopping-cart.component.ts
+    ª       
+    +---user-profile
+            user-profile.component.css
+            user-profile.component.html
+            user-profile.component.spec.ts
+            user-profile.component.ts
+            

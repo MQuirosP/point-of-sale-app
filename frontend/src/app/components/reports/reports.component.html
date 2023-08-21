@@ -1,0 +1,295 @@
+<!-- Encabezado de componente Mis Reportes -->
+<header id="main-header" [@fadeAnimation] class="pt-2 pb-3 bg-info text-white main-board-style">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6" [@fadeAnimation]>
+        <h1><i class="fas fa-list-check"></i>&nbsp;Mis reportes</h1>
+      </div>
+      <div class="col-md-6 d-none d-md-block d-flex text-right mt-3">
+        <a
+          routerLink="/shopping-cart"
+          role="button"
+          type="submit"
+          class="btn btn-success border border-success shadow clic-on-image"
+          style="width: 140px"
+        >
+          <i class="fas fa-arrow-left"></i>
+          <span class="d-none d-md-inline">&nbsp;Mis ventas</span>
+        </a>
+        <a
+          routerLink="/home"
+          role="button"
+          type="submit"
+          class="btn btn-warning border border-warning shadow clic-on-image ml-2 mr-2"
+          style="width: 140px"
+        >
+          <i class="fas fa-home"></i>
+          <span class="d-none d-md-inline">&nbsp;Inicio</span>
+        </a>
+        <a
+          routerLink="/purchase-history"
+          role="button"
+          type="submit"
+          class="btn btn-success border border-success shadow clic-on-image"
+          style="width: 140px"
+        >
+          <span class="d-none d-md-inline">&nbsp;Mis compras&nbsp;</span>
+          <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Tarjetas para selección de Ventas/Compras -->
+<div class="container" [@fadeAnimation]>
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-4 mt-4">
+      <section id="proveedores">
+        <div class="container">
+          <div class="card shadow">
+            <div class="card-header modal-header text-center">
+              <h3 class="h4"><i class="fas fa-shop"></i>&nbsp;Ventas</h3>
+            </div>
+            <div class="card-body">
+              <fieldset class="row">
+                <legend class="text-center options-card-body-text">
+                  Reportes de ventas por fechas
+                </legend>
+                <div class="container d-flex text-center options-button-container">
+                  <a
+                    role="button"
+                    class="btn btn-primary border border-primary shadow clic-on-image"
+                    (click)="openSalesReportModal()"
+                  >
+                    Ver opciones
+                  </a>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="col-12 col-md-4 mt-4">
+      <section>
+        <div class="container">
+          <div class="card shadow">
+            <div class="card-header modal-header text-center">
+              <h3 class="h4"><i class="fas fa-bucket"></i> Compras</h3>
+            </div>
+            <div class="card-body">
+              <fieldset class="row">
+                <legend class="text-center options-card-body-text">
+                  Reportes de compras por fechas
+                </legend>
+                <div class="col-12 text-center options-button-container">
+                  <a
+                    role="button"
+                    class="btn btn-primary border border-primary shadow clic-on-image"
+                    (click)="openPurchasesReportModal()"
+                  >
+                    Ver opciones
+                  </a>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="col-12 col-md-4 mt-4">
+      <section>
+        <div class="container">
+          <div class="card shadow">
+            <div class="card-header modal-header text-center">
+              <h3 class="h4">
+                <i class="fas fa-list-numeric"></i> Existencias
+              </h3>
+            </div>
+            <div class="card-body">
+              <fieldset class="row">
+                <legend class="text-center options-card-body-text">
+                  Control de existencias y ajustes
+                </legend>
+                <div class="col-12 text-center options-button-container">
+                  <a routerLink="/not-found"
+                    role="button"
+                    class="btn btn-primary border border-primary clic-on-image"
+                  >
+                    Ver opciones
+                  </a>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+<div style="margin-bottom: 100px;"></div>
+
+<!-- Modal para reportes de ventas -->
+<div
+  id="salesReportModal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  #salesReportModal
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content modal-shadow">
+      <div class="modal-header border">
+        <h5 class="modal-title"><i class="fas fa-server"></i>&nbsp;Generar Reporte de Ventas</h5>
+        <button
+          type="button"
+          class="close clic-on-icon"
+          aria-label="Close"
+          (click)="closeSalesReportModal()"
+        >
+          <span aria-hidden="true"><i class="fas fa-close"></i></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row justify-content-between ml-4 mr-4">
+            <div class="form-group">
+              <label for="startDate">Fecha inicial:</label>
+              <input
+                type="date"
+                class="form-control input-group-text shadow"
+                id="salesStartDate"
+                name="startDate"
+                [(ngModel)]="startDate"
+                ngbDatepicker
+                #datepicker="ngbDatepicker"
+                style="width: 160px"
+                [max]="getCurrentDateString()"
+              />
+            </div>
+            <div class="form-group">
+              <label for="endDate">Fecha final:</label>
+              <input
+                type="date"
+                class="form-control input-group-text shadow"
+                id="salesEndDate"
+                name="endDate"
+                [(ngModel)]="endDate"
+                ngbDatepicker
+                #datepicker="ngbDatepicker"
+                style="width: 160px"
+                [max]="getCurrentDateString()"
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary border border-primary shadow clic-on-image"
+          (click)="generateGeneralSalesReport()"
+        >
+          General
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary border border-primary shadow clic-on-image"
+          (click)="generateDetailSalesReport()"
+        >
+          Detalle
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary border border-secondary shadow clic-on-image"
+          (click)="closeSalesReportModal()"
+        >
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para reportes de compras -->
+<div
+  id="purchasesReportModal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  #purchasesReportModal
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content modal-shadow">
+      <div class="modal-header border">
+        <h5 class="modal-title"><i class="fas fa-server"></i>&nbsp;Generar Reporte de Compras</h5>
+        <button
+          type="button"
+          class="close clic-on-icon"
+          aria-label="Close"
+          (click)="closePurchasesReportModal()"
+        >
+          <span aria-hidden="true"><i class="fas fa-close"></i></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row justify-content-between ml-4 mr-4">
+            <div class="form-group">
+              <label for="startDate">Fecha inicial:</label>
+              <input
+                type="date"
+                class="form-control input-group-text shadow"
+                id="purchasesStartDate"
+                name="startDate"
+                [(ngModel)]="startDate"
+                ngbDatepicker
+                #datepicker="ngbDatepicker"
+                style="width: 160px"
+                [max]="getCurrentDateString()"
+              />
+            </div>
+            <div class="form-group">
+              <label for="endDate">Fecha final:</label>
+              <input
+                type="date"
+                class="form-control input-group-text shadow"
+                id="purchasesEndDate"
+                name="endDate"
+                [(ngModel)]="endDate"
+                ngbDatepicker
+                #datepicker="ngbDatepicker"
+                style="width: 160px"
+                [max]="getCurrentDateString()"
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary border border-primary shadow clic-on-image"
+          (click)="generateGeneralPurchasesReport()"
+        >
+          General
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary border border-primary shadow clic-on-image"
+          (click)="generateDetailPurchasesReport()"
+        >
+          Detalle
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary border border-secondary shadow clic-on-image"
+          (click)="closePurchasesReportModal()"
+        >
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

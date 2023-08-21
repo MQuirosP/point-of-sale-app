@@ -1,0 +1,94 @@
+name,description,purchase_price,int_code,quantity,sale_price
+Aguacate criollo,Unidad,400,01001,0,520
+Aguacate Hass de México - Super Extra,Caja (10 kg),19000,01002,0,24700
+Aguacate Hass de México - Supremo,Caja (10 kg),20000,01003,0,26000
+Ajo de China (presentación 1x3),Caja (10 kg),14000,02004,0,18200
+Ajo de China (presentación 500 gramos),Caja (10 kg),14000,02005,0,18200
+Ajo de China (presentación trenza 1 kg),Caja (10 kg),20000,02006,0,26000
+Apio verde (mata),Mata,1100,02007,0,1430
+Ayote sazón,Kilo,400,02008,0,520
+Ayote sazón mantequilla,Kilo,600,02009,0,780
+Ayote tierno,Unidad,400,02010,0,520
+Banano maduro criollo,Unidad,35,01011,0,45
+Banano maduro rechazo de exportación,Caja,3000,01012,0,3900
+Banano verde rechazo de exportación,Caja,3000,01013,0,3900
+Brócoli,Kilo,1000,02014,0,1300
+Camote,Kilo,600,02015,0,780
+Carambola,Kilo,700,01016,0,910
+Cas,Kilo,800,03017,0,1040
+Cebolla seca amarilla burra,Kilo,650,02018,0,845
+Cebolla seca amarilla suelta,Kilo,650,02019,0,845
+Cebolla seca amarilla trenza,Kilo,650,02020,0,845
+Cebolla seca morada,Kilo,900,02021,0,1170
+Cebollino,Rollo,250,02022,0,325
+Chayote tierno criollo,Java,15000,02023,0,19500
+Chayote tierno quelite,Java,13000,02024,0,16900
+Chile dulce jumbo,Caja plástica,43000,02025,0,55900
+Chile dulce primera,Caja plástica,40000,02026,0,52000
+Chile dulce segunda,Caja plástica,37000,02027,0,48100
+Chile dulce tercera,Caja plástica,23000,02028,0,29900
+Ciruela importada,Kilo,2500,01029,0,3250
+Coco,Unidad,400,01030,0,520
+Coliflor,Unidad,700,02031,0,910
+Culantro castilla,Rollo de 10 rollitos,1000,02032,0,1300
+Elote,Unidad,150,02033,0,195
+Espinaca,Rollo,250,02034,0,325
+Fresa (1 Kg),Canasta (1 Kg),2000,01035,0,2600
+Fresa (400 g),Canasta (400 g),1000,01036,0,1300
+Granadilla primera,Unidad,160,01037,0,208
+Granadilla segunda,Unidad,130,01038,0,169
+Guanábana criolla,Kilo,1200,01039,0,1560
+Guanábana injertada,Kilo,1400,01040,0,1820
+Guayaba China/Taiwanesa,Kilo,800,01041,0,1040
+Jenjibre sazón,Kilo,1100,02042,0,1430
+Kiwi,Kilo,2500,01043,0,3250
+Lechuga Americana,Unidad,250,02044,0,325
+Limón mandarina,Unidad,150,01045,0,195
+Limón mesino,Unidad,200,01046,0,260
+Mandarina Clementina,Kilo,2200,01047,0,2860
+Manga grande Cavallini,Caja plástica (17.5 kg),5000,01048,0,6500
+Manga grande Tommy,Caja plástica (17.5 kg),6000,01049,0,7800
+Manga pequeña Mora,Caja plástica (17.5 kg),6000,01050,0,7800
+Manzana Gala,Caja (80-100 und),25000,01051,0,32500
+Manzana Gala.,Caja (150-198 und),20000,01052,0,26000
+Manzana Roja,Caja (80-100 und),26000,01053,0,33800
+Manzana Verde,Caja (80-100 und),26000,01054,0,33800
+Maracuyá,Kilo,1100,01055,0,1430
+Melocotón,Kilo,2500,01056,0,3250
+Melón Cantaloupe,Kilo,600,01057,0,780
+Mora fresca,Kilo,1800,01058,0,2340
+Naranja dulce,Unidad,70,01059,0,91
+Naranja Washington importada,Kilo,1550,01060,0,2015
+Naranjilla,Kilo,1500,01061,0,1950
+Ñampí,Kilo,1600,02062,0,2080
+Papa amarilla primera,Malla (45 kg),55000,02063,0,71500
+Papa blanca primera,Malla (45 kg),50000,02064,0,65000
+Papa roja,Malla (45 kg),45000,02065,0,58500
+Papa semilla,Malla (45 kg),35000,02066,0,45500
+Papa semillón,Malla (45 kg),35000,02067,0,45500
+Papaya híbrida,Kilo,350,01068,0,455
+Pejibaye,Kilo,1200,02069,0,1560
+Pepino,Kilo,250,02070,0,325
+Pera de Argentina,Caja (80-100 und),26000,01071,0,33800
+Piña - grande,Unidad,800,01072,0,1040
+Piña - mediana,Unidad,600,01073,0,780
+Piña - pequeña,Unidad,500,01074,0,650
+Pipa pelada,Unidad,200,01075,0,260
+Plátano maduro,Unidad,200,01076,0,260
+Plátano verde,Unidad,200,01077,0,260
+Remolacha,Unidad,250,02078,0,325
+Repollo morado,Kilo,600,02079,0,780
+Repollo verde,Kilo,300,02080,0,390
+Sandía de campo - grande,Kilo,400,01081,0,520
+Sandía de campo - mediana,Kilo,300,01082,0,390
+Suquini,Unidad,400,02083,0,520
+Tamarindo,Kilo,2600,01084,0,3380
+Tiquisque,Kilo,1800,02085,0,2340
+Tomate primera,Caja plástica (18 kg),11000,02086,0,14300
+Tomate segunda,Caja plástica (18 kg),9000,02087,0,11700
+Tomate tercera,Caja plástica (18 kg),7000,02088,0,9100
+Uva globo de Chile,Caja (8.2 kg),18000,01089,0,23400
+Uva verde,Caja (8.2 kg),28000,01090,0,36400
+Vainica,Kilo,800,02091,0,1040
+Yuca parafinada,Kilo,550,02092,0,715
+Zanahoria primera,Malla (45 kg),8000,02093,0,10400

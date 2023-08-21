@@ -1,0 +1,603 @@
+<!-- Encabezado de componente Mis ventas -->
+<header id="main-header" class="pb-2 bg-info text-white main-board-style">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-8" [@fadeAnimation]>
+        <h1><i class="fas fa-shop"></i> Mis ventas</h1>
+      </div>
+      <div class="col-md-4 d-none d-md-block" style="visibility: hidden">
+        <label for="search">Buscar producto:</label>
+        <input
+          type="search"
+          id="search"
+          name="search"
+          class="form-control"
+          placeholder="Ingresa tu búsqueda aquí..."
+          autocomplete="off"
+          readonly
+        />
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Opciones de Mis ventas -->
+<div class="container justify-content-center" [@fadeAnimation]>
+  <div class="row justify-content-center">
+    <div class="col-md-6 d-flex justify-content-center">
+      <div
+        class="card shadow card-height border col-md-8 mt-4 customShadow bg-custom clic-on-image"
+      >
+        <div class="d-flex">
+          <a class="text-decoration-none" (click)="openSaleModal()">
+            <div class="card-body">
+              <h5 class="card-title">Crear venta</h5>
+              <img
+                src="../../../assets/shoppingcart.gif"
+                alt=""
+                class="svg"
+                style="transform: scaleX(-1)"
+              />
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 d-flex justify-content-center">
+      <div
+        class="card shadow card-height border col-md-8 mt-4 customShadow bg-custom clic-on-image"
+      >
+        <div class="d-flex">
+          <a class="text-decoration-none" (click)="openSaleHistoryModal()">
+            <div class="card-body">
+              <h5 class="card-title">Mi historial</h5>
+              <img src="../../../assets/list.gif" alt="" class="svg" />
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 d-flex justify-content-center">
+      <div
+        class="card shadow card-height col-md-8 border customShadow mt-4 bg-custom clic-on-image"
+      >
+        <div class="d-flex">
+          <a routerLink="/product-list" class="text-decoration-none">
+            <div class="card-body">
+              <h5 class="card-title">Mis productos</h5>
+              <img src="../../../assets/book.gif" alt="" class="svg" />
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 d-flex justify-content-center">
+      <div
+        class="card shadow card-height col-md-8 border customShadow mt-4 bg-custom clic-on-image"
+      >
+        <div class="d-flex">
+          <a routerLink="/reports" class="text-decoration-none">
+            <div class="card-body">
+              <h5 class="card-title">Mis reportes</h5>
+              <img src="../../../assets/reports.gif" alt="" class="svg" />
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="margin-bottom: 100px"></div>
+
+<!-- Modal para crear ventas -->
+<form [formGroup]="saleForm">
+  <div
+    class="modal fade"
+    id="newSaleModal"
+    #newSaleModal
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg modal-shadow" role="document">
+      <div class="modal-content">
+        <div class="modal-header border">
+          <h5 class="modal-title">
+            <i class="fas fa-edit"></i>&nbsp;Registro de ventas
+          </h5>
+          <div>
+            <button
+              type="button"
+              class="close clic-on-icon"
+              aria-label="Close"
+              (click)="closeSaleModal()"
+            >
+              <span aria-hidden="true">
+                <i class="fas fa-close"></i>
+              </span>
+            </button>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="customer_name">Cliente:</label>
+                <input
+                  type="search"
+                  role="combobox"
+                  id="customer_name"
+                  formControlName="customer_name"
+                  class="form-control datalist-no-arrow"
+                  autocomplete="off"
+                  [ngClass]="{
+                    'is-valid':
+                      saleForm.get('customer_name').touched &&
+                      saleForm.get('customer_name').valid,
+                    'is-invalid':
+                      saleForm.get('customer_name').touched &&
+                      saleForm.get('customer_name').invalid,
+                  }"
+                  placeholder="Seleccione cliente..."
+                  (input)="searchCustomers($event)"
+                  list="customerOptions"
+                />
+                <datalist id="customerOptions" role="listbox">
+                  <option
+                    *ngFor="let customer of customerSuggestionList"
+                    [value]="formatOption(customer)"
+                  >
+                    {{ formatOption(customer) }}
+                  </option>
+                </datalist>
+              </div>
+              <div class="form-group form-row">
+                <div class="col">
+                  <label for="paymentMethod">Método de pago:</label>
+                  <select
+                    id="paymentMethod"
+                    formControlName="paymentMethod"
+                    class="form-control"
+                    autocomplete="off"
+                    style="padding: 0 10px 0 10px"
+                  >
+                    <option value="contado">Contado</option>
+                    <option value="crédito">Crédito</option>
+                    <option value="sinpe">Sinpe</option>
+                    <option value="tarjeta">Tarjeta</option>
+                    <option value="transferencia">Transferencia</option>
+                  </select>
+                </div>
+
+                <div class="col">
+                  <label for="date">Fecha:</label>
+                  <input
+                    type="text"
+                    id="date"
+                    formControlName="date"
+                    class="form-control"
+                    autocomplete="off"
+                    readonly
+                  />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="product_name">Producto:</label>
+                <input
+                  type="search"
+                  id="product_name"
+                  formControlName="product_name"
+                  class="form-control datalist-no-arrow"
+                  (input)="searchProduct()"
+                  (focus)="handleBarcodeInput($event)"
+                  autocomplete="off"
+                  placeholder="Seleccione producto..."
+                  [ngClass]="{
+                    'is-valid':
+                      saleForm.get('product_name').touched &&
+                      saleForm.get('product_name').valid,
+                    'is-invalid':
+                      saleForm.get('product_name').touched &&
+                      saleForm.get('product_name').invalid
+                  }"
+                  #nameInput
+                  (keydown)="handleKeyDown($event)"
+                  capture="environment"
+                  accept="image/*"
+                />
+                <div class="d-none">
+                  <button (click)="toggleCamera()">Abrir Cámara</button>
+                  <!-- Mostrar el video de la cámara -->
+                  <video #video autoplay [hidden]="!isScanning" [style.width.px]="300"></video>
+                </div>
+                <div
+                  class="suggestion-list position-fixed"
+                  [style.width.px]="nameInput.offsetWidth"
+                >
+                  <ul
+                    id="suggestionOptions"
+                    class="list-unstyled"
+                    style="margin: 0; padding: 0 1px"
+                  >
+                    <li
+                      *ngFor="
+                        let suggestion of productSuggestionList;
+                        let i = index
+                      "
+                    >
+                      <a
+                        href="#"
+                        class="dropdown-item"
+                        (click)="handleSuggestionClick($event, suggestion)"
+                        [class.selected]="selectedIndex === i"
+                        tabindex="0"
+                      >
+                        {{ suggestion.name }}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="form-group form-row">
+                <div class="col">
+                  <label for="product_quantity">Cantidad:</label>
+                  <input
+                    type="number"
+                    id="product_quantity"
+                    formControlName="product_quantity"
+                    class="form-control text-right quantity-input"
+                    autocomplete="off"
+                    step="0.01"
+                    [ngClass]="{
+                      'is-valid': isValidQuantity(),
+                      'is-invalid': !isValidQuantity()
+                    }"
+                  />
+                </div>
+                <div class="col">
+                  <label for="product_price">Precio:</label>
+                  <label for="product_taxes" class="form-check-label ml-5">
+                    <input
+                      type="checkbox"
+                      id="product_taxes"
+                      class="form-check-input shadow"
+                      formControlName="product_taxes"
+                      [checked]="selectedProductTaxes"
+                      readonly
+                    />
+                    {{ selectedProductTaxes ? "Gravado" : "Exento" }}
+                  </label>
+                  <input
+                    type="number"
+                    id="price"
+                    formControlName="product_price"
+                    class="form-control text-right"
+                    autocomplete="off"
+                    readonly
+                  />
+                </div>
+              </div>
+              <div class="d-flex justify-content-center">
+                <button
+                  type="button"
+                  class="btn btn-primary shadow clic-on-image mb-3"
+                  (click)="addProduct()"
+                >
+                  Agregar
+                </button>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div
+                class="table-container"
+                style="
+                  max-height: 400px;
+                  overflow-y: visible;
+                  overflow-x: hidden;
+                  margin-top: -17px;
+                "
+              >
+                <table class="table" style="table-layout: fixed">
+                  <thead>
+                    <tr>
+                      <th
+                        class="text-left product-detail-list-title"
+                        style="width: 120px"
+                      >
+                        Producto
+                      </th>
+                      <th
+                        class="text-right product-detail-list-title"
+                        style="width: 50px"
+                      >
+                        Cant.
+                      </th>
+                      <th
+                        class="text-right product-detail-list-title"
+                        style="width: 60px"
+                      >
+                        Precio
+                      </th>
+                      <th
+                        class="text-right product-detail-list-title"
+                        style="width: 60px"
+                      >
+                        Total
+                      </th>
+                      <th style="width: 50px"></th>
+                    </tr>
+                  </thead>
+                  <tbody [class.d-none]="productList.length === 0">
+                    <tr
+                      *ngFor="let product of productList; let even = even"
+                      [ngClass]="{
+                        'table-row-even': even,
+                        'table-row-odd': !even,
+                        'animated-row': product.isNew || product.isRemoved
+                      }"
+                      [@slideInOut]="product.isNew ? 'in' : 'out'"
+                      [@slideOut]="product.isRemoved ? 'out' : 'in'"
+                      (@slideInOut.done)="product.isNew = true"
+                      (@slideInOut.done)="product.isRemoved = false"
+                    >
+                      <td
+                        class="text-left product-detail-table-content"
+                        style="width: 120px"
+                      >
+                        {{ product.name }}
+                      </td>
+                      <td
+                        class="text-right product-detail-table-content"
+                        style="width: 50px"
+                      >
+                        <input
+                          class="custom-input text-right"
+                          type="number"
+                          [value]="product.quantity"
+                          (input)="updateProduct(product, $event)"
+                          min="1"
+                          step="1"
+                        />
+                      </td>
+                      <td
+                        class="text-right product-detail-table-content"
+                        style="width: 70px"
+                      >
+                        {{ product.price | currency : "CRC" : "₡" }}
+                      </td>
+                      <td
+                        class="text-right product-detail-table-content"
+                        style="width: 70px"
+                      >
+                        {{
+                          product.sub_total + product.taxes_amount
+                            | currency : "CRC" : "₡"
+                        }}
+                      </td>
+                      <td style="width: 50px; padding-top: 2px">
+                        <button
+                          type="button"
+                          class="clic-on-image"
+                          (click)="removeProduct(product)"
+                        >
+                          <i
+                            class="fa-solid fa-trash"
+                            style="
+                              color: #fa0000;
+                              cursor: pointer;
+                              font-size: 10px;
+                            "
+                          ></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="mt-2">
+            <div class="row total-box">
+              <div class="col flex-column align-items-center">
+                <h6 class="text-center total-box-titles">Sub Total</h6>
+                <p class="text-center total-invoice">
+                  {{ subTotalSaleAmount | currency : "CRC" : "₡" }}
+                </p>
+              </div>
+              <div class="col flex-column align-items-center">
+                <h6 class="text-center total-box-titles">I.V.A.</h6>
+                <p class="text-center total-invoice">
+                  {{ totalTaxesAmount | currency : "CRC" : "₡" }}
+                </p>
+              </div>
+              <div class="col flex-column align-items-center">
+                <h6
+                  class="text-center total-box-titles"
+                  style="padding-right: 0 !important"
+                >
+                  Total
+                </h6>
+                <p class="text-center total-invoice">
+                  {{ totalSaleAmount | currency : "CRC" : "₡" : "1.2-2" }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-primary shadow clic-on-image"
+            (click)="createSale($event)"
+          >
+            Guardar
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary shadow clic-on-image"
+            (click)="closeSaleModal()"
+          >
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<!-- Modal para consultar las ventas -->
+<div
+  class="modal fade"
+  id="saleHistoryModal"
+  #saleHistoryModal
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="saleHistoryModal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content modal-shadow">
+      <div class="modal-header border">
+        <h5 class="modal-title">
+          <i class="fas fa-history"></i>&nbsp;Historial de ventas
+        </h5>
+        <button
+          type="button"
+          class="close clic-on-icon"
+          aria-label="Close"
+          (click)="closeSaleHistoryModal()"
+        >
+          <span aria-hidden="true"><i class="fas fa-close"></i></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row d-flex justify-content-center">
+            <div class="form-group sticky-top" style="max-width: 170px">
+              <label for="sale-date">Seleccione la fecha:</label>
+              <input
+                type="date"
+                name="sale-date"
+                class="form-control input-group-text shadow mb-3"
+                [(ngModel)]="selectedDate"
+                (ngModelChange)="filterSalesByDate()"
+                ngbDatepicker
+                #datepicker="ngbDatepicker"
+                [max]="getCurrentDateString()"
+              />
+            </div>
+          </div>
+        </form>
+
+        <div class="container">
+          <!-- Aquí se muestra la lista de ventas -->
+          <div *ngFor="let sale of sales" class="sale-card">
+            <span
+              class="fa-toggle-left"
+              (click)="toggleSaleDetails(sale)"
+              style="cursor: pointer"
+            >
+              {{ sale.showDetails ? " &nbsp;-" : "+" }}
+            </span>
+            <div class="sale-summary" (click)="toggleSaleDetails(sale)">
+              <h6
+                class="sale-id"
+                [ngClass]="{ 'text-danger': sale.status === 'anulada' }"
+              >
+                Fact. {{ sale.doc_number }}
+              </h6>
+              <p class="doc-number">{{ sale.createdAt }}</p>
+            </div>
+            <div *ngIf="sale.showDetails" class="sale-details">
+              <div class="row">
+                <div class="col">
+                  <p>Estado: {{ sale.status }}</p>
+                </div>
+                <div class="col">
+                  <p class="text-right">
+                    Sub Total:
+                    {{ sale.sub_total | currency : "CRC" : "₡" : "1.2-2" }}
+                  </p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <p>Cliente: {{ sale.customer_name }}</p>
+                </div>
+                <div class="col">
+                  <p class="text-right">
+                    IVA:
+                    {{ sale.taxes_amount | currency : "CRC" : "₡" : "1.2-2" }}
+                  </p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <p>Fecha de creación: {{ sale.createdAt | date }}</p>
+                </div>
+                <div class="col">
+                  <p class="text-right">
+                    <b
+                      >Total:
+                      {{ sale.total | currency : "CRC" : "₡" : "1.2-2" }}</b
+                    >
+                  </p>
+                </div>
+              </div>
+
+              <div class="mb-2">
+                <button
+                  *ngIf="
+                    sale.status === 'aceptado' && isCurrentDate(sale.createdAt)
+                  "
+                  class="btn btn-danger clic-on-image mr-2"
+                  (click)="cancelSale(sale); toggleSaleDetails(sale)"
+                >
+                  Anular
+                </button>
+                <button
+                  *ngIf="sale.status === 'aceptado'"
+                  class="btn btn-primary clic-on-image"
+                  (click)="generateTicket(sale.doc_number)"
+                >
+                  Reimprimir
+                </button>
+              </div>
+              <table class="table">
+                <thead>
+                  <th class="text-left">Cód.</th>
+                  <th class="text-left">Producto</th>
+                  <th class="text-right">Cant.</th>
+                  <th class="text-right">Total</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of sale.saleItems">
+                    <td class="text-left">{{ item.int_code }}</td>
+                    <td class="text-left">{{ item.name }}</td>
+                    <td class="text-right">
+                      {{ item.quantity | number : "1.2-2" }}
+                    </td>
+                    <td class="text-right">
+                      {{ item.total | currency : "CRC" : "₡" : "1.2-2" }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary border border-secondary clic-on-image"
+            (click)="closeSaleHistoryModal()"
+          >
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

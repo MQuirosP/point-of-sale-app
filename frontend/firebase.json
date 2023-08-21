@@ -1,0 +1,20 @@
+{
+  "hosting": {
+    "public": "dist/verduleria-app",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      },
+      {
+        "source": "/api/**",
+        "function": "proxy"
+      }
+    ]
+  }
+}

@@ -1,0 +1,296 @@
+int_code,name,description,quantity,taxes,purchase_price,sale_price,taxPercentage,margin
+1001,Aguacate criollo,Caja (10 kg),0,true,400,571.4285714,1,30
+1002,Aguacate Hass de México - Super Extra,Caja (10 kg),0,true,19000,27142.86,1,30
+1003,Aguacate Hass de México - Supremo,Caja (10 kg),0,true,20000,28571.43,1,30
+2004,Ajo de China (presentación 1x3),Caja (10 kg),0,true,14000,20000,1,30
+2005,Ajo de China (presentación 500 gramos),Caja (10 kg),0,true,14000,20000,1,30
+2006,Ajo de China (presentación trenza 1 kg),Mata,0,true,20000,28571.43,1,30
+2007,Apio verde (mata),Kilo,0,true,1100,1571.43,1,30
+2008,Ayote sazón,Kilo,0,true,400,571.4285714,1,30
+2009,Ayote sazón mantequilla,Unidad,0,true,600,857.1428571,1,30
+2010,Ayote tierno,Unidad,0,true,400,571.4285714,1,30
+1011,Banano maduro criollo,Caja,0,true,35,50,1,30
+1012,Banano maduro rechazo de exportación,Caja,0,true,3000,4285.71,1,30
+1013,Banano verde rechazo de exportación,Kilo,0,true,3000,4285.71,1,30
+2014,Brócoli,Kilo,0,true,1000,1428.57,1,30
+2015,Camote,Kilo,0,true,600,857.1428571,1,30
+1016,Carambola,Kilo,0,true,700,1000,1,30
+3017,Cas,Kilo,0,true,800,1142.86,1,30
+2018,Cebolla seca amarilla burra,Kilo,0,true,650,928.5714286,1,30
+2019,Cebolla seca amarilla suelta,Kilo,0,true,650,928.5714286,1,30
+2020,Cebolla seca amarilla trenza,Kilo,0,true,650,928.5714286,1,30
+2021,Cebolla seca morada,Rollo,0,true,900,1285.71,1,30
+2022,Cebollino,Java,0,true,250,357.1428571,1,30
+2023,Chayote tierno criollo,Java,0,true,15000,21428.57,1,30
+2024,Chayote tierno quelite,Caja plástica,0,true,13000,18571.43,1,30
+2025,Chile dulce jumbo,Caja plástica,0,true,43000,61428.57,1,30
+2026,Chile dulce primera,Caja plástica,0,true,40000,57142.86,1,30
+2027,Chile dulce segunda,Caja plástica,0,true,37000,52857.14,1,30
+2028,Chile dulce tercera,Kilo,0,true,23000,32857.14,1,30
+1029,Ciruela importada,Unidad,0,true,2500,3571.43,1,30
+1030,Coco,Unidad,0,true,400,571.4285714,1,30
+2031,Coliflor,Rollo de 10 rollitos,0,true,700,1000,1,30
+2032,Culantro castilla,Unidad,0,true,1000,1428.57,1,30
+2033,Elote,Rollo,0,true,150,214.2857143,1,30
+2034,Espinaca,Canasta (1 Kg),0,true,250,357.1428571,1,30
+1035,Fresa (1 Kg),Canasta (400 g),0,true,2000,2857.14,1,30
+1036,Fresa (400 g),Unidad,0,true,1000,1428.57,1,30
+1037,Granadilla primera,Unidad,0,true,160,228.5714286,1,30
+1038,Granadilla segunda,Kilo,0,true,130,185.7142857,1,30
+1039,Guanábana criolla,Kilo,0,true,1200,1714.29,1,30
+1040,Guanábana injertada,Kilo,0,true,1400,2000,1,30
+1041,Guayaba China/Taiwanesa,Kilo,0,true,800,1142.86,1,30
+2042,Jenjibre sazón,Kilo,0,true,1100,1571.43,1,30
+1043,Kiwi,Unidad,0,true,2500,3571.43,1,30
+2044,Lechuga Americana,Unidad,0,true,250,357.1428571,1,30
+1045,Limón mandarina,Unidad,0,true,150,214.2857143,1,30
+1046,Limón mesino,Kilo,0,true,200,285.7142857,1,30
+1047,Mandarina Clementina,Caja plástica (17.5 kg),0,true,2200,3142.86,1,30
+1048,Manga grande Cavallini,Caja plástica (17.5 kg),0,true,5000,7142.86,1,30
+1049,Manga grande Tommy,Caja plástica (17.5 kg),0,true,6000,8571.43,1,30
+1050,Manga pequeña Mora,Caja (80-100 und),0,true,6000,8571.43,1,30
+1051,Manzana Gala,Caja (150-198 und),0,true,25000,35714.29,1,30
+1052,Manzana Gala.,Caja (80-100 und),0,true,20000,28571.43,1,30
+1053,Manzana Roja,Caja (80-100 und),0,true,26000,37142.86,1,30
+1054,Manzana Verde,Kilo,0,true,26000,37142.86,1,30
+1055,Maracuyá,Kilo,0,true,1100,1571.43,1,30
+1056,Melocotón,Kilo,0,true,2500,3571.43,1,30
+1057,Melón Cantaloupe,Kilo,0,true,600,857.1428571,1,30
+1058,Mora fresca,Unidad,0,true,1800,2571.43,1,30
+1059,Naranja dulce,Kilo,0,true,70,100,1,30
+1060,Naranja Washington importada,Kilo,0,true,1550,2214.29,1,30
+1061,Naranjilla,Kilo,0,true,1500,2142.86,1,30
+2062,Ñampí,Malla (45 kg),0,true,1600,2285.71,1,30
+2063,Papa amarilla primera,Malla (45 kg),0,true,55000,78571.43,1,30
+2064,Papa blanca primera,Malla (45 kg),0,true,50000,71428.57,1,30
+2065,Papa roja,Malla (45 kg),0,true,45000,64285.71,1,30
+2066,Papa semilla,Malla (45 kg),0,true,35000,50000,1,30
+2067,Papa semillón,Kilo,0,true,35000,50000,1,30
+1068,Papaya híbrida,Kilo,0,true,350,500,1,30
+2069,Pejibaye,Kilo,0,true,1200,1714.29,1,30
+2070,Pepino,Caja (80-100 und),0,true,250,357.1428571,1,30
+1071,Pera de Argentina,Unidad,0,true,26000,37142.86,1,30
+1072,Piña - grande,Unidad,0,true,800,1142.86,1,30
+1073,Piña - mediana,Unidad,0,true,600,857.1428571,1,30
+1074,Piña - pequeña,Unidad,0,true,500,714.2857143,1,30
+1075,Pipa pelada,Unidad,0,true,200,285.7142857,1,30
+1076,Plátano maduro,Unidad,0,true,200,285.7142857,1,30
+1077,Plátano verde,Unidad,0,true,200,285.7142857,1,30
+2078,Remolacha,Kilo,0,true,250,357.1428571,1,30
+2079,Repollo morado,Kilo,0,true,600,857.1428571,1,30
+2080,Repollo verde,Kilo,0,true,300,428.5714286,1,30
+1081,Sandía de campo - grande,Kilo,0,true,400,571.4285714,1,30
+1082,Sandía de campo - mediana,Unidad,0,true,300,428.5714286,1,30
+2083,Suquini,Kilo,0,true,400,571.4285714,1,30
+1084,Tamarindo,Kilo,0,true,2600,3714.29,1,30
+2085,Tiquisque,Caja plástica (18 kg),0,true,1800,2571.43,1,30
+2086,Tomate primera,Caja plástica (18 kg),0,true,11000,15714.29,1,30
+2087,Tomate segunda,Caja plástica (18 kg),0,true,9500,13571.43,1,30
+2088,Tomate tercera,Caja (8.2 kg),0,true,7000,10000,1,30
+1089,Uva globo de Chile,Caja (8.2 kg),0,true,18000,25714.29,1,30
+1090,Uva verde,Kilo,0,true,28000,40000,1,30
+2091,Vainica,Kilo,0,true,800,1142.86,1,30
+2092,Yuca parafinada,Malla (45 kg),0,true,550,785.7142857,1,30
+2093,Zanahoria primera,Unidad,0,true,8000,11428.57,1,30
+7622210864536,Tang Manzana 20g,Unidad,0,true,150.44,200,13,15.0014
+7622210864772,Tang Mix,Unidad,0,true,150.44,200,13,15.0014
+7622210863690,Tang Ponche Frutas,Unidad,0,true,150.44,200,13,15.0014
+7622210863652,Tang Té Limón,Unidad,0,true,150.44,200,13,15.0014
+5001,Paleta Corazón Dulce Amor 24g,Unidad,0,true,53.32,75,13,19.66453333
+5002,Popi Big Bom Pintalabios XXL Willy,Unidad,0,true,35.39,50,13,20.0186
+5003,Chicle Canicas Niasa,Unidad,0,true,7.47,15,13,43.726
+7622210427106,Halls Extra Mentol barra,Unidad,0,true,212.39,350,13,31.42837143
+7622210427045,Halls de Cereza Barra,Unidad,0,true,212.39,350,13,31.42837143
+7622201776572,Chicle Trident yerba buena 5u,Unidad,0,true,221.24,350,13,28.57108571
+7506105606060,Chicle Trident yerba buena 18u,Unidad,0,true,570.8,785,13,17.83388535
+7622210451835,Chicle Clorets grande,Unidad,0,true,199.11,325,13,30.77098462
+75019907,Chicle clorets pequeño,Unidad,0,true,41.29,55,13,15.16781818
+86581110864,Galleta Yipy Pozuelo,Unidad,0,true,169.61,225,13,14.81808889
+7441163400680,Galleta Recreo Pozuelo,Unidad,0,true,130.7,200,13,26.1545
+8906078264356,Galleta cremita yumbo fresa,Unidad,0,true,89.23,130,13,22.43853846
+86581016289,Galleta María Pozuelo,Unidad,0,true,121.28,180,13,23.86311111
+7702993042267,Gomitas Trululu sandías ácidas 90g,Unidad,0,true,371.68,530,13,20.75501887
+756972000028,Palillos para dientes Premier,Unidad,0,true,544.25,780,13,21.15352564
+6001,Candelas blancas Godiz,Unidad,0,true,147.78,205,13,18.54078049
+7452100250077,Fósforos Quetzal,Unidad,0,true,30.2,50,13,31.748
+7702007067392,Chocobolas,Unidad,0,true,20.19,30,13,23.951
+748757005892,Gomita Cerezas Diana,Unidad,0,true,110.62,155,13,19.35445161
+756956004752,Botoneta pequeña Chocolate,Unidad,0,true,51.62,75,13,22.22586667
+7441167600260,Desodorante Roll-on Country men,Unidad,0,true,172.57,250,13,21.99836
+7501027250612,Desodorante Obao Roll-on Mujer piel delicada,Unidad,0,true,1769.91,2460,13,18.6992561
+7501027286024,Desodorante Obao roll on hombre,Unidad,0,true,1769.91,2460,13,18.6992561
+7501027278487,Desodorante Obao Roll on Mujer frescura suave,Unidad,0,true,1769.91,2460,13,18.6992561
+7506295326458,Shampoo Pantene 2en1 rizos definidos,Unidad,0,true,85.55,140,13,30.94892857
+7590002008904,Shampoo HS 2en1 suave manejable 10ml,Unidad,0,true,85.55,140,13,30.94892857
+7506195120033,Shampoo HS Manzana fresh 10ml,Unidad,0,true,79.46,110,13,18.37290909
+7501056336950,Shampoo Sedal 2en1 ceramidas 10ml,Unidad,0,true,101.03,150,13,23.89073333
+7509546650098,Shampoo Palmolive Ext. 10ml,Unidad,0,true,74.67,115,13,26.6286087
+70330617285,Encendedor Bic mini,Unidad,0,true,453.1,625,13,18.07952
+7443002260066,Achiote Achiotin Casero,Unidad,0,true,66.27,100,13,25.1149
+721282403708,Cheetos Poffs 12g,Unidad,0,true,73.75,100,13,16.6625
+750894612741,Ranchitas Chile 25g,Unidad,0,true,110.62,150,13,16.66626667
+750894609741,Papas Zibas Mostaza miel 23g,Unidad,0,true,184.37,260,13,19.86996154
+7441001009501,Picaritas Jacks 27g,Unidad,0,true,147.5,200,13,16.6625
+7702037876186,Cepillo limpiaya,Unidad,0,true,477.9,745,13,27.51315436
+7702037875875,Esponjas flash-doble uso,Unidad,0,true,571.63,1354,13,52.29380355
+7613032343019,Consome Costilla maggi 10g,Unidad,0,true,91.08,135,13,23.76266667
+7613032343101,Consome Res maggi 10g,Unidad,0,true,91.08,135,13,23.76266667
+7613032343231,Consome Camaron maggi 10g,Unidad,0,true,91.08,135,13,23.76266667
+88169407625,Consome pollo maggi 10g,Unidad,0,true,91.08,135,13,23.76266667
+7702037876162,Palita plastica Limpiaya,Unidad,0,true,962.55,1345,13,19.13148699
+7702037875646,Escoba Florencia Limpiaya,Unidad,0,true,1425.6,1995,1,27.82676692
+7702037874991,Palopiso Limpiaya,Unidad,0,true,1624.5,2545,13,27.87092338
+3014260287047,Prestobarba Gillette 2,Unidad,0,true,145.28,200,13,17.9168
+7445072000474,Big Cola negra 1L,Unidad,0,true,501.47,700,13,19.04841429
+7441057501899,Arroz Santa Isabel 96% 1800g,Unidad,0,true,1080,1200,1,9.1
+7441057500687,Arroz Mr. Máximo Selecto 95% 1k,Unidad,0,true,810,900,1,9.1
+7441057500779,Arroz Mr. Máximo 95% Selecto 450g,Unidad,0,true,403.17,450,1,9.510733333
+747627150014,Mayonesa con limón Lizano 380g,Unidad,0,true,1965.35,2340,1,15.1707906
+735051007103,Salsa de Tomate Banquete 385g,Unidad,0,true,1089.11,1315,1,16.34972624
+735051007127,Salsa de Tomate 100g,Unidad,0,true,346.53,450,1,22.22326667
+747627150038,Mayonesa con Limón Lizano 100g,Unidad,0,true,589.11,670,1,11.19386567
+7441057501509,Azúcar Mr. Máximo 1k,Unidad,0,true,752,840,1,9.580952381
+7441057501660,Azúcar Mr. Máximo 2k,Unidad,0,true,1481,1650,1,9.344848485
+7441057501318,Lengua Mr. Máximo 250g,Unidad,0,true,613.35,750,1,17.4022
+7441057501295,Spaguetti N5 Mr. Máximo 250g,Unidad,0,true,613.5,730,1,15.11849315
+7441057501332,Caracolitos Mr. Máximo 250g,Unidad,0,true,613.5,750,1,17.382
+7441057501578,Hongos rebanados Valle Real 184g,Unidad,0,true,575.98,795,13,18.13114465
+7441057501561,Maíz Dulce 184g Valle Real,Unidad,0,true,501.47,685,13,17.27575182
+7441057501530,Atún en trozos con vegetales Mr. Máximo 160g,Paquete,0,true,882.5,1060,1,15.91273585
+7441163407054,Galleta soda Pozuelo 21 paqutes,Unidad,0,true,1230.69,1495,1,16.85639465
+86581011079,Galleta soda Pozuelo 22g,Unidad,0,true,58.6,75,1,21.08533333
+86581017828,Galleta canastas guayaba Pozuelo 21g,Paquete,0,true,149.7,205,13,17.48243902
+86581007829,Galleta canasta guayaba 12 u,Unidad,0,true,1796.46,2436,13,16.66667488
+86581110888,Galleta chiky Pozuelo 40g,Paquete,0,true,142.65,195,13,17.33615385
+7441163407450,Galleta Chiky Pozuelo 10 u,Unidad,0,true,1426.55,1935,13,16.69242894
+86581017316,Galleta mantequilla Pozuelo 26g,Paquete,0,true,147.23,180,1,17.38761111
+7441163405746,Galleta mantequilla Pozuelo 10 u,Unidad,0,true,1472.28,1785,1,16.69452101
+86581012335,Galleta bokitas Pozuelo 27g,Paquete,0,true,149.51,185,1,18.37562162
+86581002336,Galleta bokitas Pozuelo 12 u,Unidad,0,true,1794.06,2175,1,16.68962759
+7441001000294,Cereal poffis jacks 170g,Unidad,0,true,812.39,1115,13,17.66809865
+7441001000379,Cereal roditas jacks 170g,Unidad,0,true,812.39,1115,13,17.66809865
+7441001000300,Cereal naranitas jacks 170g,Unidad,0,true,812.39,1115,13,17.66809865
+7441001002014,Cereal Cris crispis jacks 170g,Unidad,0,true,806.19,1100,13,17.1823
+7441000703943,Quesitos Tosty 30g,Unidad,0,true,214.01,300,13,19.38956667
+7441000703707,Tronaditas Tosty 35g,Unidad,0,true,214.01,300,13,19.38956667
+7441000703950,Bolitas de Queso tosty 32g,Unidad,0,true,215.89,300,13,18.68143333
+735051016877,Colado Heinz,Unidad,0,true,285.1,390,13,17.39410256
+7702007067040,Choys many bang 50g,Unidad,0,true,323.92,450,13,18.66008889
+74410330,Sal Andrews Clasica original 5g,Unidad,0,true,141.1,175,2,17.75885714
+7451079003370,Panadol ultra,Unidad,0,true,217.9,275,2,19.17890909
+7401018110065,Acetominofén,Unidad,0,true,15.53,25,2,36.6376
+11418387003,Alka-Seltzer,Unidad,0,true,157.93,200,2,19.4557
+11418217102,Tabcin adultos,Unidad,0,true,165.04,205,2,17.88253659
+7441057265807,Papel higiénico Nevax extramás,Paquete,0,true,620.79,760,1,17.50027632
+7441057265838,Papel higiénico Nevax ExtraMás 6u,Paquete,0,true,3935.64,4785,1,16.92797492
+7441057265470,Papel higiénico Nevax Esencial 4u,Unidad,0,true,1304.95,1585,1,16.84545741
+748366000202,Cafe Chandito 200g,Unidad,0,true,966.34,1075,1,9.208986047
+748366000073,Cafe saso 200g,Unidad,0,true,789.11,900,1,11.44432222
+748366124052,Cafe Rey tradicional 125g,Unidad,0,true,732.67,850,1,12.94156471
+748366123529,Cafe Rey tradicional 250g,Unidad,0,true,1460.4,1650,1,10.60581818
+645860016565,Cafe Leyenda 250g,Unidad,0,true,1528.22,1700,1,9.205752941
+7441003400115,Cafe puro volio 125g,Unidad,0,true,962.38,1100,1,11.63601818
+7441018002700,Arroz Imperio 99% 1.8k,Unidad,0,true,1293.07,1400,1,6.714235714
+7441028207805,Frijol Rojo Frijolito,Unidad,0,true,1429.33,1600,1,9.77354375
+7441028207812,Frijol negro Frijolito 750g,Unidad,0,true,1176.24,1350,1,11.99982222
+7441037918037,Frijol rojo Don pedro,Unidad,0,true,1378.22,1550,1,10.19340645
+7501088503221,Antiflui-des nf.,Unidad,0,true,271.79,340,2,18.463
+7441003600102,Sal Sol 500g,Unidad,0,true,434.65,515,1,14.75796117
+7441003600300,Sal Solar 500g,Unidad,0,true,267.33,340,1,20.58726471
+7441042699624,Azúcar Doña María 2 k,Unidad,0,true,1360.4,1515,1,9.306666667
+7441042699631,Azúcar Doña María 1k,Unidad,0,true,690.1,770,1,9.48038961
+735051003976,Mayonesa c/limón Banquete 200g,Unidad,0,true,633.66,770,1,16.88355844
+735051002085,Mostaza Banquete 200g,Unidad,0,true,608.91,740,1,16.89201351
+764009002440,Té frío melocotón Tropical 2.5 L,Unidad,0,true,1106.4,1360,13,8.071176471
+764009008404,Té blanco arándano Tropical 2.5L,Unidad,0,true,1106.4,1360,13,8.071176471
+764009003867,Té manzana verde Tropical 2.5L,Unidad,0,true,1106.4,1360,13,8.071176471
+764009015044,Té blanco arándano Tropical 1L,Unidad,0,true,737.46,1000,13,16.66702
+764009010650,Tropical frutas 1L,Unidad,0,true,737.46,1000,13,16.66702
+764009010674,Té frío limón Tropical 1L,Unidad,0,true,737.46,1000,13,16.66702
+764009010667,Té frío melocotón Tropical 1 L,Unidad,0,true,737.46,1000,13,16.66702
+764009002112,Té frio melocotón Tropical 500ml,Unidad,0,true,479.65,650,13,16.61469231
+764009001986,Té manzana verde Tropical 500ml,Unidad,0,true,479.65,650,13,16.61469231
+764009008398,Té blanco arándano Tropical 500ml,Unidad,0,true,479.65,650,13,16.61469231
+7441009035335,Mirinda piña 600ml,Unidad,0,true,626.55,850,13,16.70570588
+7441009070114,7up Lima limón 600ml,Unidad,0,true,626.55,845,13,16.21284024
+764009006202,Mug Zarza 600ml,Unidad,0,true,626.55,845,13,16.21284024
+764009048066,Pepsi cola 1.5L,Unidad,0,true,818.5,1100,13,15.91772727
+7441009010486,Pepsi cola 600ml,Unidad,0,true,553.1,750,13,16.66626667
+764009202611,Agua Cristal 600ml,Unidad,0,true,553.04,790,13,20.89427848
+764009008008,Agua Cristal 1000ml,Unidad,0,true,700.88,945,13,16.19106878
+764009004574,JET Beb Energizante 600ml,Unidad,0,true,739.6,980,13,14.71959184
+764009020352,JET Beb Energizante 350ml,Unidad,0,true,479.65,640,13,15.31179688
+764009041425,GATORADE Berry blue 600ml,Unidad,0,true,737.46,980,13,14.96634694
+764009041432,GATORADE Fruit Punch 600ml,Unidad,0,true,737.46,980,13,14.96634694
+764009009166,MAXX ENERGY 473ml,Unidad,0,true,1032.74,1375,13,15.12754909
+7445072001341,Agua Cielo 375ml,Unidad,0,true,165.92,245,13,23.47363265
+7445072001693,Agua embotellada Cielo 625ml,Unidad,0,true,221.23,300,13,16.67003333
+7445072001365,Agua embotellada Cielo 1L,Unidad,0,true,294.98,440,13,24.24377273
+75045623,Chicle Trident menta 4u,Unidad,0,true,82.96,145,13,35.34841379
+7445072001921,BIG Naranja 250ml,Unidad,0,true,157.81,245,13,27.21416327
+7445072001945,BIG Roja 250ml,Unidad,0,true,157.81,245,13,27.21416327
+7445072002256,BIG Roja 1L,Unidad,0,true,501.48,700,13,19.0468
+7445072000146,BIG Roja 2.6 ml,Unidad,0,true,929.2,1300,13,19.23107692
+7445072006681,BIG Roja 3.03L,Unidad,0,true,1070.06,1450,13,16.60911724
+7445072001440,BIG Negra 250ml,Unidad,0,true,157.81,245,13,27.21416327
+7445072000702,BIG Cola negra 1.5L,Unidad,0,true,702.43,990,13,19.82364646
+7445072006629,BIG Cola negra 2.6L,Unidad,0,true,929.2,1300,13,19.23107692
+7445072006056,BIG Gin 250 ml,Unidad,0,true,157.81,245,13,27.21416327
+7441003596238,Fanta Kolita 355ml,Unidad,0,true,408.85,550,13,15.99990909
+7445072003086,BIG Gin 1L,Unidad,0,true,501.48,700,13,19.0468
+7441003596122,Coca Cola 355ml,Unidad,0,true,408.85,550,13,15.99990909
+7441003500488,Coca Cola 600ml,Unidad,0,true,631.86,860,13,16.97653488
+7445072005936,BIG Gin 3.03L,Unidad,0,true,1070.06,1450,13,16.60911724
+7445072005257,BIG Gin 2.6L,Unidad,0,true,929.2,1300,13,19.23107692
+735051000234,Salsita Ranchera Banquete 90g,Unidad,0,true,193.81,270,13,18.88692593
+735051000265,Salsitas Hongos Banquete 90g,Unidad,0,true,193.81,270,13,18.88692593
+7441001604201,Más Té Dos Pinos 3L,Unidad,0,true,630,1000,13,28.81
+88313261585,Frijoles molidos Ducal 227g,Unidad,0,true,350,600,13,34.08333333
+7441002432049,Hongos Richly 184g,Unidad,0,true,516.81,700,13,16.5721
+7441002428011,Maíz Dulce Richly 240g,Unidad,0,true,547.79,755,13,18.01288742
+731701004270,Roma Prince Caracolito azul 200 g,Unidad,0,true,686.73,935,13,17.00482353
+731701004409,Roma prince Tornillo verde 150g,Unidad,0,true,538.94,730,13,16.5750411
+731701004218,Roma Prince codito rojo 200 g,Unidad,0,true,680.53,930,13,17.31194624
+756958010959,Empanizador pescado Los Patitos 100g,Unidad,0,true,276.4,380,13,17.80736842
+756958010850,Empanizador de pollo Los Patitos 100 g,Unidad,0,true,276.4,380,13,17.80736842
+751963212107,Manteca Clover 460g,Unidad,0,true,630.69,900,1,29.22256667
+751963210509,Manteca Clover 230g,Unidad,0,true,333.66,430,1,21.62869767
+751963230002,Manteca Corona 1kg,Unidad,0,true,1260.4,1855,1,31.37444744
+7441057501523,Atún Trozos de lomo aceite girasol Mr Máximo,Unidad,0,true,876.66,1095,1,19.13912329
+7441002641823,Atún lomo en trocitos aceite Sardimar 140g,Unidad,0,true,907.59,1210,1,24.2424876
+7441002639806,Atún trocitos c/aceite Sardimar 230g,Unidad,0,true,1989.11,2255,1,10.90904213
+7441002645135,Atún con vegetales Sardimar 140g,Unidad,0,true,907.59,1210,1,24.2424876
+7441002639783,Atún con vegetales Sardimar 230g,Unidad,0,true,1989.11,2255,1,10.90904213
+7001,Atún con vegetales Splash 140g,Unidad,0,true,637.95,900,1,28.40783333
+7002,Atún trozos en Aceite de Oliva Pronto 140g,Unidad,0,true,1339.38,1730,13,12.51448555
+7441007213650,Aceite Capullo 1.5L,Unidad,0,true,2479.21,2800,1,10.57135357
+7441007204559,Aceite de soya Capullo 500ml,Unidad,0,true,932.67,1290,1,26.977
+645860000946,Café Crema Irlandesa Leyenda 250g,Unidad,0,true,2269.31,2825,1,18.8671469
+645860000939,Café Vainilla Leyenda 250g,Paquete,0,true,2269.31,2825,1,18.8671469
+7441039700029,Velitas espirales Gala 12u,Unidad,0,true,383.19,530,13,18.301
+7441005617764,Pastilla desinfectante floral Tronex 55g,Paquete,0,true,307.08,420,13,17.38085714
+7509546075723,Jabón baño Palmolive tono perfecto 3 pack,Paquete,0,true,1466.37,1990,13,16.73376382
+7501019006623,Saba Buenas Noches c/a 8u,Paquete,0,true,1036.63,1275,1,17.88264314
+7501019002069,Saba Teens noche c/a 10u,Paquete,0,true,1569.31,1915,1,17.2322141
+7501019032868,Saba invisible c/a 7 u,Paquete,0,true,806.93,990,1,17.67683838
+7441057267085,Saba clásica c/a 10 u,Unidad,0,true,624.75,815,1,22.57699387
+748928011189,Detergente Fort 3 Frescura Floral 450g,Unidad,0,true,574.34,750,13,13.46610667
+7406171029797,Detergente Fab 1k,Unidad,0,true,1166.37,1600,13,17.62511875
+748928002088,Detergente Fort 3 floral 1k,Unidad,0,true,1245.13,1630,13,13.68117178
+7441000313005,Cloro Clorox 200ml,Unidad,0,true,176.11,240,13,17.08154167
+7441000313036,Cloro Clorox 450ml,Unidad,0,true,316.81,430,13,16.74527907
+7441005634655,Desinfectante Tronex 225 ml,Unidad,0,true,204.42,285,13,18.94926316
+7441005634938,Desinf Tronex Caricia de bebé 225 ml,Unidad,0,true,204.42,285,13,18.94926316
+7441005634723,Desinfectante Tronex Brisa Fresca 225ml,Unidad,0,true,202.65,285,13,19.65105263
+7441005634792,Desinfectante Tronex Limón 225ml,Unidad,0,true,204.42,285,13,18.94926316
+731701001118,Lengua Roma 250g,Unidad,0,true,600.99,770,1,21.16884416
+7441005627947,Gelatina Gela-fina fresa 80g,Unidad,0,true,326.73,420,1,21.42921429
+7441005627992,Gelatina Limón Gela-fina 80g,Unidad,0,true,344.55,420,1,17.14392857
+7441005627954,Gelatina Frambuesa Gela-fina 80g,Unidad,0,true,344.55,420,1,17.14392857
+7441005628005,Gelatina Uva Gela-Fina 80 g,Unidad,0,true,344.55,420,1,17.14392857
+7509546032023,Pasta den Colgate MaxFresh 50mL,Unidad,0,true,1124.75,1400,1,18.85732143
+7501035911567,Crema den Colgate clasica,Unidad,0,true,719.8,900,1,19.22244444
+7622201776633,Chicle Trident Sandia 5u,Unidad,0,true,221.24,350,13,28.57108571
+7622201776664,Chicle Trident menta 5u,Unidad,0,true,221.24,350,13,28.57108571
+7506105606053,Chicle Trident menta 18u,Unidad,0,true,570.8,785,13,17.83388535
+7445072004779,Big Cola Negra 500ml,Unidad,0,true,277.08,450,13,30.42213333

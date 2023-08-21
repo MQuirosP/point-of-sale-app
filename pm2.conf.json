@@ -1,12 +1,18 @@
 {
   "apps": [
     {
+<<<<<<< HEAD
       "name": "frontend",
       "script": "ng",
       "args": [
         "serve",
         "--host", "192.168.0.9"
       ],
+=======
+      "name": "verduleria-app",
+      "script": "node_modules/@angular/cli/bin/ng",
+      "args": ["serve", "-o", "--host", "0.0.0.0"],
+>>>>>>> 5bf1c8f (	new file:   .gitignore)
       "cwd": "C:/Proyectos/verduleria-app/frontend",
       "watch": true,
       "merge_logs": true,

@@ -1,0 +1,1132 @@
+<!-- Encabezado Opciones -->
+<header id="main-header" class="pt-2 pb-3 bg-info text-white main-board-style">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6" [@fadeAnimation]>
+        <h1><i class="fas fa-cog"></i> Opciones</h1>
+      </div>
+      <div
+        class="col-md-6 d-none d-md-block d-flex text-right mt-3"
+        *ngIf="getUserRole() === 'administrator'"
+      >
+        <a
+          routerLink="/"
+          role="button"
+          class="btn btn-warning border border-warning clic-on-image"
+          style="margin-right: 10px"
+        >
+          <i class="fas fa-arrow-left"></i>
+          <span class="d-none d-md-inline">&nbsp;Volver</span>
+        </a>
+
+        <a
+          role="button"
+          type="submit"
+          (click)="saveRegisterStatus()"
+          class="btn btn-success border border-success clic-on-image mr-5"
+        >
+          <i class="fas fa-check"></i>
+          <span class="d-none d-md-inline">&nbsp;Guardar</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Tarjetas registro de usuarios, Proveedores y clientes -->
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-md-4 mt-4">
+      <section id="configuracion" [@fadeAnimation]>
+        <div class="container">
+          <div class="card shadow">
+            <div class="card-header modal-header text-center">
+              <h3 class="h4">
+                <i class="fa fa-users"></i> Registro de usuarios
+              </h3>
+            </div>
+            <div class="card-body">
+              <fieldset class="row">
+                <legend class="text-center options-card-body-text">
+                  Activar el registro de usuarios.
+                </legend>
+                <div class="container d-flex text-center options-button-container">
+                  <label class="form-check-label" style="cursor: pointer">
+                    <input
+                      *ngIf="getUserRole() !== 'user'"
+                      type="checkbox"
+                      class="form-check-input"
+                      id="activateRegister"
+                      name="activateRegister"
+                      [(ngModel)]="activateRegister"
+                      [checked]="activateRegister"
+                      style="cursor: pointer"
+                      (click)="toggleCheckbox()"
+                    />
+                    <span
+                      [ngStyle]="{ color: activateRegister ? 'green' : 'red' }"
+                      >{{ activateRegister ? "Activado" : "Desactivado" }}</span
+                    >
+                  </label>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="col-12 col-md-4 mt-4">
+      <section id="proveedores" [@fadeAnimation]>
+        <div class="container">
+          <div class="card shadow">
+            <div class="card-header modal-header text-center">
+              <h3 class="h4">
+                <i class="fa fa-people-line"></i> Mis proveedores
+              </h3>
+            </div>
+            <div class="card-body">
+              <fieldset class="row">
+                <legend class="text-center options-card-body-text">
+                  Mantenimiento de proveedores
+                </legend>
+                <div class="col-12 text-center options-button-container">
+                  <a
+                    role="button"
+                    class="btn btn-primary border border-primary clic-on-image"
+                    (click)="openProviderListModal()"
+                  >
+                    Ver lista
+                  </a>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="col-12 col-md-4 mt-4">
+      <section [@fadeAnimation]>
+        <div class="container">
+          <div class="card shadow">
+            <div class="card-header modal-header text-center">
+              <h3 class="h4">
+                <i class="fa fa-people-group"></i> Mis clientes
+              </h3>
+            </div>
+            <div class="card-body">
+              <fieldset class="row">
+                <legend class="text-center options-card-body-text">
+                  Mantenimiento de clientes
+                </legend>
+                <div class="col-12 text-center options-button-container">
+                  <a
+                    role="button"
+                    class="btn btn-primary border border-primary clic-on-image"
+                    (click)="openCustomerListModal()"
+                  >
+                    Ver lista
+                  </a>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+  <div class="row" *ngIf="getUserRole() !== 'user'">
+    <div class="col-12 col-md-4 mt-4">
+      <section id="configuracion" [@fadeAnimation]>
+        <div class="container">
+          <div class="card shadow">
+            <div class="card-header modal-header text-center">
+              <h3 class="h4">
+                <i class="fa fa-users-between-lines"></i> Mis usuarios
+              </h3>
+            </div>
+            <div class="card-body" style="margin-bottom: 14px">
+              <fieldset class="row">
+                <legend class="text-center options-card-body-text" style="font-size: 18px">
+                  Mantenimiento de usuarios
+                </legend>
+                <div class="col-12 text-center options-button-container">
+                  <a
+                    role="button"
+                    class="btn btn-primary border border-primary clic-on-image"
+                    (click)="openUsersListModal()"
+                  >
+                    Ver lista
+                  </a>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+  <div style="margin-bottom: 100px"></div>
+</div>
+
+<!-- Modal para listado de proveedores -->
+<div
+  class="modal fade"
+  id="providerListModal"
+  #providerListModal
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="providerListModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content modal-shadow">
+      <div class="modal-header border">
+        <h5 class="modal-title"><i class="fas fa-cog"></i>&nbsp;Mantenimiento de proveedores</h5>
+        <button
+          type="button"
+          class="close clic-on-icon"
+          (click)="closeProviderListModal()"
+          aria-label="Cerrar"
+        >
+          <span aria-hidden="true"><i class="fas fa-close"></i></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Contenido del modal -->
+        <div class="mb-3 col-md-4">
+          <label for="providerSearch">Buscar proveedor:</label>
+          <input
+            type="search"
+            id="providerSearch"
+            [(ngModel)]="searchTermProvider"
+            (ngModelChange)="filterProviders()"
+            class="form-control"
+            placeholder="Ingresa tu búsqueda aquí..."
+            autocomplete="new-password"
+          />
+        </div>
+        <div class="">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="cell-width-titles-names">Nombre</th>
+                  <th>Email</th>
+                  <th>Teléfono</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let provider of filteredProviders; let even = even"
+                  [ngClass]="{ 'table-row-even': even, 'table-row-odd': !even }"
+                >
+                  <td class="product-name">
+                    <div class="icon-container" (click)="toggleIcons(provider)">
+                      {{ provider.provider_name }}
+                    </div>
+                    <div
+                      class="utilitary-icons"
+                      [ngClass]="{ 'show-icons ': provider.showIcons }"
+                    >
+                      <a
+                        class="ml-3 mr-2"
+                        role="button"
+                        (click)="
+                          openProviderInfoModal(true, provider);
+                          this.editMode = true
+                        "
+                      >
+                        <i
+                          class="fa-solid fa-pen-to-square clic-on-icon"
+                          style="color: #1100fa; cursor: pointer"
+                        ></i>
+                      </a>
+                      <a class="mr-2" *ngIf="getUserRole() !== 'user'">
+                        <i
+                          class="fas fa-solid fa-trash clic-on-icon"
+                          (click)="deleteProvider(provider.provider_id)"
+                          style="color: #fa0000; cursor: pointer"
+                        ></i>
+                      </a>
+                    </div>
+                  </td>
+                  <td class="text-left">
+                    {{ provider.provider_email }}
+                  </td>
+                  <td class="text-left">
+                    {{ provider.provider_phone }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          *ngIf="getUserRole() !== 'user'"
+          type="button"
+          class="btn btn-primary border border-primary clic-on-image"
+          (click)="openProviderInfoModal(false, ''); this.editMode = false"
+        >
+          Agregar
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary border border-secondary clic-on-image"
+          (click)="closeProviderListModal()"
+        >
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para el registro y edición de proveedores -->
+<div
+  class="modal fade"
+  id="providerInfoModal"
+  #providerInfoModal
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="providerInfoModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content modal-shadow">
+      <div class="modal-header border">
+        <h5 class="modal-title" id="providerInfoModalLabel">
+          <i class="fas fa-edit"></i>&nbsp;{{ modalTitle }} de proveedores
+        </h5>
+        <button
+          type="button"
+          class="close clic-on-icon"
+          aria-label="Close"
+          (click)="closeProviderInfoModal()"
+        >
+          <span aria-hidden="true"><i class="fas fa-close"></i></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Formulario de registro de proveedores -->
+        <form
+          [formGroup]="providerForm"
+          autocomplete="new-password"
+          role="presentation"
+        >
+          <div class="form-group">
+            <label for="provider_name">Nombre:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="provider_name"
+              formControlName="provider_name"
+              placeholder="Nombre del proveedor"
+              [ngClass]="{
+                'is-valid':
+                  providerForm.get('provider_name').touched &&
+                  providerForm.get('provider_name').valid,
+                'is-invalid':
+                  providerForm.get('provider_name').touched &&
+                  providerForm.get('provider_name').invalid
+              }"
+              required
+              autocomplete="new-password"
+            />
+          </div>
+          <div class="form-group">
+            <label for="provider_address">Dirección:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="provider_address"
+              formControlName="provider_address"
+              placeholder="Dirección del proveedor"
+              [ngClass]="{
+                'is-valid':
+                  providerForm.get('provider_address').touched &&
+                  providerForm.get('provider_address').valid,
+                'is-invalid':
+                  providerForm.get('provider_address').touched &&
+                  providerForm.get('provider_address').invalid
+              }"
+              autocomplete="new-password"
+            />
+          </div>
+          <div class="form-group">
+            <label for="provider_phone">Teléfono:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="provider_phone"
+              formControlName="provider_phone"
+              placeholder="Teléfono del proveedor"
+              [ngClass]="{
+                'is-valid':
+                  providerForm.get('provider_phone').touched &&
+                  providerForm.get('provider_phone').valid,
+                'is-invalid':
+                  providerForm.get('provider_phone').touched &&
+                  providerForm.get('provider_phone').invalid
+              }"
+              autocomplete="new-password"
+            />
+          </div>
+          <div class="form-group">
+            <label for="provider_email">Email:</label>
+            <input
+              type="email"
+              class="form-control"
+              id="provider_email"
+              formControlName="provider_email"
+              placeholder="Email del proveedor"
+              [ngClass]="{
+                'is-valid':
+                  providerForm.get('provider_email').touched &&
+                  providerForm.get('provider_email').valid,
+                'is-invalid':
+                  providerForm.get('provider_email').touched &&
+                  providerForm.get('provider_email').invalid
+              }"
+              autocomplete="new-password"
+            />
+          </div>
+          <div class="form-group">
+            <label for="provider_dni">DNI:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="provider_dni"
+              formControlName="provider_dni"
+              placeholder="DNI del proveedor"
+              [ngClass]="{
+                'is-valid':
+                  providerForm.get('provider_dni').touched &&
+                  providerForm.get('provider_dni').valid,
+                'is-invalid':
+                  providerForm.get('provider_dni').touched &&
+                  providerForm.get('provider_dni').invalid
+              }"
+              required
+              autocomplete="new-password"
+            />
+          </div>
+          <div class="modal-footer">
+            <button
+              *ngIf="this.editMode === false"
+              type="submit"
+              class="btn btn-primary border border-primary clic-on-image"
+              (click)="createProvider()"
+            >
+              Guardar
+            </button>
+            <button
+              *ngIf="this.editMode === true && getUserRole() !== 'user'"
+              type="submit"
+              class="btn btn-primary border border-primary clic-on-image"
+              (click)="editProvider(providerForm.get('provider_id').value)"
+            >
+              Editar
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary border border-secondary clic-on-image ml-2"
+              (click)="closeProviderInfoModal()"
+            >
+              Cerrar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para listado de clientes -->
+<div
+  class="modal fade"
+  id="customerListModal"
+  #customerListModal
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="customerListModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content modal-shadow">
+      <div class="modal-header border">
+        <h5 class="modal-title"><i class="fas fa-cog"></i>&nbsp;Mantenimiento de clientes</h5>
+        <button
+          type="button"
+          class="close clic-on-icon"
+          (click)="closeCustomerListModal()"
+          aria-label="Cerrar"
+        >
+          <span aria-hidden="true"><i class="fas fa-close"></i></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Contenido del modal -->
+        <div class="mb-3 col-md-4">
+          <label for="customerSearch">Buscar cliente:</label>
+          <input
+            type="search"
+            id="customerSearch"
+            [(ngModel)]="searchTermCustomer"
+            (ngModelChange)="filterCustomers()"
+            class="form-control"
+            placeholder="Ingresa tu búsqueda aquí..."
+            autocomplete="new-password"
+          />
+        </div>
+        <div class="">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="cell-width-titles-names">Nombre</th>
+                  <th>Email</th>
+                  <th>Teléfono</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let customer of filteredCustomers; let even = even"
+                  [ngClass]="{ 'table-row-even': even, 'table-row-odd': !even }"
+                >
+                  <td class="product-name">
+                    <div class="icon-container" (click)="toggleIcons(customer)">
+                      {{ customer.customer_name }}
+                      {{ customer.customer_first_lastname }}
+                      {{ customer.customer_second_lastname }},
+                      {{ customer.customer_dni }}
+                    </div>
+                    <div
+                      class="utilitary-icons"
+                      [ngClass]="{ 'show-icons ': customer.showIcons }"
+                    >
+                      <a
+                        class="ml-3 mr-2"
+                        role="button"
+                        (click)="
+                          openCustomerInfoModal(true, customer);
+                          this.editMode = true
+                        "
+                      >
+                        <i
+                          class="fa-solid fa-pen-to-square clic-on-icon"
+                          style="color: #1100fa; cursor: pointer"
+                        ></i>
+                      </a>
+                      <a class="mr-2" *ngIf="getUserRole() !== 'user'">
+                        <i
+                          class="fas fa-solid fa-trash clic-on-icon"
+                          (click)="deleteProvider(customer.customer_id)"
+                          style="color: #fa0000; cursor: pointer"
+                        ></i>
+                      </a>
+                    </div>
+                  </td>
+                  <td class="text-left">
+                    {{ customer.customer_email }}
+                  </td>
+                  <td class="text-left">
+                    {{ customer.customer_phone }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary border border-primary clic-on-image"
+          (click)="openCustomerInfoModal(false, ''); this.editMode = false"
+        >
+          Agregar
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary border border-secondary clic-on-image"
+          (click)="closeCustomerListModal()"
+        >
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para el registro y edición de clientes -->
+<div
+  class="modal fade"
+  id="customerInfoModal"
+  #customerInfoModal
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="customerInfoModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content modal-shadow">
+      <div class="modal-header border">
+        <h5 class="modal-title" id="customerInfoModalLabel">
+          <i class="fas fa-edit"></i>&nbsp;{{ modalTitle }} de clientes
+        </h5>
+        <button
+          type="button"
+          class="close clic-on-icon"
+          aria-label="Close"
+          (click)="closeCustomerInfoModal()"
+        >
+          <span aria-hidden="true"><i class="fas fa-close"></i></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Formulario de registro de clientes -->
+        <form [formGroup]="customerForm">
+          <div class="row form-group">
+            <div class="col-md-6">
+              <label for="customer_name">Nombre:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="customer_name"
+                formControlName="customer_name"
+                placeholder="Nombre del cliente"
+                [ngClass]="{
+                  'is-valid':
+                    customerForm.get('customer_name').touched &&
+                    customerForm.get('customer_name').valid,
+                  'is-invalid':
+                    customerForm.get('customer_name').touched &&
+                    customerForm.get('customer_name').invalid
+                }"
+                required
+                autocomplete="new-password"
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="customer_first_lastname">Primer Apellido:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="customer_first_lastname"
+                formControlName="customer_first_lastname"
+                placeholder="Primer apellido"
+                [ngClass]="{
+                  'is-valid':
+                    customerForm.get('customer_first_lastname').touched &&
+                    customerForm.get('customer_first_lastname').valid,
+                  'is-invalid':
+                    customerForm.get('customer_first_lastname').touched &&
+                    customerForm.get('customer_first_lastname').invalid
+                }"
+                required
+                autocomplete="new-password"
+              />
+            </div>
+          </div>
+          <div class="row form-group">
+            <div class="col-md-6">
+              <label for="customer_second_lastname">Segundo Apellido:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="customer_second_lastname"
+                formControlName="customer_second_lastname"
+                placeholder="Segundo apellido"
+                [ngClass]="{
+                  'is-valid':
+                    customerForm.get('customer_second_lastname').touched &&
+                    customerForm.get('customer_second_lastname').valid,
+                  'is-invalid':
+                    customerForm.get('customer_second_lastname').touched &&
+                    customerForm.get('customer_second_lastname').invalid
+                }"
+                required
+                autocomplete="new-password"
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="customer_dni">Cédula:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="customer_dni"
+                formControlName="customer_dni"
+                placeholder="DNI del cliente"
+                [ngClass]="{
+                  'is-valid':
+                    customerForm.get('customer_dni').touched &&
+                    customerForm.get('customer_dni').valid,
+                  'is-invalid':
+                    customerForm.get('customer_dni').touched &&
+                    customerForm.get('customer_dni').invalid
+                }"
+                required
+                autocomplete="new-password"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="customer_address">Dirección:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="customer_address"
+              formControlName="customer_address"
+              placeholder="Dirección"
+              [ngClass]="{
+                'is-valid':
+                  customerForm.get('customer_address').touched &&
+                  customerForm.get('customer_address').valid,
+                'is-invalid':
+                  customerForm.get('customer_address').touched &&
+                  customerForm.get('customer_address').invalid
+              }"
+              autocomplete="new-password"
+            />
+          </div>
+          <div class="form-group">
+            <label for="customer_phone">Teléfono:</label>
+            <input
+              type="tel"
+              class="form-control"
+              id="customer_phone"
+              formControlName="customer_phone"
+              placeholder="Teléfono del cliente"
+              [ngClass]="{
+                'is-valid':
+                  customerForm.get('customer_phone').touched &&
+                  customerForm.get('customer_phone').valid,
+                'is-invalid':
+                  customerForm.get('customer_phone').touched &&
+                  customerForm.get('customer_phone').invalid
+              }"
+              autocomplete="new-password"
+            />
+          </div>
+          <div class="form-group">
+            <label for="customer_email">Email:</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              formControlName="customer_email"
+              placeholder="Email del cliente"
+              [ngClass]="{
+                'is-valid':
+                  customerForm.get('customer_email').touched &&
+                  customerForm.get('customer_email').valid,
+                'is-invalid':
+                  customerForm.get('customer_email').touched &&
+                  customerForm.get('customer_email').invalid
+              }"
+              autocomplete="new-password"
+            />
+          </div>
+          <div class="modal-footer">
+            <button
+              *ngIf="this.editMode === false"
+              type="submit"
+              class="btn btn-primary border border-primary clic-on-image"
+              (click)="createCustomer()"
+            >
+              Guardar
+            </button>
+            <button
+              *ngIf="this.editMode === true"
+              type="submit"
+              class="btn btn-primary border border-primary clic-on-image"
+              (click)="editCustomer(customerForm.get('customer_id').value)"
+            >
+              Editar
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary border border-secondary clic-on-image ml-2"
+              (click)="closeCustomerInfoModal()"
+            >
+              Cerrar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para el listado de usuarios -->
+<div
+  class="modal fade"
+  id="usersListModal"
+  #usersListModal
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="usersListModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content modal-shadow">
+      <div class="modal-header border">
+        <h5 class="modal-title"><i class="fas fa-cog"></i>&nbsp;Mantenimiento de usuarios</h5>
+        <button
+          type="button"
+          class="close clic-on-icon"
+          (click)="closeUsersListModal()"
+          aria-label="Cerrar"
+        >
+          <span aria-hidden="true"><i class="fas fa-close"></i></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Contenido del modal -->
+        <div class="mb-3 col-md-8">
+          <label for="userSearch">Buscar usuario:</label>
+          <input
+            type="search"
+            id="userSearch"
+            [(ngModel)]="searchTermUser"
+            (ngModelChange)="filterUsers()"
+            class="form-control"
+            placeholder="Ingresa tu búsqueda aquí..."
+            autocomplete="new-password"
+          />
+        </div>
+        <div class="">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="cell-width-title-names">Usuario</th>
+                  <th>Rol</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let user of filteredUsers; let even = even"
+                  [ngClass]="{ 'table-row-even': even, 'table-row-odd': !even }"
+                >
+                  <td
+                    class="bg-transparent d-flex justify-content-between"
+                    (click)="user.showIcons = !user.showIcons"
+                  >
+                    <span class="" style="cursor: pointer; min-width: 150px;" tabindex="-1">
+                      {{ user.username }}
+                    </span>
+                    <span
+                      class="utilitary-icons show-icons align-items-end"
+                      [ngClass]="{ 'show-icons': user.showIcons }"
+                    >
+                      <a
+                        class="ml-2 mr-3"
+                        role="button"
+                        (click)="
+                          openUserInfoModal(true, user);
+                          this.editMode = true
+                        "
+                      >
+                        <i
+                          class="fa-solid fa-pen-to-square clic-on-icon"
+                          style="color: #1100fa; cursor: pointer"
+                        ></i>
+                      </a>
+                      <a
+                        class="text-left"
+                        (click)="deleteUser(user.userId)"
+                        *ngIf="
+                          getUser() !== user.username &&
+                          getUserRole() === 'administrator'
+                        "
+                      >
+                        <i
+                          class="fa-solid fa-trash clic-on-icon"
+                          style="color: #fa0000; cursor: pointer"
+                        ></i>
+                      </a>
+                    </span>
+                  </td>
+                  <td class="text-left">
+                    {{ user.role }}
+                  </td>
+                  <td [ngStyle]="getStatusStyles(user.status)">
+                    {{ user.status }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary border border-primary clic-on-image"
+          routerLink="/register"
+        >
+          Agregar
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary border border-secondary clic-on-image"
+          (click)="closeUsersListModal()"
+        >
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para edicion de usuarios -->
+<div
+  class="modal fade"
+  id="usersInfoModal"
+  #usersInfoModal
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="userInfoModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content modal-shadow">
+      <div class="modal-header border">
+        <h5 class="modal-title" id="userInfoModalLabel">
+          <i class="fa fa-edit"></i>&nbsp;{{ modalTitle }} de usuarios
+        </h5>
+        <button
+          type="button"
+          class="close clic-on-icon"
+          aria-label="Close"
+          (click)="closeUserInfoModal()"
+        >
+          <span aria-hidden="true"><i class="fas fa-close"></i></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Formulario de registro de usuarios -->
+        <form [formGroup]="userForm">
+          <div class="row form-group">
+            <div class="col-md-6">
+              <label for="name">Nombre:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                formControlName="name"
+                placeholder="Nombre"
+                required
+                autocomplete="new-password"
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="lastname">Apellidos:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="lastname"
+                formControlName="lastname"
+                placeholder="Apellido"
+                required
+                autocomplete="new-password"
+              />
+            </div>
+          </div>
+          <div class="row form-group">
+            <div class="col-md-6">
+              <label for="username">Nombre de usuario:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="username"
+                formControlName="username"
+                placeholder="Nombre de usuario"
+                [value]="userForm.get('username').value"
+                required
+                autocomplete="new-password"
+                readonly
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="resetButton">Contraseña:</label>
+              <div class="text-center">
+                <button
+                  type="button"
+                  class="btn btn-primary border border-primary clic-on-image"
+                  (click)="openResetPasswordModal()"
+                >
+                  Restablecer
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input
+              type="email"
+              class="form-control"
+              id="userEmail"
+              formControlName="email"
+              placeholder="Email"
+              [value]="userForm.get('email').value"
+              required
+              autocomplete="new-password"
+            />
+          </div>
+          <div class="row form-group">
+            <div class="col">
+              <label for="role">Rol:</label>
+              <select
+                class="form-control"
+                id="role"
+                formControlName="role"
+                required
+                style="padding: 0 0 0 10px"
+              >
+                <option value="administrator">Administrador</option>
+                <option value="user">Usuario</option>
+              </select>
+            </div>
+            <div class="col">
+              <label for="status">Estado:</label>
+              <select
+                class="form-control"
+                id="status"
+                formControlName="status"
+                required
+                style="padding: 0 0 0 10px"
+              >
+                <option value="active">Activo</option>
+                <option value="suspended">Suspendido</option>
+                <option value="pending">Pendiente</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <!-- <button
+              *ngIf="!editMode"
+              type="submit"
+              class="btn btn-primary clic-on-image"
+              (click)="createUser()"
+              data-dismiss="modal"
+            >
+              Guardar
+            </button> -->
+            <button
+              *ngIf="editMode"
+              type="submit"
+              class="btn btn-primary border border-primary clic-on-image"
+              (click)="editUser(userForm.get('userId').value)"
+            >
+              Guardar
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary border border-secondary clic-on-image ml-2"
+              (click)="closeUserInfoModal()"
+            >
+              Cerrar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para el reset de contraseña -->
+<div
+  class="modal fade mt-5"
+  id="resetPasswordModal"
+  #resetPasswordModal
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="resetPasswordModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document" style="width: 300px">
+    <div class="modal-content modal-shadow">
+      <div class="modal-header border">
+        <h5 class="modal-title" id="resetPasswordModalLabel">
+          <i class="fas fa-edit"></i>&nbsp;Restablecer Contraseña
+        </h5>
+        <button
+          type="button"
+          class="close clic-on-icon"
+          aria-label="Close"
+          (click)="closeResetPasswordModal()"
+        >
+          <span aria-hidden="true">
+            <i class="fas fa-close"></i>
+          </span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form
+          [formGroup]="resetPasswordForm"
+          (submit)="resetPassword(this.userForm.get('username').value)"
+        >
+          <div class="form-group">
+            <label for="newPassword">Contraseña Nueva</label>
+            <input
+              type="password"
+              class="form-control"
+              id="newPassword-reset"
+              formControlName="newPassword"
+              placeholder="Ingresa tu nueva contraseña"
+              required
+              [ngClass]="{
+                'is-valid':
+                  resetPasswordForm.get('newPassword').touched &&
+                  resetPasswordForm.get('newPassword').valid,
+                'is-invalid':
+                  resetPasswordForm.get('newPassword').touched &&
+                  resetPasswordForm.get('newPassword').invalid
+              }"
+            />
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">Confirmar Contraseña</label>
+            <input
+              type="password"
+              class="form-control"
+              id="confirmPassword-reset"
+              formControlName="confirmPassword"
+              placeholder="Confirma tu nueva contraseña"
+              required
+              [ngClass]="{
+                'is-valid':
+                  resetPasswordForm.get('confirmPassword').touched &&
+                  resetPasswordForm.get('confirmPassword').valid,
+                'is-invalid':
+                  resetPasswordForm.get('confirmPassword').touched &&
+                  resetPasswordForm.get('confirmPassword').invalid
+              }"
+            />
+          </div>
+          <div class="modal-footer">
+            <button
+              type="submit"
+              class="btn btn-primary border border-primary clic-on-image"
+              [disabled]="resetPasswordForm.invalid"
+            >
+              Guardar
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary border border-secondary clic-on-image"
+              (click)="closeResetPasswordModal()"
+            >
+              Cerrar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

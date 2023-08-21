@@ -1,0 +1,10 @@
+.customShadow {
+  /* box-shadow: 2px rgb(20, 19, 19); */
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.bg-custom:hover {
+  color: rgb(109, 150, 184);
+  
+}
+
