@@ -125,6 +125,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
         next: () => {
           this.passwordForm.reset();
           this.toastr.success('¡La contraseña se ha cambiado exitosamente!');
+          setTimeout(() => {
+            this.closeChangePasswordModal();
+          }, 500)
         },
         error: (error) => {
           this.toastr.error('Error al cambiar la contraseña: ' + error);

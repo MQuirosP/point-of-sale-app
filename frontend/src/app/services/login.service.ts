@@ -231,7 +231,7 @@ export class LoginService {
     };
 
     return this.http
-      .post<any>(`${this.backendUrl}${username}changePassword/`, passwordData, {
+      .post<any>(`${this.backendUrl}users/changePassword/`, passwordData, {
         headers,
       })
       .pipe(
