@@ -33,7 +33,7 @@ export class LoginService {
     private http: HttpClient,
     private router: Router,
     private cookieService: CookieService,
-    private toastr: ToastrService,
+    private toastr: ToastrService
   ) {
     this.checkLoggedIn();
 
@@ -67,7 +67,10 @@ export class LoginService {
       .post<any>(`${this.backendUrl}users/login/`, loginData)
       .pipe(
         tap((response) => {
-          if (response.success === true && response.message.status === 'active') {
+          if (
+            response.success === true &&
+            response.message.status === 'active'
+          ) {
             const { username, name, role, status } = response.message;
             localStorage.setItem('token', response.message.token);
             localStorage.setItem('username', username);
@@ -82,13 +85,20 @@ export class LoginService {
             setTimeout(() => {
               this.router.navigate(['/home']);
             }, 500);
-          } else if (response.success === true && response.message.status === 'suspended') {
-            this.toastr.error('Usuario está suspendido.')
+          } else if (
+            response.success === true &&
+            response.message.status === 'suspended'
+          ) {
+            this.toastr.error('Usuario está suspendido.');
             this.setLoggedIn(false, '', '');
-          } else if (response.success === true && response.message.status === 'pending') {
-            this.toastr.error('Usuario ya está registrado pero está pendiente de aceptación por parte del administrador.')
+          } else if (
+            response.success === true &&
+            response.message.status === 'pending'
+          ) {
+            this.toastr.error(
+              'Usuario ya está registrado pero está pendiente de aceptación por parte del administrador.'
+            );
             this.setLoggedIn(false, '', '');
-            
           } else {
             this.setLoggedIn(false, '', '');
             this.toastr.error('Credenciales inválidas.');
@@ -127,7 +137,11 @@ export class LoginService {
     });
 
     this.http
-      .post<any>(`${this.backendUrl}users/logout/`, { token: token }, { headers })
+      .post<any>(
+        `${this.backendUrl}users/logout/`,
+        { token: token },
+        { headers }
+      )
       .pipe(
         tap(() => {
           localStorage.removeItem('token');
