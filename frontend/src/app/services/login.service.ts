@@ -85,7 +85,7 @@ export class LoginService {
           } else if (response.success === true && response.message.status === 'suspended') {
             this.toastr.error('Usuario está suspendido.')
             this.setLoggedIn(false, '', '');
-          }else if (response.success === true && response.message.status === 'pending') {
+          } else if (response.success === true && response.message.status === 'pending') {
             this.toastr.error('Usuario ya está registrado pero está pendiente de aceptación por parte del administrador.')
             this.setLoggedIn(false, '', '');
             
