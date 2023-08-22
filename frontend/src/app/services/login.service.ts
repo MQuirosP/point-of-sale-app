@@ -11,7 +11,7 @@ import { ToastrService } from 'ngx-toastr';
   providedIn: 'root',
 })
 export class LoginService {
-  private backendUrl = `${environment.apiUrl}users/`;
+  private backendUrl = `${environment.apiUrl}`;
   private isLoggedInSubject: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
   public isLoggedIn$: Observable<boolean> =
@@ -64,7 +64,7 @@ export class LoginService {
     };
 
     this.http
-      .post<any>(`${this.backendUrl}login/`, loginData)
+      .post<any>(`${this.backendUrl}users/login/`, loginData)
       .pipe(
         tap((response) => {
           if (response.success === true && response.message.status === 'active') {
@@ -127,7 +127,7 @@ export class LoginService {
     });
 
     this.http
-      .post<any>(`${this.backendUrl}logout/`, { token: token }, { headers })
+      .post<any>(`${this.backendUrl}users/logout/`, { token: token }, { headers })
       .pipe(
         tap(() => {
           localStorage.removeItem('token');
@@ -184,7 +184,7 @@ export class LoginService {
   }
 
   createBackup() {
-    this.http.get(`http://localhost:3000/backup`).subscribe({
+    this.http.get(`${this.backendUrl}backup`).subscribe({
       next: (response: any) => {
         this.toastr.success('El respaldo se ha creado exitosamente.');
       },

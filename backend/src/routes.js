@@ -97,7 +97,7 @@ router.post('/api/sales-report', excelReportsController.generateSalesReport);
 router.post('/api/purchases-report', excelReportsController.generatePurchasesReport)
 
 // Ruta para crear el respaldo de la base de datos
-router.get("/backup", (req, res) => {
+router.get("/api/backup", (req, res) => {
   const backupResult = backupDBService.backupDataBase();
   res.json(backupResult);
 });
