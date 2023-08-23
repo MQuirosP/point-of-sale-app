@@ -34,7 +34,7 @@ export class ProductListComponent implements OnInit {
 
   subscription: Subscription = new Subscription();
 
-  public products: any[] = [];
+  public products: Products[] = [];
   public page: number = 0;
 
   filteredProducts: any[] = [];
@@ -326,7 +326,7 @@ export class ProductListComponent implements OnInit {
 
   private updateLocalProduct(productId: number, productData: Products) {
     this.filteredProducts = this.products.map((product) => {
-      if (product.producId === productId) {
+      if (product.productId === productId) {
         return productData;
       }
       return product;
