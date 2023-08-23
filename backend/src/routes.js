@@ -75,7 +75,6 @@ router.post("/api/users/changePassword/", userController.changePassword);
 router.get("/api/options/:id", optionsController.getOptions);
 router.put("/api/options/:id", optionsController.updateOptions);
 
-
 // RUTAS MANEJO CLIENTES
 router.get('/api/customers', customerControler.getAllCustomers);
 router.get('/api/customers/name/:name', customerControler.getCustomerByName);
