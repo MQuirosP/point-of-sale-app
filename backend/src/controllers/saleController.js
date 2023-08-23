@@ -125,7 +125,6 @@ async function cancelSale(req, res) {
           const product = await productService.getProductByIntCode(
             saleItem.int_code
           );
-          console.log(product);
           const newStock = product.quantity + saleItem.quantity;
           await productService.updateProduct(
             product.productId,

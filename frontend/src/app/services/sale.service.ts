@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { Sales } from '../interfaces/sales';
 
 
 interface ApiSaleResponse {
@@ -22,7 +23,7 @@ export class SaleService {
     private http: HttpClient,
   ) { }
 
-  createSale(sale: any) {
+  createSale(sale: Sales) {
     return this.http.post(`${this.backendUrl}sales/`, sale);
   }
 
