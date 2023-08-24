@@ -5,18 +5,93 @@
       <div class="col-md-8" [@fadeAnimation]>
         <h1><i class="fas fa-boxes-stacked"></i> Mis Existencias</h1>
       </div>
-      <div class="col-md-4 d-none d-md-block" style="visibility: hidden">
+      <div class="col-md-4">
         <label for="search">Buscar producto:</label>
         <input
           type="search"
-          id="search"
-          name="search"
+          #productSearch
+          id="productSearch"
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="filterProducts(productSearch.value)"
           class="form-control"
           placeholder="Ingresa tu búsqueda aquí..."
           autocomplete="off"
-          readonly
         />
       </div>
     </div>
   </div>
 </header>
+
+<section class="container mt-4" [@fadeAnimation]>
+  <div class="row">
+    <div class="col-md-4 align-items-center">
+      <div class="modal-content modal-dialog-scrollable">
+        <div
+          class="d-flex card-header product-list-header border justify-content-between"
+        >
+          <!-- Encabezado del listado -->
+          <h4 class="h4">
+            <i class="fas fa-list-check"></i>&nbsp;Productos
+          </h4>
+          <div class="d-flex justify-content-md-end">
+            <div class="justify-content-md-end">
+              <button
+                class="btn btn-warning border-warning shadow clic-on-image mr-2"
+                (click)="prevPage()"
+                [disabled]="page === 0"
+                style="color: white !important"
+              >
+                <span><i class="fa-solid fa-arrow-left"></i></span>
+                <span class="d-md-none"></span>
+              </button>
+              <button
+                class="btn btn-success border-success shadow clic-on-image"
+                (click)="nextPage()"
+                [disabled]="
+                  (products | productsFilter : page : searchTerm).length < 8
+                "
+              >
+                <span class="d-md-none"></span>
+                <span><i class="fa-solid fa-arrow-right"></i></span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="w-100">
+          <div class="table-responsive">
+            <table class="table" style="table-layout: fixed">
+              <thead>
+                <tr class="product-detail-table-titles">
+                  <th class="text-left" style="width: 70%;">Producto</th>
+                  <th class="text-right" style="width: 25%;">Stock</th>
+                </tr>
+              </thead>
+              <tbody class="">
+                <tr
+                  *ngFor="
+                    let product of filteredProducts
+                      | productsFilter : page : searchTerm;
+                    let even = even
+                  "
+                  [ngClass]="{ 'table-row-even': even, 'table-row-odd': !even }"
+                  class="pl-4"
+                >
+                  <td class="icon-container">
+                    <div class="product-name cell" style="word-wrap: normal">
+                      {{ product.name }}
+                    </div>
+                  </td>
+
+                  <td class="text-right">
+                    {{ product.quantity | number : "1.2-2" }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div style="margin-bottom: 60px"></div>

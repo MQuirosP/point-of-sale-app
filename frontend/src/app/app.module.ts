@@ -28,11 +28,6 @@ import { ReportsComponent } from './components/reports/reports.component';
 import { ProductCacheService } from './services/product-cache.service';
 import { NgSelectModule } from '@ng-select/ng-select';
 
-import { Subscription } from 'rxjs';
-import { PurchaseHistoryComponent } from './components/purchase-history/purchase-history.component';
-import { ProductListComponent } from './components/product-list/product-list.component';
-import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.component';
-import { ProductsPipe } from './pipes/products.pipe';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 
@@ -50,7 +45,6 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     DigitalWatchComponent,
     RegisterUserComponent,
     ReportsComponent,
-
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,5 @@
+.cell {
+  white-space: nowrap; /* Evita el ajuste de línea */
+  overflow: hidden; /* Oculta el contenido que desborda */
+  text-overflow: ellipsis; /* Muestra "..." al final si el texto desborda */
+}
