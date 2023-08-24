@@ -6,8 +6,6 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { Subscription, catchError, tap, timer } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
 import { fadeAnimation } from 'src/app/animations/fadeAnimation';
 import { ToastrService } from 'ngx-toastr';
 import {
@@ -156,7 +154,7 @@ export class ProductListComponent implements OnInit {
           response.message.products &&
           response.message.products.length > 0
         ) {
-          this.products = response.message.products.map((product: any) => {
+          this.products = response.message.products.map((product: Products) => {
             return { ...product, showIcons: false };
           });
 
@@ -287,20 +285,22 @@ export class ProductListComponent implements OnInit {
 
   private updateProduct(productData: Products) {
     const productId = productData.productId;
+    const category = this.productForm.get('category_id').value;
 
-    let category = this.productForm.get('category_id').value;
     if (typeof category === 'number') {
       productData.category_id = category;
     } else {
       productData.category_id = category.value;
     }
 
-    const propertiesChanged = Object.keys(productData).some((key) => {
-      return productData[key] !== this.productInfo[key];
-    });
+    const propertiesChanged = Object.keys(productData).some(
+      (key) => productData[key] !== this.productInfo[key]
+    );
 
     if (!propertiesChanged) {
-      this.toastr.info('No se realizó cambios en la información del producto.');
+      this.toastr.info(
+        'No se realizaron cambios en la información del producto.'
+      );
       return;
     }
 
@@ -317,7 +317,7 @@ export class ProductListComponent implements OnInit {
       },
       error: (error: any) => {
         this.toastr.error('Error al actualizar el producto.', error);
-      }
+      },
     });
 
     this.resetProductForm();
@@ -330,7 +330,7 @@ export class ProductListComponent implements OnInit {
         return productData;
       }
       return product;
-    });
+    }) as Products[];
   }
 
   updateProductList(updatedProduct: Products): void {
