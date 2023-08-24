@@ -333,7 +333,7 @@ export class ProductListComponent implements OnInit {
     });
   }
 
-  updateProductList(updatedProduct: Products) {
+  updateProductList(updatedProduct: Products): void {
     const index = this.products.findIndex(
       (product) => product.int_code === updatedProduct.int_code
     );
@@ -344,7 +344,7 @@ export class ProductListComponent implements OnInit {
     this.loadData();
   }
 
-  createProduct(event: Event) {
+  createProduct(event: Event): void {
     if (this.productForm.invalid) {
       event.stopPropagation();
       this.toastr.error('Por favor, completa todos los campos requeridos.');
