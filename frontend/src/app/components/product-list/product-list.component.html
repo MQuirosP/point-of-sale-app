@@ -116,10 +116,8 @@
               [ngClass]="{ 'table-row-even': even, 'table-row-odd': !even }"
               class="pl-4"
             >
-              <td class="icon-container">
-                <div class="product-name" (click)="toggleIcons(product)">
+              <td class="product-name" (click)="toggleIcons(product)">
                   {{ product.name }}
-                </div>
                 <div
                   class="utilitary-icons"
                   [ngClass]="{
@@ -187,7 +185,7 @@
     </div>
   </div>
 </div>
-<div style="margin-bottom: 80px"></div>
+<div style="margin-bottom: 60px"></div>
 
 <!-- Modal para agregar/editar producto -->
 <div

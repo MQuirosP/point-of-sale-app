@@ -807,3 +807,10 @@ input::-webkit-input-placeholder {
   justify-content: center;
   margin-top: auto;
 }
+
+.product-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}

@@ -7,9 +7,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap'; // Importa NgbModule aqu
 import { ReactiveFormsModule } from '@angular/forms';
 import { ProductListComponent } from './product-list.component';
 import { ProductsPipe } from 'src/app/pipes/products.pipe';
+import { SharedModule } from 'src/app/pipes/sharedModule';
 
 @NgModule({
-  declarations: [ProductListComponent, ProductsPipe],
+  declarations: [ProductListComponent],
   imports: [
     CommonModule,
     RouterModule.forChild([{ path: '', component: ProductListComponent }]),
@@ -17,6 +18,7 @@ import { ProductsPipe } from 'src/app/pipes/products.pipe';
     NgbModule,
     ReactiveFormsModule,
     NgSelectModule,
+    SharedModule,
   ],
 })
 export class ProductListModule {}

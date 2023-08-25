@@ -1,5 +1,25 @@
-.cell {
-  white-space: nowrap; /* Evita el ajuste de línea */
-  overflow: hidden; /* Oculta el contenido que desborda */
-  text-overflow: ellipsis; /* Muestra "..." al final si el texto desborda */
+.icon-container {
+  position: relative;
+}
+
+.product-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.product-name:hover {
+  white-space: normal;
+  overflow: visible;
+}
+
+td {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+th {
+  padding-top: 12px;
+  padding-bottom: 12px;
 }

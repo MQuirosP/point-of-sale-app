@@ -30,6 +30,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { SharedModule } from './pipes/sharedModule';
 
 
 @NgModule({
@@ -71,6 +72,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     ProductCacheService,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+    SharedModule,
   ],
   bootstrap: [AppComponent]
 })

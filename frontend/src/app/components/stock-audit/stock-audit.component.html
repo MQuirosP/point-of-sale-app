@@ -30,9 +30,7 @@
           class="d-flex card-header product-list-header border justify-content-between"
         >
           <!-- Encabezado del listado -->
-          <h4 class="h4">
-            <i class="fas fa-list-check"></i>&nbsp;Productos
-          </h4>
+          <h4 class="h4"><i class="fas fa-list-check"></i>&nbsp;Productos</h4>
           <div class="d-flex justify-content-md-end">
             <div class="justify-content-md-end">
               <button
@@ -62,8 +60,8 @@
             <table class="table" style="table-layout: fixed">
               <thead>
                 <tr class="product-detail-table-titles">
-                  <th class="text-left" style="width: 70%;">Producto</th>
-                  <th class="text-right" style="width: 25%;">Stock</th>
+                  <th class="text-left" style="width: 70%">Producto</th>
+                  <th class="text-right" style="width: 25%">Stock</th>
                 </tr>
               </thead>
               <tbody class="">
@@ -76,10 +74,8 @@
                   [ngClass]="{ 'table-row-even': even, 'table-row-odd': !even }"
                   class="pl-4"
                 >
-                  <td class="icon-container">
-                    <div class="product-name cell" style="word-wrap: normal">
-                      {{ product.name }}
-                    </div>
+                  <td class="product-name" (click)="openProductModal(product)">
+                    {{ product.name }}
                   </td>
 
                   <td class="text-right">
@@ -95,3 +91,71 @@
   </div>
 </section>
 <div style="margin-bottom: 60px"></div>
+
+<div
+  class="modal fade"
+  id="productInfoModal"
+  #productInfoModal
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+>
+  <div class="modal-content">
+    <div class="d-flex justify-content-center mt-2 mb-2">
+      <button class="btn btn-primary mr-4" type="submit">Guardar</button>
+      <button class="btn btn-secondary" (click)="closeProductModal()">
+        Cerrar
+      </button>
+    </div>
+    <div class="d-flex justify-content-center mt-2 mb-2">
+      <form [formGroup]="productForm" (ngSubmit)="saveChanges()">
+        <div class="d-flex align-items-center">
+          <label class="mr-2" for="int_code">Código:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="int_code"
+            formControlName="int_code"
+            required
+            readonly
+          />
+          <label class="mr-2 ml-2" for="name">Producto:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            formControlName="name"
+            required
+            readonly
+          />
+          <label class="mr-2 ml-2" for="category_name">Categoría:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="category_name"
+            formControlName="category_name"
+            required
+            readonly
+          />
+          <label class="mr-2 ml-2" for="quantity">Cant.:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="quantity"
+            formControlName="quantity"
+            required
+            style="width: 70px;text-align: right;"
+            readonly
+          />
+          <label class="mr-2 ml-2" for="real_stock">Físico:</label>
+          <input type="number"
+          class="form-control"
+          id="real_stock"
+          formControlName="real_stock"
+          required
+          style="width: 70px; text-align: right;">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
