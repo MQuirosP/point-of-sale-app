@@ -23,3 +23,7 @@ th {
   padding-top: 12px;
   padding-bottom: 12px;
 }
+
+.table {
+  table-layout: fixed;
+}
