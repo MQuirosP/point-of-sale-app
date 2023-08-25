@@ -25,10 +25,9 @@
 <!-- Tabla con la lista de productos -->
 <div class="container mt-4" [@fadeAnimation]>
   <div class="row">
-    <div class="col-md-4 align-items-center">
-      <div class="modal-content modal-dialog-scrollable">
+    <div class="modal-content col-md-4 pr-0 pl-0">
         <div
-          class="d-flex card-header product-list-header border justify-content-between"
+          class="d-flex modal-header product-list-header border justify-content-between"
         >
           <!-- Encabezado del listado -->
           <h4 class="h4"><i class="fas fa-list-check"></i>&nbsp;Productos</h4>
@@ -90,7 +89,6 @@
       </div>
     </div>
   </div>
-</div>
 <div style="margin-bottom: 60px"></div>
 
 <div
@@ -105,7 +103,7 @@
     <div class="modal-content">
       <form [formGroup]="productForm" (ngSubmit)="saveChanges()">
         <div class="modal-header border">
-          <h5 class="modal-title">Información del Producto</h5>
+          <h5 class="modal-title"><i class="fas fa-note-sticky"></i>&nbsp;Información del Producto</h5>
           <button
             type="button"
             class="close"
@@ -170,7 +168,9 @@
                 class="form-control text-right"
                 id="real_stock"
                 formControlName="real_stock"
+                #realStockInput
                 required
+                (input)="calculateDifference()"
               />
             </div>
             <div class="col-md-4">
@@ -185,16 +185,14 @@
             </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <button class="btn btn-primary" type="submit">Guardar</button>
-          <button
-            class="btn btn-secondary"
-            type="button"
-            (click)="closeProductModal()"
-          >
-            Cerrar
-          </button>
-        </div>
+        <div class="modal-footer" style="display: flex; justify-content: space-between;">
+          <button type="button" class="btn btn-danger" (click)="resetRealStock()">Reset</button>
+          <div>
+              <button class="btn btn-primary mr-2" type="submit">Guardar</button>
+              <button class="btn btn-secondary" type="button" (click)="closeProductModal()">Cerrar</button>
+          </div>
+      </div>
+      
       </form>
     </div>
   </div>

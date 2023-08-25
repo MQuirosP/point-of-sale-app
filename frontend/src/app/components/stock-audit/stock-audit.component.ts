@@ -148,7 +148,8 @@ export class StockAuditComponent implements OnInit {
       this.productInfoModal.nativeElement.classList.remove('show');
       this.productInfoModal.nativeElement.classList.remove('closing');
       this.productInfoModal.nativeElement.style.display = 'none';
-    }, 300)
+    }, 300);
+    this.resetRealStock();
   }
 
   getProductInfo(product: Products) {
@@ -181,5 +182,27 @@ export class StockAuditComponent implements OnInit {
 
   saveChanges() {
 
+  }
+
+  resetRealStock(): void {
+    this.productForm.get('real_stock').setValue(0);
+
+    const inputElement = document.getElementById('real_stock') as HTMLInputElement
+    if (inputElement) {
+      inputElement.focus()
+    }
+  }
+
+  calculateDifference() {
+    let difference = 0;
+    const systemStock = this.productForm.get('quantity').value;
+    const realStock = this.productForm.get('real_stock').value;
+
+    if (systemStock !== realStock) {
+      difference = realStock - systemStock;
+      this.productForm.get('difference').setValue(difference);
+    } else {
+      this.toastr.warning('Las cantidades son iguales.')
+    }
   }
 }
