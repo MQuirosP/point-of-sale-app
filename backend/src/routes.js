@@ -11,12 +11,16 @@ const optionsController = require("./controllers/optionsController");
 const excelReportsController = require("./controllers/excelReportsController");
 const backupDBService = require('./services/backupDBService');
 const authMiddleware = require("../authMiddleware");
+const auditController = require("./controllers/auditController");
 
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
 router.post('/api/users/login/',  userController.loginUser);
 router.post('/api/users/logout/', userController.logoutUser);
+router.post('/api/audits', auditController.createAudit)
+router.get('/api/audits', auditController.getAllAudits)
+router.get('/api/audits/:doc_number', auditController.getAuditByDocNumber)
 
 router.use((req, res, next) => {
   if (req.method === "POST" || req.method === "PUT" || req.method === "DELETE") {

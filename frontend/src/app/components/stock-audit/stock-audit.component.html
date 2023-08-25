@@ -101,7 +101,7 @@
 >
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <form [formGroup]="productForm" (ngSubmit)="saveChanges()">
+      <form [formGroup]="productForm" (ngSubmit)="addProductToAuditList()">
         <div class="modal-header border">
           <h5 class="modal-title"><i class="fas fa-note-sticky"></i>&nbsp;Información del Producto</h5>
           <button
@@ -186,9 +186,9 @@
           </div>
         </div>
         <div class="modal-footer" style="display: flex; justify-content: space-between;">
-          <button type="button" class="btn btn-danger" (click)="resetRealStock()">Reset</button>
+          <button type="button" class="btn btn-danger" (click)="resetStockAndDifference()">Reset</button>
           <div>
-              <button class="btn btn-primary mr-2" type="submit">Guardar</button>
+              <button class="btn btn-primary mr-2" type="submit">Agregar</button>
               <button class="btn btn-secondary" type="button" (click)="closeProductModal()">Cerrar</button>
           </div>
       </div>
