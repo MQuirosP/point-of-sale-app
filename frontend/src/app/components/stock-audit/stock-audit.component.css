@@ -27,3 +27,24 @@ th {
 .table {
   table-layout: fixed;
 }
+
+.form-label {
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  padding: 5px 10px 8px 10px;
+  opacity: 1;
+  align-items: baseline;
+  margin-top: 20px;
+  background-color: beige;
+  color: darkgray;
+  font-style: italic;
+}
+
+.form-label:hover {
+  background-color:rgba(190, 183, 183, 0.692);
+  transition: all 0.3s ease;
+  color: white;
+}
+
+
+

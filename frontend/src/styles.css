@@ -707,6 +707,11 @@ label {
   margin-bottom: 0px;
 }
 
+button {
+  padding: 5px !important;
+}
+
+
 /* Animación para abrir el modal */
 @keyframes modalOpenAnimation {
   0% {
