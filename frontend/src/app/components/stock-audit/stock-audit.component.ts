@@ -489,10 +489,18 @@ export class StockAuditComponent implements OnInit {
   importJSON(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     this.fileInput = inputElement.files[0];
-    this.importButtonDisabled = false;
+    if(this.fileInput) {
+      this.importButtonDisabled = false;
+    } else {
+      this.toastr.warning('No se seleccionó ningún archivo.')
+    }
   }
 
-  importJSONData(file: File) {
+  importJSONData() {
+    if (!this.fileInput) {
+      return;
+    }
+
     const reader = new FileReader();
 
     reader.onload = (e) => {
@@ -506,7 +514,7 @@ export class StockAuditComponent implements OnInit {
         const transaction = db.transaction('products', 'readwrite');
         const objectStore = transaction.objectStore('products');
 
-        const importPromises = products.map((product) => {
+        const importPromises = products.map((product: ProductListStockAudit) => {
           return new Promise<void>((resolve, reject) => {
             const addRequest = objectStore.add(product);
 
@@ -541,7 +549,7 @@ export class StockAuditComponent implements OnInit {
       };
     };
 
-    reader.readAsText(file);
+    reader.readAsText(this.fileInput);
 
     this.fileInput = null;
     this.importButtonDisabled = true;

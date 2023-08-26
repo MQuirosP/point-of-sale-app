@@ -112,7 +112,7 @@
           <button
             class="btn btn-warning border border-warning shadow"
             [disabled]="importButtonDisabled"
-            (click)="importJSONData(fileInput)"
+            (click)="importJSONData()"
           >
             Cargar
           </button>
@@ -120,7 +120,7 @@
             type="file"
             class="form-control-file custom-file-input"
             id="fileInput"
-            (change)="importJSON($event)"
+            (change)="importJSON($event);"
             style="display: none"
           >
         </div>
