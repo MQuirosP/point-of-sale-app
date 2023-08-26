@@ -55,7 +55,7 @@ export class StockAuditComponent implements OnInit {
     private toastr: ToastrService,
     private changeDetectorRef: ChangeDetectorRef,
     private formBuilder: FormBuilder,
-    private ngZone: NgZone,
+    private ngZone: NgZone
   ) {}
 
   ngOnInit() {
@@ -85,22 +85,25 @@ export class StockAuditComponent implements OnInit {
 
   loadAuditListProducts() {
     const request = indexedDB.open('auditListDB', 1);
-  
+
     request.onsuccess = (event) => {
       const db = request.result;
-  
+
       const transaction = db.transaction('products', 'readonly');
       const objectStore = transaction.objectStore('products');
       const getAllRequest = objectStore.getAll();
-  
+
       getAllRequest.onsuccess = () => {
         const auditListProducts = getAllRequest.result;
         this.auditListProducts = auditListProducts;
       };
     };
-  
+
     request.onerror = (event) => {
-      console.error('Error al abrir la base de datos de auditoría', event.target);
+      console.error(
+        'Error al abrir la base de datos de auditoría',
+        event.target
+      );
     };
   }
 
@@ -266,16 +269,13 @@ export class StockAuditComponent implements OnInit {
         const transaction = db.transaction('products', 'readwrite');
         const objectStore = transaction.objectStore('products');
 
-        
         const addRequest = objectStore.put(auditProduct);
 
         addRequest.onsuccess = () => {
-          
           this.toastr.success('Producto agregado a la lista de auditoría.');
         };
 
         addRequest.onerror = (event) => {
-          
           this.toastr.error(
             'Error al agregar el producto a la lista de auditoría.'
           );
@@ -287,7 +287,6 @@ export class StockAuditComponent implements OnInit {
       };
 
       request.onerror = (event) => {
-        
         this.toastr.error('Error al abrir la base de datos de IndexedDB.');
         console.error(
           'Error al abrir la base de datos de IndexedDB',
@@ -449,97 +448,102 @@ export class StockAuditComponent implements OnInit {
 
   exportToJSON() {
     const request = indexedDB.open('auditListDB', 1);
-  
+
     request.onsuccess = (event) => {
       const db = request.result;
       const transaction = db.transaction('products', 'readonly');
       const objectStore = transaction.objectStore('products');
-  
+
       const getAllRequest = objectStore.getAll();
-  
+
       getAllRequest.onsuccess = () => {
         const products = getAllRequest.result;
-  
+
         if (products.length === 0) {
           this.toastr.info('No hay datos para exportar.');
           return;
         }
-  
+
         const jsonData = JSON.stringify(products, null, 2);
-  
+
         const blob = new Blob([jsonData], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
-  
+
         const a = document.createElement('a');
         a.href = url;
         a.download = 'auditList.json';
         a.click();
-  
+
         URL.revokeObjectURL(url);
       };
     };
-  
+
     request.onerror = (event) => {
-      console.error('Error al abrir la base de datos de auditoría', event.target);
+      console.error(
+        'Error al abrir la base de datos de auditoría',
+        event.target
+      );
     };
   }
 
   importJSON(event: Event) {
-  const inputElement = event.target as HTMLInputElement;
-  this.fileInput = inputElement.files[0];
-  this.importButtonDisabled = false;
-}
+    const inputElement = event.target as HTMLInputElement;
+    this.fileInput = inputElement.files[0];
+    this.importButtonDisabled = false;
+  }
 
-importJSONData(file: File) {
-  const reader = new FileReader();
+  importJSONData(file: File) {
+    const reader = new FileReader();
 
-  reader.onload = (e) => {
-    const jsonData = e.target.result as string;
-    const products = JSON.parse(jsonData);
+    reader.onload = (e) => {
+      const jsonData = e.target.result as string;
+      const products = JSON.parse(jsonData);
 
-    const request = indexedDB.open('auditListDB', 1);
+      const request = indexedDB.open('auditListDB', 1);
 
-    request.onsuccess = (event) => {
-      const db = request.result;
-      const transaction = db.transaction('products', 'readwrite');
-      const objectStore = transaction.objectStore('products');
+      request.onsuccess = (event) => {
+        const db = request.result;
+        const transaction = db.transaction('products', 'readwrite');
+        const objectStore = transaction.objectStore('products');
 
-      const importPromises = products.map((product) => {
-        return new Promise<void>((resolve, reject) => {
-          const addRequest = objectStore.add(product);
+        const importPromises = products.map((product) => {
+          return new Promise<void>((resolve, reject) => {
+            const addRequest = objectStore.add(product);
 
-          addRequest.onsuccess = () => {
-            console.log('Producto agregado:', product);
-            resolve();
-          };
+            addRequest.onsuccess = () => {
+              console.log('Producto agregado:', product);
+              resolve();
+            };
 
-          addRequest.onerror = (event) => {
-            console.error('Error al agregar producto:', event.target);
-            reject();
-          };
+            addRequest.onerror = (event) => {
+              console.error('Error al agregar producto:', event.target);
+              reject();
+            };
+          });
         });
-      });
 
-      Promise.all(importPromises)
-        .then(() => {
-          this.toastr.success('Información importada con éxito.');
-          this.fileInput = null;
-          this.importButtonDisabled = true;
-        })
-        .catch(() => {
-          this.toastr.error('Error al importar la información.');
-        });
+        Promise.all(importPromises)
+          .then(() => {
+            this.toastr.success('Información importada con éxito.');
+            this.fileInput = null;
+            this.importButtonDisabled = true;
+          })
+          .catch(() => {
+            this.toastr.error('Error al importar la información.');
+          });
+      };
+
+      request.onerror = (event) => {
+        console.error(
+          'Error al abrir la base de datos de auditoría',
+          event.target
+        );
+      };
     };
 
-    request.onerror = (event) => {
-      console.error('Error al abrir la base de datos de auditoría', event.target);
-    };
-  };
+    reader.readAsText(file);
 
-  reader.readAsText(file);
-
-  this.fileInput = null;
-  this.importButtonDisabled = true;
-}
-
+    this.fileInput = null;
+    this.importButtonDisabled = true;
+  }
 }
