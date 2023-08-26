@@ -12,6 +12,7 @@
   "devDependencies": {
     "debug": "^4.3.4",
     "electron": "^16.2.8",
+    "electron-packager": "^17.1.2",
     "html-loader": "^4.2.0",
     "html-webpack-plugin": "^5.5.1",
     "nodemon": "^2.0.22",
