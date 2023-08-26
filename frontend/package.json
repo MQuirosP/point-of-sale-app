@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "echo 'No linting configured'"
+    "lint": "echo 'No linting configured'",
+    "electron-build": "electron-packager . my-pos --platform=win32 --arch=x64 --ignore=node_modules"
   },
   "private": true,
   "dependencies": {
@@ -24,6 +25,7 @@
     "angular-resizable-element": "^7.0.2",
     "bootstrap": "^4.5.2",
     "browserify-zlib": "^0.2.0",
+    "electron-is-dev": "^2.0.0",
     "escpos": "^3.0.0-alpha.6",
     "jquery": "^3.5.1",
     "jspdf": "^2.5.1",
