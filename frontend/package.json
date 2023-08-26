@@ -1,15 +1,17 @@
 {
   "name": "frontend",
   "version": "0.0.0",
+  "description": "Mi Punto de Venta",
+  "author": "Mario Quirós Pizarro",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --quiet",
     "build": "ng build",
-    "build-electron": "electron-packager . my-pos --platform=win32 --arch=x64",
+    "build-electron": "electron-builder",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "echo 'No linting configured'",
-    "electron-build": "electron-packager . my-pos --platform=win32 --arch=x64"
+    "electron-build": "electron-builder"
   },
   "private": true,
   "dependencies": {
@@ -50,7 +52,8 @@
     "@angular/cli": "~16.0.2",
     "@angular/compiler-cli": "^16.0.0",
     "@types/jasmine": "~4.3.0",
-    "electron-packager": "^17.1.2",
+    "electron": "^26.1.0",
+    "electron-builder": "^24.6.3",
     "jasmine-core": "~4.6.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
@@ -58,5 +61,17 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
     "typescript": "~5.0.2"
+  },
+  "build": {
+    "appId": "com.example.myapp",
+    "files": [
+      "dist/**/*"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "icon": "src/assets/icon.ico"
+    }
   }
 }
