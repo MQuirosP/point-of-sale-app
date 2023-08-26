@@ -1,11 +1,11 @@
-const { AuditDocument, AuditItem } = require('./../database/models');
+const { AuditDocument, AuditItem } = require("./../database/models");
 
 module.exports = {
-  createAuditDocument: async (date, consecutive) => {
+  createAuditDocument: async (username, consecutive) => {
     const newAuditDocument = await AuditDocument.create({
-      doc_number: '', // Será generado automáticamente
-      date,
-      auditId: consecutive // Asegúrate de asignar el valor correcto al campo de la tabla
+      doc_number: "", // Será generado automáticamente
+      auditId: consecutive,
+      username: username, 
     });
 
     return newAuditDocument;
@@ -14,6 +14,7 @@ module.exports = {
   createAuditItem: async (auditDocumentId, auditDocumentDocNumber, item) => {
     const newAuditItem = await AuditItem.create({
       ...item,
+      auditId: auditDocumentId,
       doc_number: auditDocumentDocNumber,
     });
 
@@ -22,7 +23,7 @@ module.exports = {
 
   getAllAudits: async () => {
     const audits = await AuditDocument.findAll({
-      include: [{ model: AuditItem, as: 'auditItems' }]
+      include: [{ model: AuditItem, as: "auditItems" }],
     });
     return audits;
   },
@@ -30,8 +31,8 @@ module.exports = {
   getAuditByDocNumber: async (docNumber) => {
     const audit = await AuditDocument.findOne({
       where: { doc_number: docNumber },
-      include: [{ model: AuditItem, as: 'auditItems' }]
+      include: [{ model: AuditItem, as: "auditItems" }],
     });
     return audit;
-  }
+  },
 };

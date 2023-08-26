@@ -1,12 +1,13 @@
 const auditService = require("./../services/auditService");
 const responseUtils = require("../utils/responseUtils");
+const { appLogger } = require("../utils/logger");
 
 async function createAudit(req, res) {
   try {
-    const { date, consecutive, items } = req.body;
+    const { username, consecutive, items } = req.body;
 
     const newAuditDocument = await auditService.createAuditDocument(
-      date,
+      username,
       consecutive
     );
 
@@ -18,35 +19,42 @@ async function createAudit(req, res) {
       );
     }
 
-    res.status(201).json({ message: "Audit created successfully" });
+    const response = {
+      document: {
+        ...newAuditDocument.toJSON(),
+        items: items,
+      },
+    };
+
+    responseUtils.sendSuccessResponse(res, response, 201);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "An error occurred" });
+    appLogger.error(error);
+    responseUtils.sendErrorResponse(res, { error: "An error occurred" }, 500);
   }
 }
 
 async function getAllAudits(req, res) {
   try {
     const audits = await auditService.getAllAudits();
-    res.status(200).json(audits);
+    responseUtils.sendSuccessResponse(res, { documents: audits }, 200);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'An error occurred' });
+    appLogger.error(error);
+    responseUtils.sendErrorResponse(res, { error: "An error ocurred" }, 500);
   }
 }
 
-async function getAuditByDocNumber (req, res) {
+async function getAuditByDocNumber(req, res) {
   try {
     const { doc_number } = req.params;
     const audit = await auditService.getAuditByDocNumber(doc_number);
     if (!audit) {
-      res.status(404).json({ message: 'Audit not found' });
+      responseUtils.sendErrorResponse(res, { error: "Audit not found" }, 404);
     } else {
-      res.status(200).json(audit);
+      responseUtils.sendSuccessResponse(res, { document: audit }, 200);
     }
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'An error occurred' });
+    appLogger.error(error);
+    responseUtils.sendErrorResponse(res, { error: "An error ocurred" }, 500);
   }
 }
 

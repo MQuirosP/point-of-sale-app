@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   AuditDocument.init(
     {
       doc_number: DataTypes.STRING,
-      date: DataTypes.STRING,
+      username: DataTypes.STRING, // Cambio de "date" a "username"
       auditId: DataTypes.INTEGER,
     },
     {
@@ -50,6 +50,7 @@ module.exports = (sequelize, DataTypes) => {
 
     const formattedConsecutive = consecutive.toString().padStart(4, "0");
     auditDocument.doc_number = `${year}${month}${day}-${formattedConsecutive}`;
+    auditDocument.auditId = consecutive;
   });
   return AuditDocument;
 };
