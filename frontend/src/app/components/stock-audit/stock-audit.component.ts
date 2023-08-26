@@ -32,6 +32,7 @@ interface ProductListStockAudit extends Products {
 export class StockAuditComponent implements OnInit {
   @ViewChild('productInfoModal', { static: false })
   productInfoModal!: ElementRef;
+  @ViewChild("auditModal", { static: false }) auditModal!: ElementRef;
 
   filteredProducts: any[] = [];
   public products: Products[] = [];
@@ -150,6 +151,7 @@ export class StockAuditComponent implements OnInit {
   }
 
   openProductModal(product: Products): void {
+  
     this.productInfoModal.nativeElement.style.display = 'block';
     this.productInfoModal.nativeElement.classList.add('opening');
     setTimeout(() => {
@@ -157,9 +159,7 @@ export class StockAuditComponent implements OnInit {
       this.getProductInfo(product);
     }, 50);
     setTimeout(() => {
-      const inputElement = document.getElementById(
-        'real_stock'
-      ) as HTMLInputElement;
+      const inputElement = document.getElementById('real_stock') as HTMLInputElement;
       inputElement.focus();
       this.calculateDifference();
     }, 300);
@@ -211,7 +211,7 @@ export class StockAuditComponent implements OnInit {
     const differenceValue = this.productForm.get("difference").value;
     const adjustedAmountValue = differenceValue * purchase_price;
   
-    const auditProduct: ProductListStockAudit = {
+    const auditProduct = {
       ...this.selectedProduct,
       real_stock: realStockValue,
       difference: differenceValue,
@@ -226,13 +226,100 @@ export class StockAuditComponent implements OnInit {
     if (existingProductIndex !== -1) {
       this.toastr.warning("El producto ya está en la lista de auditoría.");
     } else {
+      // Abre o crea la base de datos
+      const request = indexedDB.open("auditListDB", 1);
+  
+      request.onupgradeneeded = (event) => {
+        const db = (event.target as IDBOpenDBRequest).result;
+        db.createObjectStore("products", { keyPath: "productId" });
+      };
+  
+      request.onsuccess = (event) => {
+        const db = (event.target as IDBOpenDBRequest).result;
+  
+        const transaction = db.transaction("products", "readwrite");
+        const objectStore = transaction.objectStore("products");
+  
+        // Guarda el producto en IndexedDB
+        const addRequest = objectStore.put(auditProduct);
+  
+        addRequest.onsuccess = () => {
+          // Mostrar mensaje de éxito con Toastr
+          this.toastr.success("Producto agregado a la lista de auditoría.");
+        };
+  
+        addRequest.onerror = (event) => {
+          // Mostrar mensaje de error con Toastr
+          this.toastr.error("Error al agregar el producto a la lista de auditoría.");
+          console.error("Error al guardar el producto en IndexedDB", event.target);
+        };
+      };
+  
+      request.onerror = (event) => {
+        // Mostrar mensaje de error con Toastr
+        this.toastr.error("Error al abrir la base de datos de IndexedDB.");
+        console.error("Error al abrir la base de datos de IndexedDB", event.target);
+      };
+  
       this.auditListProducts.push(auditProduct);
-      this.toastr.success("Producto agregado a la lista de auditoría.");
     }
-    console.log(this.auditListProducts);
+  }
+
+  getAuditListProducts(callback) {
+    const request = indexedDB.open("auditListDB", 1);
+
+    request.onsuccess = (event) => {
+        const db = request.result;
+
+        const transaction = db.transaction("products", "readonly");
+        const objectStore = transaction.objectStore("products");
+
+        const getAllRequest = objectStore.getAll();
+
+        getAllRequest.onsuccess = () => {
+            const auditListProducts = getAllRequest.result;
+            callback(auditListProducts);
+        };
+
+        getAllRequest.onerror = (event) => {
+            console.error("Error al obtener la lista de productos de auditoría", event.target);
+        };
+    };
+
+    request.onerror = (event) => {
+        console.error("Error al abrir la base de datos de auditoría", event.target);
+    };
+}
+  
+  deleteAuditListDB(productId: number) {
+    const request = indexedDB.open("auditListDB", 1);
+  
+    request.onsuccess = (event) => {
+      const db = request.result;
+  
+      const transaction = db.transaction("products", "readwrite");
+      const objectStore = transaction.objectStore("products");
+  
+      const deleteRequest = objectStore.delete(productId);
+  
+      deleteRequest.onsuccess = () => {
+        this.toastr.success("Producto eliminado de la lista de auditoría.");
+        this.getAuditListProducts(this.getAuditListProducts);
+      };
+  
+      deleteRequest.onerror = (event) => {
+        this.toastr.error("Error al eliminar el producto de la lista de auditoría.");
+        console.error("Error al eliminar el producto de la lista de auditoría", event.target);
+      };
+    };
+  
+    request.onerror = (event) => {
+      this.toastr.error("Error al abrir la base de datos de auditoría.", "Error");
+      console.error("Error al abrir la base de datos de auditoría", event.target);
+    };
+    this.getAuditListProducts(productId);
   }
   
-
   resetStockAndDifference(): void {
     this.productForm.get('real_stock').setValue(0);
     this.productForm.get('difference').setValue(0);
@@ -257,5 +344,79 @@ export class StockAuditComponent implements OnInit {
       difference = 0;
       this.productForm.get('difference').setValue(difference);
     }
+  }
+
+  deleteAuditProduct(productId: number) {
+    const request = indexedDB.open("auditListDB", 1);
+  
+    request.onsuccess = (event) => {
+      const db = request.result;
+  
+      const transaction = db.transaction("products", "readwrite");
+      const objectStore = transaction.objectStore("products");
+  
+      const deleteRequest = objectStore.delete(productId);
+  
+      deleteRequest.onsuccess = () => {
+        this.toastr.success("Producto eliminado de la lista de auditoría.");
+        this.getAuditListProducts((auditListProducts) => {
+          this.auditListProducts = auditListProducts;
+        });
+      };
+  
+      deleteRequest.onerror = (event) => {
+        this.toastr.error("Error al eliminar el producto de la lista de auditoría.");
+        console.error("Error al eliminar el producto de la lista de auditoría", event.target);
+      };
+    };
+  
+    request.onerror = (event) => {
+      this.toastr.error("Error al abrir la base de datos de auditoría.", "Error");
+      console.error("Error al abrir la base de datos de auditoría", event.target);
+    }
+  }
+  
+
+  openAuditListModal() {
+    const request = indexedDB.open("auditListDB", 1);
+  
+    request.onsuccess = (event) => {
+      const db = request.result;
+  
+      const transaction = db.transaction("products", "readonly");
+      const objectStore = transaction.objectStore("products");
+  
+      const countRequest = objectStore.count();
+  
+      countRequest.onsuccess = () => {
+        const count = countRequest.result;
+  
+        if (count === 0) {
+          this.toastr.info("No se han agregado elementos a la lista para la auditoría.");
+          return;
+        }
+  
+        this.auditModal.nativeElement.style.display = 'block';
+        this.auditModal.nativeElement.classList.add('opening');
+        setTimeout(() => {
+          this.auditModal.nativeElement.classList.add('show');
+        }, 50);
+      };
+    };
+  
+    request.onerror = (event) => {
+      this.toastr.error("Error al abrir la base de datos de auditoría.", "Error");
+      console.error("Error al abrir la base de datos de auditoría", event.target);
+    };
+  }
+  
+
+  closeAuditListModal() {
+    this.auditModal.nativeElement.classList.add('closing');
+    setTimeout(() => {
+      this.auditModal.nativeElement.classList.remove('show');
+      this.auditModal.nativeElement.classList.remove('closing');
+      this.auditModal.nativeElement.style.display = 'none';
+    }, 300);
   }
 }

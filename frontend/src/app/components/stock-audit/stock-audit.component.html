@@ -26,71 +26,80 @@
 <div class="container mt-4" [@fadeAnimation]>
   <div class="row">
     <div class="modal-content col-md-4 pr-0 pl-0">
-        <div
-          class="d-flex modal-header product-list-header border justify-content-between"
-        >
-          <!-- Encabezado del listado -->
-          <h4 class="h4"><i class="fas fa-list-check"></i>&nbsp;Productos</h4>
-          <div class="d-flex justify-content-md-end">
-            <div class="justify-content-md-end">
-              <button
-                class="btn btn-warning border-warning shadow clic-on-image mr-2"
-                (click)="prevPage()"
-                [disabled]="page === 0"
-                style="color: white !important"
-              >
-                <span><i class="fa-solid fa-arrow-left"></i></span>
-                <span class="d-md-none"></span>
-              </button>
-              <button
-                class="btn btn-success border-success shadow clic-on-image"
-                (click)="nextPage()"
-                [disabled]="
-                  (products | productsFilter : page : searchTerm).length < 8
-                "
-              >
-                <span class="d-md-none"></span>
-                <span><i class="fa-solid fa-arrow-right"></i></span>
-              </button>
-            </div>
-          </div>
-        </div>
-        <div class="w-100">
-          <div class="table-responsive">
-            <table class="table">
-              <thead>
-                <tr class="product-detail-table-titles">
-                  <th class="text-left" style="width: 70%">Producto</th>
-                  <th class="text-right" style="width: 25%">Stock</th>
-                </tr>
-              </thead>
-              <tbody class="">
-                <tr
-                  *ngFor="
-                    let product of filteredProducts
-                      | productsFilter : page : searchTerm;
-                    let even = even
-                  "
-                  [ngClass]="{ 'table-row-even': even, 'table-row-odd': !even }"
-                  class="pl-4"
-                >
-                  <td class="product-name" (click)="openProductModal(product)">
-                    {{ product.name }}
-                  </td>
-
-                  <td class="text-right">
-                    {{ product.quantity | number : "1.2-2" }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+      <div
+        class="d-flex modal-header product-list-header border justify-content-between"
+      >
+        <!-- Encabezado del listado -->
+        <h4 class="h4"><i class="fas fa-list-check"></i>&nbsp;Productos</h4>
+        <div class="d-flex justify-content-md-end">
+          <div class="justify-content-md-end">
+            <button
+              class="btn btn-warning border-warning shadow clic-on-image mr-2"
+              (click)="prevPage()"
+              [disabled]="page === 0"
+              style="color: white !important"
+            >
+              <span><i class="fa-solid fa-arrow-left"></i></span>
+              <span class="d-md-none"></span>
+            </button>
+            <button
+              class="btn btn-success border-success shadow clic-on-image"
+              (click)="nextPage()"
+              [disabled]="
+                (products | productsFilter : page : searchTerm).length < 8
+              "
+            >
+              <span class="d-md-none"></span>
+              <span><i class="fa-solid fa-arrow-right"></i></span>
+            </button>
           </div>
         </div>
       </div>
+      <div class="w-100">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr class="product-detail-table-titles">
+                <th class="text-left" style="width: 70%">Producto</th>
+                <th class="text-right" style="width: 25%">Stock</th>
+              </tr>
+            </thead>
+            <tbody class="">
+              <tr
+                *ngFor="
+                  let product of filteredProducts
+                    | productsFilter : page : searchTerm;
+                  let even = even
+                "
+                [ngClass]="{ 'table-row-even': even, 'table-row-odd': !even }"
+                class="pl-4"
+              >
+                <td class="product-name" (click)="openProductModal(product)">
+                  {{ product.name }}
+                </td>
+
+                <td class="text-right">
+                  {{ product.quantity | number : "1.2-2" }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <button
+        class="btn btn-primary border border-primary shadow"
+        (click)="openAuditListModal()"
+      >
+        Ver auditoría
+      </button>
     </div>
   </div>
-<div style="margin-bottom: 60px"></div>
+</div>
+<div class="final_div" style="margin-bottom: 60px"></div>
 
+<!-- Modal para la información del producto -->
 <div
   class="modal fade"
   id="productInfoModal"
@@ -100,10 +109,12 @@
   aria-hidden="true"
 >
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
+    <div class="modal-content modal-shadow">
       <form [formGroup]="productForm" (ngSubmit)="addProductToAuditList()">
         <div class="modal-header border">
-          <h5 class="modal-title"><i class="fas fa-note-sticky"></i>&nbsp;Información del Producto</h5>
+          <h5 class="modal-title">
+            <i class="fas fa-note-sticky"></i>&nbsp;Información del Producto
+          </h5>
           <button
             type="button"
             class="close"
@@ -115,7 +126,7 @@
         </div>
         <div class="modal-body">
           <div class="form-row">
-            <div class="col-md-6 form-group">
+            <div class="col-6 form-group">
               <label for="int_code">Código:</label>
               <input
                 type="text"
@@ -126,7 +137,7 @@
                 readonly
               />
             </div>
-            <div class="col-md-6 form-group">
+            <div class="col-6 form-group">
               <label for="category_name">Categoría:</label>
               <input
                 type="text"
@@ -150,7 +161,7 @@
             />
           </div>
           <div class="form-row">
-            <div class="col-md-4 form-group">
+            <div class="col-4 form-group">
               <label for="quantity">Cantidad:</label>
               <input
                 type="text"
@@ -161,7 +172,7 @@
                 readonly
               />
             </div>
-            <div class="col-md-4 form-group">
+            <div class="col-4 form-group">
               <label for="real_stock">Físico:</label>
               <input
                 type="number"
@@ -173,7 +184,7 @@
                 (input)="calculateDifference()"
               />
             </div>
-            <div class="col-md-4">
+            <div class="col-4">
               <label for="difference">Diferencia:</label>
               <input
                 type="number"
@@ -185,15 +196,144 @@
             </div>
           </div>
         </div>
-        <div class="modal-footer" style="display: flex; justify-content: space-between;">
-          <button type="button" class="btn btn-danger" (click)="resetStockAndDifference()">Reset</button>
+        <div
+          class="modal-footer"
+          style="display: flex; justify-content: space-between"
+        >
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="resetStockAndDifference()"
+          >
+            Reset
+          </button>
           <div>
-              <button class="btn btn-primary mr-2" type="submit">Agregar</button>
-              <button class="btn btn-secondary" type="button" (click)="closeProductModal()">Cerrar</button>
+            <button class="btn btn-primary mr-2" type="submit">Agregar</button>
+            <button
+              class="btn btn-secondary"
+              type="button"
+              (click)="closeProductModal()"
+            >
+              Cerrar
+            </button>
           </div>
-      </div>
-      
+        </div>
       </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para mostrar la información de los productos de auditoría -->
+<div
+  id="auditModal"
+  class="modal fade"
+  #auditModal
+  role="dialog"
+  tabindex="-1"
+  aria-labelledby="auditModal"
+  aria-hidden="true"
+>
+  <div class="">
+    <div class="modal-content modal-shadow">
+      <div class="modal-header border">
+        <h4 class="h4 align-items-start">
+          <i class="fas fa-list-check"></i>&nbsp;Productos de Auditoría
+        </h4>
+        <button
+          type="button"
+          aria-label="Close"
+          class="close clic-on-icon"
+          (click)="closeAuditListModal()"
+        >
+          <span aria-hidden="true">
+            <i class="fas fa-close"></i>
+          </span>
+        </button>
+      </div>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr class="product-detail-table-titles">
+              <th class="d-none d-md-table-cell" style="width: 10%">Código</th>
+              <th style="width: 15%">Nombre</th>
+              <th class="d-none d-md-table-cell text-center" style="width: 10%">
+                Costo
+              </th>
+              <th class="d-none d-md-table-cell text-center" style="width: 10%">
+                Cantidad
+              </th>
+              <th class="d-none d-md-table-cell text-center" style="width: 10%">Stock Real</th>
+              <th class="text-center" style="width: 10%">Ajuste</th>
+              <th class="text-center" style="width: 10%">
+                Monto Ajustado
+              </th>
+              <th class="text-center" style="width: 5%"></th>
+            </tr>
+          </thead>
+          <tbody id="auditModalBody">
+            <!-- Aquí se llenarán los datos de los productos -->
+            <tr
+              *ngFor="let product of auditListProducts; let even = even"
+              [ngClass]="{
+              'table-row-even': even,
+              'table-row-odd': !even,
+            }"
+            >
+              <td class="d-none d-md-table-cell">{{ product.int_code }}</td>
+              <td>{{ product.name }}</td>
+              <td class="text-center d-none d-md-table-cell">
+                {{ product.purchase_price | currency : "CRC" : "₡" : "1.2-2" }}
+              </td>
+              <td class="d-none d-md-table-cell text-center">
+                {{ product.quantity | number : "1.2-2" }}
+              </td>
+              <td class="d-none d-md-table-cell text-center">
+                {{ product.real_stock | number : "1.2-2" }}
+              </td>
+              <td
+                class="text-center"
+                [ngClass]="{
+                  'text-danger font-weight-bold': product.adjustedQuantity < 0,
+                  'text-success font-weight-bold': product.adjustedQuantity >= 0
+                }"
+              >
+                {{ product.adjustedQuantity | number : "1.2-2" }}
+              </td>
+              <td
+                class="text-center"
+                [ngClass]="{
+                  'text-danger font-weight-bold': product.adjustedAmount < 0,
+                  'text-success font-weight-bold': product.adjustedAmount >= 0
+                }"
+              >
+                {{ product.adjustedAmount | currency : "CRC" : "₡" : "1.2-2" }}
+              </td>
+
+              <td class="text-center">
+                <a
+                  role="button"
+                  (click)="deleteAuditProduct(product.productId)"
+                >
+                  <i class="fas fa-trash clic-on-icon" style="color: red"></i>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="modal-footer">
+          <button
+            class="btn btn-primary border border primary clic-on-image shadow"
+          >
+            Aplicar
+          </button>
+          <button
+            class="btn btn-secondary border border-secondary clic-on-image shadow"
+            (click)="closeAuditListModal()"
+          >
+            Cerrar
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

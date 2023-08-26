@@ -445,9 +445,9 @@ button {
 }
 
 .toast-container {
-  position: fixed;
-  bottom: 100px;
-  right: 50px;
+  position: absolute;
+  top: 60px;
+  right: 30px;
   width: 300px;
   z-index: 9999;
 }
@@ -643,6 +643,7 @@ button {
 
 .product-detail-list-title {
   font-size: 14px;
+  align-items: center;
 }
 
 .product-detail-table-content {
@@ -814,3 +815,10 @@ input::-webkit-input-placeholder {
   text-overflow: ellipsis;
   cursor: pointer;
 }
+
+@media screen and (max-width: 768px) {
+  .final_div {
+    margin-bottom: 90px !important;
+  }
+}
+
