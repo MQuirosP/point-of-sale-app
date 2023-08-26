@@ -445,7 +445,7 @@ button {
 }
 
 .toast-container {
-  position: absolute;
+  position: fixed;
   top: 60px;
   right: 30px;
   width: 300px;

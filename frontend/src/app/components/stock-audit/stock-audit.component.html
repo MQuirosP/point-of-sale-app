@@ -25,7 +25,7 @@
 <!-- Tabla con la lista de productos -->
 <div class="container mt-4" [@fadeAnimation]>
   <div class="row">
-    <div class="modal-content col-md-4 pr-0 pl-0">
+    <div class="modal-content shadow col-md-4 pr-0 pl-0">
       <div
         class="d-flex modal-header product-list-header border justify-content-between"
       >
@@ -233,106 +233,110 @@
   aria-labelledby="auditModal"
   aria-hidden="true"
 >
-  <div class="">
-    <div class="modal-content modal-shadow">
-      <div class="modal-header border">
-        <h4 class="h4 align-items-start">
-          <i class="fas fa-list-check"></i>&nbsp;Productos de Auditoría
-        </h4>
-        <button
-          type="button"
-          aria-label="Close"
-          class="close clic-on-icon"
-          (click)="closeAuditListModal()"
-        >
-          <span aria-hidden="true">
-            <i class="fas fa-close"></i>
-          </span>
-        </button>
-      </div>
-      <div class="table-responsive">
-        <table class="table">
-          <thead>
-            <tr class="product-detail-table-titles">
-              <th class="d-none d-md-table-cell" style="width: 10%">Código</th>
-              <th style="width: 15%">Nombre</th>
-              <th class="d-none d-md-table-cell text-center" style="width: 10%">
-                Costo
-              </th>
-              <th class="d-none d-md-table-cell text-center" style="width: 10%">
-                Cantidad
-              </th>
-              <th class="d-none d-md-table-cell text-center" style="width: 10%">Stock Real</th>
-              <th class="text-center" style="width: 10%">Ajuste</th>
-              <th class="text-center" style="width: 10%">
-                Monto Ajustado
-              </th>
-              <th class="text-center" style="width: 5%"></th>
+  <div class="modal-content modal-shadow">
+    <div class="modal-header border">
+      <h4 class="h4 align-items-start">
+        <i class="fas fa-list-check"></i>&nbsp;Productos de Auditoría
+      </h4>
+      <button
+        type="button"
+        aria-label="Close"
+        class="close clic-on-icon"
+        (click)="closeAuditListModal()"
+      >
+        <span aria-hidden="true"><i class="fas fa-close"></i></span>
+      </button>
+    </div>
+    <div class="table-responsive">
+      <table class="table" style="table-layout: fixed">
+        <thead>
+          <tr
+            class="product-detail-table-titles"
+            *ngIf="auditListProducts.length !== 0"
+          >
+            <th class="d-none d-md-table-cell" style="width: 10%">Código</th>
+            <th style="width: 15%">Nombre</th>
+            <th class="d-none d-md-table-cell text-center" style="width: 10%">
+              Costo
+            </th>
+            <th class="d-none d-md-table-cell text-center" style="width: 10%">
+              Cantidad
+            </th>
+            <th class="d-none d-md-table-cell text-center" style="width: 10%">
+              Stock Real
+            </th>
+            <th class="text-center" style="width: 10%">Ajuste</th>
+            <th class="text-center" style="width: 10%">Monto Ajustado</th>
+            <th class="text-center" style="width: 5%"></th>
+          </tr>
+        </thead>
+        <tbody id="auditModalBody">
+          <ng-container *ngIf="auditListProducts.length === 0">
+            <!-- Si no hay elementos en la lista -->
+            <tr>
+              <td colspan="8" class="text-center">
+                Sin elementos para la auditoría
+              </td>
             </tr>
-          </thead>
-          <tbody id="auditModalBody">
-            <!-- Aquí se llenarán los datos de los productos -->
-            <tr
-              *ngFor="let product of auditListProducts; let even = even"
-              [ngClass]="{
+          </ng-container>
+
+          <!-- Datos de los productos de auditoría -->
+          <tr
+            *ngFor="let product of auditListProducts; let even = even"
+            [ngClass]="{
               'table-row-even': even,
               'table-row-odd': !even,
             }"
+          >
+            <td class="d-none d-md-table-cell">{{ product.int_code }}</td>
+            <td>{{ product.name }}</td>
+            <td class="text-center d-none d-md-table-cell">
+              {{ product.purchase_price | currency : "CRC" : "₡" : "1.2-2" }}
+            </td>
+            <td class="d-none d-md-table-cell text-center">
+              {{ product.quantity | number : "1.2-2" }}
+            </td>
+            <td class="d-none d-md-table-cell text-center">
+              {{ product.real_stock | number : "1.2-2" }}
+            </td>
+            <td
+              class="text-center"
+              [ngClass]="{
+                'text-danger': product.adjustedQuantity < 0,
+                'text-success': product.adjustedQuantity >= 0
+              }"
             >
-              <td class="d-none d-md-table-cell">{{ product.int_code }}</td>
-              <td>{{ product.name }}</td>
-              <td class="text-center d-none d-md-table-cell">
-                {{ product.purchase_price | currency : "CRC" : "₡" : "1.2-2" }}
-              </td>
-              <td class="d-none d-md-table-cell text-center">
-                {{ product.quantity | number : "1.2-2" }}
-              </td>
-              <td class="d-none d-md-table-cell text-center">
-                {{ product.real_stock | number : "1.2-2" }}
-              </td>
-              <td
-                class="text-center"
-                [ngClass]="{
-                  'text-danger font-weight-bold': product.adjustedQuantity < 0,
-                  'text-success font-weight-bold': product.adjustedQuantity >= 0
-                }"
-              >
-                {{ product.adjustedQuantity | number : "1.2-2" }}
-              </td>
-              <td
-                class="text-center"
-                [ngClass]="{
-                  'text-danger font-weight-bold': product.adjustedAmount < 0,
-                  'text-success font-weight-bold': product.adjustedAmount >= 0
-                }"
-              >
-                {{ product.adjustedAmount | currency : "CRC" : "₡" : "1.2-2" }}
-              </td>
-
-              <td class="text-center">
-                <a
-                  role="button"
-                  (click)="deleteAuditProduct(product.productId)"
-                >
-                  <i class="fas fa-trash clic-on-icon" style="color: red"></i>
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="modal-footer">
-          <button
-            class="btn btn-primary border border primary clic-on-image shadow"
-          >
-            Aplicar
-          </button>
-          <button
-            class="btn btn-secondary border border-secondary clic-on-image shadow"
-            (click)="closeAuditListModal()"
-          >
-            Cerrar
-          </button>
-        </div>
+              {{ product.adjustedQuantity | number : "1.2-2" }}
+            </td>
+            <td
+              class="text-center"
+              [ngClass]="{
+                'text-danger': product.adjustedAmount < 0,
+                'text-success': product.adjustedAmount >= 0
+              }"
+            >
+              {{ product.adjustedAmount | currency : "CRC" : "₡" : "1.2-2" }}
+            </td>
+            <td class="text-center">
+              <a role="button" (click)="deleteAuditProduct(product.productId)">
+                <i class="fas fa-trash clic-on-icon" style="color: red"></i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="modal-footer">
+        <button
+          class="btn btn-primary border border-primary clic-on-image shadow"
+        >
+          Aplicar
+        </button>
+        <button
+          class="btn btn-secondary border border-secondary clic-on-image shadow"
+          (click)="closeAuditListModal()"
+        >
+          Cerrar
+        </button>
       </div>
     </div>
   </div>
