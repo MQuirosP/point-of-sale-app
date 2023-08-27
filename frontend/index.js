@@ -48,4 +48,4 @@ app.on('activate', () => {
   if (mainWindow === null) {
     createWindow();
   }
-});
+});     
