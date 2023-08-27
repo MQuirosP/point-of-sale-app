@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "description": "Mi Punto de Venta",
   "author": "Mario Quirós Pizarro",
+  "main": "index.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -25,6 +26,7 @@
     "@ng-select/ng-select": "^11.0.0",
     "angular-resizable-element": "^7.0.2",
     "bootstrap": "^4.5.2",
+    "electron-squirrel-startup": "^1.0.0",
     "jquery": "^3.5.1",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.31",
