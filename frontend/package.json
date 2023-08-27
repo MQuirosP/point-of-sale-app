@@ -3,15 +3,13 @@
   "version": "0.0.0",
   "description": "Mi Punto de Venta",
   "author": "Mario Quirós Pizarro",
-  "main": "index.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "echo 'No linting configured'",
-    "nw": "nw"
+    "lint": "echo 'No linting configured'"
   },
   "private": true,
   "dependencies": {
@@ -34,7 +32,6 @@
     "moment": "^2.29.4",
     "ngx-cookie-service": "^16.0.0",
     "ngx-toastr": "^17.0.2",
-    "nw": "^0.79.1",
     "path-browserify": "^1.0.1",
     "popper.js": "^1.16.1",
     "prettier": "^2.8.8",
@@ -59,9 +56,5 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
     "typescript": "~5.0.2"
-  },
-  "window": {
-    "width": 800,
-    "height": 600
   }
 }
