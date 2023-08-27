@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "description": "Mi Punto de Venta",
   "author": "Mario Quirós Pizarro",
+  "main": "index.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --quiet",
@@ -11,7 +12,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "echo 'No linting configured'",
-    "electron-build": "electron-builder"
+    "electron-build": "electron-builder",
+    "make": "electron-forge make"
   },
   "private": true,
   "dependencies": {
@@ -51,6 +53,9 @@
     "@angular-devkit/build-angular": "^16.0.2",
     "@angular/cli": "~16.0.2",
     "@angular/compiler-cli": "^16.0.0",
+    "@electron-forge/cli": "^6.4.1",
+  "@electron-forge/maker-zip": "^6.0.0",
+    "@electron-forge/maker-squirrel": "^6.4.1",
     "@types/jasmine": "~4.3.0",
     "electron": "^26.1.0",
     "electron-builder": "^24.6.3",
@@ -61,6 +66,24 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
     "typescript": "~5.0.2"
+  },
+  "config": {
+    "forge": {
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "mi-aplicacion"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        }
+      ]
+    }
   },
   "build": {
     "appId": "com.example.myapp",
