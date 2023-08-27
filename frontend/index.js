@@ -1,60 +1,42 @@
-const { app, BrowserWindow } = require("electron");
-const path = require("path");
+const {
+  app,
+  BrowserWindow
+} = require('electron')
 const url = require("url");
-const fs = require("fs");
-
-let mainWindow;
-
-function createWindow() {
-  mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+const path = require("path");
+let appWindow
+function initWindow() {
+  appWindow = new BrowserWindow({
+    width: 1000,
+    height: 800,
     webPreferences: {
-      nodeIntegration: true,
-    },
-  });
-
-  const indexPath = path.join(__dirname, "dist", "verduleria-app");
-  const indexHtmlName = fs
-    .readdirSync(indexPath)
-    .find((file) => file.startsWith("index.") && file.endsWith(".html"));
-
-  // Cargar la URL del archivo index.html empaquetado con el hash actual
-  mainWindow.loadURL(
+      nodeIntegration: true
+    }
+  })
+  // Electron Build Path
+  appWindow.loadURL(
     url.format({
-      pathname: path.join(indexPath, indexHtmlName),
+      pathname: path.join(__dirname, `/dist/verduleria-app/index.html`),
       protocol: "file:",
-      slashes: true,
+      slashes: true
     })
   );
-
-  // Manejar el evento de cierre de la ventana
-  mainWindow.on("closed", () => {
-    mainWindow = null;
-  });
+  // Initialize the DevTools.
+  appWindow.webContents.openDevTools()
+  appWindow.on('closed', function () {
+    appWindow = null
+  })
 }
-
-app.on("ready", createWindow);
-
-app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") {
-    app.quit();
+app.on('ready', initWindow)
+// Close when all windows are closed.
+app.on('window-all-closed', function () {
+  // On macOS specific close process
+  if (process.platform !== 'darwin') {
+    app.quit()
   }
-});
-
-app.on("activate", () => {
-  if (mainWindow === null) {
-    createWindow();
+})
+app.on('activate', function () {
+  if (win === null) {
+    initWindow()
   }
-});
-
-// Agregar rutas relativas para los archivos estáticos
-app.get("/static/:filename", (req, res) => {
-  const filePath = path.join(
-    __dirname,
-    "dist",
-    "verduleria-app",
-    req.params.filename
-  );
-  res.sendFile(filePath);
-});
+})
