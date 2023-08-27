@@ -25,8 +25,6 @@
     "@ng-select/ng-select": "^11.0.0",
     "angular-resizable-element": "^7.0.2",
     "bootstrap": "^4.5.2",
-    "browserify-zlib": "^0.2.0",
-    "escpos": "^3.0.0-alpha.6",
     "jquery": "^3.5.1",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.31",
@@ -57,35 +55,5 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
     "typescript": "~5.0.2"
-  },
-  "config": {
-    "forge": {
-      "makers": [
-        {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "mi-aplicacion"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
-        }
-      ]
-    }
-  },
-  "build": {
-    "appId": "com.example.myapp",
-    "files": [
-      "dist/**/*"
-    ],
-    "directories": {
-      "output": "dist"
-    },
-    "win": {
-      "icon": "src/assets/icon.ico"
-    }
   }
 }
