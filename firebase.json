@@ -12,8 +12,7 @@
         "destination": "/index.html"
       },
       {
-        "source": "/api/**",
-        "function": "proxy"
+        "source": "/api/**"
       }
     ]
   }
