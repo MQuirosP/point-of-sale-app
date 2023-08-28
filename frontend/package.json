@@ -1,6 +1,6 @@
 {
   "name": "frontend",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Mi Punto de Venta",
   "author": "Mario Quirós Pizarro",
   "main": "main.js",
@@ -59,14 +59,5 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
     "typescript": "~5.0.2"
-  },
-  "build": {
-    "extraResources": [
-      ".",
-      {
-        "from": "C:/Proyectos/verduleria-app/frontend/dist/verduleria-app/assets",
-        "to": "assets"
-      }
-    ]
   }
 }

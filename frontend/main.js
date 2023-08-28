@@ -1,6 +1,5 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
-const url = require('url');
 
 let win;
 
@@ -9,42 +8,37 @@ function createWindow() {
     width: 800,
     height: 600,
     webPreferences: {
-      contextIsolation: true,
-      preload: path.join(__dirname, 'preload.js'),
-      webSecurity: false,
+      nodeIntegration: true, // Permite la integración de Node.js en el contexto de la página web
+      webSecurity: false, // Deshabilita la seguridad del navegador (¡solo para desarrollo!)
     },
   });
 
+  // Obtener la ruta absoluta del directorio donde se encuentra este script (main.js)
   const appPath = app.getAppPath();
-  const appPathToIndex = app.isPackaged
-    ? path.join(appPath, 'dist' , 'verduleria-app', 'index.html')
-    : path.resolve('dist/verduleria-app/index.html');
 
-    console.log(appPathToIndex);
-  // Crea una instancia de la sesión del contenido y limpia la caché antes de cargar la página
-  const webContents = win.webContents;
-  const session = webContents.session;
-  session.clearCache().then(() => {
-    // Carga la aplicación de Angular después de limpiar la caché
-    win.loadFile(appPathToIndex);
+  // Construir la ruta completa al index.html de la aplicación Angular
+  const indexPath = path.join(appPath, 'dist', 'verduleria-app', 'index.html');
 
-    // Agregar esta línea para cargar la URL
-    // win.webContents.loadURL(appPathToIndex);
-  });
+  // Cargar el index.html en la ventana de Electron
+  win.loadFile(indexPath);
 
+  // Escuchar el evento de cierre de la ventana
   win.on('closed', () => {
     win = null;
   });
 }
 
+// Cuando la aplicación esté lista, crea la ventana
 app.on('ready', createWindow);
 
+// Cuando todas las ventanas estén cerradas, cierra la aplicación (excepto en macOS)
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
 });
 
+// Cuando la aplicación se active (haga clic en el icono en el dock en macOS), crea la ventana si no existe
 app.on('activate', () => {
   if (win === null) {
     createWindow();
