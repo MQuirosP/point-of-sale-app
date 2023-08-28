@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "description": "Mi Punto de Venta",
   "author": "Mario Quirós Pizarro",
+  "main": "main.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -49,6 +50,7 @@
     "@angular/cli": "~16.0.2",
     "@angular/compiler-cli": "^16.0.0",
     "@types/jasmine": "~4.3.0",
+    "electron": "^26.1.0",
     "jasmine-core": "~4.6.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
