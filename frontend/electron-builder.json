@@ -1,0 +1,15 @@
+{
+  "directories": {
+    "output": "dist/mi-pos"
+  },
+  "files": [
+    {
+      "from": "src/assets",
+      "to": "assets",
+      "filter": ["**/*"]
+    }
+  ],
+  "win": {
+    "target": "nsis"
+  }
+}

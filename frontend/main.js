@@ -9,19 +9,28 @@ function createWindow() {
     width: 800,
     height: 600,
     webPreferences: {
-      contextIsolation: true, // Usar contexto de seguridad
-      preload: path.join(__dirname, 'preload.js'), // Archivo de preload
+      contextIsolation: true,
+      preload: path.join(__dirname, 'preload.js'),
+      webSecurity: false,
     },
   });
 
-  const appPath = app.getAppPath(); // Obtiene la ruta absoluta de la aplicación
-
+  const appPath = app.getAppPath();
   const appPathToIndex = app.isPackaged
-    ? path.join(__dirname, 'dist/verduleria-app/index.html')
+    ? path.join(appPath, 'dist' , 'verduleria-app', 'index.html')
     : path.resolve('dist/verduleria-app/index.html');
 
-  // Carga la aplicación de Angular
-  win.loadFile(appPathToIndex);
+    console.log(appPathToIndex);
+  // Crea una instancia de la sesión del contenido y limpia la caché antes de cargar la página
+  const webContents = win.webContents;
+  const session = webContents.session;
+  session.clearCache().then(() => {
+    // Carga la aplicación de Angular después de limpiar la caché
+    win.loadFile(appPathToIndex);
+
+    // Agregar esta línea para cargar la URL
+    // win.webContents.loadURL(appPathToIndex);
+  });
 
   win.on('closed', () => {
     win = null;

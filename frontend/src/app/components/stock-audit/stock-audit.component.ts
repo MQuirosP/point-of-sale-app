@@ -70,11 +70,12 @@ export class StockAuditComponent implements OnInit {
       real_stock: [0, Validators.required],
       difference: [0, Validators.required],
     });
-    this.loadAuditListProducts();
+    this.initializeIndexedDB();
   }
-
+  
   ngAfterViewInit(): void {
     this.refreshProductList();
+    this.loadAuditListProducts();
   }
 
   ngOnDestroy() {
@@ -82,6 +83,28 @@ export class StockAuditComponent implements OnInit {
       this.subscription.unsubscribe();
     }
   }
+
+  initializeIndexedDB() {
+    const request = indexedDB.open('auditListDB', 1);
+  
+    request.onupgradeneeded = (event) => {
+      const db = (event.target as IDBOpenDBRequest).result;
+  
+      if (!db.objectStoreNames.contains('products')) {
+        db.createObjectStore('products', { keyPath: 'productId' });
+      }
+    };
+  
+    request.onsuccess = (event) => {
+      // La base de datos se abrió exitosamente, no necesitas realizar ninguna operación aquí.
+    };
+  
+    request.onerror = (event) => {
+      console.error('Error al abrir la base de datos de IndexedDB.', event.target);
+      this.toastr.error('Error al abrir la base de datos de IndexedDB.');
+    };
+  }
+  
 
   loadAuditListProducts() {
     const request = indexedDB.open('auditListDB', 1);

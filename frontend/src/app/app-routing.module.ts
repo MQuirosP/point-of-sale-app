@@ -22,8 +22,6 @@ const routes: Routes = [
   { path: 'not-found', component: NotFoundComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', component: NotFoundComponent },
-  // { path: 'product-list', component: ProductListComponent, canActivate: [AuthGuard] },
-  // { path: 'purchase-history', component: PurchaseHistoryComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({
