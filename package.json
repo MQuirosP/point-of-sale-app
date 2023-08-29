@@ -7,7 +7,7 @@
     "debug": "set DEBUG=* && nodemon app.js",
     "dev": "NODE_ENV=development nodemon app.js",
     "electron": "electron .",
-    "electron-build": "electron-packager . my-app --platform=win32 --arch=x64"
+    "electron-build": "electron-packager . myServer --platform=win32 --arch=x64"
   },
   "devDependencies": {
     "debug": "^4.3.4",

@@ -4,6 +4,7 @@
   },
   "files": ["dist/**/*", "index.js"],
   "win": {
-    "target": "nsis"
+    "target": "nsis",
+    "icon": "dist/verduleria-app/favicon.ico"
   }
 }

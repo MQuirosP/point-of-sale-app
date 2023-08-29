@@ -1,8 +1,9 @@
 {
-  "name": "frontend",
+  "name": "punto_de_venta",
   "version": "1.0.0",
   "description": "Mi Punto de Venta",
   "author": "Mario Quirós Pizarro",
+  "productName": "Mi Punto de Venta",
   "main": "index.js",
   "scripts": {
     "ng": "ng",
