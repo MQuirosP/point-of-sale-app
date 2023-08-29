@@ -1,0 +1,13 @@
+{
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "dist/**/*",
+      "index.js"
+    ],
+    "win": {
+      "target": "nsis"
+    }
+  }
+  

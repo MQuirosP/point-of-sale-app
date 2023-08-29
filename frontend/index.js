@@ -6,10 +6,10 @@ let win;
 function createWindow() {
   win = new BrowserWindow({
     width: 800,
-    height: 600,
+    height: 800,
     webPreferences: {
       nodeIntegration: true, // Permite la integración de Node.js en el contexto de la página web
-      webSecurity: false, // Deshabilita la seguridad del navegador (¡solo para desarrollo!)
+      webSecurity: true, // Deshabilita la seguridad del navegador (¡solo para desarrollo!)
     },
   });
 
@@ -17,7 +17,7 @@ function createWindow() {
   const appPath = app.getAppPath();
 
   // Construir la ruta completa al index.html de la aplicación Angular
-  const indexPath = path.join(appPath, 'dist', 'verduleria-app', 'index.html');
+  const indexPath = path.join(__dirname, 'dist', 'verduleria-app', 'index.html');
 
   // Cargar el index.html en la ventana de Electron
   win.loadFile(indexPath);
