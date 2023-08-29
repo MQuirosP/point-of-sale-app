@@ -23,7 +23,7 @@
 </header>
 
 <!-- Tabla con la lista de productos -->
-<div class="container mt-4" [@fadeAnimation]>
+<div class="container mt-4 final_div" [@fadeAnimation]>
   <div
     class="modal-content modal-dialog-scrollable"
     style="max-width: 100%; margin: 0 auto"
@@ -115,8 +115,8 @@
               [ngClass]="{ 'table-row-even': even, 'table-row-odd': !even }"
               class="pl-4"
             >
-              <td class="product-name" (click)="toggleIcons(product)">
-                  {{ product.name }}
+              <td>
+                  <span  class="product-name"  (click)="toggleIcons(product)">{{ product.name }}</span>
                 <div
                   class="utilitary-icons"
                   [ngClass]="{
@@ -184,7 +184,6 @@
     </div>
   </div>
 </div>
-<div class="final-div" style="margin-bottom: 70px"></div>
 
 <!-- Modal para agregar/editar producto -->
 <div

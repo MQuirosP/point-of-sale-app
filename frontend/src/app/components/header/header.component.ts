@@ -55,19 +55,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.isLoggedInSubscription = this.authService.isLoggedIn$.subscribe(
-      (isLoggedIn: boolean) => {
-        this.isLoggedIn$ = this.authService.isLoggedIn$;
-        if (isLoggedIn) {
-          this.user = this.authService.getUserName();
-          this.user = this.capitalizeFirstLetter(this.user);
-        }
-      }
-    );
-    this.optionsService.fetchRegisterStatus().subscribe((status) => {
-      this.allowRegisterUsers$ = this.optionsService.fetchRegisterStatus();
-      this.changeDetectorReference.detectChanges();
-    });
+    this.getLoggedInStatus();
+    this.getRegisterStatus();
+    
     this.passwordForm = this.formBuilder.group({
       currentPassword: ['', Validators.required],
       newPassword: ['', Validators.required],
@@ -95,6 +85,25 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.passwordModal.nativeElement.style.display = 'none';
     }, 300);
     this.resetForm();
+  }
+
+  getRegisterStatus() {
+    this.optionsService.getRegisterStatus().subscribe((status) => {
+      this.allowRegisterUsers$ = this.optionsService.getRegisterStatus();
+      this.changeDetectorReference.detectChanges();
+    });
+  }
+
+  getLoggedInStatus() {
+    this.isLoggedInSubscription = this.authService.isLoggedIn$.subscribe(
+      (isLoggedIn: boolean) => {
+        this.isLoggedIn$ = this.authService.isLoggedIn$;
+        if (isLoggedIn) {
+          this.user = this.authService.getUserName();
+          this.user = this.capitalizeFirstLetter(this.user);
+        }
+      }
+    );
   }
 
   onSubmit() {
@@ -127,7 +136,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           this.toastr.success('¡La contraseña se ha cambiado exitosamente!');
           setTimeout(() => {
             this.closeChangePasswordModal();
-          }, 500)
+          }, 500);
         },
         error: (error) => {
           this.toastr.error('Error al cambiar la contraseña: ' + error);
