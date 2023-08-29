@@ -2,15 +2,9 @@
 <nav
   class="navbar navbar-expand-sm navbar-dark bg-dark p-0"
   [@fadeAnimation]
-  style="min-height: 50px"
 >
   <div class="container d-flex">
-    <a
-      routerLink="/home"
-      class="navbar-brand text-uppercase"
-      style="cursor: pointer; font-size: 2rem"
-      >Verdulería Sol</a
-    >
+    <a routerLink="/home" class="navbar-brand">Verdulería Sol</a>
     <button
       class="navbar-toggler collapsed mr-1"
       data-toggle="collapse"
@@ -20,10 +14,7 @@
       <span></span>
       <span></span>
     </button>
-    <div
-      class="collapse navbar-collapse bg-dark top-50 right-0"
-      id="navbarCollapse"
-    >
+    <div class="collapse navbar-collapse top-50 right-0" id="navbarCollapse">
       <div class="navbar-nav me-auto">
         <ul *ngIf="isLoggedIn$ | async" class="navbar-nav">
           <li class="nav-item px-2">
@@ -63,16 +54,18 @@
               >
                 <i class="fas fa-user-check"></i> Bienvenido {{ user }}
               </a>
-              <div class="dropdown-menu shadow bg-dark">
+
+              <div class="dropdown-menu w-auto shadow bg-dark">
                 <a
                   class="dropdown-item"
                   style="cursor: pointer"
                   (click)="openChangePasswordModal()"
                 >
-                  <i class="fa-solid fa-pen-to-square"></i> Cambiar contraseña
+                  <i class="fa-solid fa-pen-to-square"></i>&nbsp;Cambiar
+                  contraseña
                 </a>
                 <a routerLink="/options" class="dropdown-item">
-                  <i class="fa-solid fa-cog"></i> Configuración
+                  <i class="fa-solid fa-cog"></i>&nbsp;Configuración
                 </a>
                 <a
                   *ngIf="getUserRole() === 'administrator'"
@@ -80,12 +73,23 @@
                   (click)="createBackup()"
                   style="cursor: pointer"
                 >
-                  <i class="fa-solid fa-database"></i> Respaldar BD
+                  <i class="fa-solid fa-database"></i>&nbsp;Respaldar BD
+                </a>
+                <li class="dropdown-divider"></li>
+                <a
+                  style="cursor: pointer"
+                  class="dropdown-item"
+                  (click)="onLogout()"
+                  *ngIf="isLoggedIn$ | async"
+                >
+                  <i class="fas fa-user-times"></i>&nbsp;Salir
                 </a>
               </div>
+              <!-- </li> -->
+
+              <!-- Componente Login -->
             </li>
 
-            <!-- Componente Login -->
             <li *ngIf="!(isLoggedIn$ | async)" class="nav-item px-2">
               <a
                 routerLink="/login"
@@ -95,15 +99,7 @@
                 <i class="fas fa-user"></i> Ingreso
               </a>
             </li>
-            <li *ngIf="isLoggedIn$ | async" class="">
-              <a
-                style="cursor: pointer"
-                class="nav-link px-2"
-                (click)="onLogout()"
-              >
-                <i class="fas fa-user-times"></i> Salir
-              </a>
-            </li>
+
             <!-- Registro usuarios -->
             <li
               *ngIf="!(isLoggedIn$ | async) && (allowRegisterUsers$ | async)"
@@ -134,27 +130,27 @@
   aria-hidden="true"
   #changePasswordModal
 >
-  <div class="modal-dialog modal-dialog-centered" role="document" style="width: 300px">
-    <div class="modal-content modal-shadow">
-      <div class="modal-header border">
-        <h5 class="modal-title" id="changePasswordModalLabel">
-          <i class="fas fa-user-secret"></i>&nbsp;Cambio de Contraseña
-        </h5>
-        <button
-          type="button"
-          class="close clic-on-icon"
-          aria-label="Close"
-          (click)="closeChangePasswordModal()"
-        >
-          <span
-            ><i
-              class="fas fa-close"
-            ></i
-          ></span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form [formGroup]="passwordForm" (ngSubmit)="onSubmit()">
+  <div
+    class="modal-dialog modal-dialog-centered"
+    style="width: fit-content"
+    role="document"
+  >
+    <form [formGroup]="passwordForm" (ngSubmit)="onSubmit()">
+      <div class="modal-content modal-shadow">
+        <div class="modal-header border">
+          <h5 class="modal-title" id="changePasswordModalLabel">
+            <i class="fas fa-user-secret"></i>&nbsp;Cambio de Contraseña
+          </h5>
+          <button
+            type="button"
+            class="close clic-on-icon"
+            aria-label="Close"
+            (click)="closeChangePasswordModal()"
+          >
+            <span><i class="fas fa-close"></i></span>
+          </button>
+        </div>
+        <div class="modal-body modal-shadow">
           <div class="form-group" style="margin-top: 15px">
             <label
               for="currentPassword"
@@ -271,8 +267,8 @@
               Cerrar
             </button>
           </div>
-        </form>
+        </div>
       </div>
-    </div>
+    </form>
   </div>
 </div>
