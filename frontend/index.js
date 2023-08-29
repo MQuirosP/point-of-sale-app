@@ -16,8 +16,6 @@ function createWindow() {
     autoHideMenuBar: true,
   });
 
-  const appPath = app.getAppPath();
-
   const indexPath = path.join(
     __dirname,
     "dist",
