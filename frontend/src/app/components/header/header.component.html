@@ -130,145 +130,147 @@
   aria-hidden="true"
   #changePasswordModal
 >
-  <div
-    class="modal-dialog modal-dialog-centered"
-    style="width: fit-content"
-    role="document"
-  >
-    <form [formGroup]="passwordForm" (ngSubmit)="onSubmit()">
-      <div class="modal-content modal-shadow">
-        <div class="modal-header border">
-          <h5 class="modal-title" id="changePasswordModalLabel">
-            <i class="fas fa-user-secret"></i>&nbsp;Cambio de Contraseña
-          </h5>
-          <button
-            type="button"
-            class="close clic-on-icon"
-            aria-label="Close"
-            (click)="closeChangePasswordModal()"
-          >
-            <span><i class="fas fa-close"></i></span>
-          </button>
-        </div>
-        <div class="modal-body modal-shadow">
-          <div class="form-group" style="margin-top: 15px">
-            <label
-              for="currentPassword"
-              class="floating-label"
-              [class.active]="
-                currentPasswordTouched ||
-                passwordForm.get('currentPassword').value
-              "
-              >Contraseña actual:</label
-            >
-            <input
-              type="password"
-              id="currentPassword"
-              class="form-control shadow"
-              formControlName="currentPassword"
-              (focus)="currentPasswordTouched = true"
-              (blur)="currentPasswordTouched = false"
-              autocomplete="false"
-            />
-            <div
-              *ngIf="
-                passwordForm.get('currentPassword').invalid &&
-                (passwordForm.get('currentPassword').dirty ||
-                  passwordForm.get('currentPassword').touched)
-              "
-            >
-              <div
-                *ngIf="passwordForm.get('currentPassword').hasError('required')"
-                class="error-message"
-              >
-                Contraseña actual es requerida.
-              </div>
-            </div>
-          </div>
-          <div class="form-group" style="margin-top: 40px">
-            <label
-              for="newPassword"
-              class="floating-label"
-              [class.active]="
-                newPasswordTouched || passwordForm.get('newPassword').value
-              "
-              >Nueva contraseña:</label
-            >
-            <input
-              type="password"
-              id="newPassword"
-              class="form-control shadow"
-              formControlName="newPassword"
-              (focus)="newPasswordTouched = true"
-              (blur)="newPasswordTouched = false"
-              autocomplete="false"
-            />
-            <div
-              *ngIf="
-                passwordForm.get('newPassword').invalid &&
-                (passwordForm.get('newPassword').dirty ||
-                  passwordForm.get('newPassword').touched)
-              "
-            >
-              <div
-                *ngIf="passwordForm.get('newPassword').hasError('required')"
-                class="error-message"
-              >
-                Nueva contraseña es requerida.
-              </div>
-            </div>
-          </div>
-          <div class="form-group" style="margin-top: 40px">
-            <label
-              for="confirmPassword"
-              class="floating-label"
-              [class.active]="
-                confirmPasswordTouched ||
-                passwordForm.get('confirmPassword').value
-              "
-              >Confirmar contraseña:</label
-            >
-            <input
-              type="password"
-              id="confirmPassword"
-              class="form-control shadow"
-              formControlName="confirmPassword"
-              (focus)="confirmPasswordTouched = true"
-              (blur)="confirmPasswordTouched = false"
-            />
-            <div
-              *ngIf="
-                passwordForm.get('confirmPassword').invalid &&
-                (passwordForm.get('confirmPassword').dirty ||
-                  passwordForm.get('confirmPassword').touched)
-              "
-            >
-              <div
-                *ngIf="passwordForm.get('confirmPassword').hasError('required')"
-                class="error-message"
-              >
-                Confirmar contraseña es requerida.
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer mt-4">
-            <button
-              type="submit"
-              class="btn btn-primary shadow clic-on-image"
-              [disabled]="passwordForm.invalid"
-            >
-              Guardar
-            </button>
+  <div class="d-flex align-content-center justify-content-center">
+    <div
+      class="modal-dialog modal-dialog-centered"
+      style="width: fit-content"
+      role="document"
+    >
+      <form [formGroup]="passwordForm" (ngSubmit)="onSubmit()">
+        <div class="modal-content modal-shadow">
+          <div class="modal-header border">
+            <h5 class="modal-title" id="changePasswordModalLabel">
+              <i class="fas fa-user-secret"></i>&nbsp;Cambio de Contraseña
+            </h5>
             <button
               type="button"
-              class="btn btn-secondary shadow clic-on-image"
+              class="close clic-on-icon"
+              aria-label="Close"
               (click)="closeChangePasswordModal()"
             >
-              Cerrar
+              <span><i class="fas fa-close"></i></span>
             </button>
           </div>
+          <div class="modal-body modal-shadow">
+            <div class="form-group" style="margin-top: 15px">
+              <label
+                for="currentPassword"
+                class="floating-label"
+                [class.active]="
+                  currentPasswordTouched ||
+                  passwordForm.get('currentPassword').value
+                "
+                >Contraseña actual:</label
+              >
+              <input
+                type="password"
+                id="currentPassword"
+                class="form-control shadow"
+                formControlName="currentPassword"
+                (focus)="currentPasswordTouched = true"
+                (blur)="currentPasswordTouched = false"
+                autocomplete="false"
+              />
+              <div
+                *ngIf="
+                  passwordForm.get('currentPassword').invalid &&
+                  (passwordForm.get('currentPassword').dirty ||
+                    passwordForm.get('currentPassword').touched)
+                "
+              >
+                <div
+                  *ngIf="passwordForm.get('currentPassword').hasError('required')"
+                  class="error-message"
+                >
+                  Contraseña actual es requerida.
+                </div>
+              </div>
+            </div>
+            <div class="form-group" style="margin-top: 40px">
+              <label
+                for="newPassword"
+                class="floating-label"
+                [class.active]="
+                  newPasswordTouched || passwordForm.get('newPassword').value
+                "
+                >Nueva contraseña:</label
+              >
+              <input
+                type="password"
+                id="newPassword"
+                class="form-control shadow"
+                formControlName="newPassword"
+                (focus)="newPasswordTouched = true"
+                (blur)="newPasswordTouched = false"
+                autocomplete="false"
+              />
+              <div
+                *ngIf="
+                  passwordForm.get('newPassword').invalid &&
+                  (passwordForm.get('newPassword').dirty ||
+                    passwordForm.get('newPassword').touched)
+                "
+              >
+                <div
+                  *ngIf="passwordForm.get('newPassword').hasError('required')"
+                  class="error-message"
+                >
+                  Nueva contraseña es requerida.
+                </div>
+              </div>
+            </div>
+            <div class="form-group" style="margin-top: 40px">
+              <label
+                for="confirmPassword"
+                class="floating-label"
+                [class.active]="
+                  confirmPasswordTouched ||
+                  passwordForm.get('confirmPassword').value
+                "
+                >Confirmar contraseña:</label
+              >
+              <input
+                type="password"
+                id="confirmPassword"
+                class="form-control shadow"
+                formControlName="confirmPassword"
+                (focus)="confirmPasswordTouched = true"
+                (blur)="confirmPasswordTouched = false"
+              />
+              <div
+                *ngIf="
+                  passwordForm.get('confirmPassword').invalid &&
+                  (passwordForm.get('confirmPassword').dirty ||
+                    passwordForm.get('confirmPassword').touched)
+                "
+              >
+                <div
+                  *ngIf="passwordForm.get('confirmPassword').hasError('required')"
+                  class="error-message"
+                >
+                  Confirmar contraseña es requerida.
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer mt-4">
+              <button
+                type="submit"
+                class="btn btn-primary shadow clic-on-image"
+                [disabled]="passwordForm.invalid"
+              >
+                Guardar
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary shadow clic-on-image"
+                (click)="closeChangePasswordModal()"
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
 </div>
