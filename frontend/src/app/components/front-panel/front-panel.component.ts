@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { fadeAnimation } from 'src/app/animations/fadeAnimation';
 import { ProductCacheService } from 'src/app/services/product-cache.service';
 import { Router } from '@angular/router';
+import { Products } from 'src/app/interfaces/products';
 
 @Component({
   selector: 'app-front-panel',
@@ -17,7 +18,7 @@ export class FrontPanelComponent {
   backendUrl: string = environment.apiUrl;
 
   subscription: Subscription = new Subscription();
-  products: any[] = [];
+  products: Products[] = [];
   filteredProducts: any[] = [];
   searchTerm: string = '';
   currentSlide: number = 0;
