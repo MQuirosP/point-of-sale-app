@@ -839,8 +839,12 @@ input::-webkit-input-placeholder {
   cursor: pointer;
 }
 
+.final-div {
+  margin-bottom: 70px;
+}
+
 @media (max-width: 768px) {
-  .final_div {
+  .final-div {
     margin-bottom: 120px !important;
   }
 }

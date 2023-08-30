@@ -20,6 +20,10 @@ interface ProductListStockAudit extends Products {
   adjustedAmount?: number;
 }
 
+interface AuditListProducts extends ProductListStockAudit {
+  filtered?: ProductListStockAudit[];
+}
+
 @Component({
   selector: 'app-stock-audit',
   templateUrl: './stock-audit.component.html',
@@ -319,7 +323,7 @@ export class StockAuditComponent implements OnInit {
     }
   }
 
-  getAuditListProducts(callback) {
+  getAuditListProducts(callback: (products: AuditListProducts[]) => void) {
     const request = indexedDB.open('auditListDB', 1);
 
     request.onsuccess = (event) => {
@@ -363,7 +367,7 @@ export class StockAuditComponent implements OnInit {
     }
   }
 
-  calculateDifference() {
+  calculateDifference(): void {
     let difference = 0;
     const systemStock = this.productForm.get('quantity').value;
     const realStock = this.productForm.get('real_stock').value;
@@ -520,42 +524,55 @@ export class StockAuditComponent implements OnInit {
   }
 
   importJSONData() {
-    if (!this.fileInput) {
-      return;
-    }
-
+    // if (!this.fileInput) {
+    //   return;
+    // }
+  
     const reader = new FileReader();
-
+  
     reader.onload = (e) => {
       const jsonData = e.target.result as string;
       const products = JSON.parse(jsonData);
-
+  
       const request = indexedDB.open('auditListDB', 1);
-
+  
+      const duplicates: Set<string> = new Set();
+  
       request.onsuccess = (event) => {
         const db = request.result;
         const transaction = db.transaction('products', 'readwrite');
         const objectStore = transaction.objectStore('products');
-
+  
         const importPromises = products.map((product: ProductListStockAudit) => {
           return new Promise<void>((resolve, reject) => {
             const addRequest = objectStore.add(product);
-
+  
             addRequest.onsuccess = () => {
               console.log('Producto agregado:', product);
               resolve();
             };
-
+  
             addRequest.onerror = (event) => {
-              console.error('Error al agregar producto:', event.target);
-              reject();
+              console.error('Error al agregar producto:', (event.target as IDBRequest).error);
+  
+              // Check if the error is due to a unique constraint violation
+              if ((event.target as IDBRequest).error.name === 'ConstraintError') {
+                duplicates.add(product.name);
+              }
+  
+              resolve(); // Resolve instead of rejecting to continue importing other products
             };
           });
         });
-
+  
         Promise.all(importPromises)
           .then(() => {
-            this.toastr.success('Información importada con éxito.');
+            if (duplicates.size > 0) {
+              const message = `Hay ${duplicates.size} producto(s) que ya se encuentran en la lista de productos a auditar.`;
+              this.toastr.warning(message);
+            } else {
+              this.toastr.success('Información importada con éxito.');
+            }
             this.fileInput = null;
             this.importButtonDisabled = true;
           })
@@ -563,7 +580,7 @@ export class StockAuditComponent implements OnInit {
             this.toastr.error('Error al importar la información.');
           });
       };
-
+  
       request.onerror = (event) => {
         console.error(
           'Error al abrir la base de datos de auditoría',
@@ -571,10 +588,11 @@ export class StockAuditComponent implements OnInit {
         );
       };
     };
-
+  
     reader.readAsText(this.fileInput);
-
+  
     this.fileInput = null;
     this.importButtonDisabled = true;
   }
+  
 }
