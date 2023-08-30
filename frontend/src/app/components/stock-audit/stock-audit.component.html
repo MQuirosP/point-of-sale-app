@@ -16,13 +16,14 @@
           class="form-control"
           placeholder="Ingresa tu búsqueda aquí..."
           autocomplete="off"
+          [spellcheck]="false"
         />
       </div>
     </div>
   </div>
 </header>
 
-<!-- Tabla con la lista de productos -->
+<!-- Opciones para la auditoría de productos -->
 <div class="container mt-4 final-div" [@fadeAnimation]>
   <div class="row">
     <div class="col-md-4">
@@ -336,7 +337,13 @@
                 'text-success': product.adjustedQuantity >= 0
               }"
             >
-              {{ product.adjustedQuantity | number : "1.2-2" }}
+              {{ product.adjustedQuantity | number : "1.2-2" }} <i
+              class="fas"
+              [ngClass]="{
+                'fa-arrow-up': product.adjustedAmount >= 0,
+                'fa-arrow-down': product.adjustedAmount < 0
+              }"
+            ></i>
             </td>
             <td
               class="text-center"
