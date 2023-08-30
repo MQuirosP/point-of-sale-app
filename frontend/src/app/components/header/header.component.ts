@@ -52,17 +52,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.authService.name$.subscribe((name) => {
       this.name = name;
     });
-  }
 
-  ngOnInit() {
-    this.getLoggedInStatus();
-    this.getRegisterStatus();
-    
     this.passwordForm = this.formBuilder.group({
       currentPassword: ['', Validators.required],
       newPassword: ['', Validators.required],
       confirmPassword: ['', Validators.required],
     });
+  }
+
+  ngOnInit() {
+    this.getLoggedInStatus();
+    this.getRegisterStatus();
   }
 
   ngOnDestroy(): void {
@@ -88,8 +88,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   getRegisterStatus() {
-    this.optionsService.getRegisterStatus().subscribe((status) => {
-      this.allowRegisterUsers$ = this.optionsService.getRegisterStatus();
+    this.optionsService.fetchRegisterStatus().subscribe((status) => {
+      this.allowRegisterUsers$ = this.optionsService.fetchRegisterStatus();
       this.changeDetectorReference.detectChanges();
     });
   }
@@ -152,6 +152,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.authService.onLogout();
     this.user = '';
     this.productCache.setCachedProducts([]); // Borrar la caché de productos
+    this.getRegisterStatus();
   }
 
   createBackup() {

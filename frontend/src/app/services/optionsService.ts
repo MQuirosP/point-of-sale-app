@@ -32,9 +32,9 @@ export class OptionsService {
         const activateRegister = options.activateRegister;
         return Boolean(activateRegister);
       }),
-      tap((status: boolean) => {
-        this.registerStatusSubject.next(status);
-      })
+      // tap((status: boolean) => {
+      //   this.registerStatusSubject.next(status);
+      // })
     )
   }
 
