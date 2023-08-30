@@ -27,7 +27,6 @@ import { PurchaseService } from './services/purchase.service';
 import { ReportsComponent } from './components/reports/reports.component';
 import { ProductCacheService } from './services/product-cache.service';
 import { NgSelectModule } from '@ng-select/ng-select';
-
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { SharedModule } from './pipes/sharedModule';

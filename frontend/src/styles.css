@@ -812,6 +812,19 @@ input[type="number"]::-webkit-outer-spin-button {
   margin-left: 10px;
 }
 
+input[type="search"]::-webkit-input-placeholder {
+  font-size: 0.8em;
+  color: #8f878781;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+input[type="search"]:focus::-webkit-input-placeholder {
+  font-size: 1em;
+  transition: all 0.3s ease;
+  color: rgba(255, 30, 30, 0.425);
+}
+
 .datalist-no-arrow::-webkit-calendar-picker-indicator {
   opacity: 0;
   display: none;
