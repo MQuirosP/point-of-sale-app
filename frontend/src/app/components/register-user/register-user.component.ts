@@ -3,7 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
 import { fadeAnimation } from 'src/app/animations/fadeAnimation';
+import { OptionsService } from 'src/app/services/optionsService';
 import { environment } from 'src/environments/environment';
 
 interface NewUser {
@@ -25,10 +27,12 @@ export class RegisterUserComponent implements OnInit {
   backendUrl = `${environment.apiUrl}users/`;
   userList: any[]=[];
 
+  allowRegisterUsers$: Observable<boolean>;
+
   constructor(
     private formBuilder: FormBuilder,
     private http: HttpClient,
-    private router: Router,
+    private optionsService: OptionsService,
     private toastr: ToastrService
   ) {}
 
@@ -42,6 +46,13 @@ export class RegisterUserComponent implements OnInit {
     });
 
     this.getUsersList();
+    this.getRegisterStatus();
+  }
+
+  getRegisterStatus() {
+    this.optionsService.fetchRegisterStatus().subscribe((status) => {
+      this.allowRegisterUsers$ = this.optionsService.fetchRegisterStatus();
+    });
   }
 
   registerNewUser() {

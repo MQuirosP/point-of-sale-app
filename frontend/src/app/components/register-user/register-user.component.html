@@ -20,7 +20,45 @@
 </header>
 
 <!-- Formulario registro de usuarios -->
-<section id="registro" class="align-content-center" [@fadeAnimation]>
+<div
+  class="container mt-5 d-flex justify-content-center text-danger"
+  *ngIf="!(allowRegisterUsers$ | async)"
+  style="width: 400px"
+>
+  <div class="card shadow">
+    <div class="modal-header">
+      <h4><i class="fas fa-exclamation-circle"></i>&nbsp;Mensaje importante</h4>
+      <button
+        type="button"
+        class="close clic-on-icon"
+        aria-label="Close"
+        routerLink="/home"
+      >
+        <span><i class="fas fa-close"></i></span>
+      </button>
+    </div>
+    <div class="card-body">
+      <h4 class="text-center">
+        Registro de usuarios deshabilitado. Consulte con el administrador.
+      </h4>
+    </div>
+    <div class="card-footer d-flex justify-content-center">
+      <a
+        routerLink="/home"
+        role="button"
+        class="btn btn-secondary border border-secondary clic-on-image shadow"
+      >
+        Cerrar
+      </a>
+    </div>
+  </div>
+</div>
+<section
+  id="registro"
+  class="align-content-center"
+  [@fadeAnimation]
+  *ngIf="allowRegisterUsers$ | async"
+>
   <div class="container">
     <div class="row">
       <div class="col col-md-4 mt-3">
@@ -142,7 +180,7 @@
                   [disabled]="newUserForm.invalid"
                   type="submit"
                   class="btn btn-primary shadow clic-on-image"
-                  style="cursor: pointer; margin-bottom: -10px;"
+                  style="cursor: pointer; margin-bottom: -10px"
                 >
                   Registro
                 </button>
@@ -170,7 +208,9 @@
                   <tr *ngFor="let user of userList">
                     <td>{{ user.username }}</td>
                     <td>{{ user.role }}</td>
-                    <td [ngStyle]="getStatusStyles(user.status)">{{ user.status }}</td>
+                    <td [ngStyle]="getStatusStyles(user.status)">
+                      {{ user.status }}
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -182,7 +222,4 @@
   </div>
 </section>
 
-<div style="margin-bottom: 90px;">
-
-</div>
-
+<div style="margin-bottom: 90px"></div>
