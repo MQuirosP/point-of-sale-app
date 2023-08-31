@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, NgZone } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ModalService } from '../../services/modalService';
+import { ModalService } from 'src/app/services/modalService';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { fadeAnimation } from 'src/app/animations/fadeAnimation';
@@ -18,12 +18,12 @@ export class FrontPanelComponent {
   backendUrl: string = environment.apiUrl;
 
   subscription: Subscription = new Subscription();
-  products: Products[] = [];
-  filteredProducts: any[] = [];
+  products: Products[];
+  filteredProducts: Products[];
   searchTerm: string = '';
   currentSlide: number = 0;
 
-  cachedProducts: any[] = [];
+  cachedProducts: Products[];
   dataLoaded: boolean = false;
 
   constructor(
@@ -43,7 +43,7 @@ export class FrontPanelComponent {
     this.subscription.unsubscribe();
   }
 
-  loadDataFromCache() {
+  loadDataFromCache(): void {
     const cachedData = localStorage.getItem('cachedProducts');
     if (cachedData) {
       this.cachedProducts = JSON.parse(cachedData);
