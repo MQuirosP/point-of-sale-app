@@ -3,7 +3,7 @@ const { exec } = require('child_process');
 
 app.on('ready', () => {
   // Iniciar el servidor de backend
-  const serverProcess = exec('npm run start', { cwd: __dirname }, (error) => {
+  const serverProcess = exec('node app.js', { cwd: __dirname }, (error) => {
     if (error) {
       console.error('Error al iniciar el servidor de backend:', error);
       app.quit();

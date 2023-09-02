@@ -52,5 +52,9 @@
     "typescript": "^5.1.3",
     "util": "^0.12.5",
     "xlsx": "^0.18.5"
-  }
+  },
+  "files": [
+    "main.js",
+    "backend"
+  ]
 }
