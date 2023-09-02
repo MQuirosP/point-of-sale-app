@@ -22,6 +22,7 @@ import { ProductService } from 'src/app/services/product.service';
 import { productAnimations } from 'src/app/animations/product-list-animation';
 import { Products } from 'src/app/interfaces/products';
 import { Sales } from 'src/app/interfaces/sales';
+import { HttpClient } from '@angular/common/http';
 
 interface ApiSaleResponse {
   success: boolean;
@@ -92,6 +93,7 @@ export class ShoppingCartComponent {
   constructor(
     private modalService: ModalService,
     private calendar: NgbCalendar,
+    private http: HttpClient,
     private dateParser: NgbDateParserFormatter,
     private toastr: ToastrService,
     private ticketService: TicketService,
