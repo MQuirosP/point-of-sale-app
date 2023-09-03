@@ -28,6 +28,7 @@
     "@ng-select/ng-select": "^11.0.0",
     "angular-resizable-element": "^7.0.2",
     "bootstrap": "^4.5.2",
+    "electron-cookies": "^1.1.0",
     "jquery": "^3.5.1",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.31",

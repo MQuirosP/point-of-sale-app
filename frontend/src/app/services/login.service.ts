@@ -121,7 +121,7 @@ export class LoginService {
   }
 
   getUserName(): string {
-    return this.cookieService.get(this.COOKIE_Name) || '';
+    return localStorage.getItem('name') || '';
   }
 
   onLogout() {
