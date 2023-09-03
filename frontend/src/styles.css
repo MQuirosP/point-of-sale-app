@@ -30,7 +30,7 @@ body {
 
 @font-face {
   font-family: Allura-regular;
-  src: url('assets/fonts/Allura-Regular.ttf') format('truetype');
+  src: url("assets/fonts/Allura-Regular.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
@@ -90,7 +90,7 @@ h1 {
     vertical-align: text-top;
     font-size: 0.8em;
   }
-  
+
   h1 {
     font-size: 1.8em;
   }
@@ -756,7 +756,6 @@ button {
   padding: 5px !important;
 }
 
-
 /* Animación para abrir el modal */
 @keyframes modalOpenAnimation {
   0% {
@@ -840,6 +839,23 @@ input[type="search"]:focus::-webkit-input-placeholder {
   color: rgba(255, 30, 30, 0.425);
 }
 
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  height: 24px;
+  width: 24px;
+  margin-left: 0.4em;
+  color: red;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='red'><path d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/></svg>");
+  cursor: pointer;
+  transition: opacity 0.3s; /* Agrega una transición de 0.3 segundos a la propiedad transform */
+  opacity: 0.5;
+}
+
+input[type="search"]::-webkit-search-cancel-button:hover {
+  opacity: 1;
+}
+
+
 .datalist-no-arrow::-webkit-calendar-picker-indicator {
   opacity: 0;
   display: none;
@@ -888,4 +904,3 @@ input::-webkit-input-placeholder {
     margin-bottom: 120px !important;
   }
 }
-

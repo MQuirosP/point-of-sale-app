@@ -19,6 +19,7 @@ const corsOptions = {
     "https://verduleria-app-142c1.firebaseapp.com",
     "http://192.168.0.8:4200",
     "https://verduleria-app-142c1.web.app",
+    "file://"
   ],
   optionsSuccessStatus: 200,
 };
