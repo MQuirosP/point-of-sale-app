@@ -15,6 +15,7 @@
           class="form-control"
           placeholder="Ingresa tu búsqueda aquí..."
           [autocomplete]="false"
+          [spellcheck]="false"
         />
       </div>
     </div>
@@ -22,7 +23,7 @@
 </header>
 
 <!-- Tiles de menú -->
-<div class="container text-center high" [@fadeAnimation]>
+<div class="container text-center high final-div" [@fadeAnimation]>
   <!-- Cinta superior de tarjetas -->
   <div class="row">
     <div class="col-md-4">
@@ -208,9 +209,6 @@
       <!-- Contenido de la tercera columna de la segunda fila -->
     </div>
   </div>
-</div>
-<div style="margin-bottom: 100px;">
-
 </div>
 
 <!-- Resultado no coincidente búsqueda de productos -->

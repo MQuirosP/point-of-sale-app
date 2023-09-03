@@ -14,6 +14,7 @@
           class="form-control"
           placeholder="Ingresa tu búsqueda aquí..."
           autocomplete="off"
+          [spellcheck]="false"
         />
       </div>
     </div>
@@ -129,6 +130,7 @@ aria-hidden="true"
                   formControlName="provider_name"
                   class="form-control datalist-no-arrow"
                   autocomplete="off"
+                  [spellcheck]="false"
                   [ngClass]="{
                     'is-valid':
                       purchaseForm.get('provider_name').touched &&
@@ -193,6 +195,7 @@ aria-hidden="true"
                   (input)="searchProduct()"
                   (focus)="handleBarcodeInput($event)"
                   autocomplete="off"
+                  [spellcheck]="false"
                   placeholder="Seleccione producto..."
                   [ngClass]="{
                     'is-valid':

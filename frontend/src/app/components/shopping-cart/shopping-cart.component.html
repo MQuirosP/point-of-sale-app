@@ -132,6 +132,7 @@
                   formControlName="customer_name"
                   class="form-control datalist-no-arrow"
                   autocomplete="off"
+                  [spellcheck]="false"
                   [ngClass]="{
                     'is-valid':
                       saleForm.get('customer_name').touched &&
@@ -193,6 +194,7 @@
                   (input)="searchProduct()"
                   (focus)="handleBarcodeInput($event)"
                   autocomplete="off"
+                  [spellcheck]="false"
                   placeholder="Seleccione producto..."
                   [ngClass]="{
                     'is-valid':
