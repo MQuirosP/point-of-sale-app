@@ -1,19 +1,18 @@
 <!-- Ficha Mis Productos -->
 <header id="main-header" class="pb-2 bg-info text-white main-board-style">
   <div class="container">
-    <div class="row align-items-center">
+    <div class="row pt-2">
       <div class="col-md-8" [@fadeAnimation]>
         <h1><i class="fas fa-list"></i> Mis productos</h1>
       </div>
-      <div class="col-md-4 search-input-pointer">
-        <label for="productSearch">Buscar producto:</label>
+      <div class="col-md-4">
         <input
           type="search"
           #productSearch
           id="productSearch"
           [(ngModel)]="searchTerm"
           (ngModelChange)="filterProducts(productSearch.value)"
-          class="form-control"
+          class="form-control no-submit mt-1"
           placeholder="Ingresa tu búsqueda aquí..."
           autocomplete="off"
           [spellcheck]="false"

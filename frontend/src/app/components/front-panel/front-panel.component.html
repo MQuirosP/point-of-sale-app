@@ -1,18 +1,17 @@
 <!-- Cabecero panel principal -->
 <header id="main-header" class="pb-2 bg-info text-white main-board-style">
   <div class="container">
-    <div class="row align-items-center">
+    <div class="row pt-2">
       <div class="col-md-8" [@fadeAnimation]>
         <h1><i class="fas fa-home"></i> Panel principal</h1>
       </div>
       <div class="col-md-4">
-        <label for="search">Buscar producto:</label>
         <input
           type="search"
           id="search"
           [(ngModel)]="searchTerm"
           (input)="filterProducts()"
-          class="form-control"
+          class="form-control no-submit mt-1"
           placeholder="Ingresa tu búsqueda aquí..."
           [autocomplete]="false"
           [spellcheck]="false"
