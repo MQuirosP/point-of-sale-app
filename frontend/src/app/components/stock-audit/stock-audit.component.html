@@ -2,10 +2,10 @@
 <header id="main-header" class="pb-2 bg-info text-white main-board-style">
   <div class="container">
     <div class="row pt-2">
-      <div class="col-md-8" [@fadeAnimation]>
+      <div class="col-md-9" [@fadeAnimation]>
         <h1><i class="fas fa-boxes-stacked"></i> Mis Existencias</h1>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
         <input
           [@fadeAnimation]
           type="search"
@@ -25,8 +25,8 @@
 
 <!-- Opciones para la auditoría de productos -->
 <div class="container mt-4 final-div" [@fadeAnimation]>
-  <div class="row ">
-    <div class="col-md-4 ">
+  <div class="row">
+    <div class="col-md-4 mb-2">
       <div class="modal-content">
         <div
           class="d-flex modal-header product-list-header border justify-content-between"
@@ -90,40 +90,46 @@
       </div>
     </div>
     <div class="col-md-4">
-      <div class="modal-content">
+      <div class="modal-content d-flex flex-column">
         <div class="modal-header border">
-          <h4><i class="fas fa-clipboard-check"></i>&nbsp;Controles de auditoría</h4>
+          <h4>
+            <i class="fas fa-clipboard-check"></i>&nbsp;Controles de auditoría
+          </h4>
         </div>
-        <div class="modal-body p-1" style="margin: 0 auto;">
-          <button
-            class="btn btn-primary border border-primary shadow mr-2"
-            (click)="openAuditListModal()"
-          >
-            Auditar
-          </button>
-          <button
-            class="btn btn-success border border-success shadow mr-2"
-            (click)="exportToJSON()"
-          >
-            Exportar
-          </button>
-          <label for="fileInput" class="form-label shadow mr-2" style="cursor: pointer">
-            Importar...
-          </label>
-          <button
-            class="btn btn-warning border border-warning shadow"
-            [disabled]="importButtonDisabled"
-            (click)="importJSONData()"
-          >
-            Cargar
-          </button>
-          <input
-            type="file"
-            class="form-control-file custom-file-input"
-            id="fileInput"
-            (change)="importJSON($event);"
-            style="display: none"
-          >
+        <div class="modal-body text-center">
+          <div class="d-flex flex-wrap justify-content-center">
+            <button
+              class="btn btn-primary border border-primary shadow m-2"
+              (click)="openAuditListModal()"
+            >
+              Auditar
+            </button>
+            <button
+              class="btn btn-success border border-success shadow m-2"
+              (click)="exportToJSON()"
+            >
+              Exportar
+            </button>
+            <button
+              class="btn btn-warning border border-warning shadow m-2"
+              [disabled]="importButtonDisabled"
+              (click)="importJSONData()"
+            >
+              Importar
+            </button>
+          </div>
+          <div class="mt-2">
+            <label for="fileInput" class="btn btn-primary pointer-event"
+              >Seleccionar archivo</label
+            >
+            <input
+              type="file"
+              class="form-control-file custom-file-input"
+              id="fileInput"
+              (change)="importJSON($event)"
+              style="display: none"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -306,7 +312,9 @@
             <!-- Si no hay elementos en la lista -->
             <tr>
               <td colspan="8" class="text-center">
-                <h4 class="h4 text-danger mt-3">Sin elementos para la auditoría</h4>
+                <h4 class="h4 text-danger mt-3">
+                  Sin elementos para la auditoría
+                </h4>
               </td>
             </tr>
           </ng-container>
@@ -334,22 +342,29 @@
               class="text-center"
               [ngClass]="{
                 'text-danger': product.adjustedQuantity < 0,
-                'text-success': product.adjustedQuantity >= 0
+                'text-success':
+                  product.adjustedQuantity >= 0 &&
+                  product.adjustedQuantity !== 0
               }"
             >
-              {{ product.adjustedQuantity | number : "1.2-2" }} <i
-              class="fas"
-              [ngClass]="{
-                'fa-arrow-up': product.adjustedAmount >= 0,
-                'fa-arrow-down': product.adjustedAmount < 0
-              }"
-            ></i>
+              {{ product.adjustedQuantity | number : "1.2-2" }}
+              <i
+                class="fas"
+                [ngClass]="{
+                  'fa-arrow-up':
+                    product.adjustedAmount > 0 &&
+                    product.adjustedQuantity !== 0,
+                  'fa-arrow-down':
+                    product.adjustedAmount < 0 && product.adjustedQuantity !== 0
+                }"
+              ></i>
             </td>
             <td
               class="text-center"
               [ngClass]="{
                 'text-danger': product.adjustedAmount < 0,
-                'text-success': product.adjustedAmount >= 0
+                'text-success':
+                  product.adjustedAmount >= 0 && product.adjustedAmount !== 0
               }"
             >
               {{ product.adjustedAmount | currency : "CRC" : "₡" : "1.2-2" }}

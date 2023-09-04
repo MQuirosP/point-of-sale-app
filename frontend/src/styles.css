@@ -267,7 +267,17 @@ div.dropdown-menu > .dropdown-item.selected {
 }
 
 .footer .contact-info a:hover {
-  color: rgb(65, 65, 63);
+  color: brown;
+  transition: 0.3s color ease;
+}
+
+.footer .contact-info a:hover i.fa-envelope {
+  color: rgb(46, 94, 184);
+  transition: 0.3s color ease;
+}
+
+.footer .contact-info a:hover i.fa-whatsapp {
+  color: #00bb2d ;
   transition: 0.3s color ease;
 }
 
@@ -908,7 +918,7 @@ input::-webkit-input-placeholder {
 }
 
 .final-div {
-  margin-bottom: 60px;
+  margin-bottom: 80px;
 }
 
 @media (max-width: 768px) {
@@ -918,6 +928,11 @@ input::-webkit-input-placeholder {
 }
 
 .row-selected:hover {
-  background-color: #94f594a4;
+  background-color: #cdffd7;
   transition: all 0.1s ease;
 }
+
+div.d-flex.flex-wrap button.btn {
+  min-width: 80px;
+}
+
