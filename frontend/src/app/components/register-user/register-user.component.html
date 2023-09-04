@@ -19,7 +19,7 @@
 </header>
 
 <!-- Mensaje de opción de registro deshabilitada -->
-<div
+<ng-container
 class="container mt-5 d-flex justify-content-center text-danger"
   *ngIf="!(allowRegisterUsers$ | async)"
   style="width: 400px"
@@ -51,7 +51,7 @@ class="container mt-5 d-flex justify-content-center text-danger"
     </a>
   </div>
 </div>
-</div>
+</ng-container>
 
 <!-- Formulario registro de usuarios -->
 <section
@@ -60,7 +60,7 @@ id="registro"
   [@fadeAnimation]
   *ngIf="allowRegisterUsers$ | async"
 >
-  <div class="container">
+  <div class="container final-div">
     <div class="row">
       <div class="col col-md-4 mt-3">
         <div class="card shadow">
@@ -223,4 +223,3 @@ id="registro"
   </div>
 </section>
 
-<div style="margin-bottom: 90px"></div>
