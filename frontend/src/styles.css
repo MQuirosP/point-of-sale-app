@@ -916,3 +916,8 @@ input::-webkit-input-placeholder {
     margin-bottom: 120px !important;
   }
 }
+
+.row-selected:hover {
+  background-color: #94f594a4;
+  transition: all 0.1s ease;
+}
