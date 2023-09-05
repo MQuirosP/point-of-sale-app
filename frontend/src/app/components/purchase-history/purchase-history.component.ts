@@ -37,20 +37,6 @@ interface ApiProviderResponse {
   };
 }
 
-// interface Product {
-//   productId: number;
-//   int_code: any;
-//   name: any;
-//   price: any;
-//   quantity: any;
-//   taxes: boolean;
-//   taxPercentage: number;
-//   taxes_amount?: number;
-//   sub_total?: number;
-//   isNew?: boolean;
-//   isRemoved?: boolean;
-// }
-
 @Component({
   selector: 'app-purchase-history',
   templateUrl: './purchase-history.component.html',
