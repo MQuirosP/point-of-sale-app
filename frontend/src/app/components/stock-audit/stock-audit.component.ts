@@ -53,13 +53,13 @@ export class StockAuditComponent implements OnInit {
 
   fileInput: File | null = null;
   importButtonDisabled: boolean = true;
+  exportButtonDisabled: Promise<boolean>;
 
   constructor(
     private productService: ProductService,
     private toastr: ToastrService,
     private changeDetectorRef: ChangeDetectorRef,
     private formBuilder: FormBuilder,
-    private ngZone: NgZone
   ) {}
 
   ngOnInit() {
@@ -75,6 +75,7 @@ export class StockAuditComponent implements OnInit {
       difference: [0, Validators.required],
     });
     this.initializeIndexedDB();
+    this.exportButtonDisabled = this.isIndexedDBEmpty();
   }
   
   ngAfterViewInit(): void {
@@ -132,6 +133,35 @@ export class StockAuditComponent implements OnInit {
         event.target
       );
     };
+  }
+
+  async isIndexedDBEmpty() {
+    const db = await new Promise<IDBDatabase>((resolve, reject) => {
+      const request = indexedDB.open('auditListDB', 1);
+  
+      request.onsuccess = (event) => {
+        resolve((event.target as IDBOpenDBRequest).result);
+      };
+  
+      request.onerror = (event) => {
+        reject('Error al abrir la base de datos de IndexedDB.');
+      };
+    });
+  
+    return new Promise<boolean>((resolve, reject) => {
+      const transaction = db.transaction(['products'], 'readonly');
+      const objectStore = transaction.objectStore('products');
+      const countRequest = objectStore.count();
+  
+      countRequest.onsuccess = () => {
+        const count = countRequest.result;
+        resolve(count === 0);
+      };
+  
+      countRequest.onerror = (event) => {
+        reject('Error al contar registros en IndexedDB.');
+      };
+    });
   }
 
   getUserRole(): string {
@@ -300,6 +330,9 @@ export class StockAuditComponent implements OnInit {
 
         addRequest.onsuccess = () => {
           this.toastr.success('Producto agregado a la lista de auditoría.');
+          setTimeout(() => {
+            this.exportButtonDisabled = this.isIndexedDBEmpty();
+          }, 50)
         };
 
         addRequest.onerror = (event) => {
@@ -396,6 +429,9 @@ export class StockAuditComponent implements OnInit {
         this.toastr.success('Producto eliminado de la lista de auditoría.');
         this.getAuditListProducts((auditListProducts) => {
           this.auditListProducts = auditListProducts;
+          setTimeout(() => {
+            this.exportButtonDisabled = this.isIndexedDBEmpty();
+          }, 50)
         });
       };
 
@@ -575,6 +611,7 @@ export class StockAuditComponent implements OnInit {
             }
             this.fileInput = null;
             this.importButtonDisabled = true;
+            this.exportButtonDisabled = this.isIndexedDBEmpty();
           })
           .catch(() => {
             this.toastr.error('Error al importar la información.');
@@ -588,11 +625,6 @@ export class StockAuditComponent implements OnInit {
         );
       };
     };
-  
     reader.readAsText(this.fileInput);
-  
-    this.fileInput = null;
-    this.importButtonDisabled = true;
   }
-  
 }
