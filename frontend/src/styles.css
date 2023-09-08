@@ -864,25 +864,25 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 input[type="search"]::-webkit-input-placeholder {
-  font-size: 0.9em;
-  color: #fff;
+  font-size: 0.95em;
+  color: #aaa;
   padding: 0;
   transition: all 0.3s ease;
 }
 
 input[type="search"]:focus::-webkit-input-placeholder {
   font-size: 0.95em;
-  color: #aaa;
+  color: #777;
   /* color: rgba(83, 18, 18, 0.425); */
 }
 
-input[type="search"][id="product_name"]::-webkit-search-cancel-button {
+/* input[type="search"][id="product_name"]::-webkit-search-cancel-button {
   margin-right: 0;
-}
+} */
 
 input[type="search"]::-webkit-search-cancel-button:hover {
   opacity: 1;
-  background-image: none;
+  transition: all 0.3s ease;
 }
 
 
@@ -892,15 +892,15 @@ input[type="search"]::-webkit-search-cancel-button {
   height: 24px;
   width: 24px;
   margin-left: 0.4em;
-  transition: opacity 0.3s;
+  transition: all 0.3s ease;
   opacity: 0.5;
 }
 
 input[type="search"]:focus::-webkit-search-cancel-button {
   -webkit-appearance: none;
-  /* color: red; */
   position: absolute;
-  right: 10px;
+  transition: all 0.3s ease;
+  right: 5px;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='red'><path d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/></svg>");
 }
 
@@ -916,7 +916,7 @@ input.no-submit {
   background-size: 20px;
   background-repeat: no-repeat;
   background-position: center center;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   cursor: pointer;
   position: relative;
   z-index: 1;
