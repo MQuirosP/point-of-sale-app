@@ -906,11 +906,10 @@ input[type="search"]:focus::-webkit-search-cancel-button {
 /* Estilos iniciales para el input con la clase "no-submit" */
 input.no-submit {
   /* width: 100%; */
-  background-color: transparent;
+  background-color: #ffffff27;
   border-radius: 20px;
-  /* box-shadow: inset #333 1px 1px 1px; */
   width: 40px;
-  border: none;
+  border: solid #cccccc77 1px;
   padding: 9px 7px;
   background-image: url("assets/magnifying-glass.png");
   background-size: 20px;
@@ -924,6 +923,7 @@ input.no-submit {
 input[type="search"]:focus {
   background-image: none; /* Elimina el fondo (lupa) cuando el input está enfocado */
   width: 90%;
+  box-shadow: none;
   border-radius: 5px;
   cursor: text;
 }

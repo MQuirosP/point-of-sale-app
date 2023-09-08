@@ -202,13 +202,13 @@
       <div class="modal-body">
         <!-- Contenido del modal -->
         <div class="mb-3 col-md-5">
-          <label for="providerSearch">Buscar proveedor:</label>
+          <label for="providerSearch" style="visibility: hidden; display: none;">Buscar proveedor:</label>
           <input
             type="search"
             id="providerSearch"
             [(ngModel)]="searchTermProvider"
             (ngModelChange)="filterProviders()"
-            class="form-control no-submit"
+            class="form-control shadow no-submit"
             placeholder="Ingresa tu búsqueda aquí..."
             autocomplete="new-password"
             [spellcheck]="false"
@@ -481,13 +481,13 @@
       <div class="modal-body">
         <!-- Contenido del modal -->
         <div class="mb-3 col-md-5">
-          <label for="customerSearch">Buscar cliente:</label>
+          <label for="customerSearch" style="display: none;">Buscar cliente:</label>
           <input
             type="search"
             id="customerSearch"
             [(ngModel)]="searchTermCustomer"
             (ngModelChange)="filterCustomers()"
-            class="form-control no-submit"
+            class="form-control shadow no-submit"
             placeholder="Ingresa tu búsqueda aquí..."
             autocomplete="new-password"
             [spellcheck]="false"
@@ -802,13 +802,13 @@
       <div class="modal-body">
         <!-- Contenido del modal -->
         <div class="mb-3 col-md-8">
-          <label for="userSearch">Buscar usuario:</label>
+          <label for="userSearch" style="display: none;">Buscar usuario:</label>
           <input
             type="search"
             id="userSearch"
             [(ngModel)]="searchTermUser"
             (ngModelChange)="filterUsers()"
-            class="form-control no-submit"
+            class="form-control shadow no-submit"
             placeholder="Ingresa tu búsqueda aquí..."
             autocomplete="new-password"
             [spellcheck]="false"
