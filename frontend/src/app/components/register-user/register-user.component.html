@@ -18,44 +18,9 @@
   </div>
 </header>
 
-<!-- Mensaje de opción de registro deshabilitada -->
-<ng-container
-class="container mt-5 d-flex justify-content-center text-danger"
-  *ngIf="!(allowRegisterUsers$ | async)"
-  style="width: 400px"
->
-  <div class="card shadow">
-    <div class="modal-header">
-      <h4><i class="fas fa-exclamation-circle"></i>&nbsp;Mensaje importante</h4>
-      <button
-        type="button"
-        class="close clic-on-icon"
-        aria-label="Close"
-        routerLink="/home"
-      >
-        <span><i class="fas fa-close"></i></span>
-      </button>
-    </div>
-    <div class="card-body">
-      <h4 class="text-center">
-        Registro de usuarios deshabilitado. Consulte con el administrador.
-      </h4>
-    </div>
-    <div class="card-footer d-flex justify-content-center">
-      <a
-      routerLink="/home"
-      role="button"
-      class="btn btn-secondary border border-secondary clic-on-image shadow"
-      >
-      Cerrar
-    </a>
-  </div>
-</div>
-</ng-container>
-
 <!-- Formulario registro de usuarios -->
 <section
-id="registro"
+  id="registro"
   class="align-content-center"
   [@fadeAnimation]
   *ngIf="allowRegisterUsers$ | async"
@@ -223,3 +188,40 @@ id="registro"
   </div>
 </section>
 
+<!-- Mensaje de opción de registro deshabilitada -->
+<ng-container>
+  <div
+    class="container mt-5 d-flex justify-content-center align-content-center text-danger"
+    *ngIf="!(allowRegisterUsers$ | async)"
+  >
+    <div class="card shadow" style="width: 400px !important">
+      <div class="modal-header">
+        <h4 class="modal-title">
+          <i class="fas fa-exclamation-circle"></i>&nbsp;Mensaje importante
+        </h4>
+        <button
+          type="button"
+          class="close clic-on-icon"
+          aria-label="Close"
+          routerLink="/home"
+        >
+          <span><i class="fas fa-close"></i></span>
+        </button>
+      </div>
+      <div class="card-body">
+        <h4 class="text-center">
+          Registro de usuarios deshabilitado. Consulte con el administrador.
+        </h4>
+      </div>
+      <div class="card-footer d-flex justify-content-center">
+        <a
+          routerLink="/home"
+          role="button"
+          class="btn btn-secondary border border-secondary clic-on-image shadow"
+        >
+          Cerrar
+        </a>
+      </div>
+    </div>
+  </div>
+</ng-container>

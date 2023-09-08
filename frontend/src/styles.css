@@ -559,7 +559,7 @@ div.utilitary-icons > a > i.fas {
 }
 
 .table-row-even {
-  background-color: #f2f2f2;
+  background-color: #f3f3f3;
 }
 
 .table-row-odd {
@@ -929,7 +929,7 @@ input::-webkit-input-placeholder {
 }
 
 .final-div {
-  margin-bottom: 60px;
+  margin-bottom: 80px;
 }
 
 @media (max-width: 768px) {
@@ -947,4 +947,3 @@ input::-webkit-input-placeholder {
 div.d-flex.flex-wrap button.btn {
   min-width: 80px;
 }
-
