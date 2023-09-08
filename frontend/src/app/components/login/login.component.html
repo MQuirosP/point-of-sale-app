@@ -22,11 +22,12 @@
 <section class="py-4 mb-4" [@fadeAnimation]>
   <div class="container mt-3">
     <div
-      class="login-box shadow mx-auto bg-white border border-2"
+      class="login-box shadow mx-auto bg-white border"
     >
       <form (ngSubmit)="onSubmit()">
-        <div class="card-header modal-header">
-          <h4 class="text-center"><i class="fas fa-check-circle"></i>&nbsp;Inicio de sesión</h4>
+        <div class="modal-header border">
+          <h4 class="modal-title">
+            <i class="fas fa-check-circle"></i>&nbsp;Inicio de sesión</h4>
         </div>
         <div class="card-body">
           <div class="form-group">

@@ -99,21 +99,21 @@
         <div class="modal-body text-center">
           <div class="d-flex flex-wrap justify-content-center">
             <button
-              class="btn btn-primary border border-primary shadow m-2"
+              class="btn btn-primary border border-primary shadow m-2 clic-on-image"
               (click)="openAuditListModal()"
               [disabled]="exportButtonDisabled | async"
             >
               Auditar
             </button>
             <button
-              class="btn btn-success border border-success shadow m-2"
+              class="btn btn-success border border-success shadow m-2 clic-on-image"
               (click)="exportToJSON()"
               [disabled]="exportButtonDisabled | async"
             >
               Exportar
             </button>
             <button
-              class="btn btn-warning border text-white border-warning shadow m-2"
+              class="btn btn-warning border text-white border-warning shadow m-2 clic-on-image"
               [disabled]="importButtonDisabled"
               (click)="importJSONData()"
             >
@@ -121,7 +121,7 @@
             </button>
           </div>
           <div class="mt-2">
-            <label for="fileInput" class="btn btn-light border text-info shadow pointer-event"
+            <label for="fileInput" class="btn btn-light border text-secondary shadow pointer-event clic-on-image"
               >Seleccionar archivo</label
             >
             <input
