@@ -141,12 +141,20 @@
                   }"
                 />
               </div>
-              <div class="card-footer text-center">
+              <div
+                class="d-flex justify-content-between card-footer text-center"
+              >
+                <button
+                  class="btn btn-danger border border-danger shadow clic-on-image pointer-event"
+                  type="reset"
+                  (click)="resetForm()"
+                >
+                  Reset
+                </button>
                 <button
                   [disabled]="newUserForm.invalid"
                   type="submit"
-                  class="btn btn-primary shadow clic-on-image"
-                  style="cursor: pointer; margin-bottom: -10px"
+                  class="btn btn-primary border border-primary shadow clic-on-image pointer-event"
                 >
                   Registro
                 </button>

@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { fadeAnimation } from 'src/app/animations/fadeAnimation';
@@ -93,6 +92,10 @@ export class RegisterUserComponent implements OnInit {
         this.toastr.error(`Error al crear el usuario: ${error.message}`);
       },
     });
+  }
+
+  resetForm() {
+    this.newUserForm.reset();
   }
 
   addFloatingLabelClass(inputId: string) {

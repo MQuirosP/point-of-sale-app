@@ -598,8 +598,10 @@ div.utilitary-icons > a > i.fas {
 
 .floating-label.active {
   top: 0;
-  left: 0px;
-  transform: translate(0, -100%);
+  left: 10px;
+  padding: 0 5px;
+  background-color: #fff;
+  transform: translate(0, -60%);
   font-size: 16px;
   opacity: 1;
 }
