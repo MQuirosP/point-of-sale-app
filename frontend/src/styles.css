@@ -873,7 +873,7 @@ input[type="search"]::-webkit-input-placeholder {
 input[type="search"]:focus::-webkit-input-placeholder {
   font-size: 0.95em;
   color: #777;
-  /* color: rgba(83, 18, 18, 0.425); */
+  transition: all 0.3s ease;
 }
 
 /* input[type="search"][id="product_name"]::-webkit-search-cancel-button {
