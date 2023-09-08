@@ -905,27 +905,37 @@ input[type="search"]:focus::-webkit-search-cancel-button {
 
 /* Estilos iniciales para el input con la clase "no-submit" */
 input.no-submit {
-  /* width: 100%; */
   background-color: #ffffff27;
   border-radius: 20px;
   width: 40px;
+  box-shadow: #fff 1px 1px 1px inset;
   border: solid #cccccc77 1px;
-  padding: 9px 7px;
+  /* padding: 9px 7px; */
   background-image: url("assets/magnifying-glass.png");
   background-size: 20px;
   background-repeat: no-repeat;
   background-position: center center;
   transition: all 0.2s ease;
   cursor: pointer;
+  position: relative;
+  z-index: 1;
 }
+
+input.no-submit:hover {
+  border-color: #aaaaaa 1px solid;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4) inset, -2px -2px 4px rgba(255, 255, 255, 0.2) inset;
+  transform: translate(1px, 1px);
+}
+
 
 /* Estilos cuando el input está enfocado */
 input[type="search"]:focus {
   background-image: none; /* Elimina el fondo (lupa) cuando el input está enfocado */
-  width: 90%;
+  width: 100%;
   box-shadow: none;
   border-radius: 5px;
   cursor: text;
+  transform: none;
 }
 
 .datalist-no-arrow::-webkit-calendar-picker-indicator {
