@@ -959,10 +959,10 @@ input::-webkit-input-placeholder {
   color: #fff;
 }
 
-.row-selected:hover .product-name {
+/* .row-selected:hover .product-name {
   letter-spacing: 1.2px;
   transition: letter-spacing 0.2s ease;
-}
+} */
 
 /* .row-selected:hover span {
   padding-left: 10px;
