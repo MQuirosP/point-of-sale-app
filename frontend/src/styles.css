@@ -212,6 +212,15 @@ div.dropdown-menu > .dropdown-item.selected {
     border-radius: 0 0 0 5px;
     transition: 0.3s ease;
   }
+  a.hide {
+    display: flex;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+a.hide {
+  width: 140px;
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
@@ -221,6 +230,15 @@ div.dropdown-menu > .dropdown-item.selected {
     right: 0px;
     z-index: 999;
     max-height: calc(100vh - 40px);
+  }
+  a.hide {
+    width: 50px;
+  }
+  span.hide-button {
+    content: "";
+    visibility: hidden;
+    display: none;
+    max-width: 50px;
   }
 }
 
@@ -427,11 +445,6 @@ div.dropdown-menu > .dropdown-item.selected {
 .hidden-link:hover {
   color: rgb(41, 38, 38);
   text-shadow: 3px 3px 5px rgb(41, 38, 38);
-}
-
-button {
-  border: none;
-  background-color: transparent;
 }
 
 .close {
@@ -774,7 +787,8 @@ label {
 }
 
 button {
-  padding: 5px !important;
+  padding: 5px 10px !important;
+  background-color: transparent;
 }
 
 /* Animación para abrir el modal */
