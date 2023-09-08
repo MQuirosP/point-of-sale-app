@@ -865,29 +865,15 @@ input[type="number"]::-webkit-outer-spin-button {
 
 input[type="search"]::-webkit-input-placeholder {
   font-size: 0.9em;
-  color: #8f878781;
+  color: #fff;
   padding: 0;
   transition: all 0.3s ease;
 }
 
 input[type="search"]:focus::-webkit-input-placeholder {
   font-size: 0.95em;
-  transition: all 0.3s ease;
   color: #aaa;
   /* color: rgba(83, 18, 18, 0.425); */
-}
-
-input[type="search"]::-webkit-search-cancel-button {
-  -webkit-appearance: none;
-  margin-right: 25px;
-  height: 24px;
-  width: 24px;
-  margin-left: 0.4em;
-  color: red;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='red'><path d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/></svg>");
-  cursor: pointer;
-  transition: opacity 0.3s;
-  opacity: 0.5;
 }
 
 input[type="search"][id="product_name"]::-webkit-search-cancel-button {
@@ -896,21 +882,53 @@ input[type="search"][id="product_name"]::-webkit-search-cancel-button {
 
 input[type="search"]::-webkit-search-cancel-button:hover {
   opacity: 1;
+  background-image: none;
 }
 
+
+/* Estilos iniciales para todos los input[type="search"] */
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  height: 24px;
+  width: 24px;
+  margin-left: 0.4em;
+  color: red;
+  transition: opacity 0.3s;
+  opacity: 0.5;
+}
+
+input[type="search"]:focus::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  color: red;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='red'><path d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/></svg>");
+}
+
+/* Estilos iniciales para el input con la clase "no-submit" */
 input.no-submit {
-  width: 100%;
+  /* width: 100%; */
+  background-color: transparent;
+  border-radius: 20px;
+  /* box-shadow: inset #333 1px 1px 1px; */
+  width: 40px;
+  border: none;
   padding: 9px 7px;
-  /* You can use your image but having cleaner code is better, so I suggest saving the file and just linking it*/
   background-image: url("assets/magnifying-glass.png");
-  background-size: 13px;
+  background-size: 20px;
   background-repeat: no-repeat;
-  background-position: right 15px center;
+  background-position: center center;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+/* Estilos cuando el input está enfocado */
+input[type="search"]:focus {
+  background-image: none; /* Elimina el fondo (lupa) cuando el input está enfocado */
+  width: 90%;
+  border-radius: 5px;
+  cursor: text;
 }
 
 .datalist-no-arrow::-webkit-calendar-picker-indicator {
-  /* opacity: 0;
-  display: none; */
   margin: 0;
   margin-right: -10px;
   padding: 0;
