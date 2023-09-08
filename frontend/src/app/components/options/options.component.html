@@ -51,7 +51,9 @@
                 <legend class="text-center options-card-body-text">
                   Activar el registro de usuarios.
                 </legend>
-                <div class="container d-flex text-center options-button-container">
+                <div
+                  class="container d-flex text-center options-button-container"
+                >
                   <label class="form-check-label" style="cursor: pointer">
                     <input
                       *ngIf="getUserRole() !== 'user'"
@@ -111,7 +113,7 @@
           <div class="card shadow">
             <div class="card-header modal-header text-center">
               <h5 class="modal-title">
-                <i class="fa fa-people-group"></i> Mis clientes
+                <i class="fas fa-people-group"></i> Mis clientes
               </h5>
             </div>
             <div class="card-body">
@@ -147,7 +149,10 @@
             </div>
             <div class="card-body" style="margin-bottom: 14px">
               <fieldset class="row">
-                <legend class="text-center options-card-body-text" style="font-size: 18px">
+                <legend
+                  class="text-center options-card-body-text"
+                  style="font-size: 18px"
+                >
                   Mantenimiento de usuarios
                 </legend>
                 <div class="col-12 text-center options-button-container">
@@ -182,7 +187,9 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content modal-shadow">
       <div class="modal-header border">
-        <h5 class="modal-title"><i class="fas fa-cog"></i>&nbsp;Mantenimiento de proveedores</h5>
+        <h5 class="modal-title">
+          <i class="fas fa-cog"></i>&nbsp;Mantenimiento de proveedores
+        </h5>
         <button
           type="button"
           class="close clic-on-icon"
@@ -221,17 +228,18 @@
                 <tr
                   *ngFor="let provider of filteredProviders; let even = even"
                   [ngClass]="{ 'table-row-even': even, 'table-row-odd': !even }"
+                  class="row-selected"
                 >
-                  <td class="product-name">
-                    <div class="icon-container" (click)="toggleIcons(provider)">
+                  <td>
+                    <span class="product-name" (click)="toggleIcons(provider)">
                       {{ provider.provider_name }}
-                    </div>
+                    </span>
                     <div
                       class="utilitary-icons"
                       [ngClass]="{ 'show-icons ': provider.showIcons }"
                     >
                       <a
-                        class="ml-3 mr-2"
+                        class="mr-3"
                         role="button"
                         (click)="
                           openProviderInfoModal(true, provider);
@@ -239,7 +247,7 @@
                         "
                       >
                         <i
-                          class="fa-solid fa-pen-to-square clic-on-icon"
+                          class="fas fa-solid fa-pen-to-square clic-on-icon"
                           style="color: #1100fa; cursor: pointer"
                         ></i>
                       </a>
@@ -458,7 +466,9 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content modal-shadow">
       <div class="modal-header border">
-        <h5 class="modal-title"><i class="fas fa-cog"></i>&nbsp;Mantenimiento de clientes</h5>
+        <h5 class="modal-title">
+          <i class="fas fa-cog"></i>&nbsp;Mantenimiento de clientes
+        </h5>
         <button
           type="button"
           class="close clic-on-icon"
@@ -497,20 +507,21 @@
                 <tr
                   *ngFor="let customer of filteredCustomers; let even = even"
                   [ngClass]="{ 'table-row-even': even, 'table-row-odd': !even }"
+                  class="row-selected"
                 >
-                  <td class="product-name">
-                    <div class="icon-container" (click)="toggleIcons(customer)">
+                  <td>
+                    <span class="product-name" (click)="toggleIcons(customer)">
                       {{ customer.customer_name }}
                       {{ customer.customer_first_lastname }}
                       {{ customer.customer_second_lastname }},
                       {{ customer.customer_dni }}
-                    </div>
+                    </span>
                     <div
                       class="utilitary-icons"
                       [ngClass]="{ 'show-icons ': customer.showIcons }"
                     >
                       <a
-                        class="ml-3 mr-2"
+                        class="mr-3"
                         role="button"
                         (click)="
                           openCustomerInfoModal(true, customer);
@@ -518,7 +529,7 @@
                         "
                       >
                         <i
-                          class="fa-solid fa-pen-to-square clic-on-icon"
+                          class="fas fa-solid fa-pen-to-square clic-on-icon"
                           style="color: #1100fa; cursor: pointer"
                         ></i>
                       </a>
@@ -773,10 +784,12 @@
   aria-labelledby="usersListModalLabel"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
     <div class="modal-content modal-shadow">
       <div class="modal-header border">
-        <h5 class="modal-title"><i class="fas fa-cog"></i>&nbsp;Mantenimiento de usuarios</h5>
+        <h5 class="modal-title">
+          <i class="fas fa-cog"></i>&nbsp;Mantenimiento de usuarios
+        </h5>
         <button
           type="button"
           class="close clic-on-icon"
@@ -815,45 +828,50 @@
                 <tr
                   *ngFor="let user of filteredUsers; let even = even"
                   [ngClass]="{ 'table-row-even': even, 'table-row-odd': !even }"
+                  class="row-selected"
                 >
-                  <td
-                    class="bg-transparent d-flex justify-content-between"
-                    (click)="user.showIcons = !user.showIcons"
-                  >
-                    <span class="" style="cursor: pointer; min-width: 150px;" tabindex="-1">
+                  <td class="">
+                    <span
+                      class="product-name"
+                      (click)="user.showIcons = !user.showIcons"
+                      class=""
+                      style="cursor: pointer; min-width: 150px"
+                      tabindex="-1"
+                    >
                       {{ user.username }}
                     </span>
-                    <span
-                      class="utilitary-icons show-icons align-items-end"
+
+                    <div
+                      class="utilitary-icons"
                       [ngClass]="{ 'show-icons': user.showIcons }"
+                      *ngIf="
+                          getUser() !== user.username &&
+                          getUserRole() === 'administrator'
+                        "
                     >
                       <a
-                        class="ml-2 mr-3"
+                        class="mr-3"
                         role="button"
                         (click)="
-                          openUserInfoModal(true, user);
-                          this.editMode = true
+                          openUserInfoModal(true, user); this.editMode = true
                         "
                       >
                         <i
-                          class="fa-solid fa-pen-to-square clic-on-icon"
+                          class="fas fa-solid fa-pen-to-square clic-on-icon"
                           style="color: #1100fa; cursor: pointer"
                         ></i>
                       </a>
                       <a
                         class="text-left"
                         (click)="deleteUser(user.userId)"
-                        *ngIf="
-                          getUser() !== user.username &&
-                          getUserRole() === 'administrator'
-                        "
+                        
                       >
                         <i
-                          class="fa-solid fa-trash clic-on-icon"
+                          class="fas fa-solid fa-trash clic-on-icon"
                           style="color: #fa0000; cursor: pointer"
                         ></i>
                       </a>
-                    </span>
+                    </div>
                   </td>
                   <td class="text-left">
                     {{ user.role }}

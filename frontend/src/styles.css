@@ -263,17 +263,17 @@ div.dropdown-menu > .dropdown-item.selected {
 .footer .contact-info a {
   color: inherit;
   text-decoration: none;
-  transition: 0.3s color ease;
+  transition: 0.2s color ease;
 }
 
 .footer .contact-info a:hover {
-  color: brown;
-  transition: 0.3s color ease;
+  color: rgb(116, 115, 115);
+  transition: 0.2s color ease;
 }
 
 .footer .contact-info a:hover i.fa-envelope {
   color: rgb(46, 94, 184);
-  transition: 0.3s color ease;
+  transition: 0.2s color ease;
 }
 
 .footer .contact-info a:hover i.fa-whatsapp {
@@ -462,16 +462,27 @@ button {
   z-index: 999;
 }
 
-.utilitary-icons {
+div.utilitary-icons {
   opacity: 0;
   height: auto;
   transition: height 0.3s, opacity 0.3s;
+  border: 1px #bbb solid;
+  border-radius: 20px;
+  background-color: #ccc;
+  max-width: 150px;
+  text-align: center;
+  box-shadow: inset #888 2px 2px 2px;
 }
 
 .show-icons {
   display: block;
   opacity: 1;
-  transition: opacity 0.3s ease display 0.3s display;
+  transition: opacity 0.3s ease display 0.3s ease;
+}
+
+div.utilitary-icons > a > i.fas {
+  text-shadow: #888 2px 2px 2px;
+  padding: 8px 0;
 }
 
 #reloj {
@@ -918,7 +929,7 @@ input::-webkit-input-placeholder {
 }
 
 .final-div {
-  margin-bottom: 80px;
+  margin-bottom: 60px;
 }
 
 @media (max-width: 768px) {
@@ -928,8 +939,9 @@ input::-webkit-input-placeholder {
 }
 
 .row-selected:hover {
-  background-color: #cdffd7;
-  transition: all 0.1s ease;
+  background-color: rgb(129, 124, 124);
+  transition: all 0.2s ease;
+  color: #fff;
 }
 
 div.d-flex.flex-wrap button.btn {

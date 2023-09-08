@@ -183,11 +183,11 @@ export class ProductListComponent implements OnInit {
       this.productModal.nativeElement.classList.add('opening');
       setTimeout(() => {
         this.productModal.nativeElement.classList.add('show');
-        this.toggleIcons(product);
       }, 50);
       setTimeout(() => {
         this.getProductInfo(product);
       }, 400);
+      this.toggleIcons(product);
     } else {
       this.modalTitle = value ? 'Edición' : 'Registro';
       this.modalActionLabel = !value;
