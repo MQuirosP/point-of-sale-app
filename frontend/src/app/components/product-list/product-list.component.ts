@@ -239,7 +239,7 @@ export class ProductListComponent implements OnInit {
       : category1 === category2;
   }
 
-  toggleIcons(product: any) {
+  toggleIcons(product: Products) {
     product.showIcons = !product.showIcons;
   }
 

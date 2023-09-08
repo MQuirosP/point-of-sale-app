@@ -482,15 +482,16 @@ div.utilitary-icons {
   border: 1px #bbb solid;
   border-radius: 20px;
   background-color: #ccc;
-  max-width: 150px;
+  max-width: 100px;
   text-align: center;
   box-shadow: inset #888 2px 2px 2px;
+  margin-left: 10px;
 }
 
 .show-icons {
   display: block;
   opacity: 1;
-  transition: opacity 0.3s ease display 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 div.utilitary-icons > a > i.fas {
@@ -957,6 +958,15 @@ input::-webkit-input-placeholder {
   transition: all 0.2s ease;
   color: #fff;
 }
+
+.row-selected:hover .product-name {
+  letter-spacing: 1.2px;
+  transition: letter-spacing 0.2s ease;
+}
+
+/* .row-selected:hover span {
+  padding-left: 10px;
+} */
 
 div.d-flex.flex-wrap button.btn {
   min-width: 80px;
