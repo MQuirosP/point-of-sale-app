@@ -923,11 +923,13 @@ input[type="search"]:focus::-webkit-search-cancel-button {
 
 /* Estilos iniciales para el input con la clase "no-submit" */
 input.no-submit {
-  background-color: #ffffff27;
+  /* background-color: #ffffff27; */
+  background-color: transparent;
   border-radius: 20px;
   width: 40px;
-  box-shadow: #fff 1px 1px 1px inset;
-  border: solid #cccccc77 1px;
+  /* box-shadow: #fff 1px 1px 1px inset; */
+  /* border: solid #cccccc77 1px; */
+  border: none;
   /* padding: 9px 7px; */
   background-image: url("assets/magnifying-glass.png");
   background-size: 20px;
@@ -940,9 +942,11 @@ input.no-submit {
 }
 
 input.no-submit:hover {
-  border-color: #aaaaaa 1px solid;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4) inset,
-  -2px -2px 4px rgba(255, 255, 255, 0.2) inset;
+  /* border-color: #aaaaaa 1px solid; */
+  /* box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4) inset,
+  -2px -2px 4px rgba(255, 255, 255, 0.2) inset; */
+  box-shadow: 2px 2px 4px rgba(255, 255, 255, 0.4) inset,
+  -2px -2px 4px rgba(39, 39, 39, 0.2) inset;
   transform: translate(1px, 1px);
 }
 

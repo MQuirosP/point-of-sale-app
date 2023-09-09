@@ -5,12 +5,12 @@
       <div class="col-md-8" [@fadeAnimation]>
         <h1><i class="fas fa-list-check"></i>&nbsp;Mis reportes</h1>
       </div>
-      <div [@fadeAnimation] class="d-flex justify-content-center col-md-4 d-none d-md-block text-center pt-1">
+      <div [@fadeAnimation] class="d-none d-md-block text-center pt-1" style="visibility: hidden; display: none">
         <a
           routerLink="/shopping-cart"
           role="button"
           type="submit"
-          class="hide btn btn-success border border-success shadow text-left clic-on-image mr-2"
+          class="hide btn btn-light border border-light shadow text-left clic-on-image mr-2"
         >
           <i class="fas fa-arrow-left"></i>
           <span class="hide-button">&nbsp;Mis ventas</span>
@@ -28,7 +28,7 @@
           routerLink="/purchase-history"
           role="button"
           type="submit"
-          class="hide btn btn-success border border-success shadow text-right clic-on-image"
+          class="hide btn btn-light border border-light shadow text-right clic-on-image"
         >
           <span class="hide-button">&nbsp;Mis compras&nbsp;</span>
           <i class="fas fa-arrow-right"></i>
