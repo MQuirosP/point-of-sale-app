@@ -2,19 +2,18 @@
 <header id="main-header" class="pb-2 bg-info text-white main-board-style">
   <div class="container">
     <div class="row pt-2">
-      <div class="col-md-6" [@fadeAnimation]>
+      <div class="col-md-8" [@fadeAnimation]>
         <h1><i class="fas fa-cog"></i> Opciones</h1>
       </div>
       <div
         [@fadeAnimation]
-        class="col-md-6 d-none d-md-block d-flex text-right pt-1"
+        class="col-md-4 d-flex justify-content-center d-none d-md-block text-right pt-1"
         *ngIf="getUserRole() === 'administrator'"
       >
         <a
           routerLink="/"
           role="button"
-          class="btn btn-warning border border-warning shadow clic-on-image"
-          style="margin-right: 10px"
+          class="btn btn-warning border border-warning shadow clic-on-image mr-2"
         >
           <i class="fas fa-arrow-left"></i>
           <span class="d-none d-md-inline">&nbsp;Volver</span>
@@ -24,7 +23,7 @@
           role="button"
           type="submit"
           (click)="saveRegisterStatus()"
-          class="btn btn-success border border-success shadow clic-on-image mr-5"
+          class="btn btn-success border border-success shadow clic-on-image"
         >
           <i class="fas fa-check"></i>
           <span class="d-none d-md-inline">&nbsp;Guardar</span>

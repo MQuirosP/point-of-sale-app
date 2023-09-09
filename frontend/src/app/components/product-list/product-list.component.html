@@ -37,9 +37,9 @@
             <i class="fas fa-list-check"></i>&nbsp;Lista de productos
           </h5>
         </div>
-        <div class="col-md-6 d-flex justify-content-md-end">
+        <div class="col-md-6">
           <!-- Contenedor de los botones Agregar, Anterior y Siguiente -->
-          <div class="d-flex align-items-center">
+          <div class="d-flex justify-content-between justify-content-md-end">
             <button
               class="btn btn-primary border-primary shadow clic-on-image mr-4"
               (click)="openProductModal(false, null); this.editMode = false"
@@ -47,25 +47,27 @@
             >
               Agregar
             </button>
-            <button
-              class="btn btn-warning border-warning shadow clic-on-image mr-2"
-              (click)="prevPage()"
-              [disabled]="page === 0"
-              style="color: white !important"
-            >
-              <span><i class="fa-solid fa-arrow-left"></i></span>
-              <span class="d-md-none"></span>
-            </button>
-            <button
-              class="btn btn-success border-success shadow clic-on-image"
-              (click)="nextPage()"
-              [disabled]="
-                (products | productsFilter : page : searchTerm).length < 8
-              "
-            >
-              <span class="d-md-none"></span>
-              <span><i class="fa-solid fa-arrow-right"></i></span>
-            </button>
+            <div>
+              <button
+                class="btn btn-warning border-warning shadow clic-on-image mr-2"
+                (click)="prevPage()"
+                [disabled]="page === 0"
+                style="color: white !important"
+              >
+                <span><i class="fa-solid fa-arrow-left"></i></span>
+                <span class="d-md-none"></span>
+              </button>
+              <button
+                class="btn btn-success border-success shadow clic-on-image"
+                (click)="nextPage()"
+                [disabled]="
+                  (products | productsFilter : page : searchTerm).length < 8
+                "
+              >
+                <span class="d-md-none"></span>
+                <span><i class="fa-solid fa-arrow-right"></i></span>
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -894,6 +894,22 @@ input[type="search"]::-webkit-search-cancel-button {
   margin-left: 0.4em;
   transition: all 0.3s ease;
   opacity: 0.5;
+  /* cursor: text;
+  transform: none; */
+}
+
+@media (max-width: 500px) {
+  input[type="search"].no-submit {
+    width: 100%;
+    background-color: #fff;
+    background-image: none;
+    border-radius: 5px;
+  }
+  input[type="search"].no-submit:hover {
+    transform: none;
+    cursor: text;
+    box-shadow: none;
+  }
 }
 
 input[type="search"]:focus::-webkit-search-cancel-button {
@@ -915,10 +931,10 @@ input.no-submit {
   background-image: url("assets/magnifying-glass.png");
   background-size: 20px;
   background-repeat: no-repeat;
-  background-position: center center;
+  background-position: center;
   transition: all 0.3s ease;
   cursor: pointer;
-  position: relative;
+  /* position: relative; */
   z-index: 1;
 }
 
