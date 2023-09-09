@@ -67,3 +67,31 @@
   transition: max-height 0.3s ease, opacity 0.3s ease;
 }
 
+/* Establece un ancho fijo para todas las columnas en la tabla */
+th, td {
+  white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+  min-width: 100px; /* Ancho fijo deseado para todas las columnas */
+  max-width: 100px; /* Ancho máximo para todas las columnas (ajustar según tus necesidades) */
+  overflow: hidden; /* Oculta el contenido que excede el ancho máximo */
+  text-overflow: ellipsis; /* Agrega puntos suspensivos (...) al final del texto que no cabe */
+}
+
+/* Establece el ancho fijo para todas las columnas en dispositivos móviles */
+@media (max-width: 767px) {
+  th, td {
+    width: auto; /* Permitir que todas las columnas se ajusten automáticamente */
+    min-width: auto; /* Restaura el ancho mínimo a automático */
+    max-width: auto; /* Restaura el ancho máximo a automático */
+    overflow: visible; /* Muestra todo el contenido sin recortar ni ocultar */
+    text-overflow: clip; /* Restaura el comportamiento de texto completo */
+  }
+  th:nth-child(4){
+    min-width: 190px;
+  }
+  td:nth-child(1) {
+    min-width: 150px;
+  }
+  td:nth-child(4) {
+    min-width: 200;
+  }
+}
