@@ -993,7 +993,7 @@ input::-webkit-input-placeholder {
 }
 
 .final-div {
-  margin-bottom: 60px;
+  margin-bottom: 70px;
 }
 
 @media (max-width: 768px) {
@@ -1004,18 +1004,9 @@ input::-webkit-input-placeholder {
 
 .row-selected:hover {
   background-color: rgb(129, 124, 124);
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   color: #fff;
 }
-
-/* .row-selected:hover .product-name {
-  letter-spacing: 1.2px;
-  transition: letter-spacing 0.2s ease;
-} */
-
-/* .row-selected:hover span {
-  padding-left: 10px;
-} */
 
 div.d-flex.flex-wrap button.btn {
   min-width: 80px;
