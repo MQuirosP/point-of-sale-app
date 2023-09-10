@@ -1,4 +1,11 @@
 .card {
-    min-height: 175px;
-    max-height: auto;
+  min-height: 175px;
+  max-height: auto;
+}
+
+@media (max-width: 768px) {
+  .final-div {
+    top: 110px;
+    margin-bottom: 120px !important;
   }
+}
