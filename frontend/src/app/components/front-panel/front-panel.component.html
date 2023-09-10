@@ -49,7 +49,7 @@
               <div
                 *ngFor="let product of filteredProducts; let i = index"
                 class="carousel-item pt-2"
-                [class.active]="i === 0"
+                [ngClass]="{'active': i === 0}"
               >
                 <div class="row" style="font-size: 0.5rem">
                   <div
