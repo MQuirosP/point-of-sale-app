@@ -46,10 +46,10 @@ body {
   /* color: orangered !important; */
 }
 
-.app-container {
+/* .app-container {
   display: flex;
   flex-direction: column;
-}
+} */
 
 .main-board {
   height: auto;
@@ -249,6 +249,7 @@ a.hide {
 }
 
 #pie-pagina {
+  padding-top: 10px;
   box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.85);
   -webkit-box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.85);
   -moz-box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.85);
@@ -256,14 +257,13 @@ a.hide {
 
 .footer {
   background-color: #ecc68e;
-  position: fixed;
-  bottom: 0;
   width: 100%;
+  height: 10%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding: 5px;
+  margin-top: 1px;
 }
 
 .footer .lead {
@@ -934,7 +934,6 @@ input.no-submit {
   background-position: center;
   transition: all 0.3s ease-in-out;
   cursor: pointer;
-  z-index: 1;
 }
 
 input.no-submit:hover {
@@ -993,11 +992,17 @@ input::-webkit-input-placeholder {
 }
 
 .final-div {
-  margin-bottom: 70px;
+  position: absolute;
+  top: 150px; /* Mantén la posición vertical deseada */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 0;
 }
+
 
 @media (max-width: 768px) {
   .final-div {
+    margin-top: 40px;
     margin-bottom: 120px !important;
   }
 }
@@ -1010,4 +1015,55 @@ input::-webkit-input-placeholder {
 
 div.d-flex.flex-wrap button.btn {
   min-width: 80px;
+}
+
+/* Estilo para el app-header */
+app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1; /* Asegura que el header esté por encima del contenido */
+  background-color: #fff; /* Cambia el color de fondo según tus necesidades */
+}
+
+/* Estilo para el contenido principal */
+.main-content {
+  margin-top: 70px; /* Ajusta la altura según la altura de tu app-header */
+  height: calc(90vh - 75px); /* Resta la altura del app-header */
+  overflow-y: auto; /* Agrega scroll vertical si el contenido es más largo que la pantalla */
+}
+
+app-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1; /* Asegura que el header esté por encima del contenido */
+  background-color: #fff; /* Cambia el color de fondo según tus necesidades */
+}
+
+app-header {
+  z-index: 2;
+}
+
+header {
+  max-height: 15%;
+  position: fixed;
+  width: 100%;
+  z-index: 1;
+}
+
+nav.navbar {
+  z-index: 2;
+}
+
+.screen-adjust {
+  margin-bottom: 100px;
+}
+
+@media (max-width: 767px) {
+  .screen-adjust {
+    margin-bottom: 100px;
+  }
 }

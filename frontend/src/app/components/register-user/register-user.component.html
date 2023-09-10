@@ -27,7 +27,7 @@
 >
   <div class="container final-div">
     <div class="row">
-      <div class="col col-md-4 mt-3">
+      <div class="col col-md-4">
         <div class="card shadow">
           <div class="card-header modal-header mb-3">
             <h4 class="text-center">
@@ -163,7 +163,7 @@
           </form>
         </div>
       </div>
-      <div class="col col-md-4 mt-3">
+      <div class="col col-md-4">
         <div class="card shadow">
           <div class="card-header modal-header">
             <h4><i class="fa fa-users-viewfinder"></i> Usuarios registrados</h4>
@@ -193,13 +193,14 @@
         </div>
       </div>
     </div>
+    <div style="margin-bottom: 100px;"></div>
   </div>
 </section>
 
 <!-- Mensaje de opción de registro deshabilitada -->
 <ng-container>
   <div
-    class="container mt-5 d-flex justify-content-center align-content-center text-danger"
+    class="container final-div d-flex justify-content-center align-content-center text-danger"
     *ngIf="!(allowRegisterUsers$ | async)"
   >
     <div class="card shadow" style="width: 400px !important">
