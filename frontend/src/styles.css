@@ -398,7 +398,7 @@ a.hide {
   display: flex;
   justify-content: space-between;
   position: absolute;
-  bottom: 25px;
+  bottom: 30px;
   left: 0;
   right: 0;
 }
@@ -408,7 +408,7 @@ a.hide {
   color: rgba(5, 5, 5, 0.5);
   width: 5%;
   height: 15px;
-  margin-left: 5px;
+  margin: 0 15px;
 }
 
 .carousel-control-prev-icon,

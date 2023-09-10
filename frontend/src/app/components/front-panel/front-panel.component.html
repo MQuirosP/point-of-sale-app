@@ -22,10 +22,17 @@
 </header>
 
 <!-- Tiles de menú -->
-<div class="container text-center high final-div" [@fadeAnimation]>
+<div class="container text-center final-div" [@fadeAnimation]>
   <!-- Cinta superior de tarjetas -->
   <div class="row">
     <div class="col-md-4">
+      <div
+      id="carousel"
+      class="carousel slide"
+      data-ride="carousel"
+      data-interval="5000"
+      #carousel
+      >
       <div class="card card-height border shadow mt-4 bg-custom customShadow">
         <!-- Primer tarjeta, carrusel de productos -->
         <div
@@ -35,13 +42,6 @@
           "
           class="container"
         >
-          <div
-            id="carouselExampleControls"
-            class="carousel slide"
-            data-ride="carousel"
-            data-interval="5000"
-            #carousel
-          >
             <div class="carousel-inner" style="height: 130px">
               <div
                 *ngFor="let product of filteredProducts; let i = index"
@@ -50,11 +50,11 @@
               >
                 <div class="row" style="font-size: 0.5rem;">
                   <div
-                    class="col-7 text-left"
+                    class="col-md-7 text-left"
                     style="align-items: center; margin: auto 0"
                   >
                     <h4
-                      class=""
+                      class="h4"
                       style="
                         font-size: 1.3rem;
                         text-shadow: 2px 2px 2px darkgray;
@@ -63,7 +63,7 @@
                       <span class="product-card">{{ product.name }}</span>
                     </h4>
                   </div>
-                  <div class="col-5">
+                  <div class="col-md-5">
                     <h5
                       class="text-right mr-1"
                       style="
@@ -98,12 +98,12 @@
               <button
                 class="carousel-control-prev"
                 type="button"
-                data-target="#carouselExampleControls"
+                data-target="#carousel"
                 data-slide="prev"
               >
                 <a
                   class="text-decoration-none clic-on-image"
-                  data-target="#carouselExampleControls"
+                  data-target="#carousel"
                   role="button"
                   data-slide="prev"
                 >
@@ -123,12 +123,12 @@
               <button
                 class="carousel-control-next"
                 type="button"
-                data-target="#carouselExampleControls"
+                data-target="#carousel"
                 data-slide="next"
               >
                 <a
                   class="text-decoration-none clic-on-image"
-                  data-target="#carouselExampleControls"
+                  data-target="#carousel"
                   role="button"
                   data-slide="next"
                 >
