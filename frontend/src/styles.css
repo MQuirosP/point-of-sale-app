@@ -916,7 +916,7 @@ input[type="search"]::-webkit-search-cancel-button {
 input[type="search"]:focus::-webkit-search-cancel-button {
   -webkit-appearance: none;
   position: absolute;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease-in-out;
   right: 30px;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='red'><path d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/></svg>");
 }
@@ -924,29 +924,20 @@ input[type="search"]:focus::-webkit-search-cancel-button {
 /* Estilos iniciales para el input con la clase "no-submit" */
 input.no-submit {
   opacity: 1;
-  /* background-color: #ffffff27; */
   background-color: transparent;
   border-radius: 20px;
   width: 40px;
-  /* box-shadow: #fff 1px 1px 1px inset; */
-  /* border: solid #cccccc77 1px; */
   border: none;
-  /* position: absolute; */
-  /* padding: 9px 7px; */
   background-image: url("assets/magnifying-glass.png");
   background-size: 20px;
   background-repeat: no-repeat;
   background-position: center;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease-in-out;
   cursor: pointer;
-  /* position: relative; */
   z-index: 1;
 }
 
 input.no-submit:hover {
-  /* border-color: #aaaaaa 1px solid; */
-  /* box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4) inset,
-  -2px -2px 4px rgba(255, 255, 255, 0.2) inset; */
   box-shadow: 2px 2px 4px rgba(255, 255, 255, 0.4) inset,
   -2px -2px 4px rgba(39, 39, 39, 0.2) inset;
   transform: translate(1px, 1px);
@@ -954,14 +945,14 @@ input.no-submit:hover {
 
 /* Estilos cuando el input está enfocado */
 input[type="search"]:focus {
-  /* background-image: none; */
   background-position: calc(100% - 10px) center;
+  background-image: url("assets/magnifying-glass-reverse.png");
   width: 100%;
   box-shadow: none;
   border-radius: 5px;
   cursor: text;
   transform: none;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease-in-out;
 }
 
 .datalist-no-arrow::-webkit-calendar-picker-indicator {
