@@ -81,3 +81,10 @@ div.col-md-4 > a.btn {
     height: 40px;
   }
 }
+
+@media (max-width: 768px) {
+  .final-div {
+    top: -10px;
+  }
+}
+

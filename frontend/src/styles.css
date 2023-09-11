@@ -10,7 +10,6 @@ html {
   background: url(src/assets/bg-pattern.png),
     linear-gradient(to left, #a8e6ce, #6d9bcc);
   /* linear-gradient(to left, #9765a1, #ee1d1d); */
-  overflow: visible;
   transition: opacity 100ms;
   z-index: 1;
 }
@@ -63,6 +62,10 @@ body {
 }
 
 .main-board-style {
+  /* position: fixed;
+  width: 100%;
+  top: 70px;
+  z-index: 1; */
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.85);
   -webkit-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.85);
   -moz-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.85);
@@ -96,9 +99,9 @@ h1 {
   }
 }
 
-.header {
+/* .header {
   background-color: #f0f0f0;
-}
+} */
 
 #main-header {
   min-height: 0px;
@@ -992,13 +995,13 @@ input::-webkit-input-placeholder {
 }
 
 .final-div {
-  position: absolute;
-  top: 150px; /* Mantén la posición vertical deseada */
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
+  margin-top: 20px;
+  /* top: 150px;  */
+  /* left: 50%; */
+  transform: translateX(-50% -50%);
   z-index: 0;
 }
-
 
 @media (max-width: 768px) {
   .final-div {
@@ -1029,9 +1032,10 @@ app-header {
 
 /* Estilo para el contenido principal */
 .main-content {
-  margin-top: 70px; /* Ajusta la altura según la altura de tu app-header */
-  height: calc(90vh - 75px); /* Resta la altura del app-header */
-  overflow-y: auto; /* Agrega scroll vertical si el contenido es más largo que la pantalla */
+  margin-top: 70px;
+  height: calc(90vh - 70px);
+  overflow-y: auto;
+  
 }
 
 app-footer {
@@ -1043,15 +1047,14 @@ app-footer {
   background-color: #fff; /* Cambia el color de fondo según tus necesidades */
 }
 
-app-header {
-  z-index: 2;
+header {
+  position: sticky;
+  top: 0px;
+  z-index: 1;
 }
 
-header {
-  max-height: 15%;
-  position: fixed;
-  width: 100%;
-  z-index: 1;
+app-header {
+  z-index: 2;
 }
 
 nav.navbar {
@@ -1059,7 +1062,7 @@ nav.navbar {
 }
 
 .screen-adjust {
-  margin-bottom: 100px;
+  margin-bottom: 30px;
 }
 
 @media (max-width: 767px) {

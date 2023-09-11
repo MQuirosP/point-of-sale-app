@@ -46,5 +46,9 @@ th {
   color: white;
 }
 
-
+@media (max-width: 768px) {
+  .final-div {
+    top: -10px;
+  }
+}
 
