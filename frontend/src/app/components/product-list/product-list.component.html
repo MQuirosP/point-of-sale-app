@@ -222,6 +222,14 @@
                 id="category_id"
                 required
                 class="custom-select"
+                [ngClass]="{
+                  'is-valid':
+                    productForm.get('category_id').touched &&
+                    productForm.get('category_id').valid,
+                  'is-invalid':
+                    productForm.get('category_id').touched &&
+                    productForm.get('category_id').invalid
+                }"
               >
                 <option value="" disabled selected>
                   Seleccione categoría...
