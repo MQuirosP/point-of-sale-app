@@ -575,7 +575,7 @@ div.utilitary-icons > a > i.fas {
 }
 
 .table-row-even {
-  background-color: #e8e8e8;
+  background-color: #f3f3f3;
 }
 
 .table-row-odd {
@@ -1016,9 +1016,10 @@ input::-webkit-input-placeholder {
 }
 
 .row-selected:hover {
-  background-color: rgb(129, 124, 124);
+  background-color: rgba(129, 124, 124, 0.459);
   transition: all 0.3s ease;
   color: #fff;
+  cursor: pointer;
 }
 
 div.d-flex.flex-wrap button.btn {
@@ -1059,7 +1060,7 @@ header {
 }
 
 app-header {
-  z-index: 1;
+  z-index: 2;
 }
 
 nav.navbar {

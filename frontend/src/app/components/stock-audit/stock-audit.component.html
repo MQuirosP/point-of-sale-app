@@ -281,7 +281,7 @@
   aria-hidden="true"
 >
   <div class="modal-dialog modal-xl modal-dialog-scrollable">
-    <div class="modal-content">
+    <div class="modal-content modal-shadow">
       <div class="modal-header border">
         <h4 class="h4 align-items-start">
           <i class="fas fa-list-check"></i>&nbsp;Productos de Auditoría
@@ -386,8 +386,9 @@
                 <a
                   role="button"
                   (click)="deleteAuditProduct(product.productId)"
+                  class="shadow"
                 >
-                  <i class="fas fa-trash shadow clic-on-icon" style="color: red"></i>
+                  <i class="fas fa-trash clic-on-icon" style="color: red"></i>
                 </a>
               </td>
             </tr>
