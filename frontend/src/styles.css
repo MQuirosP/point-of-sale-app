@@ -950,7 +950,8 @@ input[type="search"]:focus {
   background-position: calc(100% - 10px) center;
   background-image: url("assets/magnifying-glass-reverse.png");
   width: 100%;
-  box-shadow: none;
+  border: 1px solid rgb(40, 126, 197);
+  box-shadow: 4px 4px 7px rgba(39, 39, 39, 0.2) ;
   border-radius: 5px;
   cursor: text;
   transform: none;
