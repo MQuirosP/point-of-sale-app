@@ -108,7 +108,9 @@
                 id="fileInput"
                 (change)="importJSON($event)"
               />
-              <label for="fileInput" class="custom-file-label">Seleccione archivo</label>
+              <label for="fileInput" class="custom-file-label"
+                >Seleccione archivo</label
+              >
             </div>
           </div>
           <div class="row">
@@ -137,150 +139,149 @@
               </button>
             </div>
           </div>
-          
         </div>
       </div>
     </div>
-    <div class="screen-adjust"></div>
   </div>
+  <div class="screen-adjust"></div>
+</div>
 
-  <!-- Modal para la información del producto -->
-  <div
-    class="modal fade"
-    id="productInfoModal"
-    #productInfoModal
-    tabindex="-1"
-    role="dialog"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content modal-shadow">
-        <form [formGroup]="productForm" (ngSubmit)="addProductToAuditList()">
-          <div class="modal-header border">
-            <h5 class="modal-title">
-              <i class="fas fa-note-sticky"></i>&nbsp;Información del Producto
-            </h5>
-            <button
-              type="button"
-              class="close"
-              (click)="closeProductModal()"
-              aria-label="Cerrar"
-            >
-              <span aria-hidden="true"><i class="fas fa-close"></i></span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="form-row">
-              <div class="col-6 form-group">
-                <label for="int_code">Código:</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="int_code"
-                  formControlName="int_code"
-                  required
-                  readonly
-                />
-              </div>
-              <div class="col-6 form-group">
-                <label for="category_name">Categoría:</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="category_name"
-                  formControlName="category_name"
-                  required
-                  readonly
-                />
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="name">Producto:</label>
+<!-- Modal para la información del producto -->
+<div
+  class="modal fade"
+  id="productInfoModal"
+  #productInfoModal
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content modal-shadow">
+      <form [formGroup]="productForm" (ngSubmit)="addProductToAuditList()">
+        <div class="modal-header border">
+          <h5 class="modal-title">
+            <i class="fas fa-note-sticky"></i>&nbsp;Información del Producto
+          </h5>
+          <button
+            type="button"
+            class="close"
+            (click)="closeProductModal()"
+            aria-label="Cerrar"
+          >
+            <span aria-hidden="true"><i class="fas fa-close"></i></span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="col-6 form-group">
+              <label for="int_code">Código:</label>
               <input
                 type="text"
                 class="form-control"
-                id="name"
-                formControlName="name"
+                id="int_code"
+                formControlName="int_code"
                 required
                 readonly
               />
             </div>
-            <div class="form-row">
-              <div class="col-4 form-group">
-                <label for="quantity">Cantidad:</label>
-                <input
-                  type="text"
-                  class="form-control text-right"
-                  id="quantity"
-                  formControlName="quantity"
-                  required
-                  readonly
-                />
-              </div>
-              <div class="col-4 form-group">
-                <label for="real_stock">Físico:</label>
-                <input
-                  type="number"
-                  class="form-control text-right"
-                  id="real_stock"
-                  formControlName="real_stock"
-                  #realStockInput
-                  required
-                  (input)="calculateDifference()"
-                />
-              </div>
-              <div class="col-4">
-                <label for="difference">Diferencia:</label>
-                <input
-                  type="number"
-                  class="form-control text-right"
-                  formControlName="difference"
-                  id="difference"
-                  readonly
-                />
-              </div>
+            <div class="col-6 form-group">
+              <label for="category_name">Categoría:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="category_name"
+                formControlName="category_name"
+                required
+                readonly
+              />
             </div>
           </div>
-          <div
-            class="modal-footer"
-            style="display: flex; justify-content: space-between"
+          <div class="form-group">
+            <label for="name">Producto:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              formControlName="name"
+              required
+              readonly
+            />
+          </div>
+          <div class="form-row">
+            <div class="col-4 form-group">
+              <label for="quantity">Cantidad:</label>
+              <input
+                type="text"
+                class="form-control text-right"
+                id="quantity"
+                formControlName="quantity"
+                required
+                readonly
+              />
+            </div>
+            <div class="col-4 form-group">
+              <label for="real_stock">Físico:</label>
+              <input
+                type="number"
+                class="form-control text-right"
+                id="real_stock"
+                formControlName="real_stock"
+                #realStockInput
+                required
+                (input)="calculateDifference()"
+              />
+            </div>
+            <div class="col-4">
+              <label for="difference">Diferencia:</label>
+              <input
+                type="number"
+                class="form-control text-right"
+                formControlName="difference"
+                id="difference"
+                readonly
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="modal-footer"
+          style="display: flex; justify-content: space-between"
+        >
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="resetStockAndDifference()"
           >
+            Reset
+          </button>
+          <div>
+            <button class="btn btn-primary mr-2" type="submit">Agregar</button>
             <button
+              class="btn btn-secondary"
               type="button"
-              class="btn btn-danger"
-              (click)="resetStockAndDifference()"
+              (click)="closeProductModal()"
             >
-              Reset
+              Cerrar
             </button>
-            <div>
-              <button class="btn btn-primary mr-2" type="submit">
-                Agregar
-              </button>
-              <button
-                class="btn btn-secondary"
-                type="button"
-                (click)="closeProductModal()"
-              >
-                Cerrar
-              </button>
-            </div>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   </div>
+</div>
 
-  <!-- Modal para mostrar la información de los productos de auditoría -->
-  <div
-    id="auditModal"
-    class="modal fade"
-    #auditModal
-    role="dialog"
-    tabindex="-1"
-    aria-labelledby="auditModal"
-    aria-hidden="true"
-  >
-    <div class="modal-content modal-shadow">
+<!-- Modal para mostrar la información de los productos de auditoría -->
+<div
+  id="auditModal"
+  class="modal fade custom-modal"
+  #auditModal
+  role="dialog"
+  tabindex="-1"
+  aria-labelledby="auditModal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
       <div class="modal-header border">
         <h4 class="h4 align-items-start">
           <i class="fas fa-list-check"></i>&nbsp;Productos de Auditoría
@@ -323,19 +324,20 @@
               <tr>
                 <td colspan="8" class="text-center">
                   <h4 class="h4 text-danger mt-3">
+                    <i class="fas fa-exclamation-circle"></i>
                     Sin elementos para la auditoría
                   </h4>
                 </td>
               </tr>
             </ng-container>
-
             <!-- Datos de los productos de auditoría -->
             <tr
               *ngFor="let product of auditListProducts; let even = even"
               [ngClass]="{
-              'table-row-even': even,
-              'table-row-odd': !even,
-            }"
+                'table-row-even': even,
+                'table-row-odd': !even,
+              }"
+              class="row-selected"
             >
               <td class="d-none d-md-table-cell">{{ product.int_code }}</td>
               <td>{{ product.name }}</td>
@@ -385,7 +387,7 @@
                   role="button"
                   (click)="deleteAuditProduct(product.productId)"
                 >
-                  <i class="fas fa-trash clic-on-icon" style="color: red"></i>
+                  <i class="fas fa-trash shadow clic-on-icon" style="color: red"></i>
                 </a>
               </td>
             </tr>

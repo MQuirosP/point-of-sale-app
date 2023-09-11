@@ -575,7 +575,7 @@ div.utilitary-icons > a > i.fas {
 }
 
 .table-row-even {
-  background-color: #f3f3f3;
+  background-color: #e8e8e8;
 }
 
 .table-row-odd {
@@ -1059,7 +1059,7 @@ header {
 }
 
 app-header {
-  z-index: 2;
+  z-index: 1;
 }
 
 nav.navbar {
