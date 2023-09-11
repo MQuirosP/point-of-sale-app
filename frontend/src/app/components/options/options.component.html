@@ -46,32 +46,44 @@
               </h5>
             </div>
             <div class="card-body">
-              <fieldset class="row">
-                <legend class="text-center options-card-body-text">
-                  Activar el registro de usuarios.
-                </legend>
-                <div
-                  class="container d-flex text-center options-button-container"
-                >
-                  <label class="form-check-label" style="cursor: pointer">
-                    <input
-                      *ngIf="getUserRole() !== 'user'"
-                      type="checkbox"
-                      class="form-check-input"
-                      id="activateRegister"
-                      name="activateRegister"
-                      [(ngModel)]="activateRegister"
-                      [checked]="activateRegister"
-                      style="cursor: pointer"
-                      (click)="toggleCheckbox()"
-                    />
-                    <span
-                      [ngStyle]="{ color: activateRegister ? 'green' : 'red' }"
-                      >{{ activateRegister ? "Activado" : "Desactivado" }}</span
-                    >
-                  </label>
+              <div class="container custom-control custom-switch pl-0">
+                <div class="row">
+                  <div class="col-sm-12 text-center options-card-body-text">
+                    Activar el registro de usuarios.
+                  </div>
                 </div>
-              </fieldset>
+                  <div class="row mt-2">
+                    <div class="col-sm-4"></div>
+                    <div class="col-sm-4">
+                      <input
+                        *ngIf="getUserRole() !== 'user'"
+                        type="checkbox"
+                        class="custom-control-input"
+                        id="activateRegister"
+                        name="activateRegister"
+                        [(ngModel)]="activateRegister"
+                        [checked]="activateRegister"
+                        style="cursor: pointer"
+                        (click)="toggleCheckbox()"
+                      />
+                      <label
+                        for="activateRegister"
+                        class="custom-control-label"
+                        style="cursor: pointer"
+                      >
+                        <span
+                          [ngStyle]="{
+                            color: activateRegister ? 'green' : 'red'
+                          }"
+                          >{{
+                            activateRegister ? "Activado" : "Desactivado"
+                          }}</span
+                        >
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-sm-4"></div>
+                </div>
             </div>
           </div>
         </div>
@@ -201,7 +213,9 @@
       <div class="modal-body">
         <!-- Contenido del modal -->
         <div class="mb-3 col-md-5">
-          <label for="providerSearch" style="visibility: hidden; display: none;">Buscar proveedor:</label>
+          <label for="providerSearch" style="visibility: hidden; display: none"
+            >Buscar proveedor:</label
+          >
           <input
             type="search"
             id="providerSearch"
@@ -218,9 +232,11 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th class="cell-width-titles-names" style="width: 50%;">Nombre</th>
-                  <th style="width: 25%;">Email</th>
-                  <th style="width: 25%;">Teléfono</th>
+                  <th class="cell-width-titles-names" style="width: 50%">
+                    Nombre
+                  </th>
+                  <th style="width: 25%">Email</th>
+                  <th style="width: 25%">Teléfono</th>
                 </tr>
               </thead>
               <tbody>
@@ -480,7 +496,9 @@
       <div class="modal-body">
         <!-- Contenido del modal -->
         <div class="mb-3 col-md-5">
-          <label for="customerSearch" style="display: none;">Buscar cliente:</label>
+          <label for="customerSearch" style="display: none"
+            >Buscar cliente:</label
+          >
           <input
             type="search"
             id="customerSearch"
@@ -497,9 +515,11 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th class="cell-width-titles-names" style="width: 50%;">Nombre</th>
-                  <th style="width: 25%;">Email</th>
-                  <th style="width: 25%;">Teléfono</th>
+                  <th class="cell-width-titles-names" style="width: 50%">
+                    Nombre
+                  </th>
+                  <th style="width: 25%">Email</th>
+                  <th style="width: 25%">Teléfono</th>
                 </tr>
               </thead>
               <tbody>
@@ -801,7 +821,7 @@
       <div class="modal-body">
         <!-- Contenido del modal -->
         <div class="mb-3 col-md-8">
-          <label for="userSearch" style="display: none;">Buscar usuario:</label>
+          <label for="userSearch" style="display: none">Buscar usuario:</label>
           <input
             type="search"
             id="userSearch"
@@ -818,9 +838,11 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th class="cell-width-title-names" style="width: 50%;">Usuario</th>
-                  <th style="width: 25%;">Rol</th>
-                  <th style="width: 25%;">Status</th>
+                  <th class="cell-width-title-names" style="width: 50%">
+                    Usuario
+                  </th>
+                  <th style="width: 25%">Rol</th>
+                  <th style="width: 25%">Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -844,9 +866,9 @@
                       class="utilitary-icons"
                       [ngClass]="{ 'show-icons': user.showIcons }"
                       *ngIf="
-                          getUser() !== user.username &&
-                          getUserRole() === 'administrator'
-                        "
+                        getUser() !== user.username &&
+                        getUserRole() === 'administrator'
+                      "
                     >
                       <a
                         class="mr-3"
@@ -860,11 +882,7 @@
                           style="color: #1100fa; cursor: pointer"
                         ></i>
                       </a>
-                      <a
-                        class="text-left"
-                        (click)="deleteUser(user.userId)"
-                        
-                      >
+                      <a class="text-left" (click)="deleteUser(user.userId)">
                         <i
                           class="fas fa-solid fa-trash clic-on-icon"
                           style="color: #fa0000; cursor: pointer"

@@ -90,7 +90,7 @@
 </div>
 
 <!-- Modal para crear ventas -->
-<form [formGroup]="saleForm">
+<form [formGroup]="saleForm" (ngSubmit)="addProduct()">
   <div
     class="modal fade"
     id="newSaleModal"
@@ -123,34 +123,21 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="customer_name">Cliente:</label>
-                <input
-                  type="search"
-                  role="combobox"
-                  id="customer_name"
-                  formControlName="customer_name"
-                  class="form-control datalist-no-arrow"
-                  autocomplete="off"
-                  [spellcheck]="false"
-                  [ngClass]="{
-                    'is-valid':
-                      saleForm.get('customer_name').touched &&
-                      saleForm.get('customer_name').valid,
-                    'is-invalid':
-                      saleForm.get('customer_name').touched &&
-                      saleForm.get('customer_name').invalid,
-                  }"
-                  placeholder="Seleccione cliente..."
-                  (input)="searchCustomers($event)"
-                  list="customerOptions"
-                />
-                <datalist id="customerOptions" role="listbox">
+                <select id="customerOptions" role="searchbox" class="custom-select" formControlName="customer_name" [ngClass]="{
+                  'is-valid':
+                    saleForm.get('customer_name').touched &&
+                    saleForm.get('customer_name').valid,
+                  'is-invalid':
+                    saleForm.get('customer_name').touched &&
+                    saleForm.get('customer_name').invalid,
+                }">
                   <option
-                    *ngFor="let customer of customerSuggestionList"
+                    *ngFor="let customer of customersList"
                     [value]="formatOption(customer)"
                   >
                     {{ formatOption(customer) }}
                   </option>
-                </datalist>
+                </select>
               </div>
               <div class="form-group form-row">
                 <div class="col">
@@ -281,9 +268,8 @@
               </div>
               <div class="d-flex justify-content-center">
                 <button
-                  type="button"
+                  type="submit"
                   class="btn btn-primary shadow clic-on-image mb-3"
-                  (click)="addProduct()"
                 >
                   Agregar
                 </button>

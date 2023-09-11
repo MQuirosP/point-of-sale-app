@@ -979,6 +979,7 @@ input::-webkit-input-placeholder {
   font-size: 18px;
   display: block;
   padding: 10px 0;
+  text-align: center;
 }
 
 .options-button-container {
