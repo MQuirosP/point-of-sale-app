@@ -51,7 +51,9 @@ async function getProductoByPk(primary_key) {
 
 async function createProduct(productData) {
   try {
-    const product = await Product.create(productData);
+    const product = await Product.create(productData, {
+      individualHooks: true, // Habilitar hooks de creación específicos
+    });
     return product;
   } catch (error) {
     appLogger.error("Error creating product: ", error);
@@ -59,14 +61,16 @@ async function createProduct(productData) {
   }
 }
 
+
 async function updateProduct(productId, productData) {
   try {
     const [updatedRowsCount, [updatedProduct]] = await Product.update(
       productData,
       {
         where: {
-          productId: productId
+          productId
         },
+        individualHooks: true,
         returning: true,
       }
     );

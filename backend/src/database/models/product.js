@@ -43,12 +43,8 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       category_name: {
-      type: DataTypes.VIRTUAL,
-      get() {
-        const categoryId = this.getDataValue('category_id');
-        return categoryId === 1 ? 'Front-of-House' : 'Back-of-House';
+        type: DataTypes.STRING,
       },
-    },
       createdAt: {
         type: DataTypes.DATE,
         field: 'createdAt',
@@ -69,8 +65,22 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: 'Product',
+      hooks: true,
     }
   );
+
+  Product.beforeCreate((product, options) => {
+    const categoryId = product.getDataValue('category_id');
+    console.log(categoryId);
+    product.setDataValue('category_name', categoryId === 1 ? 'Venta Directa' : 'Consumo Interno');
+  });
+  
+  Product.beforeUpdate((product, options) => {;
+    const categoryId = product.getDataValue('category_id');
+    console.log(categoryId);
+    product.setDataValue('category_name', categoryId === 1 ? 'Venta Directa' : 'Consumo Interno');
+  });
+  
 
   Product.prototype.getView = function () {
     return {

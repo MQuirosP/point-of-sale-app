@@ -95,8 +95,8 @@ async function updateProduct(req, res) {
   const { id } = req.params;
   const productData = req.body;
   try {
-    const product = [await productService.updateProduct(id, productData)];
-    const productView = product.map((product) => product.getView());
+    const product = await productService.updateProduct(id, productData);
+    const productView = product.getView();
     responseUtils.sendSuccessResponse(res, { product: productView }, 200);
   } catch (error) {
     appLogger.error("Error updating product ", error);

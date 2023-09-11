@@ -250,7 +250,7 @@ export class ProductListComponent implements OnInit {
 
     this.productForm.patchValue({
       ...product,
-      category_id: selectedCategory,
+      // category_id: selectedCategory,
     });
   }
 
@@ -285,25 +285,24 @@ export class ProductListComponent implements OnInit {
 
   private updateProduct(productData: Products) {
     const productId = productData.productId;
-    const category = this.productForm.get('category_id').value;
-
+    const category = parseInt(this.productForm.get('category_id').value);
+    
     if (typeof category === 'number') {
       productData.category_id = category;
     } else {
-      productData.category_id = category.value;
+      productData.category_id = category;
     }
-
+    
     const propertiesChanged = Object.keys(productData).some(
       (key) => productData[key] !== this.productInfo[key]
-    );
-
-    if (!propertiesChanged) {
-      this.toastr.info(
-        'No se realizaron cambios en la información del producto.'
       );
-      return;
-    }
-
+      
+      if (!propertiesChanged) {
+        this.toastr.info(
+          'No se realizó cambios en la información del producto.'
+          );
+          return;
+        }
     this.productService.updateProduct(productId, productData).subscribe({
       next: (response: any) => {
         if (response.success) {
