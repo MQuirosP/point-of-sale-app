@@ -946,7 +946,7 @@ input.no-submit:hover {
 }
 
 /* Estilos cuando el input está enfocado */
-input[type="search"]:focus {
+input[type="search"].no-submit:focus {
   background-position: calc(100% - 10px) center;
   background-image: url("assets/magnifying-glass-reverse.png");
   width: 100%;
