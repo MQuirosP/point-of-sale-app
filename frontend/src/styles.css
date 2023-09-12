@@ -1015,8 +1015,8 @@ input::-webkit-input-placeholder {
 
 .row-selected:hover {
   background-color: rgba(129, 124, 124, 0.459);
-  transition: all 0.3s ease;
-  color: #fff;
+  transition: all 0.15s ease;
+  /* color: #fff; */
   cursor: pointer;
 }
 

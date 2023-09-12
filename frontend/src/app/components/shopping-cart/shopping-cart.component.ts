@@ -38,14 +38,10 @@ export class ShoppingCartComponent {
   backendUrl = `${environment.apiUrl}`;
 
   // Crear Ventas
-  // int_code: string = '';
-  // name: string = '';
-  // price: number = 0.0;
   selectedProductPrice: number = 0.0; // Revisar para eliminar
   quantity: number = 1;
 
   // Cálculo de impuestos, sub total y total
-  // TAXES: number = 0;
   selectedProductTaxes: boolean;
   subTotalSaleAmount: number = 0;
   totalTaxesAmount: number = 0;
@@ -58,7 +54,6 @@ export class ShoppingCartComponent {
   paymentMethod: string = 'contado';
   date: Date | any = '';
   productSuggestionList: Products[] = [];
-  // filteredProducts: any[] = [];
 
   // Consultar las ventas
   sales: Sales[] = [];
@@ -136,8 +131,6 @@ export class ShoppingCartComponent {
       });
 
     this.initialSaleFormData = this.saleForm.value;
-
-    // this.getProductList();
     this.selectedDate = this.calendar.getToday();
   }
 
@@ -314,29 +307,6 @@ export class ShoppingCartComponent {
     });
   }
 
-  // Método para obtener la lista de productos
-  // getProductList(): void {
-  //   this.productService.getProducts().subscribe({
-  //     next: (response: any) => {
-  //       const products = response?.message?.products;
-  //       if (Array.isArray(products) && products.length > 0) {
-  //         this.filteredProducts = products.map((product: Products) => ({
-  //           int_code: product.int_code,
-  //           name: product.name,
-  //           sale_price: product.sale_price,
-  //           taxes: product.taxes,
-  //         }));
-  //       } else {
-  //         this.filteredProducts = [];
-  //       }
-  //     },
-  //     error: (error) => {
-  //       console.log('Error al recuperar productos');
-  //       this.toastr.error('Error al recuperar los productos.');
-  //     },
-  //   });
-  // }
-
   searchProduct(): void {
     const productNameControl = this.saleForm.get('product_name').value;
 
@@ -392,7 +362,6 @@ export class ShoppingCartComponent {
   private selectSingleProduct(): void {
     if (this.productSuggestionList.length === 1) {
       const suggestion = this.productSuggestionList[0];
-      // this.selectProductSuggestion(suggestion, null);
       this.selectedProduct = suggestion;
       this.addProduct(suggestion);
     } else {
@@ -416,23 +385,6 @@ export class ShoppingCartComponent {
     this.selectedProductPrice = null;
   }
 
-  // selectProductSuggestion(product: Products, event: Event): void {
-  //   if (event) {
-  //     event.preventDefault();
-  //   }
-  //   this.saleForm.get('product_name').setValue(product.name);
-  //   this.saleForm.get('product_price').setValue(product.sale_price)
-  //   // this.int_code = product.int_code;
-  //   // this.product_name = product.name;
-  //   // this.selectedProductTaxes = product.taxes;
-  //   // this.saleForm.get('product_price').setValue(product.sale_price);
-  //   this.selectedProduct = product;
-  //   this.productSuggestionList = [];
-  //   setTimeout(() => {
-  //     // this.addProduct(product);
-  //     this.selectedProductPrice = 0;
-  //   }, 0);
-  // }
 
   handleBarcodeInput(event: Event) {
     const inputValue = (event.target as HTMLInputElement).value.trim();
@@ -445,7 +397,6 @@ export class ShoppingCartComponent {
       );
 
       if (matchingProduct) {
-        // this.selectProductSuggestion(matchingProduct, null);
         this.selectSingleProduct();
       }
     }
@@ -461,7 +412,6 @@ export class ShoppingCartComponent {
     this.selectedProductPrice = suggestion.sale_price;
 
     if (suggestionName === searchTerm) {
-      // this.selectProductSuggestion(suggestion, null);
       this.selectedProduct = suggestion;
       this.addProduct(this.selectedProduct);
     } else {
@@ -612,8 +562,10 @@ export class ShoppingCartComponent {
 
       if (existingProductIndex !== -1) {
         const existingProduct = this.productList[existingProductIndex];
-        if(existingProduct.quantity === this.permisibleStock) {
-          this.toastr.warning(`Stock de producto ${existingProduct.name} inferior al digitado.`)
+        
+        const validation = this.validateQuantityTransaction(existingProduct)
+
+        if(!validation) {
           return;
         }
         existingProduct.quantity += product.quantity;
@@ -633,6 +585,15 @@ export class ShoppingCartComponent {
       }
 
       this.toastr.error('Se deben suministrar todos los campos.');
+    }
+  }
+
+  private validateQuantityTransaction(currentTransaction: Products) {
+    if(currentTransaction.quantity >= this.permisibleStock) {
+      this.toastr.warning(`Stock de producto ${currentTransaction.name} inferior al digitado.`)
+      return false;
+    } else {
+      return true;
     }
   }
 
@@ -744,7 +705,6 @@ export class ShoppingCartComponent {
     this.saleForm.get('product_taxes')?.reset();
     this.saleForm.get('product_price')?.reset();
     this.saleForm.get('product_quantity').setValue(1);
-    // this.TAXES = 0;
     this.selectedProduct = null;
   }
 
