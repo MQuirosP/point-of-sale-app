@@ -8,7 +8,7 @@ export class ProductsPipe implements PipeTransform {
 
   transform(products: Products[], page: number = 0, search: string = ''): Products[] {
     if (search.trim() === '') {
-      return products.slice(page, page + 8);
+      return products.slice(page, page + 7);
     }
 
     const searchTermLower = search.toLowerCase();
@@ -23,7 +23,7 @@ export class ProductsPipe implements PipeTransform {
       );
     });
 
-    return filteredProducts.slice(page, page + 8);
+    return filteredProducts.slice(page, page + 7);
   }
 
 }
