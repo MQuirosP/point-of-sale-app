@@ -27,20 +27,20 @@
 >
   <div class="container final-div">
     <div class="row">
-      <div class="col col-md-4 mb-3">
-        <div class="card shadow">
-          <div class="card-header modal-header mb-3">
+      <div class="col col-md-4">
+        <div class="card shadow mb-3">
+          <div class="card-header modal-header">
             <h4 class="text-center">
               <i class="fa fa-person-circle-check"></i> Datos personales
             </h4>
           </div>
           <form [formGroup]="newUserForm" (ngSubmit)="registerNewUser()">
             <div class="card-body">
-              <div class="form-group">
+              <div class="form-group mt-3">
                 <label for="name" class="floating-label">Nombre:</label>
                 <input
                   type="text"
-                  class="form-control mt-2"
+                  class="form-control mb-4"
                   autofocus
                   id="name"
                   formControlName="name"
@@ -62,13 +62,12 @@
                 <label for="lastname" class="floating-label">Apellidos:</label>
                 <input
                   type="text"
-                  class="form-control"
+                  class="form-control mb-4"
                   id="lastname"
                   formControlName="lastname"
                   autocomplete="off"
                   (focus)="addFloatingLabelClass('lastname')"
                   (blur)="removeFloatingLabelClass('lastname')"
-                  style="margin-bottom: 30px"
                   [ngClass]="{
                     'is-valid':
                       newUserForm.get('lastname').touched &&
@@ -83,13 +82,12 @@
                 <label for="username" class="floating-label">Usuario:</label>
                 <input
                   type="text"
-                  class="form-control"
+                  class="form-control mb-4"
                   id="username"
                   formControlName="username"
                   autocomplete="off"
                   (focus)="addFloatingLabelClass('username')"
                   (blur)="removeFloatingLabelClass('username')"
-                  style="margin-bottom: 30px"
                   [ngClass]="{
                     'is-valid':
                       newUserForm.get('username').touched &&
@@ -104,12 +102,11 @@
                 <label for="password" class="floating-label">Contraseña:</label>
                 <input
                   type="password"
-                  class="form-control"
+                  class="form-control mb-4"
                   id="password"
                   formControlName="password"
                   (focus)="addFloatingLabelClass('password')"
                   (blur)="removeFloatingLabelClass('password')"
-                  style="margin-bottom: 30px"
                   [ngClass]="{
                     'is-valid':
                       newUserForm.get('password').touched &&
@@ -124,13 +121,12 @@
                 <label for="email" class="floating-label">Email:</label>
                 <input
                   type="email"
-                  class="form-control"
+                  class="form-control mb-4"
                   id="email"
                   formControlName="email"
                   autocomplete="off"
                   (focus)="addFloatingLabelClass('email')"
                   (blur)="removeFloatingLabelClass('email')"
-                  style="margin-bottom: 20px"
                   [ngClass]="{
                     'is-valid':
                       newUserForm.get('email').touched &&
@@ -193,7 +189,6 @@
         </div>
       </div>
     </div>
-    <div style="margin-bottom: 100px;"></div>
   </div>
 </section>
 
