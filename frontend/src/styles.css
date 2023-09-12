@@ -976,6 +976,7 @@ input::-webkit-input-placeholder {
 
 .italic-text {
   font-style: italic;
+  color: rgba(128, 128, 128, 0.671);
 }
 
 .options-card-body-text {

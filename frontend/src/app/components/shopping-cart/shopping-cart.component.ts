@@ -363,6 +363,7 @@ export class ShoppingCartComponent {
     if (this.productSuggestionList.length === 1) {
       const suggestion = this.productSuggestionList[0];
       this.selectedProduct = suggestion;
+      this.saleForm.get('product_price').setValue(this.selectedProduct.sale_price)
       this.addProduct(suggestion);
     } else {
       this.selectedProduct = null;
@@ -409,6 +410,8 @@ export class ShoppingCartComponent {
     const searchTerm = suggestion.name?.toLowerCase().trim() || '';
     const suggestionName = suggestion.name.toLowerCase().trim();
     this.selectedProduct = suggestion;
+    this.saleForm.get("product_price").setValue(this.selectedProduct.sale_price)
+    this.saleForm.get('product_name').setValue(this.selectedProduct.name)
     this.selectedProductPrice = suggestion.sale_price;
 
     if (suggestionName === searchTerm) {

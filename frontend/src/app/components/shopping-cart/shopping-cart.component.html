@@ -127,6 +127,7 @@
                   id="customerOptions"
                   role="searchbox"
                   class="custom-select"
+                  style="cursor: pointer"
                   formControlName="customer_name"
                   [ngClass]="{
                   'is-valid':
@@ -139,7 +140,7 @@
                 }"
                 >
                   <option value="" disabled selected>
-                    Seleccione un cliente
+                    Seleccione un cliente...
                   </option>
                   <option
                     *ngFor="let customer of customersList"
@@ -157,7 +158,15 @@
                     formControlName="paymentMethod"
                     class="custom-select"
                     autocomplete="off"
-                    style="padding: 0 10px 0 10px"
+                    style="padding: 0 10px 0 10px; cursor: pointer"
+                    [ngClass]="{
+                      'is-valid':
+                        saleForm.get('paymentMethod').touched &&
+                        saleForm.get('paymentMethod').valid,
+                      'is-invalid':
+                        saleForm.get('paymentMethod').touched &&
+                        saleForm.get('paymentMethod').invalid,
+                    }"
                   >
                     <option value="contado">Contado</option>
                     <option value="crédito">Crédito</option>
@@ -175,6 +184,10 @@
                     formControlName="date"
                     class="form-control"
                     autocomplete="off"
+                    [ngClass]="{
+                      'is-valid': saleForm.get('date').value,
+                      'is-invalid': !saleForm.get('date').value
+                    }"
                     readonly
                   />
                 </div>
@@ -280,6 +293,14 @@
                     id="price"
                     formControlName="product_price"
                     class="form-control text-right"
+                    [ngClass]="{
+                      'is-valid':
+                        saleForm.get('product_price').touched &&
+                        saleForm.get('product_price').valid,
+                      'is-invalid':
+                        saleForm.get('product_price').touched &&
+                        saleForm.get('product_price').invalid
+                    }"
                     autocomplete="off"
                     readonly
                   />
