@@ -1002,8 +1002,6 @@ input::-webkit-input-placeholder {
 .final-div {
   position: relative;
   margin-top: 20px;
-  /* top: 150px;  */
-  /* left: 50%; */
   transform: translateX(-50% -50%);
   z-index: 0;
 }
@@ -1076,3 +1074,13 @@ nav.navbar {
     margin-bottom: 100px;
   }
 }
+
+.custom-file-input::-webkit-file-upload-button {
+  visibility: hidden;
+}
+
+.custom-file-label {
+  color: #777;
+}
+
+

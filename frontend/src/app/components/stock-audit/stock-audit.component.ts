@@ -2,7 +2,6 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  NgZone,
   OnInit,
   ViewChild,
 } from '@angular/core';
@@ -608,10 +607,10 @@ export class StockAuditComponent implements OnInit {
               this.toastr.warning(message);
             } else {
               this.toastr.success('Información importada con éxito.');
+              this.fileInput = null;
+              this.importButtonDisabled = true;
+              this.exportButtonDisabled = this.isIndexedDBEmpty();
             }
-            this.fileInput = null;
-            this.importButtonDisabled = true;
-            this.exportButtonDisabled = this.isIndexedDBEmpty();
           })
           .catch(() => {
             this.toastr.error('Error al importar la información.');
@@ -627,4 +626,5 @@ export class StockAuditComponent implements OnInit {
     };
     reader.readAsText(this.fileInput);
   }
+
 }

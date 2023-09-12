@@ -99,17 +99,26 @@
           </h4>
         </div>
         <div class="modal-body">
-          <div class="row mr-1 ml-1">
-            <div class="col-md-12 mt-2 mb-2">
+          <div class="col mb-3">
+            <div class="custom-file shadow">
               <input
                 type="file"
                 class="custom-file-input"
                 style="cursor: pointer"
                 id="fileInput"
                 (change)="importJSON($event)"
+                accept=".json"
+                [title]="
+                  fileInput
+                    ? 'Cargar archivo: ' + fileInput.name
+                    : 'No se ha seleccionado un archivo'
+                "
               />
-              <label for="fileInput" class="custom-file-label"
-                >Seleccione archivo</label
+              <label
+                for="fileInput"
+                class="custom-file-label"
+                data-browse="Buscar"
+                >{{ fileInput ? fileInput.name : "Seleccione archivo" }}</label
               >
             </div>
           </div>
@@ -117,21 +126,21 @@
             <div class="col-md-12 d-flex flex-wrap justify-content-center">
               <!-- Utiliza la clase col-sm para definir el comportamiento en dispositivos móviles -->
               <button
-                class="btn btn-primary border border-primary shadow clic-on-image"
+                class="btn btn-primary border border-primary shadow clic-on-image mb-2"
                 (click)="openAuditListModal()"
                 [disabled]="exportButtonDisabled | async"
               >
                 Auditar
               </button>
               <button
-                class="btn btn-success ml-2 mr-2 border border-success shadow clic-on-image"
+                class="btn btn-success ml-2 mr-2 mb-2 border border-success shadow clic-on-image"
                 (click)="exportToJSON()"
                 [disabled]="exportButtonDisabled | async"
               >
                 Exportar
               </button>
               <button
-                class="btn btn-warning border text-white border-warning shadow clic-on-image"
+                class="btn btn-warning border text-white border-warning shadow clic-on-image mb-2"
                 [disabled]="importButtonDisabled"
                 (click)="importJSONData()"
               >
