@@ -90,7 +90,7 @@ export class TicketService {
     doc.text(`${item.quantity}`, marginLeft + 38, y, { align: 'right' });
     y += 3;
     doc.text(`Precio:`, marginLeft + 7, y);
-    doc.text(`${item.sub_total}`, marginLeft + 38, y, { align: 'right' });
+    doc.text(`${item.sub_total / item.quantity}`, marginLeft + 38, y, { align: 'right' });
     y += 3;
     doc.text(`IVA:`, marginLeft + 7, y);
     doc.text(`${item.taxes_amount}`, marginLeft + 38, y, { align: 'right' });

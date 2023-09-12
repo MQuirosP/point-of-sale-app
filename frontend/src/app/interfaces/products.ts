@@ -1,15 +1,15 @@
 export interface Products {
   productId?: number;
   int_code?: string;
-  name: string;
+  name?: string;
   description?: string;
   quantity?: number;
-  price?: number;
-  category_id: number;
+  price?: number; // revisar en purchase-history para eliminar
+  category_id?: number;
   category_name?: string;
-  sale_price: number;
+  sale_price?: number;
   purchase_price?: number;
-  taxes: boolean;
+  taxes?: boolean;
   taxes_amount?: number;
   sub_total?: number;
   total?: number;

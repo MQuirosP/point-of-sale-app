@@ -91,18 +91,18 @@
 
 <!-- Modal para crear ventas -->
 <div
-class="modal fade"
-id="newSaleModal"
-#newSaleModal
-tabindex="-1"
-role="dialog"
-aria-hidden="true"
+  class="modal fade"
+  id="newSaleModal"
+  #newSaleModal
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
 >
-<div class="modal-dialog modal-lg modal-shadow" role="document">
-  <div class="modal-content">
-    <form [formGroup]="saleForm" (ngSubmit)="addProduct()">
-    <div class="modal-header border">
-      <h5 class="modal-title">
+  <div class="modal-dialog modal-lg modal-shadow" role="document">
+    <div class="modal-content">
+      <form [formGroup]="saleForm" (ngSubmit)="createSale($event)">
+        <div class="modal-header border">
+          <h5 class="modal-title">
             <i class="fas fa-edit"></i>&nbsp;Registro de ventas
           </h5>
           <div>
@@ -123,19 +123,29 @@ aria-hidden="true"
             <div class="col-md-6">
               <div class="form-group">
                 <label for="customer_name">Cliente:</label>
-                <select id="customerOptions" role="searchbox" class="custom-select" formControlName="customer_name" [ngClass]="{
+                <select
+                  id="customerOptions"
+                  role="searchbox"
+                  class="custom-select"
+                  formControlName="customer_name"
+                  [ngClass]="{
                   'is-valid':
                     saleForm.get('customer_name').touched &&
                     saleForm.get('customer_name').valid,
                   'is-invalid':
                     saleForm.get('customer_name').touched &&
                     saleForm.get('customer_name').invalid,
-                }">
+                  'italic-text': !saleForm.get('customer_name').value,
+                }"
+                >
+                  <option value="" disabled selected>
+                    Seleccione un cliente
+                  </option>
                   <option
                     *ngFor="let customer of customersList"
                     [value]="formatOption(customer)"
                   >
-                    {{ formatOption(customer) }}
+                    {{ formattedCustomerNames[customer.customer_id] }}
                   </option>
                 </select>
               </div>
@@ -197,11 +207,19 @@ aria-hidden="true"
                 <div class="d-none">
                   <button (click)="toggleCamera()">Abrir Cámara</button>
                   <!-- Mostrar el video de la cámara -->
-                  <video #video autoplay [hidden]="!isScanning" [style.width.px]="300"></video>
+                  <video
+                    #video
+                    autoplay
+                    [hidden]="!isScanning"
+                    [style.width.px]="300"
+                  ></video>
                 </div>
                 <div
-                  class="suggestion-list position-fixed"
+                  class="suggestion-list bg-light position-fixed mt-1"
                   [style.width.px]="nameInput.offsetWidth"
+                  [ngClass]="{
+                    'border border-secondary': productSuggestionList.length !== 0,
+                  }"
                 >
                   <ul
                     id="suggestionOptions"
@@ -216,7 +234,7 @@ aria-hidden="true"
                     >
                       <a
                         href="#"
-                        class="dropdown-item"
+                        class="dropdown-item italic-text"
                         (click)="handleSuggestionClick($event, suggestion)"
                         [class.selected]="selectedIndex === i"
                         tabindex="0"
@@ -236,6 +254,7 @@ aria-hidden="true"
                     formControlName="product_quantity"
                     class="form-control text-right quantity-input"
                     autocomplete="off"
+                    value="1"
                     step="0.01"
                     [ngClass]="{
                       'is-valid': isValidQuantity(),
@@ -268,8 +287,10 @@ aria-hidden="true"
               </div>
               <div class="d-flex justify-content-center">
                 <button
-                  type="submit"
+                  type="button"
                   class="btn btn-primary shadow clic-on-image mb-3"
+                  (click)="addProduct(selectedProduct)"
+                  [disabled]="saleForm.get('product_name').value === ''"
                 >
                   Agregar
                 </button>
@@ -345,13 +366,14 @@ aria-hidden="true"
                           (input)="updateProduct(product, $event)"
                           min="1"
                           step="1"
+                          [max]="permisibleStock"
                         />
                       </td>
                       <td
                         class="text-right product-detail-table-content"
                         style="width: 70px"
                       >
-                        {{ product.price | currency : "CRC" : "₡" }}
+                        {{ product.sale_price | currency : "CRC" : "₡" }}
                       </td>
                       <td
                         class="text-right product-detail-table-content"
@@ -376,7 +398,7 @@ aria-hidden="true"
                               font-size: 10px;
                             "
                           ></i>
-                      </a>
+                        </a>
                       </td>
                     </tr>
                   </tbody>
@@ -412,26 +434,31 @@ aria-hidden="true"
             </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-primary shadow clic-on-image"
-            (click)="createSale($event)"
-          >
-            Guardar
+        <div class="modal-footer d-flex justify-content-between">
+          <button type="button" (click)="clearSaleFormData()" class="btn btn-danger border border-danger">
+            Reset
           </button>
-          <button
-            type="button"
-            class="btn btn-secondary shadow clic-on-image"
-            (click)="closeSaleModal()"
-          >
-            Cerrar
-          </button>
+          <div class="justify-content-center">
+            <button
+              type="button"
+              class="btn btn-primary mr-2 shadow clic-on-image"
+              (click)="createSale($event)"
+            >
+              Guardar
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary shadow clic-on-image"
+              (click)="closeSaleModal()"
+            >
+              Cerrar
+            </button>
+          </div>
         </div>
       </form>
-      </div>
     </div>
   </div>
+</div>
 
 <!-- Modal para consultar las ventas -->
 <div

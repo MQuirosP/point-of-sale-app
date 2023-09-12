@@ -11,18 +11,12 @@ import { fadeAnimation } from 'src/app/animations/fadeAnimation';
 import { ToastrService } from 'ngx-toastr';
 import { TicketService } from 'src/app/services/ticket.service';
 import { SaleService } from 'src/app/services/sale.service';
-import { Subscription } from 'rxjs';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { Subscription, take } from 'rxjs';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductService } from 'src/app/services/product.service';
 import { productAnimations } from 'src/app/animations/product-list-animation';
 import { Products } from 'src/app/interfaces/products';
 import { Sales } from 'src/app/interfaces/sales';
-import { HttpClient } from '@angular/common/http';
 
 interface ApiSaleResponse {
   success: boolean;
@@ -44,14 +38,14 @@ export class ShoppingCartComponent {
   backendUrl = `${environment.apiUrl}`;
 
   // Crear Ventas
-  int_code: string = '';
-  name: string = '';
-  price: number = 0.0;
-  selectedProductPrice: number = 0.0;
+  // int_code: string = '';
+  // name: string = '';
+  // price: number = 0.0;
+  selectedProductPrice: number = 0.0; // Revisar para eliminar
   quantity: number = 1;
 
   // Cálculo de impuestos, sub total y total
-  TAXES: number = 0;
+  // TAXES: number = 0;
   selectedProductTaxes: boolean;
   subTotalSaleAmount: number = 0;
   totalTaxesAmount: number = 0;
@@ -59,24 +53,28 @@ export class ShoppingCartComponent {
 
   // Misceláneos
   isProductValid: boolean = false;
-  productList: any[] = [];
+  productList: Products[] = [];
   lastSaleDocNumber: string = '';
   paymentMethod: string = 'contado';
   date: Date | any = '';
-  productSuggestionList: any[] = [];
-  filteredProducts: any[] = [];
+  productSuggestionList: Products[] = [];
+  // filteredProducts: any[] = [];
 
   // Consultar las ventas
   sales: Sales[] = [];
   sale: Sales[] = [];
 
+  permisibleStock: number = 0;
+
   // Consultar clientes
   selectedCustomer: any;
   customer_id: number = 0;
-  customer_name: string = '';
+  formattedCustomerNames: { [key: string]: string } = {};
   customer_dni: string;
   customersList: any[] = [];
   customerSuggestionList: any[] = [];
+
+  initialSaleFormData: any;
 
   private showNewSaleModalSubscription: Subscription;
 
@@ -93,7 +91,6 @@ export class ShoppingCartComponent {
   constructor(
     private modalService: ModalService,
     private calendar: NgbCalendar,
-    private http: HttpClient,
     private dateParser: NgbDateParserFormatter,
     private toastr: ToastrService,
     private ticketService: TicketService,
@@ -104,17 +101,6 @@ export class ShoppingCartComponent {
   ) {
     this.date = this.getCurrentDate();
     this.selectedDate = this.calendar.getToday();
-  }
-
-  ngOnInit() {
-    // SUSCRIPCION PARA ACCESAR EL FORMULARIO DE VENTAS
-    // DESDE LA PÁGINA PRINCIPAL
-    this.showNewSaleModalSubscription =
-      this.modalService.showNewSaleModal.subscribe((show: boolean) => {
-        if (show) {
-          this.openSaleModal();
-        }
-      });
 
     // DEFINICIÓN FORMULARIO PARA VENTAS
     this.saleForm = this.formBuilder.group({
@@ -129,20 +115,30 @@ export class ShoppingCartComponent {
         ],
       ],
       date: [
-        { value: this.getCurrentDate(), disabled: true },
+        { value: this.getCurrentDate(), disabled: false },
         Validators.required,
       ],
       product_name: ['', Validators.required],
       product_price: ['', Validators.required],
-      product_taxes: new FormControl({
-        value: this.selectedProductTaxes,
-        disabled: true,
-      }),
+      product_taxes: { value: this.selectedProductTaxes, disabled: true },
       product_quantity: [1, [Validators.required, Validators.min(0.01)]],
     });
-    this.getProductList();
+  }
+
+  ngOnInit() {
+    // SUSCRIPCION PARA ACCESAR EL FORMULARIO DE VENTAS
+    // DESDE LA PÁGINA PRINCIPAL
+    this.showNewSaleModalSubscription =
+      this.modalService.showNewSaleModal.subscribe((show: boolean) => {
+        if (show) {
+          this.openSaleModal();
+        }
+      });
+
+    this.initialSaleFormData = this.saleForm.value;
+
+    // this.getProductList();
     this.selectedDate = this.calendar.getToday();
-    this.fetchCustomers();
   }
 
   ngAfterViewInit() {
@@ -243,6 +239,9 @@ export class ShoppingCartComponent {
   }
 
   openSaleModal(): void {
+    if (this.saleForm.invalid) {
+      this.fetchCustomers();
+    }
     if (this.newSaleModal?.nativeElement) {
       this.newSaleModal.nativeElement.style.display = 'block';
       this.newSaleModal.nativeElement.classList.add('opening');
@@ -316,27 +315,27 @@ export class ShoppingCartComponent {
   }
 
   // Método para obtener la lista de productos
-  getProductList(): void {
-    this.productService.getProducts().subscribe({
-      next: (response: any) => {
-        const products = response?.message?.products;
-        if (Array.isArray(products) && products.length > 0) {
-          this.filteredProducts = products.map((product: any) => ({
-            int_code: product.int_code,
-            name: product.name,
-            sale_price: product.sale_price,
-            taxes: product.taxes,
-          }));
-        } else {
-          this.filteredProducts = [];
-        }
-      },
-      error: (error) => {
-        console.log('Error al recuperar productos');
-        this.toastr.error('Error al recuperar los productos.');
-      },
-    });
-  }
+  // getProductList(): void {
+  //   this.productService.getProducts().subscribe({
+  //     next: (response: any) => {
+  //       const products = response?.message?.products;
+  //       if (Array.isArray(products) && products.length > 0) {
+  //         this.filteredProducts = products.map((product: Products) => ({
+  //           int_code: product.int_code,
+  //           name: product.name,
+  //           sale_price: product.sale_price,
+  //           taxes: product.taxes,
+  //         }));
+  //       } else {
+  //         this.filteredProducts = [];
+  //       }
+  //     },
+  //     error: (error) => {
+  //       console.log('Error al recuperar productos');
+  //       this.toastr.error('Error al recuperar los productos.');
+  //     },
+  //   });
+  // }
 
   searchProduct(): void {
     const productNameControl = this.saleForm.get('product_name').value;
@@ -393,8 +392,9 @@ export class ShoppingCartComponent {
   private selectSingleProduct(): void {
     if (this.productSuggestionList.length === 1) {
       const suggestion = this.productSuggestionList[0];
-      this.selectProductSuggestion(suggestion, null);
+      // this.selectProductSuggestion(suggestion, null);
       this.selectedProduct = suggestion;
+      this.addProduct(suggestion);
     } else {
       this.selectedProduct = null;
     }
@@ -416,22 +416,23 @@ export class ShoppingCartComponent {
     this.selectedProductPrice = null;
   }
 
-  selectProductSuggestion(product: Products, event: Event): void {
-    if (event) {
-      event.preventDefault();
-    }
-    this.saleForm.get('product_name').setValue(product.name);
-    this.int_code = product.int_code;
-    this.product_name = product.name;
-    this.selectedProductTaxes = product.taxes;
-    this.saleForm.get('product_price').setValue(product.sale_price);
-    this.selectedProduct = product;
-    this.productSuggestionList = [];
-    setTimeout(() => {
-      this.addProduct();
-      this.selectedProductPrice = 0;
-    }, 0);
-  }
+  // selectProductSuggestion(product: Products, event: Event): void {
+  //   if (event) {
+  //     event.preventDefault();
+  //   }
+  //   this.saleForm.get('product_name').setValue(product.name);
+  //   this.saleForm.get('product_price').setValue(product.sale_price)
+  //   // this.int_code = product.int_code;
+  //   // this.product_name = product.name;
+  //   // this.selectedProductTaxes = product.taxes;
+  //   // this.saleForm.get('product_price').setValue(product.sale_price);
+  //   this.selectedProduct = product;
+  //   this.productSuggestionList = [];
+  //   setTimeout(() => {
+  //     // this.addProduct(product);
+  //     this.selectedProductPrice = 0;
+  //   }, 0);
+  // }
 
   handleBarcodeInput(event: Event) {
     const inputValue = (event.target as HTMLInputElement).value.trim();
@@ -444,7 +445,8 @@ export class ShoppingCartComponent {
       );
 
       if (matchingProduct) {
-        this.selectProductSuggestion(matchingProduct, null);
+        // this.selectProductSuggestion(matchingProduct, null);
+        this.selectSingleProduct();
       }
     }
   }
@@ -455,12 +457,13 @@ export class ShoppingCartComponent {
 
     const searchTerm = suggestion.name?.toLowerCase().trim() || '';
     const suggestionName = suggestion.name.toLowerCase().trim();
-    this.int_code = suggestion.int_code;
+    this.selectedProduct = suggestion;
     this.selectedProductPrice = suggestion.sale_price;
 
     if (suggestionName === searchTerm) {
-      this.selectProductSuggestion(suggestion, null);
+      // this.selectProductSuggestion(suggestion, null);
       this.selectedProduct = suggestion;
+      this.addProduct(this.selectedProduct);
     } else {
       this.selectedProduct = null;
     }
@@ -481,14 +484,14 @@ export class ShoppingCartComponent {
             (this.selectedIndex - 1 + this.productSuggestionList.length) %
             this.productSuggestionList.length;
         }
-  
-        // Scroll 
+
+        // Scroll
         const suggestionElement = document.querySelector('.selected');
         if (suggestionElement) {
           suggestionElement.scrollIntoView({
-            behavior: 'smooth', 
-            block: 'center', 
-            inline: 'center', 
+            behavior: 'smooth',
+            block: 'center',
+            inline: 'center',
           });
         }
       }
@@ -511,26 +514,27 @@ export class ShoppingCartComponent {
     return this.paymentMethod.trim() !== '';
   }
 
-  addProduct() {
-    const productName = this.saleForm.get('product_name').value;
+  addProduct(productData: Products) {
+    const productName = productData.name;
     const productQuantity = this.saleForm.get('product_quantity').value;
-    const productNewPrice = this.saleForm.get('product_price').value;
+    const productNewPrice = productData.sale_price;
+    const int_code = productData.int_code;
 
     if (
-      productName?.invalid ||
+      productName === '' ||
       productQuantity?.invalid ||
-      productNewPrice?.invalid
+      productNewPrice === 0
     ) {
       this.toastr.warning('Se deben suministrar todos los campos.');
       return;
     }
 
-    this.productService.getProductByIntCode(this.int_code).subscribe({
+    this.productService.getProductByIntCode(int_code).subscribe({
       next: (response: any) => {
         const productData = response.message.product;
-        this.TAXES = productData.taxPercentage;
+        this.permisibleStock = productData.quantity;
 
-        if (productQuantity > productData.quantity) {
+        if (productQuantity > this.permisibleStock) {
           this.toastr.warning(
             `Stock de producto ${productData.name} inferior al digitado.`
           );
@@ -543,11 +547,11 @@ export class ShoppingCartComponent {
 
         const product: Products = {
           productId: productData.productId,
-          int_code: this.int_code,
+          int_code: productData.int_code,
           name: productName,
-          price: productNewPrice,
+          // price: productNewPrice,
           quantity: productQuantity,
-          taxPercentage: this.TAXES,
+          taxPercentage: productData.taxPercentage,
           taxes: this.selectedProductTaxes,
           taxes_amount: taxesAmount,
           sub_total: subTotal,
@@ -587,7 +591,7 @@ export class ShoppingCartComponent {
     let taxesAmount = 0;
     let subTotal = 0;
 
-    if (this.selectedProductTaxes) {
+    if (productData.taxes) {
       taxesAmount =
         productData.purchase_price / (1 - productData.taxPercentage / 100) -
         productData.purchase_price;
@@ -608,6 +612,10 @@ export class ShoppingCartComponent {
 
       if (existingProductIndex !== -1) {
         const existingProduct = this.productList[existingProductIndex];
+        if(existingProduct.quantity === this.permisibleStock) {
+          this.toastr.warning(`Stock de producto ${existingProduct.name} inferior al digitado.`)
+          return;
+        }
         existingProduct.quantity += product.quantity;
         existingProduct.taxes_amount += product.taxes_amount;
         existingProduct.sub_total += product.sub_total;
@@ -659,7 +667,7 @@ export class ShoppingCartComponent {
       const customerFullName = this.saleForm.get('customer_name').value;
       const sale = this.buildSaleObject(customerFullName);
       if (this.productList.length === 0) {
-        this.toastr.warning('No hay productos agregados.');
+        this.toastr.warning('No hay productos seleccionados para agregar.');
         event.stopPropagation();
       } else {
         this.saveSale(sale);
@@ -692,6 +700,7 @@ export class ShoppingCartComponent {
   }
 
   private saveSale(sale: Sales): void {
+    console.log(sale);
     this.saleService.createSale(sale).subscribe({
       next: () => {
         this.handleSaleCreationSuccess();
@@ -720,11 +729,12 @@ export class ShoppingCartComponent {
     );
   }
 
-  private clearSaleFormData(): void {
-    this.saleForm.get('customer_name')?.reset();
+  clearSaleFormData(): void {
+    this.saleForm.reset(this.initialSaleFormData);
     this.totalTaxesAmount = 0;
     this.subTotalSaleAmount = 0;
     this.totalSaleAmount = 0;
+    this.permisibleStock = 0;
     this.productList = [];
     this.selectedCustomer = null;
   }
@@ -734,7 +744,7 @@ export class ShoppingCartComponent {
     this.saleForm.get('product_taxes')?.reset();
     this.saleForm.get('product_price')?.reset();
     this.saleForm.get('product_quantity').setValue(1);
-    this.TAXES = 0;
+    // this.TAXES = 0;
     this.selectedProduct = null;
   }
 
@@ -762,6 +772,15 @@ export class ShoppingCartComponent {
     this.productService.getProductByIntCode(product.int_code).subscribe({
       next: (response: any) => {
         const productData = response.message.product;
+
+        this.permisibleStock = productData.quantity;
+
+        if (newQuantity >= this.permisibleStock) {
+          this.toastr.warning(
+            `Stock de producto ${productData.name} inferior al digitado.`
+          );
+          return;
+        }
 
         const taxesAmount =
           productData.purchase_price / (1 - productData.taxPercentage / 100) -
@@ -856,49 +875,28 @@ export class ShoppingCartComponent {
   }
 
   fetchCustomers(): void {
-    this.saleService.getCustomers().subscribe({
-      next: (response: any) => {
-        const customers = response?.message?.customers;
-        if (Array.isArray(customers) && customers.length > 0) {
-          this.customersList = customers;
-        } else {
-          this.customersList = [];
-        }
-      },
-      error: (error: any) => {
-        console.log('Error al recuperar clientes');
-        this.toastr.error('Error al recuperar la lista de clientes.');
-      },
-    });
-  }
-
-  searchCustomers(event: Event): void {
-    const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
-
-    if (Array.isArray(this.customersList) && this.customersList.length > 0) {
-      this.customerSuggestionList = this.customersList.filter(
-        (customer: any) =>
-          customer.customer_name.toLowerCase().includes(searchTerm) ||
-          customer.customer_dni.toLowerCase().includes(searchTerm) ||
-          customer.customer_first_lastname.toLowerCase().includes(searchTerm)
-      );
-    } else {
-      this.customerSuggestionList = [];
-    }
-
-    if (this.customerSuggestionList.length === 1) {
-      const suggestion = this.customerSuggestionList[0];
-      this.selectedCustomer = suggestion;
-      this.customer_id = suggestion.customer_id;
-      this.customerSuggestionList = [];
-      (document.getElementById('customer_name') as HTMLInputElement).value =
-        this.formatOption(suggestion);
-    } else {
-      this.customer_id = null;
-    }
+    this.saleService
+      .getCustomers()
+      .pipe(take(1))
+      .subscribe({
+        next: (response: any) => {
+          const customers = response?.message?.customers;
+          if (Array.isArray(customers) && customers.length > 0) {
+            this.customersList = customers;
+          } else {
+            this.customersList = [];
+          }
+        },
+        error: (error: any) => {
+          console.log('Error al recuperar clientes');
+          this.toastr.error('Error al recuperar la lista de clientes.');
+        },
+      });
   }
 
   formatOption(customer: any): string {
-    return `${customer.customer_name} ${customer.customer_first_lastname} ${customer.customer_second_lastname}`;
+    const formattedName = `${customer.customer_name} ${customer.customer_first_lastname} ${customer.customer_second_lastname}`;
+    this.formattedCustomerNames[customer.customer_id] = formattedName;
+    return formattedName;
   }
 }
