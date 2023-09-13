@@ -10,7 +10,6 @@ import { fadeAnimation } from 'src/app/animations/fadeAnimation';
 import { ToastrService } from 'ngx-toastr';
 import {
   FormBuilder,
-  FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
@@ -63,14 +62,14 @@ export class ProductListComponent implements OnInit {
       name: ['', Validators.required],
       description: ['', Validators.required],
       category_id: ['', [Validators.required]],
-      purchase_price: ['', Validators.required],
-      sale_price: ['', Validators.required],
+      purchase_price: [0, Validators.required],
+      sale_price: [0, Validators.required],
       taxes: [false],
-      taxPercentage: new FormControl(
+      taxPercentage: [
         { value: null, disabled: true },
         Validators.required
-      ),
-      margin: ['', Validators.required],
+    ],
+      margin: [0, Validators.required],
     });
   }
 
@@ -104,9 +103,10 @@ export class ProductListComponent implements OnInit {
     const taxPercentageControl = this.productForm.get('taxPercentage');
 
     if (this.productForm.get('taxes').value) {
-      taxPercentageControl?.enable();
-    } else {
       taxPercentageControl?.disable();
+      taxPercentageControl?.setValue(0);
+    } else {
+      taxPercentageControl?.enable();
       taxPercentageControl?.setValue(0);
     }
   }
@@ -175,6 +175,7 @@ export class ProductListComponent implements OnInit {
   }
 
   openProductModal(value: boolean, product: Products) {
+    this.productForm.get('taxes').setValue(value);
     if (value && product) {
       this.modalTitle = value ? 'Edición' : 'Registro';
       this.modalActionLabel = value;

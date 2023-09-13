@@ -92,15 +92,15 @@
 
 <!-- Modal para crear compras -->
 <div
-class="modal fade"
-id="newPurchaseModal"
-#newPurchaseModal
-tabindex="-1"
-role="dialog"
-aria-hidden="true"
+  class="modal fade"
+  id="newPurchaseModal"
+  #newPurchaseModal
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
 >
-<div class="modal-dialog modal-lg modal-dialog-scrollable">
-      <form [formGroup]="purchaseForm">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <form [formGroup]="purchaseForm" (ngSubmit)="createPurchase($event)">
       <div class="modal-content modal-shadow">
         <div class="modal-header border">
           <h5 class="modal-title">
@@ -126,30 +126,40 @@ aria-hidden="true"
                   type="search"
                   role="combobox"
                   id="provider_name"
+                  list="providerOptions"
                   formControlName="provider_name"
                   class="form-control datalist-no-arrow"
                   autocomplete="off"
                   [spellcheck]="false"
+                  style="cursor: text"
+                  placeholder="Seleccione proveedor..."
                   [ngClass]="{
                     'is-valid':
                       purchaseForm.get('provider_name').touched &&
                       purchaseForm.get('provider_name').valid,
                     'is-invalid':
                       purchaseForm.get('provider_name').touched &&
-                      purchaseForm.get('provider_name').invalid
+                      purchaseForm.get('provider_name').invalid,
+                      'italic-text': !purchaseForm.get('provider_name').value,
                   }"
-                  placeholder="Seleccione proveedor..."
-                  (input)="searchProviders($event)"
-                  list="providerOptions"
+                  (focus)="searchProviders($event)"
                 />
-                <datalist id="providerOptions" role="listbox">
-                  <option
-                    *ngFor="let provider of providerSuggestionList"
-                    [value]="formatOption(provider)"
+                <div
+                  class="suggestion-list shadow bg-white position-fixed mt-1"
+                >
+                  <datalist
+                    id="providerOptions"
+                    role="searchbox"
+                    class="form-select"
                   >
-                    {{ formatOption(provider) }}
-                  </option>
-                </datalist>
+                    <option
+                      *ngFor="let provider of providerSuggestionList"
+                      [value]="formatOption(provider)"
+                    >
+                      {{ provider_name[provider.provider_name] }}
+                    </option>
+                  </datalist>
+                </div>
               </div>
               <div class="form-group form-row">
                 <div class="col">
@@ -189,10 +199,10 @@ aria-hidden="true"
                 <input
                   type="search"
                   id="product_name"
+                  list="suggestionOptions"
                   formControlName="product_name"
-                  class="form-control"
+                  class="form-control datalist-no-arrow"
                   (input)="searchProduct()"
-                  (focus)="handleBarcodeInput($event)"
                   autocomplete="off"
                   [spellcheck]="false"
                   placeholder="Seleccione producto..."
@@ -204,19 +214,20 @@ aria-hidden="true"
                       purchaseForm.get('product_name').touched &&
                       purchaseForm.get('product_name').invalid
                   }"
+                  (focus)="handleBarcodeInput($event)"
                   #nameInput
                   (keydown)="handleKeyDown($event)"
                 />
                 <div
-                  class="suggestion-list position-fixed"
+                  class="suggestion-list shadow bg-white position-fixed mt-1"
                   [style.width.px]="nameInput.offsetWidth"
                 >
-                  <ul
+                  <datalist
                     id="suggestionOptions"
-                    class="list-unstyled"
-                    style="margin: 0; padding: 0 1px"
+                    role="searchbox"
+                    class="form-select list-unstyled"
                   >
-                    <li
+                    <option
                       *ngFor="
                         let suggestion of productSuggestionList;
                         let i = index
@@ -224,7 +235,7 @@ aria-hidden="true"
                     >
                       <a
                         href="#"
-                        class="dropdown-item"
+                        class="dropdown-item italic-text"
                         style="color: black"
                         (click)="handleSuggestionClick($event, suggestion)"
                         [class.selected]="selectedIndex === i"
@@ -232,32 +243,11 @@ aria-hidden="true"
                       >
                         {{ suggestion.name }}
                       </a>
-                    </li>
-                  </ul>
+                    </option>
+                  </datalist>
                 </div>
               </div>
               <div class="form-group form-row">
-                <div class="col">
-                  <label for="product_price">Precio:</label>
-                  <label for="" class="form-check-label ml-5">
-                    <input
-                      type="checkbox"
-                      class="form-check-input shadow"
-                      formControlName="selectedProductTaxes"
-                      [checked]="selectedProductTaxes"
-                    />
-                    {{ selectedProductTaxes ? "Gravado" : "Exento" }}
-                  </label>
-                  <input
-                    type="number"
-                    id="product_price"
-                    formControlName="product_price"
-                    class="form-control text-right"
-                    [value]="selectedProductPrice"
-                    autocomplete="off"
-                    readonly
-                  />
-                </div>
                 <div class="col">
                   <label for="product_quantity">Cantidad:</label>
                   <input
@@ -276,6 +266,38 @@ aria-hidden="true"
                         purchaseForm.get('product_quantity').invalid
                     }"
                     #productQuantityInput
+                  />
+                </div>
+                <div class="col">
+                  <div class="d-flex justify-content-between">
+                    <label for="product_price">Precio:</label>
+                    <label
+                      *ngIf="selectedProduct"
+                      for=""
+                      class="form-check-label text-right"
+                      [ngStyle]="{
+                        color: selectedProductTaxes ? 'green' : 'red'
+                      }"
+                    >
+                      <!-- <input
+                        type="checkbox"
+                        class="form-check-input shadow"
+                        formControlName="selectedProductTaxes"
+                        [checked]="selectedProductTaxes"
+                      /> -->
+                      {{ selectedProductTaxes ? "Gravado" : "Exento" }}
+                      {{ selectedProduct.taxPercentage / 100 | percent }}
+                    </label>
+                  </div>
+                  <input
+                    type="number"
+                    id="product_price"
+                    formControlName="product_price"
+                    class="form-control text-right"
+                    [value]="selectedProductPrice"
+                    autocomplete="off"
+                    tabindex="-10"
+                    readonly
                   />
                 </div>
               </div>
@@ -317,36 +339,32 @@ aria-hidden="true"
               </div>
             </div>
             <div class="col-md-6">
-              <div
-                class="table-container"
-                style="
-                  max-height: 400px;
-                  overflow-y: visible;
-                  overflow-x: hidden;
-                  margin-top: -17px;
-                "
-              >
-                <table class="table" style="table-layout: fixed">
+              <div class="table-container">
+                <h6 class="h6 mb-1 text-center">Lista de productos</h6>
+                <table
+                  class="table table-responsive-lg table-hover"
+                  style="table-layout: fixed"
+                >
                   <thead>
-                    <tr>
+                    <tr class="custom-row">
                       <th
                         class="text-left product-detail-list-title"
                         scope="col"
-                        style="width: 30%"
+                        style="width: 120px"
                       >
                         Producto
                       </th>
                       <th
                         class="text-right product-detail-list-title"
                         scope="col"
-                        style="width: 10%"
+                        style="width: 50px"
                       >
                         Cant.
                       </th>
                       <th
                         class="text-right product-detail-list-title"
                         scope="col"
-                        style="width: 25%"
+                        style="width: 60px"
                       >
                         Precio
                       </th>
@@ -357,11 +375,12 @@ aria-hidden="true"
                       >
                         Total
                       </th>
-                      <th scope="col" style="width: 10%"></th>
+                      <th scope="col" style="width: 30px"></th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr
+                      class="custom-row"
                       *ngFor="let product of productList; let even = even"
                       [ngClass]="{ 'taxes-row': !product.taxes }"
                       [ngClass]="{
@@ -373,9 +392,8 @@ aria-hidden="true"
                       [@slideOut]="product.isRemoved ? 'out' : 'in'"
                       (@slideInOut.done)="product.isNew = true"
                       (@slideInOut.done)="product.isRemoved = false"
-                      class="product-detail-list-item"
                     >
-                      <td class="text-left product-detail-table-content">
+                      <td class="text-left product-detail-table-content" [title]="'Impuestos: ' + formatTaxPercentage(product.taxPercentage) + '%'">
                         {{ product.name }}
                       </td>
                       <td class="text-right product-detail-table-content">
@@ -407,7 +425,7 @@ aria-hidden="true"
                               font-size: 10px;
                             "
                           ></i>
-                      </a>
+                        </a>
                       </td>
                     </tr>
                   </tbody>
@@ -436,27 +454,35 @@ aria-hidden="true"
             </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <button
-            *ngIf="getUserRole() !== 'user'"
-            type="button"
-            class="btn btn-primary shadow clic-on-image"
-            (click)="createPurchase($event)"
-          >
-            Guardar
-          </button>
+        <div class="modal-footer d-flex justify-content-between">
           <button
             type="button"
-            class="btn btn-secondary clic-on-image"
-            (click)="closePurchaseModal()"
+            (click)="resetForm()"
+            class="btn btn-danger border border-danger"
           >
-            Cancelar
+            Reset
           </button>
+          <div class="justify-content-center">
+            <button
+              *ngIf="getUserRole() !== 'user'"
+              type="submit"
+              class="btn btn-primary shadow mr-2 clic-on-image"
+            >
+              Guardar
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary clic-on-image"
+              (click)="closePurchaseModal()"
+            >
+              Cancelar
+            </button>
+          </div>
         </div>
       </div>
     </form>
-    </div>
   </div>
+</div>
 
 <!-- Modal para consultar las compras -->
 <div
@@ -486,11 +512,8 @@ aria-hidden="true"
       <div class="modal-body">
         <form>
           <div class="row d-flex justify-content-center">
-            <div
-              class="form-group sticky-top"
-              style="max-width: 170px"
-            >
-            <label for="purchase-date">Seleccione la fecha:</label>
+            <div class="form-group sticky-top" style="max-width: 170px">
+              <label for="purchase-date">Seleccione la fecha:</label>
               <input
                 type="date"
                 name="purchase-date"

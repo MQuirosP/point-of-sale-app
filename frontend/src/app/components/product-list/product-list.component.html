@@ -193,7 +193,7 @@
       </div>
       <div class="modal-body">
         <form [formGroup]="productForm">
-          <div class="form-row form-group">
+          <div class="form-group form-row">
             <div class="col-md-6">
               <label for="int_code">Código:</label>
               <input
@@ -243,43 +243,45 @@
               </select>
             </div>
           </div>
-          <div class="form-group">
-            <label for="productName">Nombre:</label>
-            <input
-              type="text"
-              class="form-control"
-              id="productName"
-              formControlName="name"
-              name="name"
-              required
-              #nameInput
-              [ngClass]="{
-                'is-valid':
-                  productForm.get('name').touched &&
-                  productForm.get('name').valid,
-                'is-invalid':
-                  productForm.get('name').touched &&
-                  productForm.get('name').invalid
-              }"
-            />
-          </div>
-          <div class="form-group">
-            <label for="productDescription">Descripción:</label>
-            <textarea
-              class="form-control"
-              id="productDescription"
-              formControlName="description"
-              name="description"
-              rows="3"
-              [ngClass]="{
-                'is-valid':
-                  productForm.get('description').touched &&
-                  productForm.get('description').valid,
-                'is-invalid':
-                  productForm.get('description').touched &&
-                  productForm.get('description').invalid
-              }"
-            ></textarea>
+          <div class="form-group form-row">
+            <div class="col-md-12">
+              <label for="productName">Nombre:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="productName"
+                formControlName="name"
+                name="name"
+                required
+                #nameInput
+                [ngClass]="{
+                  'is-valid':
+                    productForm.get('name').touched &&
+                    productForm.get('name').valid,
+                  'is-invalid':
+                    productForm.get('name').touched &&
+                    productForm.get('name').invalid
+                }"
+              />
+            </div>
+            <div class="col-md-12">
+              <label for="productDescription">Descripción:</label>
+              <textarea
+                class="form-control"
+                id="productDescription"
+                formControlName="description"
+                name="description"
+                rows="3"
+                [ngClass]="{
+                  'is-valid':
+                    productForm.get('description').touched &&
+                    productForm.get('description').valid,
+                  'is-invalid':
+                    productForm.get('description').touched &&
+                    productForm.get('description').invalid
+                }"
+              ></textarea>
+            </div>
           </div>
           <div class="form-group form-row">
             <div class="col">
@@ -341,17 +343,26 @@
                 }"
               />
             </div>
-            <div class="col">
-              <label for="taxes">Impuestos (%):</label>
-              <label for="taxPercentage" class="form-check-label ml-5">
-                <input
-                  type="checkbox"
-                  id="taxes"
-                  class="form-check-input shadow"
-                  formControlName="taxes"
-                  name="taxes"
-                  (change)="toggleTaxPercentage(); calculateTotal(true)"
-                />
+            <div class="col custom-control custom-switch">
+              <label class="text-left mr-4" for="taxPercentage"
+                >Impuestos:</label
+              >
+              <input
+                type="checkbox"
+                id="taxes"
+                class="custom-control-input"
+                formControlName="taxes"
+                [checked]="productForm.get('taxes').value"
+                (change)="calculateTotal(true)"
+                (click)="toggleTaxPercentage()"
+              />
+              <label
+                for="taxes"
+                class="custom-control-label ml-5"
+                [ngStyle]="{
+                  color: productForm.get('taxes').value ? 'green' : 'red'
+                }"
+              >
                 {{ productForm.get("taxes").value ? "Gravado" : "Exento" }}
               </label>
               <input

@@ -52,36 +52,32 @@
                     Activar el registro de usuarios.
                   </div>
                 </div>
-                    <div class="col-4 col-md-4"></div>
-                    <div class="col-4 col-md-4 mt-2 ml-1 mx-auto">
-                      <input
-                        *ngIf="getUserRole() !== 'user'"
-                        type="checkbox"
-                        class="custom-control-input"
-                        id="activateRegister"
-                        name="activateRegister"
-                        [(ngModel)]="activateRegister"
-                        [checked]="activateRegister"
-                        style="cursor: pointer"
-                        (click)="toggleCheckbox()"
-                      />
-                      <label
-                        for="activateRegister"
-                        class="custom-control-label"
-                        style="cursor: pointer"
-                      >
-                        <span
-                          [ngStyle]="{
-                            color: activateRegister ? 'green' : 'red'
-                          }"
-                          >{{
-                            activateRegister ? "Activado" : "Desactivado"
-                          }}</span
-                        >
-                      </label>
-                    </div>
-                  <div class="col-md-4"></div>
+                <div class="col-4 col-md-4"></div>
+                <div class="col-4 col-md-4 mt-2 ml-1 mx-auto">
+                  <input
+                    *ngIf="getUserRole() !== 'user'"
+                    type="checkbox"
+                    class="custom-control-input"
+                    id="activateRegister"
+                    name="activateRegister"
+                    [(ngModel)]="activateRegister"
+                    [checked]="activateRegister"
+                    (click)="toggleCheckbox()"
+                  />
+                  <label
+                    for="activateRegister"
+                    class="custom-control-label"
+                  >
+                    <span
+                      [ngStyle]="{
+                        color: activateRegister ? 'green' : 'red'
+                      }"
+                      >{{ activateRegister ? "Activado" : "Desactivado" }}</span
+                    >
+                  </label>
                 </div>
+                <div class="col-md-4"></div>
+              </div>
             </div>
           </div>
         </div>

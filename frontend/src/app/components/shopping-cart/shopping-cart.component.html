@@ -126,13 +126,14 @@
                   <label for="customer_name">Cliente:</label>
                   <input
                     type="search"
+                    role="combobox"
                     id="customer_name"
                     list="customerOptions"
                     formControlName="customer_name"
                     class="form-control datalist-no-arrow"
                     autocomplete="off"
                     [spellcheck]="false"
-                    style="cursor: pointer"
+                    style="cursor: text"
                     placeholder="Seleccione cliente..."
                     [ngClass]="{
                     'is-valid':
@@ -142,7 +143,6 @@
                       saleForm.get('customer_name').touched &&
                       saleForm.get('customer_name').invalid,
                     'italic-text': !saleForm.get('customer_name').value,
-                  
                   }"
                   />
                   <div
@@ -153,9 +153,6 @@
                       role="searchbox"
                       class="form-select"
                     >
-                      <option value="" disabled selected>
-                        Seleccione un cliente...
-                      </option>
                       <option
                         *ngFor="let customer of customersList"
                         [value]="formatOption(customer)"
@@ -221,7 +218,7 @@
                   class="form-control datalist-no-arrow"
                   autocomplete="off"
                   [spellcheck]="false"
-                  style="cursor: pointer"
+                  style="cursor: text"
                   placeholder="Seleccione producto..."
                   [ngClass]="{
                     'is-valid':
@@ -296,7 +293,7 @@
                 </div>
                 <div class="col">
                   <label for="product_price">Precio:</label>
-                  <label for="product_taxes" class="form-check-label ml-5">
+                  <!-- <label for="product_taxes" class="form-check-label ml-5">
                     <input
                       type="checkbox"
                       id="product_taxes"
@@ -306,7 +303,7 @@
                       readonly
                     />
                     {{ selectedProductTaxes ? "Gravado" : "Exento" }}
-                  </label>
+                  </label> -->
                   <input
                     type="number"
                     id="price"
@@ -339,16 +336,11 @@
             <div class="col-md-6">
               <div
                 class="table-container"
-                style="
-                  max-height: 400px;
-                  overflow-y: visible;
-                  overflow-x: hidden;
-                  margin-top: -17px;
-                "
-              >
-                <table class="table" style="table-layout: fixed">
+                >
+                <h6 class="h6 mb-1 text-center">Lista de productos</h6>
+                <table class="table table-responsive-lg table-hover" style="table-layout: fixed">
                   <thead>
-                    <tr>
+                    <tr class="custom-row">
                       <th
                         class="text-left product-detail-list-title"
                         style="width: 120px"
@@ -373,11 +365,12 @@
                       >
                         Total
                       </th>
-                      <th style="width: 50px"></th>
+                      <th style="width: 30px;"></th>
                     </tr>
                   </thead>
                   <tbody [class.d-none]="productList.length === 0">
                     <tr
+                    class="custom-row"
                       *ngFor="let product of productList; let even = even"
                       [ngClass]="{
                         'table-row-even': even,
@@ -391,7 +384,7 @@
                     >
                       <td
                         class="text-left product-detail-table-content"
-                        style="width: 120px"
+                        style="width: 130px"
                       >
                         {{ product.name }}
                       </td>
@@ -427,7 +420,7 @@
                       <td style="width: 50px; padding-top: 2px">
                         <a
                           type="button"
-                          class="clic-on-image"
+                          class="clic-on-icon shadow text-center"
                           (click)="removeProduct(product)"
                         >
                           <i
@@ -455,7 +448,7 @@
                 </p>
               </div>
               <div class="col flex-column align-items-center">
-                <h6 class="text-center total-box-titles">I.V.A.</h6>
+                <h6 class="text-center total-box-titles">Impuestos</h6>
                 <p class="text-center total-invoice">
                   {{ totalTaxesAmount | currency : "CRC" : "₡" }}
                 </p>

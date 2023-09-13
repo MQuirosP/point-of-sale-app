@@ -292,7 +292,7 @@ a.hide {
 }
 
 .footer .contact-info a:hover i.fa-whatsapp {
-  color: #00bb2d ;
+  color: #00bb2d;
   transition: 0.3s color ease;
 }
 
@@ -714,25 +714,36 @@ div.utilitary-icons > a > i.fas {
 
 .ng-placeholder {
   font-style: italic !important;
-} */ 
+} */
 
-/* .custom-input {
-  border: none;
+.custom-input {
+  border: 1px solid rgba(185, 173, 173, 0.651);
   width: 50px;
   margin: 0;
-} */
+  border-radius: 5px;
+  padding-right: 0;
+}
 
 .product-detail-list-title {
   font-size: 14px;
   align-items: center;
+  font-weight: normal;
 }
 
 .product-detail-table-content {
   font-size: 11px;
   padding: 0;
-  padding-top: 5px !important;
-  padding-bottom: 5px !important;
-  padding-left: 3px !important;
+}
+
+tr.custom-row th, tr.custom-row td {
+  padding: .45rem;
+  margin: auto 0;
+}
+
+div.table-container {
+  max-height: 400px;
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 .svg {
@@ -854,18 +865,19 @@ h5.card-title {
 input::-webkit-search-cancel-button,
 input::-webkit-calendar-picker-indicator,
 input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  cursor: pointer;
+input[type="number"]::-webkit-outer-spin-button,
+tr.custom-row td:hover, label.custom-control-label  {
+  cursor: pointer !important;
 }
 
 /* Estilos para las flechas de incremento y decremento en los inputs de tipo number */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
-  margin-left: 10px;
+  margin-left: 5px;
 }
 
 input[type="search"]::-webkit-input-placeholder {
-  font-size: 0.90em;
+  font-size: 0.9em;
   color: #aaa;
   padding-left: 0px;
   transition: all 0.3s ease;
@@ -885,7 +897,6 @@ input[type="search"]::-webkit-search-cancel-button:hover {
   opacity: 1;
   transition: all 0.3s ease;
 }
-
 
 /* Estilos iniciales para todos los input[type="search"] */
 input[type="search"]::-webkit-search-cancel-button {
@@ -938,7 +949,7 @@ input.no-submit {
 
 input.no-submit:hover {
   box-shadow: 2px 2px 4px rgba(255, 255, 255, 0.4) inset,
-  -2px -2px 4px rgba(39, 39, 39, 0.2) inset;
+    -2px -2px 4px rgba(39, 39, 39, 0.2) inset;
   transform: translate(1px, 1px);
 }
 
@@ -1038,7 +1049,6 @@ app-header {
   margin-top: 70px;
   height: calc(90vh - 70px);
   overflow-y: auto;
-  
 }
 
 app-footer {
@@ -1081,5 +1091,3 @@ nav.navbar {
 .custom-file-label {
   color: #777;
 }
-
-

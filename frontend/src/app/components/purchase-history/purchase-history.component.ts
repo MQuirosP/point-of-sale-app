@@ -7,7 +7,6 @@ import {
   NgbDateStruct,
 } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, forkJoin, throwError } from 'rxjs';
-import { ModalService } from 'src/app/services/modalService';
 import { fadeAnimation } from 'src/app/animations/fadeAnimation';
 import { ToastrService } from 'ngx-toastr';
 import { PurchaseService } from 'src/app/services/purchase.service';
@@ -46,7 +45,7 @@ interface ApiProviderResponse {
 export class PurchaseHistoryComponent {
   selectedDate: NgbDateStruct | any;
   purchaseForm: FormGroup;
-  providerForm: FormGroup;
+  initialPurchaseFormData: any;
 
   backendUrl: string = environment.apiUrl;
 
@@ -75,7 +74,7 @@ export class PurchaseHistoryComponent {
 
   // Consultar proveedores
   provider_id: number = 0;
-  provider_name: string = '';
+  provider_name:  { [key: string]: string } = {};
   providersList: any[] = [];
   providerSuggestionList: any[] = [];
   isProviderValid: boolean = false;
@@ -100,13 +99,6 @@ export class PurchaseHistoryComponent {
     private productCache: ProductCacheService,
     private productService: ProductService
   ) {
-    this.date = this.getCurrentDate();
-    this.selectedDate = this.calendar.getToday();
-  }
-
-  ngOnInit() {
-    this.selectedDate = this.calendar.getToday();
-
     // DEFINICIÓN FORMULARIO PARA COMPRAS
     this.purchaseForm = this.formBuilder.group({
       provider_name: ['', Validators.required],
@@ -128,7 +120,15 @@ export class PurchaseHistoryComponent {
       }),
       product_quantity: ['', [Validators.required, Validators.min(0.01)]],
     });
+    this.date = this.getCurrentDate();
+    this.selectedDate = this.calendar.getToday();
+  }
+
+  ngOnInit() {
+    this.selectedDate = this.calendar.getToday();
+
     this.fetchProviders();
+    this.initialPurchaseFormData = this.purchaseForm.value;
   }
 
   ngAfterViewInit() {
@@ -431,6 +431,7 @@ export class PurchaseHistoryComponent {
     product.isNew = false;
     this.calculateTotalPurchaseAmount();
     this.resetFormFields();
+    this.selectedProduct = null;
     this.nameInput.nativeElement.focus();
   }
 
@@ -491,9 +492,9 @@ export class PurchaseHistoryComponent {
   }
 
   async createPurchase(event: Event) {
-    const providerName = this.selectedProvider;
+    const providerName = this.purchaseForm.get('provider_name').value;
 
-    if (providerName.invalid) {
+    if (!providerName) {
       this.toastr.warning('Seleccione un proveedor.');
     } else if (!this.validatePurchaseData(event)) {
     } else {
@@ -610,8 +611,9 @@ export class PurchaseHistoryComponent {
     });
   }
 
-  private resetForm() {
-    this.purchaseForm.reset();
+  resetForm() {
+    this.purchaseForm.reset(this.initialPurchaseFormData);
+    this.selectedProduct = null;
     this.subTotalPurchaseAmount = 0;
     this.totalTaxesAmount = 0;
     this.totalPurchaseAmount = 0;
@@ -722,11 +724,25 @@ export class PurchaseHistoryComponent {
   }
 
   formatOption(provider: any): string {
-    return `${provider.provider_name}`;
+    if(!provider) {
+      this.purchaseForm.get('provider_name').reset();
+    }
+    const formattedName = `${provider.provider_name} ${provider.provider_dni}` 
+    this.provider_name[provider.providerId] = formattedName;
+    return formattedName;
   }
 
-  onDropdownOpen() {
-    // Abre el dropdown al hacer clic en el input
-    this.providerForm.get('provider_name').enable();
-  }
+  formatTaxPercentage(taxPercentage) {
+    // Redondear el número sin decimales
+    const roundedPercentage = Math.round(taxPercentage);
+
+    // Convertir el número redondeado a una cadena de texto
+    return roundedPercentage.toString();
+}
+
+
+  // onDropdownOpen() {
+  //   // Abre el dropdown al hacer clic en el input
+  //   this.providerForm.get('provider_name').enable();
+  // }
 }
