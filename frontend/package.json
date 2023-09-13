@@ -41,6 +41,7 @@
     "print-js": "^1.6.0",
     "quagga": "^0.12.1",
     "rxjs": "~7.8.0",
+    "select2": "^4.1.0-rc.0",
     "stream-browserify": "^3.0.0",
     "toastr": "^2.1.4",
     "tslib": "^2.6.1",

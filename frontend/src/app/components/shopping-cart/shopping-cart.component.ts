@@ -62,7 +62,6 @@ export class ShoppingCartComponent {
   permisibleStock: number = 0;
 
   // Consultar clientes
-  selectedCustomer: any;
   customer_id: number = 0;
   formattedCustomerNames: { [key: string]: string } = {};
   customer_dni: string;
@@ -251,7 +250,6 @@ export class ShoppingCartComponent {
       this.newSaleModal.nativeElement.classList.remove('closing');
       this.newSaleModal.nativeElement.style.display = 'none';
     }, 300);
-    this.selectedCustomer = '';
   }
 
   openSaleHistoryModal(): void {
@@ -682,7 +680,6 @@ export class ShoppingCartComponent {
     setTimeout(() => {
       this.generateTicket(this.lastSaleDocNumber);
     }, 1000);
-    this.selectedCustomer = '';
     this.clearSaleFormData();
     this.closeSaleModal();
   }
@@ -700,7 +697,6 @@ export class ShoppingCartComponent {
     this.totalSaleAmount = 0;
     this.permisibleStock = 0;
     this.productList = [];
-    this.selectedCustomer = null;
   }
 
   private clearProductForm(): void {
@@ -858,6 +854,9 @@ export class ShoppingCartComponent {
   }
 
   formatOption(customer: any): string {
+    if(!customer) {
+      this.saleForm.get('customer_name').reset();
+    }
     const formattedName = `${customer.customer_name} ${customer.customer_first_lastname} ${customer.customer_second_lastname}`;
     this.formattedCustomerNames[customer.customer_id] = formattedName;
     return formattedName;

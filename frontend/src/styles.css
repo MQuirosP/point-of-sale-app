@@ -170,12 +170,6 @@ option {
   color: #000;
 }
 
-.form-control option,
-div.suggestion-list {
-  background-color: #c7c3c3;
-  border-radius: 10px;
-}
-
 .suggestion-list {
   z-index: 999;
   max-height: 200px;
@@ -630,7 +624,7 @@ div.utilitary-icons > a > i.fas {
     -5px -5px -10px rgba(255, 0, 0, 0.5);
 }
 
-.ng-select .ng-select-container {
+/* .ng-select .ng-select-container {
   min-height: 38px;
 }
 
@@ -681,7 +675,7 @@ div.utilitary-icons > a > i.fas {
 }
 
 /* OJO AQUI */
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+/* .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
   background-color: rgb(129, 124, 124);
   color: #070707 !important;
   font-style: italic;
@@ -720,13 +714,13 @@ div.utilitary-icons > a > i.fas {
 
 .ng-placeholder {
   font-style: italic !important;
-}
+} */ 
 
-.custom-input {
+/* .custom-input {
   border: none;
   width: 50px;
   margin: 0;
-}
+} */
 
 .product-detail-list-title {
   font-size: 14px;
@@ -871,9 +865,9 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 input[type="search"]::-webkit-input-placeholder {
-  font-size: 0.95em;
+  font-size: 0.90em;
   color: #aaa;
-  padding: 0;
+  padding-left: 0px;
   transition: all 0.3s ease;
 }
 
@@ -923,7 +917,7 @@ input[type="search"]:focus::-webkit-search-cancel-button {
   -webkit-appearance: none;
   position: absolute;
   transition: all 0.3s ease-in-out;
-  right: 30px;
+  right: 25px;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='red'><path d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/></svg>");
 }
 
@@ -970,8 +964,13 @@ input[type="search"].no-submit:focus {
   color: gray;
 }
 
+datalist.datalist-no-arrow::-webkit-calendar-picker-indicator {
+  visibility: hidden;
+}
+
 input::-webkit-input-placeholder {
   font-style: italic;
+  z-index: 2;
 }
 
 .italic-text {

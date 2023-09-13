@@ -120,60 +120,79 @@
         </div>
         <div class="modal-body">
           <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="customer_name">Cliente:</label>
-                <select
-                  id="customerOptions"
-                  role="searchbox"
-                  class="custom-select"
-                  style="cursor: pointer"
-                  formControlName="customer_name"
-                  [ngClass]="{
-                  'is-valid':
-                    saleForm.get('customer_name').touched &&
-                    saleForm.get('customer_name').valid,
-                  'is-invalid':
-                    saleForm.get('customer_name').touched &&
-                    saleForm.get('customer_name').invalid,
-                  'italic-text': !saleForm.get('customer_name').value,
-                }"
-                >
-                  <option value="" disabled selected>
-                    Seleccione un cliente...
-                  </option>
-                  <option
-                    *ngFor="let customer of customersList"
-                    [value]="formatOption(customer)"
+            <div class="col">
+              <div class="form-group form-row">
+                <div class="col">
+                  <label for="customer_name">Cliente:</label>
+                  <input
+                    type="search"
+                    id="customer_name"
+                    list="customerOptions"
+                    formControlName="customer_name"
+                    class="form-control datalist-no-arrow"
+                    autocomplete="off"
+                    [spellcheck]="false"
+                    style="cursor: pointer"
+                    placeholder="Seleccione cliente..."
+                    [ngClass]="{
+                    'is-valid':
+                      saleForm.get('customer_name').touched &&
+                      saleForm.get('customer_name').valid,
+                    'is-invalid':
+                      saleForm.get('customer_name').touched &&
+                      saleForm.get('customer_name').invalid,
+                    'italic-text': !saleForm.get('customer_name').value,
+                  
+                  }"
+                  />
+                  <div
+                    class="suggestion-list shadow bg-white position-fixed mt-1"
                   >
-                    {{ formattedCustomerNames[customer.customer_id] }}
-                  </option>
-                </select>
+                    <datalist
+                      id="customerOptions"
+                      role="searchbox"
+                      class="form-select"
+                    >
+                      <option value="" disabled selected>
+                        Seleccione un cliente...
+                      </option>
+                      <option
+                        *ngFor="let customer of customersList"
+                        [value]="formatOption(customer)"
+                      >
+                        {{ formattedCustomerNames[customer.customer_id] }}
+                      </option>
+                    </datalist>
+                  </div>
+                </div>
               </div>
               <div class="form-group form-row">
                 <div class="col">
                   <label for="paymentMethod">Método de pago:</label>
-                  <select
+                  <input
                     id="paymentMethod"
+                    type="search"
+                    list="payment_options"
                     formControlName="paymentMethod"
-                    class="custom-select"
+                    class="form-control datalist-no-arrow"
                     autocomplete="off"
-                    style="padding: 0 10px 0 10px; cursor: pointer"
+                    placeholder="Forma de pago"
+                    style="cursor: pointer;"
                     [ngClass]="{
                       'is-valid':
-                        saleForm.get('paymentMethod').touched &&
                         saleForm.get('paymentMethod').valid,
                       'is-invalid':
                         saleForm.get('paymentMethod').touched &&
                         saleForm.get('paymentMethod').invalid,
                     }"
-                  >
-                    <option value="contado">Contado</option>
-                    <option value="crédito">Crédito</option>
-                    <option value="sinpe">Sinpe</option>
-                    <option value="tarjeta">Tarjeta</option>
-                    <option value="transferencia">Transferencia</option>
-                  </select>
+                  />
+                  <datalist id="payment_options" style="width: 200px !important;">
+                    <option value="contado"></option>
+                    <option value="crédito"></option>
+                    <option value="sinpe"></option>
+                    <option value="tarjeta"></option>
+                    <option value="transferencia"></option>
+                  </datalist>
                 </div>
 
                 <div class="col">
@@ -197,12 +216,12 @@
                 <input
                   type="search"
                   id="product_name"
+                  list="suggestionOptions"
                   formControlName="product_name"
                   class="form-control datalist-no-arrow"
-                  (input)="searchProduct()"
-                  (focus)="handleBarcodeInput($event)"
                   autocomplete="off"
                   [spellcheck]="false"
+                  style="cursor: pointer"
                   placeholder="Seleccione producto..."
                   [ngClass]="{
                     'is-valid':
@@ -212,34 +231,24 @@
                       saleForm.get('product_name').touched &&
                       saleForm.get('product_name').invalid
                   }"
+                  (input)="searchProduct()"
+                  (focus)="handleBarcodeInput($event)"
                   #nameInput
                   (keydown)="handleKeyDown($event)"
                   capture="environment"
                   accept="image/*"
                 />
-                <div class="d-none">
-                  <button (click)="toggleCamera()">Abrir Cámara</button>
-                  <!-- Mostrar el video de la cámara -->
-                  <video
-                    #video
-                    autoplay
-                    [hidden]="!isScanning"
-                    [style.width.px]="300"
-                  ></video>
-                </div>
+
                 <div
                   class="suggestion-list shadow bg-white position-fixed mt-1"
                   [style.width.px]="nameInput.offsetWidth"
-                  [ngClass]="{
-                    'border border-secondary': productSuggestionList.length !== 0,
-                  }"
                 >
-                  <ul
+                  <datalist
                     id="suggestionOptions"
-                    class="list-unstyled"
-                    style="margin: 0; padding: 0 1px"
+                    role="searchbox"
+                    class="form-select list-unstyled"
                   >
-                    <li
+                    <option
                       *ngFor="
                         let suggestion of productSuggestionList;
                         let i = index
@@ -254,8 +263,18 @@
                       >
                         {{ suggestion.name }}
                       </a>
-                    </li>
-                  </ul>
+                    </option>
+                  </datalist>
+                </div>
+                <div class="d-none">
+                  <button (click)="toggleCamera()">Abrir Cámara</button>
+                  <!-- Mostrar el video de la cámara -->
+                  <video
+                    #video
+                    autoplay
+                    [hidden]="!isScanning"
+                    [style.width.px]="300"
+                  ></video>
                 </div>
               </div>
               <div class="form-group form-row">
