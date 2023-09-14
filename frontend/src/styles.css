@@ -596,9 +596,10 @@ div.utilitary-icons > a > i.fas, i.clic-on-icon {
   z-index: 4;
   top: 0;
   left: 10px;
-  padding: 0 5px;
-  background-color: #fff;
-  transform: translate(0, -60%);
+  padding: 0;
+  border-radius: 10px;
+  background-color: rgb(255, 255, 255);
+  transform: translate(0, -64%);
   font-size: 16px;
   opacity: 1;
   transition: all 0.3s;
