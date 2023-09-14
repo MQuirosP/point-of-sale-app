@@ -455,13 +455,12 @@ a.hide {
 
 /* Efecto íconos */
 .clic-on-icon:hover {
-  transform: scale(1.1);
-  transition: transform 0.1s ease-in-out;
+  transition: transform 0.2s ease;
 }
 
 .clic-on-icon:active {
-  transform: scale(0.95);
-  transition: transform 0.2s ease-in-out;
+  transform: scale(0.8);
+  transition: transform 0.2s ease;
 }
 
 /* Botón scroll up */
@@ -490,9 +489,8 @@ div.utilitary-icons {
   transition: all 0.3s ease;
 }
 
-div.utilitary-icons > a > i.fas {
-  text-shadow: #888 2px 2px 2px;
-  padding: 8px 0;
+div.utilitary-icons > a > i.fas, i.clic-on-icon {
+  text-shadow: #bbb 2px 2px 2px;
 }
 
 #reloj {
@@ -866,7 +864,7 @@ input::-webkit-search-cancel-button,
 input::-webkit-calendar-picker-indicator,
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button,
-tr.custom-row td:hover, label.custom-control-label  {
+label.custom-control-label  {
   cursor: pointer !important;
 }
 
@@ -928,7 +926,7 @@ input[type="search"]:focus::-webkit-search-cancel-button {
   -webkit-appearance: none;
   position: absolute;
   transition: all 0.3s ease-in-out;
-  right: 25px;
+  right: 30px;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='red'><path d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/></svg>");
 }
 
@@ -1091,3 +1089,13 @@ nav.navbar {
 .custom-file-label {
   color: #777;
 }
+
+.custom-card {
+  padding: 0;
+  margin: 0 auto;
+  border: 1px solid rgba(167, 155, 155, 0.692);
+  border-radius: 5px;
+  background-color: beige;
+}
+
+

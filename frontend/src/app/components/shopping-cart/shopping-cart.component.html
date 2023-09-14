@@ -174,7 +174,7 @@
                     class="form-control datalist-no-arrow"
                     autocomplete="off"
                     placeholder="Forma de pago"
-                    style="cursor: pointer;"
+                    style="cursor: pointer"
                     [ngClass]="{
                       'is-valid':
                         saleForm.get('paymentMethod').valid,
@@ -183,7 +183,10 @@
                         saleForm.get('paymentMethod').invalid,
                     }"
                   />
-                  <datalist id="payment_options" style="width: 200px !important;">
+                  <datalist
+                    id="payment_options"
+                    style="width: 200px !important"
+                  >
                     <option value="contado"></option>
                     <option value="crédito"></option>
                     <option value="sinpe"></option>
@@ -334,11 +337,12 @@
               </div>
             </div>
             <div class="col-md-6">
-              <div
-                class="table-container"
-                >
+              <div class="table-container">
                 <h6 class="h6 mb-1 text-center">Lista de productos</h6>
-                <table class="table table-responsive-lg table-hover" style="table-layout: fixed">
+                <table
+                  class="table table-responsive-lg table-hover"
+                  style="table-layout: fixed"
+                >
                   <thead>
                     <tr class="custom-row">
                       <th
@@ -365,12 +369,12 @@
                       >
                         Total
                       </th>
-                      <th style="width: 30px;"></th>
+                      <th style="width: 30px"></th>
                     </tr>
                   </thead>
                   <tbody [class.d-none]="productList.length === 0">
                     <tr
-                    class="custom-row"
+                      class="custom-row"
                       *ngFor="let product of productList; let even = even"
                       [ngClass]="{
                         'table-row-even': even,
@@ -523,14 +527,14 @@
         </button>
       </div>
       <div class="modal-body">
-        <form>
+        <form class="">
           <div class="row d-flex justify-content-center">
             <div class="form-group sticky-top" style="max-width: 170px">
               <label for="sale-date">Seleccione la fecha:</label>
               <input
                 type="date"
                 name="sale-date"
-                class="form-control input-group-text shadow mb-3"
+                class="form-control input-group-text shadow mb-1"
                 [(ngModel)]="selectedDate"
                 (ngModelChange)="filterSalesByDate()"
                 ngbDatepicker
@@ -543,102 +547,154 @@
 
         <div class="container">
           <!-- Aquí se muestra la lista de ventas -->
-          <div *ngFor="let sale of sales" class="sale-card">
-            <span
-              class="fa-toggle-left"
-              (click)="toggleSaleDetails(sale)"
-              style="cursor: pointer"
-            >
-              {{ sale.showDetails ? " &nbsp;-" : "+" }}
-            </span>
-            <div class="sale-summary" (click)="toggleSaleDetails(sale)">
-              <h6
-                class="sale-id"
-                [ngClass]="{ 'text-danger': sale.status === 'anulada' }"
-              >
-                Fact. {{ sale.doc_number }}
-              </h6>
-              <p class="doc-number">{{ sale.createdAt }}</p>
+          <div *ngFor="let sale of sales" class="card custom-card shadow mb-3">
+            <div class="sale-summary">
+              <div class="card-header d-flex justify-content-start">
+                <div
+                  class="align-items-start"
+                  style="height: 30px; width: 30px"
+                >
+                  <a
+                    role="button"
+                    class="ml-2"
+                    (click)="toggleSaleDetails(sale)"
+                    style="cursor: pointer"
+                  >
+                    <i
+                      class="clic-on-icon"
+                      [ngClass]="
+                        sale.showDetails
+                          ? 'fa fa-light fa-circle-arrow-up text-danger'
+                          : 'fas fa-light fa-circle-arrow-down text-success'
+                      "
+                    ></i>
+                  </a>
+                </div>
+                <div class="d-block">
+                  <h6
+                    class="sale-id"
+                    [ngClass]="{ 'text-danger': sale.status === 'anulada' }"
+                  >
+                    Fact. {{ sale.doc_number }}
+                  </h6>
+                  <p class="doc-number">{{ sale.createdAt }}</p>
+                </div>
+              </div>
             </div>
-            <div *ngIf="sale.showDetails" class="sale-details">
-              <div class="row">
-                <div class="col">
-                  <p>Estado: {{ sale.status }}</p>
+            <div class="card-body mt-2" style="font-size: 0.8em">
+              <div
+                *ngIf="sale.showDetails"
+                [ngClass]="{
+                  'sale-details': true,
+                  'slide-down': sale.showDetails,
+                  'slide-up': !sale.showDetails
+                }"
+              >
+                <div class="row">
+                  <div class="col-8">
+                    <p>
+                      Estado:
+                      <span
+                        [ngStyle]="{
+                          color: sale.status === 'aceptado' ? 'green' : 'red'
+                        }"
+                        >&nbsp;{{ sale.status }}</span
+                      >
+                    </p>
+                  </div>
+                  <div class="col-4">
+                    <p class="text-right">
+                      Sub Total:
+                      {{ sale.sub_total | currency : "CRC" : "₡" : "1.2-2" }}
+                    </p>
+                  </div>
                 </div>
-                <div class="col">
-                  <p class="text-right">
-                    Sub Total:
-                    {{ sale.sub_total | currency : "CRC" : "₡" : "1.2-2" }}
-                  </p>
+                <div class="row">
+                  <div class="col-8">
+                    <p>Cliente:</p>
+                    <p>{{ sale.customer_name }}</p>
+                  </div>
+                  <div class="col-4">
+                    <p class="text-right">
+                      IVA:
+                      {{ sale.taxes_amount | currency : "CRC" : "₡" : "1.2-2" }}
+                    </p>
+                    <p class="text-right">
+                      <strong
+                        >Total:
+                        <span class="">
+                          {{
+                            sale.total | currency : "CRC" : "₡" : "1.2-2"
+                          }}</span
+                        ></strong
+                      >
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div class="row">
-                <div class="col">
-                  <p>Cliente: {{ sale.customer_name }}</p>
+                <div class="row">
+                  <div class="col-8">
+                    <p>Fecha de creación:</p>
+                    <p>{{ sale.createdAt | date }}</p>
+                  </div>
+                  <div class="col-4"></div>
                 </div>
-                <div class="col">
-                  <p class="text-right">
-                    IVA:
-                    {{ sale.taxes_amount | currency : "CRC" : "₡" : "1.2-2" }}
-                  </p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col">
-                  <p>Fecha de creación: {{ sale.createdAt | date }}</p>
-                </div>
-                <div class="col">
-                  <p class="text-right">
-                    <b
-                      >Total:
-                      {{ sale.total | currency : "CRC" : "₡" : "1.2-2" }}</b
+                <table class="table">
+                  <thead>
+                    <tr class="custom-row">
+                      <th class="text-left d-none d-md-table-cell">Cód.</th>
+                      <th class="text-left">Producto</th>
+                      <th class="text-right">Cant.</th>
+                      <th class="text-right">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="let item of sale.saleItems; let even = even"
+                      class="custom-row"
+                      [ngClass]="{
+                        'table-row-even': even,
+                        'table-row-odd': !even
+                      }"
                     >
-                  </p>
+                      <td class="text-left d-none d-md-table-cell">
+                        {{ item.int_code }}
+                      </td>
+                      <td class="text-left">{{ item.name }}</td>
+                      <td class="text-right">
+                        {{ item.quantity | number : "1.2-2" }}
+                      </td>
+                      <td class="text-right">
+                        {{ item.total | currency : "CRC" : "₡" : "1.2-2" }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="card-footer">
+                  <div class="mb-2">
+                    <button
+                      *ngIf="
+                        sale.status === 'aceptado' &&
+                        isCurrentDate(sale.createdAt)
+                      "
+                      class="btn btn-danger clic-on-image mr-2"
+                      (click)="cancelSale(sale); toggleSaleDetails(sale)"
+                    >
+                      Anular
+                    </button>
+                    <button
+                      *ngIf="sale.status === 'aceptado'"
+                      class="btn btn-primary clic-on-image"
+                      (click)="generateTicket(sale.doc_number)"
+                    >
+                      Reimprimir
+                    </button>
+                  </div>
                 </div>
               </div>
-
-              <div class="mb-2">
-                <button
-                  *ngIf="
-                    sale.status === 'aceptado' && isCurrentDate(sale.createdAt)
-                  "
-                  class="btn btn-danger clic-on-image mr-2"
-                  (click)="cancelSale(sale); toggleSaleDetails(sale)"
-                >
-                  Anular
-                </button>
-                <button
-                  *ngIf="sale.status === 'aceptado'"
-                  class="btn btn-primary clic-on-image"
-                  (click)="generateTicket(sale.doc_number)"
-                >
-                  Reimprimir
-                </button>
-              </div>
-              <table class="table">
-                <thead>
-                  <th class="text-left">Cód.</th>
-                  <th class="text-left">Producto</th>
-                  <th class="text-right">Cant.</th>
-                  <th class="text-right">Total</th>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of sale.saleItems">
-                    <td class="text-left">{{ item.int_code }}</td>
-                    <td class="text-left">{{ item.name }}</td>
-                    <td class="text-right">
-                      {{ item.quantity | number : "1.2-2" }}
-                    </td>
-                    <td class="text-right">
-                      {{ item.total | currency : "CRC" : "₡" : "1.2-2" }}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
             </div>
           </div>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer mt-3">
           <button
             type="button"
             class="btn btn-secondary border border-secondary clic-on-image"

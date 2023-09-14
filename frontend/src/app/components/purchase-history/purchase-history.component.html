@@ -393,7 +393,14 @@
                       (@slideInOut.done)="product.isNew = true"
                       (@slideInOut.done)="product.isRemoved = false"
                     >
-                      <td class="text-left product-detail-table-content" [title]="'Impuestos: ' + formatTaxPercentage(product.taxPercentage) + '%'">
+                      <td
+                        class="text-left product-detail-table-content"
+                        [title]="
+                          'Impuestos: ' +
+                          formatTaxPercentage(product.taxPercentage) +
+                          '%'
+                        "
+                      >
                         {{ product.name }}
                       </td>
                       <td class="text-right product-detail-table-content">
@@ -517,7 +524,7 @@
               <input
                 type="date"
                 name="purchase-date"
-                class="form-control input-group-text shadow mb-3"
+                class="form-control input-group-text shadow mb-1"
                 [(ngModel)]="selectedDate"
                 (ngModelChange)="filterPurchasesByDate()"
                 ngbDatepicker
@@ -530,100 +537,164 @@
 
         <div class="container">
           <!-- Aquí se muestra la lista de compras -->
-          <div *ngFor="let purchase of purchases" class="sale-card">
-            <span
-              class="fa-toggle-left"
-              (click)="togglePurchaseDetails(purchase)"
-              style="cursor: pointer"
-            >
-              {{ purchase.showDetails ? " &nbsp;-" : "+" }}
-            </span>
-            <div class="sale-summary" (click)="togglePurchaseDetails(purchase)">
-              <h6
-                class="sale-id"
-                [ngClass]="{ 'text-danger': purchase.status === 'anulada' }"
-              >
-                Fact. {{ purchase.doc_number }}
-              </h6>
-              <p class="doc-number">{{ purchase.createdAt }}</p>
-            </div>
-            <div *ngIf="purchase.showDetails" class="sale-details">
-              <div class="row">
-                <div class="col">
-                  <p>Estado: {{ purchase.status }}</p>
-                </div>
-                <div class="col">
-                  <p class="text-right">
-                    Sub Total:
-                    {{ purchase.sub_total | currency : "CRC" : "₡" : "1.2-2" }}
-                  </p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col">
-                  <p>Proveedor: {{ purchase.provider_name }}</p>
-                </div>
-                <div class="col">
-                  <p class="text-right">
-                    IVA:
-                    {{
-                      purchase.taxes_amount | currency : "CRC" : "₡" : "1.2-2"
-                    }}
-                  </p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col">
-                  <p>Fecha de creación: {{ purchase.createdAt | date }}</p>
-                </div>
-                <div class="col">
-                  <p class="text-right">
-                    <b
-                      >Total:
-                      {{ purchase.total | currency : "CRC" : "₡" : "1.2-2" }}</b
-                    >
-                  </p>
-                </div>
-              </div>
-              <div class="mb-2">
-                <button
-                  *ngIf="
-                    purchase.status === 'aceptado' &&
-                    isCurrentDate(purchase.createdAt) &&
-                    getUserRole() !== 'user'
-                  "
-                  class="btn btn-danger shadow clic-on-image"
-                  (click)="
-                    cancelPurchase(purchase); togglePurchaseDetails(purchase)
-                  "
+          <div
+            *ngFor="let purchase of purchases"
+            class="card custom-card shadow mb-3"
+          >
+            <div class="sale-summary">
+              <div class="card-header d-flex justify-content-start">
+                <div
+                  class="d-flex align-items-start"
+                  style="height: 30px; width: 30px"
                 >
-                  Anular
-                </button>
+                  <a
+                    role="button"
+                    class="ml-2"
+                    (click)="togglePurchaseDetails(purchase)"
+                    style="cursor: pointer"
+                  >
+                    <i
+                      class="clic-on-icon"
+                      [ngClass]="
+                        purchase.showDetails
+                          ? 'fas fa-light fa-circle-arrow-up text-danger'
+                          : 'fas fa-light fa-circle-arrow-down text-success'
+                      "
+                    ></i>
+                  </a>
+                </div>
+                <div class="d-block">
+                  <h6
+                    class="sale-id"
+                    [ngClass]="{ 'text-danger': purchase.status === 'anulada' }"
+                  >
+                    Fact. {{ purchase.doc_number }}
+                  </h6>
+                  <p class="doc-number">{{ purchase.createdAt }}</p>
+                </div>
               </div>
-              <table class="table">
-                <thead>
-                  <th class="text-left">Cód.</th>
-                  <th class="text-left">Producto</th>
-                  <th class="text-right">Cant.</th>
-                  <th class="text-right">Total</th>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of purchase.purchaseItems">
-                    <td class="text-left">{{ item.int_code }}</td>
-                    <td class="text-left">{{ item.name }}</td>
-                    <td class="text-right">
-                      {{ item.quantity | number : "1.2-2" }}
-                    </td>
-                    <td class="text-right">
-                      {{ item.total | currency : "CRC" : "₡" : "1.2-2" }}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            </div>
+            <div class="card-body mt-2" style="font-size: 0.8em">
+              <div
+                *ngIf="purchase.showDetails"
+                [ngClass]="{
+                  'sale-details': true,
+                  'slide-down': purchase.showDetails,
+                  'slide-up': !purchase.showDetails
+                }"
+              >
+                <div class="row">
+                  <div class="col-8">
+                    <p>
+                      Estado:
+                      <span
+                        [ngStyle]="{
+                          color:
+                            purchase.status === 'aceptado' ? 'green' : 'red'
+                        }"
+                        >&nbsp;{{ purchase.status }}</span
+                      >
+                    </p>
+                  </div>
+                  <div class="col-4">
+                    <p class="text-right">
+                      Sub Total:
+                      {{
+                        purchase.sub_total | currency : "CRC" : "₡" : "1.2-2"
+                      }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-8">
+                    <p>Proveedor:</p>
+                    <p>{{ purchase.provider_name }}</p>
+                  </div>
+                  <div class="col-4">
+                    <p class="text-right">
+                      IVA:
+                      {{
+                        purchase.taxes_amount | currency : "CRC" : "₡" : "1.2-2"
+                      }}
+                    </p>
+                    <p class="text-right">
+                      <strong
+                        >Total:
+                        <span class="text-danger">
+                          {{
+                            purchase.total | currency : "CRC" : "₡" : "1.2-2"
+                          }}
+                        </span></strong
+                      >
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-8">
+                    <p>Fecha de creación:</p>
+                    <p>{{ purchase.createdAt | date }}</p>
+                  </div>
+                  <div class="col-4"></div>
+                </div>
+
+                <table class="table">
+                  <thead>
+                    <tr class="custom-row">
+                      <th class="text-left d-none d-md-table-cell">Cód.</th>
+                      <th class="text-left">Producto</th>
+                      <th class="text-right">Cant.</th>
+                      <th class="text-right">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="
+                        let item of purchase.purchaseItems;
+                        let even = even
+                      "
+                      class="custom-row"
+                      [ngClass]="{
+                        'table-row-even': even,
+                        'table-row-odd': !even
+                      }"
+                      class="custom-row"
+                    >
+                      <td class="text-left d-none d-md-table-cell">
+                        {{ item.int_code }}
+                      </td>
+                      <td class="text-left">{{ item.name }}</td>
+                      <td class="text-right">
+                        {{ item.quantity | number : "1.2-2" }}
+                      </td>
+                      <td class="text-right">
+                        {{ item.total | currency : "CRC" : "₡" : "1.2-2" }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="card-footer">
+                  <div class="mb-2">
+                    <button
+                      *ngIf="
+                        purchase.status === 'aceptado' &&
+                        isCurrentDate(purchase.createdAt) &&
+                        getUserRole() !== 'user'
+                      "
+                      class="btn btn-danger shadow clic-on-image"
+                      (click)="
+                        cancelPurchase(purchase);
+                        togglePurchaseDetails(purchase)
+                      "
+                    >
+                      Anular
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer mt-3">
           <button
             type="button"
             class="btn btn-secondary shadow clic-on-image"
