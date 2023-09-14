@@ -30,8 +30,8 @@
         </div>
         <div class="card-body mt-4">
           <div class="form-group mb-4">
-            <div class="input-group shadow">
-              <label for="username" class="floating-label">Usuario:</label>
+            <div class="input-group ">
+              <label for="username" class="floating-label">Usuario</label>
               <input
                 type="text"
                 class="form-control"
@@ -40,8 +40,10 @@
                 [(ngModel)]="username"
                 name="username"
                 autocomplete="off"
+                [spellcheck]="false"
                 (focus)="addFloatingLabelClass('username')"
                 (blur)="removeFloatingLabelClass('username')"
+                style="height: 3.2em; padding: 10px 15px 0 15px; border-radius: 5px 0 0 5px; font-size: 1.1rem; letter-spacing: 2px;"
               />
               <div class="input-group-append">
                 <span class="input-group-text"
@@ -51,8 +53,8 @@
             </div>
           </div>
           <div class="form-group mb-4">
-            <div class="input-group shadow">
-              <label for="password" class="floating-label">Contraseña:</label>
+            <div class="input-group">
+              <label for="password" class="floating-label">Contraseña</label>
               <input
                 type="password"
                 class="form-control"
@@ -62,6 +64,7 @@
                 name="password"
                 (focus)="addFloatingLabelClass('password')"
                 (blur)="removeFloatingLabelClass('password')"
+                style="height: 3.2em; padding: 10px 15px 0 15px; border-radius: 5px 0 0 5px; font-size: 1.1rem; letter-spacing: 3px;"
               />
               <div class="input-group-append">
                 <span class="input-group-text"

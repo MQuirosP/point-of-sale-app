@@ -651,10 +651,6 @@
                     <tr
                       *ngFor="let item of sale.saleItems; let even = even"
                       class="custom-row"
-                      [ngClass]="{
-                        'table-row-even': even,
-                        'table-row-odd': !even
-                      }"
                     >
                       <td class="text-left d-none d-md-table-cell">
                         {{ item.int_code }}
@@ -669,7 +665,7 @@
                     </tr>
                   </tbody>
                 </table>
-                <div class="card-footer">
+                <div class="card-footer" *ngIf="sale.status === 'aceptado'">
                   <div class="mb-2">
                     <button
                       *ngIf="
