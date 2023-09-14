@@ -58,7 +58,7 @@ body {
   border-radius: 5px;
   height: 100%;
   overflow: hidden;
-  max-width: 400px;
+  max-width: 300px;
 }
 
 .main-board-style {
@@ -580,32 +580,28 @@ div.utilitary-icons > a > i.fas, i.clic-on-icon {
   margin-bottom: 10px;
 }
 
-.input-group-text > i {
-  width: 2em;
-  margin: 0 auto;
-}
-
 .floating-label {
   z-index: 4;
   position: absolute;
   left: 10px;
   top: 50%;
+  padding-bottom: 5px;
   transform: translate(0, -50%);
   transition: all 0.3s;
+  opacity: 0.6;
+  font-size: 1.03rem;
   pointer-events: none;
-  font-size: 16px;
-  opacity: 1;
 }
 
 .floating-label.active {
-  opacity: 0.6;
-  font-size: 14px;
   z-index: 4;
   top: 0;
-  /* left: 10px; */
-  /* padding: 0 5px; */
-  background-color: transparent;
-  transform: translate(0, -10%);
+  left: 10px;
+  padding: 0 5px;
+  background-color: #fff;
+  transform: translate(0, -60%);
+  font-size: 0.95;
+  opacity: 1;
   transition: all 0.3s;
 }
 
