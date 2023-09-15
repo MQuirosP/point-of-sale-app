@@ -265,26 +265,26 @@
               />
             </div>
           </div>
-            <div class="form-group form-row">
-              <div class="col-md-12">
-                <label for="productDescription">Descripción:</label>
-                <textarea
-                  class="form-control"
-                  id="productDescription"
-                  formControlName="description"
-                  name="description"
-                  rows="3"
-                  [ngClass]="{
-                    'is-valid':
-                      productForm.get('description').touched &&
-                      productForm.get('description').valid,
-                    'is-invalid':
-                      productForm.get('description').touched &&
-                      productForm.get('description').invalid
-                  }"
-                ></textarea>
-              </div>
+          <div class="form-group form-row">
+            <div class="col-md-12">
+              <label for="productDescription">Descripción:</label>
+              <textarea
+                class="form-control"
+                id="productDescription"
+                formControlName="description"
+                name="description"
+                rows="3"
+                [ngClass]="{
+                  'is-valid':
+                    productForm.get('description').touched &&
+                    productForm.get('description').valid,
+                  'is-invalid':
+                    productForm.get('description').touched &&
+                    productForm.get('description').invalid
+                }"
+              ></textarea>
             </div>
+          </div>
           <div class="form-group form-row">
             <div class="col">
               <label for="purchase_price">Precio de compra:</label>
