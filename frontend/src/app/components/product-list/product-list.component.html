@@ -218,6 +218,7 @@
             <div class="col-md-6">
               <label for="category_id">Categoría:</label>
               <select
+                type="select"
                 formControlName="category_id"
                 id="category_id"
                 required
@@ -231,7 +232,7 @@
                     productForm.get('category_id').invalid
                 }"
               >
-                <option value="" disabled selected>
+                <option [value]="null" disabled>
                   Seleccione categoría...
                 </option>
                 <option

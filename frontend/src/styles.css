@@ -489,7 +489,8 @@ div.utilitary-icons {
   transition: all 0.3s ease;
 }
 
-div.utilitary-icons > a > i.fas, i.clic-on-icon {
+div.utilitary-icons > a > i.fas,
+i.clic-on-icon {
   text-shadow: #bbb 2px 2px 2px;
 }
 
@@ -734,8 +735,9 @@ div.utilitary-icons > a > i.fas, i.clic-on-icon {
   padding: 0;
 }
 
-tr.custom-row th, tr.custom-row td {
-  padding: .45rem;
+tr.custom-row th,
+tr.custom-row td {
+  padding: 0.45rem;
   margin: auto 0;
 }
 
@@ -865,7 +867,7 @@ input::-webkit-search-cancel-button,
 input::-webkit-calendar-picker-indicator,
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button,
-label.custom-control-label  {
+label.custom-control-label {
   cursor: pointer !important;
 }
 
@@ -1033,8 +1035,8 @@ app-header {
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1; 
-  background-color: #fff; 
+  z-index: 1;
+  background-color: #fff;
 }
 
 /* Estilo para el contenido principal */
@@ -1049,8 +1051,8 @@ app-footer {
   bottom: 0;
   left: 0;
   width: 100%;
-  z-index: 1; 
-  background-color: #fff; 
+  z-index: 1;
+  background-color: #fff;
 }
 
 header {
@@ -1092,5 +1094,3 @@ nav.navbar {
   border-radius: 5px;
   background-color: beige;
 }
-
-
