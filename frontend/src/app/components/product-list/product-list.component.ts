@@ -4,11 +4,16 @@ import {
   OnInit,
   ViewChild,
   ChangeDetectorRef,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { Subscription, catchError, tap, timer } from 'rxjs';
 import { fadeAnimation } from 'src/app/animations/fadeAnimation';
 import { ToastrService } from 'ngx-toastr';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { Products } from 'src/app/interfaces/products';
 import { ProductService } from 'src/app/services/product.service';
 
@@ -16,6 +21,7 @@ import { ProductService } from 'src/app/services/product.service';
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [fadeAnimation],
 })
 export class ProductListComponent implements OnInit {
@@ -61,7 +67,10 @@ export class ProductListComponent implements OnInit {
       purchase_price: [0, Validators.required],
       sale_price: [0, Validators.required],
       taxes: [false],
-      taxPercentage: [{ value: null, disabled: true }, Validators.required],
+      taxPercentage: [
+        { value: null, disabled: true },
+        Validators.required
+    ],
       margin: [0, Validators.required],
     });
   }
@@ -238,9 +247,9 @@ export class ProductListComponent implements OnInit {
   }
 
   private updateProductForm(product: Products) {
-    const selectedCategory = this.categoryOptions.find(
-      (option) => option.value === product.category_id
-    );
+    // const selectedCategory = this.categoryOptions.find(
+    //   (option) => option.value === product.category_id
+    // );
 
     this.productForm.patchValue({
       ...product,
@@ -279,22 +288,24 @@ export class ProductListComponent implements OnInit {
 
   private updateProduct(productData: Products) {
     const productId = productData.productId;
-    const category = parseInt(this.productForm.get('category_id').value);
-
-    if (typeof category === 'number') {
-      productData.category_id = category;
-    } else {
-      productData.category_id = category;
-    }
-
+    // const category = parseInt(this.productForm.get('category_id').value);
+    
+    // if (typeof category === 'number') {
+    //   productData.category_id = category;
+    // } else {
+    //   productData.category_id = category;
+    // }
+    
     const propertiesChanged = Object.keys(productData).some(
       (key) => productData[key] !== this.productInfo[key]
-    );
-
-    if (!propertiesChanged) {
-      this.toastr.info('No se realizó cambios en la información del producto.');
-      return;
-    }
+      );
+      
+      if (!propertiesChanged) {
+        this.toastr.info(
+          'No se realizó cambios en la información del producto.'
+          );
+          return;
+        }
     this.productService.updateProduct(productId, productData).subscribe({
       next: (response: any) => {
         if (response.success) {
@@ -310,8 +321,9 @@ export class ProductListComponent implements OnInit {
         this.toastr.error('Error al actualizar el producto.', error);
       },
     });
-
-    this.resetProductForm();
+    if(!this.editMode) {
+      this.resetProductForm();
+    }
     this.closeProductModal();
   }
 
@@ -398,13 +410,11 @@ export class ProductListComponent implements OnInit {
   }
 
   public resetProductForm() {
-    if (this.editMode) {
+    if(this.editMode && this.productInfo) {
       this.productForm.reset();
       setTimeout(() => {
-        this.updateProductForm(this.productInfo);
-        this.toastr.success(
-          'Los cambios realizados fueron descartados. Información del producto recuperada con éxito'
-        );
+        this.updateProductForm(this.productInfo)
+        this.toastr.success('Los cambios realizados fueron descartados. Información del producto recuperada con éxito')
       }, 200);
     } else {
       this.productForm.reset();
