@@ -159,8 +159,15 @@
         </table>
       </div>
     </div>
-    <div *ngIf="(products | productsFilter : page : searchTerm).length === 0" class="modal-footer d-flex justify-content-center pt-4" [@fadeAnimation]>
-      <h4 class="h4 text-danger text-center pb-4"><i class="fas fa-exclamation-circle"></i>&nbsp;No hay coincidencia de producto.</h4>
+    <div
+      *ngIf="(products | productsFilter : page : searchTerm).length === 0"
+      class="modal-footer d-flex justify-content-center pt-4"
+      [@fadeAnimation]
+    >
+      <h4 class="h4 text-danger text-center pb-4">
+        <i class="fas fa-exclamation-circle"></i>&nbsp;No hay coincidencia de
+        producto.
+      </h4>
     </div>
   </div>
   <div class="screen-adjust"></div>
@@ -234,9 +241,7 @@
                     productForm.get('category_id').invalid
                 }"
               >
-                <option [value]="null" disabled>
-                  Seleccione categoría...
-                </option>
+                <option [value]="null" disabled>Seleccione categoría...</option>
                 <option
                   *ngFor="let category of categoryOptions"
                   [value]="category.value"
@@ -364,8 +369,9 @@
               <label
                 for="taxes"
                 class="custom-control-label ml-5"
-                [ngStyle]="{
-                  color: productForm.get('taxes').value ? 'green' : 'red'
+                [ngClass]="{
+                  'text-success': productForm.get('taxes').value,
+                  'text-danger': !productForm.get('taxes').value
                 }"
               >
                 {{ productForm.get("taxes").value ? "Gravado" : "Exento" }}

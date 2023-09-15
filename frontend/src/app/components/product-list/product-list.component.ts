@@ -6,7 +6,7 @@ import {
   ChangeDetectorRef,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { Subscription, catchError, tap, timer } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { fadeAnimation } from 'src/app/animations/fadeAnimation';
 import { ToastrService } from 'ngx-toastr';
 import {
@@ -21,7 +21,6 @@ import { ProductService } from 'src/app/services/product.service';
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [fadeAnimation],
 })
 export class ProductListComponent implements OnInit {
@@ -66,12 +65,19 @@ export class ProductListComponent implements OnInit {
       category_id: ['', [Validators.required]],
       purchase_price: [0, Validators.required],
       sale_price: [0, Validators.required],
-      taxes: [false],
+      taxes: [false, Validators.required],
       taxPercentage: [
         { value: null, disabled: true },
         Validators.required
     ],
       margin: [0, Validators.required],
+    });
+    this.productForm.get('taxes').valueChanges.subscribe((taxesValue) => {
+      if (taxesValue) {
+        this.productForm.get('taxPercentage').enable();
+      } else {
+        this.productForm.get('taxPercentage').disable();
+      }
     });
   }
 
@@ -180,7 +186,7 @@ export class ProductListComponent implements OnInit {
     this.productForm.get('taxes').setValue(value);
     if (value && product) {
       this.modalTitle = value ? 'Edición' : 'Registro';
-      this.modalActionLabel = value;
+      // this.modalActionLabel = value;
       this.changeDetectorRef.detectChanges();
       this.productModal.nativeElement.style.display = 'block';
       this.productModal.nativeElement.classList.add('opening');
@@ -193,7 +199,7 @@ export class ProductListComponent implements OnInit {
       this.toggleIcons(product);
     } else {
       this.modalTitle = value ? 'Edición' : 'Registro';
-      this.modalActionLabel = !value;
+      // this.modalActionLabel = !value;
       this.productForm.reset();
       this.changeDetectorRef.detectChanges();
       this.productModal.nativeElement.style.display = 'block';
@@ -236,11 +242,11 @@ export class ProductListComponent implements OnInit {
     });
   }
 
-  compareCategories(category1: any, category2: any): boolean {
-    return category1 && category2
-      ? category1.value === category2.value
-      : category1 === category2;
-  }
+  // compareCategories(category1: any, category2: any): boolean {
+  //   return category1 && category2
+  //     ? category1.value === category2.value
+  //     : category1 === category2;
+  // }
 
   toggleIcons(product: Products) {
     product.showIcons = !product.showIcons;
@@ -288,13 +294,6 @@ export class ProductListComponent implements OnInit {
 
   private updateProduct(productData: Products) {
     const productId = productData.productId;
-    // const category = parseInt(this.productForm.get('category_id').value);
-    
-    // if (typeof category === 'number') {
-    //   productData.category_id = category;
-    // } else {
-    //   productData.category_id = category;
-    // }
     
     const propertiesChanged = Object.keys(productData).some(
       (key) => productData[key] !== this.productInfo[key]
@@ -310,7 +309,7 @@ export class ProductListComponent implements OnInit {
       next: (response: any) => {
         if (response.success) {
           this.toastr.success('Producto actualizado exitosamente.');
-          this.updateLocalProduct(productId, productData);
+          // this.updateLocalProduct(productId, productData);
         } else {
           this.toastr.error('Error al actualizar el producto.');
         }
@@ -327,25 +326,25 @@ export class ProductListComponent implements OnInit {
     this.closeProductModal();
   }
 
-  private updateLocalProduct(productId: number, productData: Products) {
-    this.filteredProducts = this.products.map((product) => {
-      if (product.productId === productId) {
-        return productData;
-      }
-      return product;
-    }) as Products[];
-  }
+  // private updateLocalProduct(productId: number, productData: Products) {
+  //   this.filteredProducts = this.products.map((product) => {
+  //     if (product.productId === productId) {
+  //       return productData;
+  //     }
+  //     return product;
+  //   }) as Products[];
+  // }
 
-  updateProductList(updatedProduct: Products): void {
-    const index = this.products.findIndex(
-      (product) => product.int_code === updatedProduct.int_code
-    );
-    if (index !== -1) {
-      this.products[index] = { ...this.products[index], ...updatedProduct };
-      this.filteredProducts = [...this.products];
-    }
-    this.loadData();
-  }
+  // updateProductList(updatedProduct: Products): void {
+  //   const index = this.products.findIndex(
+  //     (product) => product.int_code === updatedProduct.int_code
+  //   );
+  //   if (index !== -1) {
+  //     this.products[index] = { ...this.products[index], ...updatedProduct };
+  //     this.filteredProducts = [...this.products];
+  //   }
+  //   this.loadData();
+  // }
 
   createProduct(event: Event): void {
     if (this.productForm.invalid) {
@@ -355,9 +354,9 @@ export class ProductListComponent implements OnInit {
     }
 
     const productData: Products = this.extractProductFormData();
-    const productIntCode = productData.int_code;
+    const int_code = productData.int_code;
 
-    this.productService.getProductByIntCode(productIntCode).subscribe({
+    this.productService.getProductByIntCode(int_code).subscribe({
       next: (response: any) => {
         if (response.success === true) {
           this.toastr.error(
@@ -375,19 +374,9 @@ export class ProductListComponent implements OnInit {
 
   private extractProductFormData() {
     const formValues = this.productForm.value;
-    return {
-      productId: formValues.productId,
-      int_code: formValues.int_code,
-      name: formValues.name,
-      description: formValues.description,
-      category_id: formValues.category_id,
-      purchase_price: formValues.purchase_price,
-      sale_price: formValues.sale_price,
-      taxes: formValues.taxes,
-      margin: formValues.margin,
-      taxPercentage: this.productForm.get('taxPercentage').value,
-    };
+    return formValues;
   }
+  
 
   private saveProduct(productData: Products) {
     this.changeDetectorRef.detectChanges();
@@ -397,6 +386,7 @@ export class ProductListComponent implements OnInit {
         if (response.success) {
           this.toastr.success('Producto guardado exitosamente.');
           this.resetProductForm();
+          this.productInfo = null;
           this.refreshProductList();
           this.closeProductModal();
         } else {
@@ -421,7 +411,7 @@ export class ProductListComponent implements OnInit {
     }
   }
 
-  calculateTotal(isEditForm: boolean = false): void {
+  public calculateTotal(isEditForm: boolean = false): void {
     const purchasePriceControl = this.productForm.get('purchase_price');
     const marginControl = this.productForm.get('margin');
     const taxesControl = this.productForm.get('taxes');
