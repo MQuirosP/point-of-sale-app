@@ -406,8 +406,16 @@ export class ProductListComponent implements OnInit {
     });
   }
 
-  private resetProductForm() {
-    this.productForm.reset();
+  public resetProductForm() {
+    if(this.editMode) {
+      this.productForm.reset();
+      setTimeout(() => {
+        this.updateProductForm(this.productInfo)
+        this.toastr.success('Los cambios realizados fueron descartados. Información del producto recuperada con éxito')
+      }, 200);
+    } else {
+      this.productForm.reset();
+    }
   }
 
   calculateTotal(isEditForm: boolean = false): void {

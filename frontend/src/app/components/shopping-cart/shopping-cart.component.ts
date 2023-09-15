@@ -590,7 +590,7 @@ export class ShoppingCartComponent {
   }
 
   private validateQuantityTransaction(currentTransaction: Products) {
-    if(currentTransaction.quantity >= this.permisibleStock) {
+    if(currentTransaction.quantity > this.permisibleStock) {
       this.toastr.warning(`Stock de producto ${currentTransaction.name} inferior al digitado.`)
       return false;
     } else {
@@ -734,7 +734,7 @@ export class ShoppingCartComponent {
 
         this.permisibleStock = productData.quantity;
 
-        if (newQuantity >= this.permisibleStock) {
+        if (newQuantity > this.permisibleStock) {
           this.toastr.warning(
             `Stock de producto ${productData.name} inferior al digitado.`
           );
