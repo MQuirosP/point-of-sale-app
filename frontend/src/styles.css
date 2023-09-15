@@ -888,10 +888,6 @@ input[type="search"]:focus::-webkit-input-placeholder {
   transition: all 0.3s ease;
 }
 
-/* input[type="search"][id="product_name"]::-webkit-search-cancel-button {
-  margin-right: 0;
-} */
-
 input[type="search"]::-webkit-search-cancel-button:hover {
   opacity: 1;
   transition: all 0.3s ease;
@@ -905,8 +901,6 @@ input[type="search"]::-webkit-search-cancel-button {
   margin-left: 0.4em;
   transition: all 0.3s ease;
   opacity: 0.5;
-  /* cursor: text;
-  transform: none; */
 }
 
 @media (max-width: 500px) {
@@ -1039,8 +1033,8 @@ app-header {
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1; /* Asegura que el header esté por encima del contenido */
-  background-color: #fff; /* Cambia el color de fondo según tus necesidades */
+  z-index: 1; 
+  background-color: #fff; 
 }
 
 /* Estilo para el contenido principal */
@@ -1055,8 +1049,8 @@ app-footer {
   bottom: 0;
   left: 0;
   width: 100%;
-  z-index: 1; /* Asegura que el header esté por encima del contenido */
-  background-color: #fff; /* Cambia el color de fondo según tus necesidades */
+  z-index: 1; 
+  background-color: #fff; 
 }
 
 header {
