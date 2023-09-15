@@ -13,8 +13,8 @@ export interface Products {
   taxes_amount?: number;
   sub_total?: number;
   total?: number;
-  taxPercentage: number;
-  margin: number;
+  taxPercentage?: number;
+  margin?: number;
   showIcons?: boolean;
   isRemoved?: boolean;
   isNew?: boolean;

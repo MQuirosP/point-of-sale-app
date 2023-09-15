@@ -4,16 +4,11 @@ import {
   OnInit,
   ViewChild,
   ChangeDetectorRef,
-  ChangeDetectionStrategy,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { fadeAnimation } from 'src/app/animations/fadeAnimation';
 import { ToastrService } from 'ngx-toastr';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Products } from 'src/app/interfaces/products';
 import { ProductService } from 'src/app/services/product.service';
 
@@ -50,6 +45,7 @@ export class ProductListComponent implements OnInit {
     { value: 0, label: 'Consumo interno' },
     { value: 1, label: 'Venta directa' },
   ];
+  productToDelete: Products = {};
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
@@ -66,10 +62,7 @@ export class ProductListComponent implements OnInit {
       purchase_price: [0, Validators.required],
       sale_price: [0, Validators.required],
       taxes: [false, Validators.required],
-      taxPercentage: [
-        { value: null, disabled: true },
-        Validators.required
-    ],
+      taxPercentage: [{ value: null, disabled: true }, Validators.required],
       margin: [0, Validators.required],
     });
     this.productForm.get('taxes').valueChanges.subscribe((taxesValue) => {
@@ -115,7 +108,11 @@ export class ProductListComponent implements OnInit {
       taxPercentageControl?.setValue(0);
     } else {
       taxPercentageControl?.enable();
-      taxPercentageControl?.setValue(0);
+      if (this.editMode) {
+        taxPercentageControl?.setValue(this.productInfo.taxPercentage);
+      } else {
+        taxPercentageControl?.setValue(0);
+      }
     }
   }
 
@@ -292,19 +289,27 @@ export class ProductListComponent implements OnInit {
     this.updateProduct(productData);
   }
 
+  private arePropertiesChanged(newData: Products, oldData: Products): boolean {
+    if (!newData || !oldData) {
+      return false;
+    }
+
+    return Object.keys(newData).some((key) => newData[key] !== oldData[key]);
+  }
+
   private updateProduct(productData: Products) {
     const productId = productData.productId;
-    
-    const propertiesChanged = Object.keys(productData).some(
-      (key) => productData[key] !== this.productInfo[key]
+    const propertiesChanged = this.arePropertiesChanged(
+      productData,
+      this.productInfo
+    );
+
+    if (!propertiesChanged) {
+      this.toastr.info(
+        'No se realizaron cambios en la información del producto.'
       );
-      
-      if (!propertiesChanged) {
-        this.toastr.info(
-          'No se realizó cambios en la información del producto.'
-          );
-          return;
-        }
+      return;
+    }
     this.productService.updateProduct(productId, productData).subscribe({
       next: (response: any) => {
         if (response.success) {
@@ -313,14 +318,14 @@ export class ProductListComponent implements OnInit {
         } else {
           this.toastr.error('Error al actualizar el producto.');
         }
-        this.refreshProductList();
+        this.updateProductList(productData);
         this.productInfo = null;
       },
       error: (error: any) => {
         this.toastr.error('Error al actualizar el producto.', error);
       },
     });
-    if(!this.editMode) {
+    if (!this.editMode) {
       this.resetProductForm();
     }
     this.closeProductModal();
@@ -335,16 +340,16 @@ export class ProductListComponent implements OnInit {
   //   }) as Products[];
   // }
 
-  // updateProductList(updatedProduct: Products): void {
-  //   const index = this.products.findIndex(
-  //     (product) => product.int_code === updatedProduct.int_code
-  //   );
-  //   if (index !== -1) {
-  //     this.products[index] = { ...this.products[index], ...updatedProduct };
-  //     this.filteredProducts = [...this.products];
-  //   }
-  //   this.loadData();
-  // }
+  updateProductList(updatedProduct: Products): void {
+    const index = this.products.findIndex(
+      (product) => product.int_code === updatedProduct.int_code
+    );
+    if (index !== -1) {
+      this.products[index] = { ...this.products[index], ...updatedProduct };
+      this.filteredProducts = [...this.products];
+    }
+    this.loadData();
+  }
 
   createProduct(event: Event): void {
     if (this.productForm.invalid) {
@@ -376,7 +381,6 @@ export class ProductListComponent implements OnInit {
     const formValues = this.productForm.value;
     return formValues;
   }
-  
 
   private saveProduct(productData: Products) {
     this.changeDetectorRef.detectChanges();
@@ -400,12 +404,25 @@ export class ProductListComponent implements OnInit {
   }
 
   public resetProductForm() {
-    if(this.editMode && this.productInfo) {
+    const formData = this.extractProductFormData();
+    const propertiesChanged = this.arePropertiesChanged(
+      formData,
+      this.productInfo
+    );
+
+    if (this.editMode && propertiesChanged) {
       this.productForm.reset();
       setTimeout(() => {
-        this.updateProductForm(this.productInfo)
-        this.toastr.success('Los cambios realizados fueron descartados. Información del producto recuperada con éxito')
+        this.updateProductForm(this.productInfo);
+        this.toastr.success(
+          'Los cambios realizados fueron descartados. Información del producto recuperada con éxito'
+        );
       }, 200);
+    } else if (!propertiesChanged && this.editMode) {
+      this.toastr.info(
+        'No se realizaron cambios en la información del producto.'
+      );
+      return;
     } else {
       this.productForm.reset();
     }
@@ -474,10 +491,11 @@ export class ProductListComponent implements OnInit {
     recalculate();
   }
 
-  deleteProduct(intCode: string) {
+  deleteProduct(productData: Products) {
     const password = this.password;
+    const int_code = this.productToDelete.int_code;
 
-    this.productService.deleteProduct(intCode, password).subscribe({
+    this.productService.deleteProduct(int_code, password).subscribe({
       next: (response: any) => {
         if (response.success) {
           this.toastr.success(`Producto eliminado satisfactoriamente.`);
@@ -502,6 +520,7 @@ export class ProductListComponent implements OnInit {
   }
 
   openPasswordModal(product: Products) {
+    this.productToDelete = product;
     this.deletePasswordModal.nativeElement.style.display = 'block';
     this.deletePasswordModal.nativeElement.classList.add('opening');
     setTimeout(() => {
@@ -510,7 +529,6 @@ export class ProductListComponent implements OnInit {
     this.toggleIcons(product);
     try {
       const { int_code, name, description, quantity, sale_price } = product;
-
       this.productForm.patchValue({
         int_code,
         name,

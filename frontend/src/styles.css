@@ -867,7 +867,7 @@ input::-webkit-search-cancel-button,
 input::-webkit-calendar-picker-indicator,
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button,
-label.custom-control-label {
+label.custom-control-label, select:hover, option {
   cursor: pointer !important;
 }
 

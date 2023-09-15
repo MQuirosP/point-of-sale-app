@@ -241,7 +241,7 @@
                     productForm.get('category_id').invalid
                 }"
               >
-                <option [value]="null" disabled>Seleccione categoría...</option>
+                <option [value]="null" disabled selected>Seleccione categoría...</option>
                 <option
                   *ngFor="let category of categoryOptions"
                   [value]="category.value"
@@ -402,7 +402,7 @@
         </div>
         <div class="modal-footer d-flex justify-content-between">
           <button
-            type="reset"
+            type="button"
             (click)="resetProductForm()"
             class="btn btn-danger border border-danger"
           >
@@ -466,13 +466,13 @@
         <div class="modal-body">
           <form>
             <div class="form-group">
-              <label for="deleteProduct">Producto a eliminar:</label>
+              <label for="deleteProduct" class="form-label">Producto a eliminar:</label>
               <input
                 type="text"
                 id="deleteProduct"
                 class="form-control"
                 name="name"
-                [value]="productForm.get('name').value"
+                [value]="productToDelete?.name"
                 autocomplete="off"
               />
               <label for="password">Contraseña:</label>
@@ -489,7 +489,7 @@
               <button
                 type="submit"
                 class="btn btn-primary clic-on-image"
-                (click)="deleteProduct(productForm.get('int_code').value)"
+                (click)="deleteProduct(productToDelete)"
               >
                 Guardar
               </button>
