@@ -567,6 +567,7 @@ export class ShoppingCartComponent {
         const validation = this.validateQuantityTransaction(existingProduct)
 
         if(!validation) {
+          this.toastr.warning('Error')
           return;
         }
         existingProduct.quantity += product.quantity;
@@ -600,15 +601,22 @@ export class ShoppingCartComponent {
 
   private calculateTotalSaleAmount() {
     this.subTotalSaleAmount = this.productList.reduce((subTotal, product) => {
-      return subTotal + product.sub_total;
+      return subTotal + (product.sub_total || 0);
     }, 0);
-
+  
     this.totalTaxesAmount = this.productList.reduce((taxesTotal, product) => {
-      return taxesTotal + product.taxes_amount;
+      return taxesTotal + (product.taxes_amount || 0);
     }, 0);
-
-    this.totalSaleAmount = +this.totalTaxesAmount + this.subTotalSaleAmount;
+  
+    // Calcula el total solo si tanto subTotalSaleAmount como totalTaxesAmount son números válidos
+    if (!isNaN(this.subTotalSaleAmount) && !isNaN(this.totalTaxesAmount)) {
+      this.totalSaleAmount = +this.totalTaxesAmount + this.subTotalSaleAmount;
+    } else {
+      // En caso de que alguno de los valores sea NaN, establece totalSaleAmount en 0
+      this.totalSaleAmount = 0;
+    }
   }
+  
 
   removeProduct(product: Products) {
     if (product.isRemoved) return;
@@ -709,24 +717,41 @@ export class ShoppingCartComponent {
 
   updateProduct(product: Products, event: Event): void {
     const newQuantity = (event.target as HTMLInputElement).valueAsNumber;
-
+  
     const productIndex = this.productList.findIndex(
       (p: Products) => p.int_code === product.int_code
     );
+    
 
+    if (isNaN(newQuantity)) {
+      this.toastr.error("La cantidad debe ser un número válido. Por favor, verifique.");
+      (event.target as HTMLInputElement).value = '1';
+      this.getProductDataAndUpdateProductList(product, 1, productIndex, event)
+      return; // Sale del método si la cantidad no es un número válido.
+    }
+
+    if (newQuantity === 0) {
+      (event.target as HTMLInputElement).value = '1';
+      this.getProductDataAndUpdateProductList(product, 1, productIndex, event)
+      this.toastr.error("La cantidad no puede ser igual a 0. Por favor, verifique.");
+      return; // Sale del método si la cantidad es igual a 0.
+    }
+  
     if (productIndex !== -1) {
       this.getProductDataAndUpdateProductList(
         product,
         newQuantity,
-        productIndex
+        productIndex, event
       );
     }
   }
+  
 
   private getProductDataAndUpdateProductList(
     product: Products,
     newQuantity: number,
-    productIndex: number
+    productIndex: number,
+    event: Event
   ): void {
     this.productService.getProductByIntCode(product.int_code).subscribe({
       next: (response: any) => {
@@ -738,6 +763,7 @@ export class ShoppingCartComponent {
           this.toastr.warning(
             `Stock de producto ${productData.name} inferior al digitado.`
           );
+          (event.target as HTMLInputElement).value = this.permisibleStock.toString();
           return;
         }
 
