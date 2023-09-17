@@ -66,10 +66,6 @@ body {
 }
 
 .main-board-style {
-  /* position: fixed;
-  width: 100%;
-  top: 70px;
-  z-index: 1; */
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.85);
   -webkit-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.85);
   -moz-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.85);
@@ -102,10 +98,6 @@ h1 {
     font-size: 1.8em;
   }
 }
-
-/* .header {
-  background-color: #f0f0f0;
-} */
 
 #main-header {
   min-height: 0px;
@@ -628,97 +620,6 @@ i.clic-on-icon {
     -5px -5px -10px rgba(255, 0, 0, 0.5);
 }
 
-/* .ng-select .ng-select-container {
-  min-height: 38px;
-}
-
-.ng-select.ng-invalid.ng-touched .ng-select-container {
-  border-color: #e70303;
-  box-shadow: 20px 20px 30px rgba(255, 0, 0, 0.5),
-    -20px -20px -30px rgba(255, 0, 0, 0.5);
-}
-
-.ng-select.ng-valid.ng-touched.custom .ng-select-container {
-  border-color: #25a719;
-  box-shadow: 30px 30px 40px rgba(0, 255, 0, 1),
-    -30px -30px -40px rgba(0, 255, 0, 1);
-}
-
-.ng-dropdown-panel
-  .ng-dropdown-panel-items
-  .ng-option.ng-option-selected
-  .ng-option-label,
-.ng-dropdown-panel
-  .ng-dropdown-panel-items
-  .ng-option.ng-option-selected.ng-option-marked
-  .ng-option-label {
-  font-weight: normal;
-}
-
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected,
-.ng-dropdown-panel
-  .ng-dropdown-panel-items
-  .ng-option.ng-option-selected.ng-option-marked {
-  background-color: white;
-}
-
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected,
-.ng-dropdown-panel
-  .ng-dropdown-panel-items
-  .ng-option.ng-option-selected.ng-option-marked {
-  color: #333;
-  background-color: rgb(129, 124, 124);
-}
-
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected,
-.ng-dropdown-panel
-  .ng-dropdown-panel-items
-  .ng-option.ng-option-selected.ng-option-marked:hover {
-  color: white;
-  background-color: rgb(129, 124, 124);
-}
-
-/* OJO AQUI */
-/* .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
-  background-color: rgb(129, 124, 124);
-  color: #070707 !important;
-  font-style: italic;
-  opacity: 0;
-  transition: 0.15s ease;
-}
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
-  background-color: rgb(129, 124, 124);
-  color: #fff !important;
-  font-style: italic;
-  opacity: 1;
-  transition: 0.15s ease;
-}
-
-.ng-dropdown-panel.ng-select-bottom {
-  top: 100%;
-  border-bottom-right-radius: 10px;
-  border-bottom-left-radius: 10px;
-  border-top-color: #e6e6e6;
-}
-
-.ng-dropdown-panel .ng-dropdown-panel-items {
-  border-radius: 10px;
-  border-left: white;
-  border-right: white;
-}
-
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
-  color: #000 !important;
-  font-style: italic;
-  background-color: rgb(197, 197, 197);
-  opacity: 1;
-  transition: all 0.1s ease;
-  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2), -4px -4px -8px rgba(0, 0, 0, 0.2);
-}
-
-.ng-placeholder {
-  font-style: italic !important;
-} */
 
 .custom-input {
   border: 1px solid rgba(185, 173, 173, 0.651);
