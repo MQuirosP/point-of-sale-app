@@ -55,10 +55,14 @@ body {
 }
 
 .login-box {
+  position: relative;
+  display: flex;
+  margin: 0 auto ;
+  margin-top: 100px;
   border-radius: 5px;
-  height: 100%;
   overflow: hidden;
   max-width: 300px;
+  
 }
 
 .main-board-style {
