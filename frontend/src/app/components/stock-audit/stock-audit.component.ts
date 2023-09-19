@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 import { fadeAnimation } from 'src/app/animations/fadeAnimation';
 import { Products } from 'src/app/interfaces/products';
 import { ProductService } from 'src/app/services/product.service';
+import { StockAuditService } from 'src/app/services/stock-audit.service';
 
 interface ProductListStockAudit extends Products {
   real_stock?: number;
@@ -52,17 +53,20 @@ export class StockAuditComponent implements OnInit {
 
   fileInput: File | null = null;
   importButtonDisabled: boolean = true;
-  exportButtonDisabled: Promise<boolean>;
+  exportButtonDisabled: Promise<Boolean>;
+  allAudits: any[] = [];
 
   constructor(
     private productService: ProductService,
     private toastr: ToastrService,
     private changeDetectorRef: ChangeDetectorRef,
     private formBuilder: FormBuilder,
+    private audits: StockAuditService
   ) {}
 
   ngOnInit() {
     this.loadData();
+    this.exportButtonDisabled = this.isIndexedDBEmpty();
     this.productForm = this.formBuilder.group({
       productId: [0, Validators.required],
       int_code: ['', Validators.required],
@@ -73,13 +77,11 @@ export class StockAuditComponent implements OnInit {
       real_stock: [0, Validators.required],
       difference: [0, Validators.required],
     });
-    this.initializeIndexedDB();
-    this.exportButtonDisabled = this.isIndexedDBEmpty();
   }
-  
+
   ngAfterViewInit(): void {
     this.refreshProductList();
-    this.loadAuditListProducts();
+    this.getAllAudits();
   }
 
   ngOnDestroy() {
@@ -89,26 +91,44 @@ export class StockAuditComponent implements OnInit {
   }
 
   initializeIndexedDB() {
-    const request = indexedDB.open('auditListDB', 1);
-  
-    request.onupgradeneeded = (event) => {
-      const db = (event.target as IDBOpenDBRequest).result;
-  
-      if (!db.objectStoreNames.contains('products')) {
-        db.createObjectStore('products', { keyPath: 'productId' });
+    // Verificar si la base de datos ya existe
+    indexedDB.databases().then((databaseList) => {
+      const exists = databaseList.some(
+        (dbInfo) => dbInfo.name === 'auditListDB'
+      );
+
+      if (!exists) {
+        // La base de datos no existe, proceder a crearla
+        const request = indexedDB.open('auditListDB', 1);
+
+        request.onupgradeneeded = (event) => {
+          const db = (event.target as IDBOpenDBRequest).result;
+          // Crear el objeto de almacenamiento "products"
+          const productsStore = db.createObjectStore('products', {
+            keyPath: 'productId',
+          });
+          // Puedes agregar índices o realizar otras configuraciones aquí si es necesario.
+        };
+
+        request.onsuccess = (event) => {
+          // La base de datos se abrió exitosamente, no necesitas realizar ninguna operación aquí.
+          this.toastr.success('Auditoría inicializada exitosamente.');
+        };
+
+        request.onerror = (event) => {
+          console.error(
+            'Error al abrir la base de datos de IndexedDB.',
+            event.target
+          );
+          this.toastr.error('Error al abrir la base de datos de IndexedDB.');
+        };
+      } else {
+        // La base de datos ya existe, mostrar un mensaje de advertencia
+        console.warn('La base de datos de IndexedDB ya existe.');
+        this.toastr.warning('La base de datos de IndexedDB ya está iniciada.');
       }
-    };
-  
-    request.onsuccess = (event) => {
-      // La base de datos se abrió exitosamente, no necesitas realizar ninguna operación aquí.
-    };
-  
-    request.onerror = (event) => {
-      console.error('Error al abrir la base de datos de IndexedDB.', event.target);
-      this.toastr.error('Error al abrir la base de datos de IndexedDB.');
-    };
+    });
   }
-  
 
   loadAuditListProducts() {
     const request = indexedDB.open('auditListDB', 1);
@@ -134,31 +154,28 @@ export class StockAuditComponent implements OnInit {
     };
   }
 
-  async isIndexedDBEmpty() {
-    const db = await new Promise<IDBDatabase>((resolve, reject) => {
+  isIndexedDBEmpty(): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
       const request = indexedDB.open('auditListDB', 1);
   
-      request.onsuccess = (event) => {
-        resolve((event.target as IDBOpenDBRequest).result);
+      request.onsuccess = () => {
+        const db = (request.result as IDBDatabase);
+        const objectStoreNames = db.objectStoreNames;
+  
+        if (objectStoreNames.contains('products')) {
+          // La base de datos y el almacén existen
+          resolve(false);
+        } else {
+          // La base de datos existe, pero el almacén no
+          resolve(true);
+        }
+  
+        db.close(); // Cerrar la base de datos después de la verificación
       };
   
-      request.onerror = (event) => {
-        reject('Error al abrir la base de datos de IndexedDB.');
-      };
-    });
-  
-    return new Promise<boolean>((resolve, reject) => {
-      const transaction = db.transaction(['products'], 'readonly');
-      const objectStore = transaction.objectStore('products');
-      const countRequest = objectStore.count();
-  
-      countRequest.onsuccess = () => {
-        const count = countRequest.result;
-        resolve(count === 0);
-      };
-  
-      countRequest.onerror = (event) => {
-        reject('Error al contar registros en IndexedDB.');
+      request.onerror = () => {
+        // La base de datos no existe
+        resolve(true);
       };
     });
   }
@@ -330,8 +347,8 @@ export class StockAuditComponent implements OnInit {
         addRequest.onsuccess = () => {
           this.toastr.success('Producto agregado a la lista de auditoría.');
           setTimeout(() => {
-            this.exportButtonDisabled = this.isIndexedDBEmpty();
-          }, 50)
+            this.exportButtonDisabled = Promise.resolve(false);
+          }, 50);
         };
 
         addRequest.onerror = (event) => {
@@ -429,8 +446,8 @@ export class StockAuditComponent implements OnInit {
         this.getAuditListProducts((auditListProducts) => {
           this.auditListProducts = auditListProducts;
           setTimeout(() => {
-            this.exportButtonDisabled = this.isIndexedDBEmpty();
-          }, 50)
+            this.exportButtonDisabled = Promise.resolve(true);
+          }, 50);
         });
       };
 
@@ -508,6 +525,29 @@ export class StockAuditComponent implements OnInit {
     }, 300);
   }
 
+  deleteIndexedDB() {
+    const confirmation = window.confirm(
+      '¿Estás seguro de que deseas eliminar la base de datos? Esto eliminará todos los datos almacenados en ella.'
+    );
+
+    if (confirmation) {
+      const request = indexedDB.deleteDatabase('auditListDB');
+
+      request.onsuccess = (event) => {
+        console.log('Base de datos eliminada con éxito.');
+        this.toastr.success('Base de datos eliminada con éxito.');
+      };
+
+      request.onerror = (event) => {
+        console.error(
+          'Error al eliminar la base de datos de IndexedDB.',
+          event.target
+        );
+        this.toastr.error('Error al eliminar la base de datos de IndexedDB.');
+      };
+    }
+  }
+
   exportToJSON() {
     const request = indexedDB.open('auditListDB', 1);
 
@@ -551,80 +591,147 @@ export class StockAuditComponent implements OnInit {
   importJSON(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     this.fileInput = inputElement.files[0];
-    if(this.fileInput) {
+    if (this.fileInput) {
       this.importButtonDisabled = false;
     } else {
-      this.toastr.warning('No se seleccionó ningún archivo.')
+      this.toastr.warning('No se seleccionó ningún archivo.');
     }
   }
 
   importJSONData() {
-    // if (!this.fileInput) {
-    //   return;
-    // }
-  
     const reader = new FileReader();
-  
+
     reader.onload = (e) => {
       const jsonData = e.target.result as string;
       const products = JSON.parse(jsonData);
-  
-      const request = indexedDB.open('auditListDB', 1);
-  
-      const duplicates: Set<string> = new Set();
-  
-      request.onsuccess = (event) => {
-        const db = request.result;
-        const transaction = db.transaction('products', 'readwrite');
-        const objectStore = transaction.objectStore('products');
-  
-        const importPromises = products.map((product: ProductListStockAudit) => {
-          return new Promise<void>((resolve, reject) => {
-            const addRequest = objectStore.add(product);
-  
-            addRequest.onsuccess = () => {
-              console.log('Producto agregado:', product);
-              resolve();
-            };
-  
-            addRequest.onerror = (event) => {
-              console.error('Error al agregar producto:', (event.target as IDBRequest).error);
-  
-              // Check if the error is due to a unique constraint violation
-              if ((event.target as IDBRequest).error.name === 'ConstraintError') {
-                duplicates.add(product.name);
-              }
-  
-              resolve(); // Resolve instead of rejecting to continue importing other products
-            };
-          });
-        });
-  
-        Promise.all(importPromises)
-          .then(() => {
-            if (duplicates.size > 0) {
-              const message = `Hay ${duplicates.size} producto(s) que ya se encuentran en la lista de productos a auditar.`;
-              this.toastr.warning(message);
-            } else {
-              this.toastr.success('Información importada con éxito.');
-              this.fileInput = null;
-              this.importButtonDisabled = true;
-              this.exportButtonDisabled = this.isIndexedDBEmpty();
-            }
-          })
-          .catch(() => {
-            this.toastr.error('Error al importar la información.');
-          });
-      };
-  
-      request.onerror = (event) => {
-        console.error(
-          'Error al abrir la base de datos de auditoría',
-          event.target
+
+      // Obtener la lista de bases de datos existentes
+      indexedDB.databases().then((databaseList) => {
+        const hasAuditListDB = databaseList.some(
+          (dbInfo) => dbInfo.name === 'auditListDB'
         );
-      };
+
+        if (!hasAuditListDB) {
+          // Si 'auditListDB' no existe, mostrar un mensaje de advertencia
+          this.toastr.warning(
+            'No se ha inicializado una auditoría. Por favor, inicialice una auditoría primero.'
+          );
+          // Puedes realizar acciones adicionales, como deshabilitar el botón de importación
+          return;
+        }
+
+        const request = indexedDB.open('auditListDB', 1);
+
+        request.onsuccess = (event) => {
+          const db = request.result;
+          const transaction = db.transaction('products', 'readwrite');
+          const objectStore = transaction.objectStore('products');
+
+          const duplicates: Set<string> = new Set();
+
+          const importPromises = products.map(
+            (product: ProductListStockAudit) => {
+              return new Promise<void>((resolve, reject) => {
+                const addRequest = objectStore.add(product);
+
+                addRequest.onsuccess = () => {
+                  console.log('Producto agregado:', product);
+                  resolve();
+                };
+
+                addRequest.onerror = (event) => {
+                  console.error(
+                    'Error al agregar producto:',
+                    (event.target as IDBRequest).error
+                  );
+
+                  // Check if the error is due to a unique constraint violation
+                  if (
+                    (event.target as IDBRequest).error.name ===
+                    'ConstraintError'
+                  ) {
+                    duplicates.add(product.name);
+                  }
+
+                  resolve(); // Resolve instead of rejecting to continue importing other products
+                };
+              });
+            }
+          );
+
+          Promise.all(importPromises)
+            .then(() => {
+              if (duplicates.size > 0) {
+                const message = `Hay ${duplicates.size} producto(s) que ya se encuentran en la lista de productos a auditar.`;
+                this.toastr.warning(message);
+              } else {
+                this.toastr.success('Información importada con éxito.');
+                this.fileInput = null;
+                this.importButtonDisabled = true;
+                setTimeout(() => {
+                  this.exportButtonDisabled = Promise.resolve(false);
+                }, 50);
+              }
+            })
+            .catch(() => {
+              this.toastr.error('Error al importar la información.');
+            });
+        };
+
+        request.onerror = (event) => {
+          console.error(
+            'Error al abrir la base de datos de auditoría',
+            event.target
+          );
+        };
+      });
     };
+
     reader.readAsText(this.fileInput);
   }
 
+  getAllAudits(): void {
+    this.audits.fetchAllAudits().subscribe({
+      next: (response: any) => {
+        this.allAudits = response?.message.documents.map((audit: any) => ({
+          ...audit,
+          createdAt: new Date(audit.createdAt),
+          updatedAt: new Date(audit.updatedAt),
+          auditProducts: audit.auditItems,
+        }));
+        this.allAudits.forEach((audit: any) => {
+          this.calculateQuantityAndAmount(audit);
+        });
+      },
+    });
+  }
+
+  private calculateQuantityAndAmount(audit: any): void {
+    const totalQuantity = audit.auditProducts.reduce(
+      (total: number, item: any) => {
+        return total + parseFloat(item.adjusted_quantity);
+      },
+      0
+    );
+
+    const totalAmount = audit.auditProducts.reduce(
+      (total: number, item: any) => {
+        return total + parseFloat(item.adjusted_amount);
+      },
+      0
+    );
+
+    audit.totalQuantity = totalQuantity;
+    audit.totalAmount = totalAmount;
+  }
+
+  convertDateToString(auditDate: any): string {
+    const day = auditDate.getUTCDate();
+    const month = auditDate.getUTCMonth();
+    const year = auditDate.getUTCFullYear();
+
+    return `${day < 10 ? '0' : ''}${day}-${
+      month < 10 ? '0' : ''
+    }${month}-${year}`;
+  }
 }

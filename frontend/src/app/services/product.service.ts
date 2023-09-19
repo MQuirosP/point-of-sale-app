@@ -9,35 +9,35 @@ import { Observable } from 'rxjs';
 })
 export class ProductService {
 
-  private backendUrl = environment.apiUrl;
+  private backendUrl = environment.apiUrl + "products";
 
   constructor(
     private http: HttpClient,
   ) { }
 
   getProducts(): Observable<any> {
-    return this.http.get<Products>(`${this.backendUrl}products`);
+    return this.http.get<Products>(`${this.backendUrl}`);
   }
 
   getProductById(product: Products): Observable<any> {
     const productId = product.productId;
-    return this.http.get<Products>(`${this.backendUrl}products/id/${productId}`)
+    return this.http.get<Products>(`${this.backendUrl}/id/${productId}`)
   }
 
   getProductByIntCode(intCode: string): Observable<Products> {
-    return this.http.get<Products>(`${this.backendUrl}products/int_code/${intCode}`);
+    return this.http.get<Products>(`${this.backendUrl}/int_code/${intCode}`);
   }
 
   saveProduct(productData: Products): Observable<any> {
-    return this.http.post(`${this.backendUrl}products`, productData);
+    return this.http.post(`${this.backendUrl}`, productData);
   }
 
   updateProduct(productId: number, productData: Products): Observable<any> {
-    return this.http.put(`${this.backendUrl}products/${productId}`, productData);
+    return this.http.put(`${this.backendUrl}/${productId}`, productData);
   }
 
   deleteProduct(intCode: string, password: string): Observable<any> {
-    const url = `${this.backendUrl}products/${intCode}`;
+    const url = `${this.backendUrl}/${intCode}`;
 
     const httpOptions = {
       headers: new HttpHeaders({

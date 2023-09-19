@@ -46,8 +46,28 @@ th {
   color: white;
 }
 
+.audit-list {
+  max-height: calc(70vh - 120px);
+  overflow-y: auto; 
+}
+
+.audit-lists-row > td {
+  font-size: 13px;
+}
+
+.custom-button-group > button {
+  width: 80px;
+  text-align: center;
+  padding: 5px;
+}
+
+.custom-button-group > div > p {
+  text-align: center;
+}
+
 @media (max-width: 768px) {
   .final-div {
     top: -10px;
   }
 }
+
