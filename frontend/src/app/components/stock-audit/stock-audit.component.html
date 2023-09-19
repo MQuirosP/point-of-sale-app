@@ -129,7 +129,7 @@
                   </button>
                   <button
                     class="btn btn-warning border border-warning shadow text-white clic-on-image mb-2"
-                    (click)="deleteIndexedDB()"
+                    (click)="openDeleteAuditModal()"
                   >
                     Finalizar
                   </button>
@@ -471,6 +471,7 @@
   </div>
 </div>
 
+<!-- Modal para visualizar lista de la auditoría -->
 <div
   class="modal fade"
   id="audit_list"
@@ -514,6 +515,61 @@
               </tr>
             </tbody>
           </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal confirmación de cierre de auditoría -->
+<div
+  class="modal fade"
+  id="deleteAuditModal"
+  #deleteAuditModal
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="deleteAuditModalLabel"
+  aria-hidden="true"
+>
+  <div class="d-flex align-content-center justify-content-center">
+    <div
+      class="modal-dialog modal-dialog-centered"
+      role="document"
+      style="width: 300px"
+    >
+      <div class="modal-content modal-shadow">
+        <div class="modal-header border">
+          <h5 class="modal-title">
+            <i class="fas fa-exclamation-circle"></i>&nbsp;Finalizar auditoría
+          </h5>
+          <button class="close clic-on-icon" (click)="closeDeleteAuditModal()">
+            <span aria-hidden="true"><i class="fas fa-close"></i></span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p class="text-center">¿Seguro que desea eliminar la auditoría activa?</p>
+          <form>
+            <div class="form-group">
+              
+              
+            </div>
+            <div class="modal-footer">
+              <button
+                type="submit"
+                class="btn btn-danger border border-danger clic-on-image"
+                (click)="deleteIndexedDB()"
+              >
+                Eliminar
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary clic-on-image"
+                (click)="closeDeleteAuditModal()"
+              >
+                Cerrar
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
