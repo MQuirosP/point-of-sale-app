@@ -196,7 +196,7 @@
 <ng-container>
   <div
     class="container final-div d-flex justify-content-center align-content-center text-danger"
-    *ngIf="!(allowRegisterUsers$ | async)"
+    *ngIf="!(allowRegisterUsers$ | async) !== null"
   >
     <div class="card shadow" style="width: 400px !important">
       <div class="modal-header">

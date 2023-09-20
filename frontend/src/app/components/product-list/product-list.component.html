@@ -162,9 +162,9 @@
     <div
       *ngIf="(products | productsFilter : page : searchTerm).length === 0"
       class="modal-footer d-flex justify-content-center pt-4"
-      [@fadeAnimation]
-    >
-      <h4 class="h4 text-danger text-center pb-4">
+      >
+      
+      <h4 class="h4 text-danger text-center pb-4" [@fadeAnimation]>
         <i class="fas fa-exclamation-circle"></i>&nbsp;No hay coincidencia de
         producto.
       </h4>
