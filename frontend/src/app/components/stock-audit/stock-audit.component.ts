@@ -37,6 +37,7 @@ export class StockAuditComponent implements OnInit {
   @ViewChild('auditModal', { static: false }) auditModal!: ElementRef;
   @ViewChild('deleteAuditModal', { static: false })
   deleteAuditModal!: ElementRef;
+  @ViewChild('auditHistory', { static: false }) auditHistory!: ElementRef;
 
   filteredProducts: any[] = [];
   public products: Products[] = [];
@@ -637,7 +638,7 @@ export class StockAuditComponent implements OnInit {
         // Verifica si la base de datos existe
         if (!db) {
           console.error(`La base de datos "${dbName}" no existe.`);
-          this.toastr.warning(`No existe audoría activa, por favor inicialice.`);
+          this.toastr.warning(`No existe auditoría activa, por favor inicialice.`);
           return;
         }
   
@@ -645,7 +646,7 @@ export class StockAuditComponent implements OnInit {
         if (!db.objectStoreNames.contains(storeName)) {
           db.close();
           console.error(`El almacén "${storeName}" no existe.`);
-          this.toastr.warning(`No existe audoría activa, por favor inicialice.`);
+          this.toastr.warning(`No existe auditoría activa, por favor inicialice.`);
           return;
         }
   
@@ -763,6 +764,23 @@ export class StockAuditComponent implements OnInit {
       this.deleteAuditModal.nativeElement.classList.remove('show');
       this.deleteAuditModal.nativeElement.classList.remove('closing');
       this.deleteAuditModal.nativeElement.style.display = 'none';
+    }, 300);
+  }
+
+  openAuditHistoryModal() {
+    this.auditHistory.nativeElement.style.display = "block";
+    this.auditHistory.nativeElement.classList.add('opening');
+    setTimeout(() => {
+      this.auditHistory.nativeElement.classList.add('show');
+    }, 50);
+  }
+
+  closeAuditHistoryModal() {
+    this.auditHistory.nativeElement.classList.add('closing');
+    setTimeout(() => {
+      this.auditHistory.nativeElement.classList.remove('show');
+      this.auditHistory.nativeElement.classList.remove('closing');
+      this.auditHistory.nativeElement.style.display = 'none';
     }, 300);
   }
 }

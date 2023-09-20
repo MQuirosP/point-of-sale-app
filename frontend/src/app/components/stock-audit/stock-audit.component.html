@@ -28,7 +28,7 @@
 <!-- Opciones para la auditoría de productos -->
 <div class="container final-div" [@fadeAnimation]>
   <div class="row">
-    <div class="col-md-4 mb-2">
+    <div class="col-md-4 mb-4">
       <div class="modal-content">
         <div
           class="d-flex modal-header product-list-header border justify-content-between"
@@ -100,100 +100,105 @@
       </div>
     </div>
     <div class="col-md-4">
-      <div class="row">
-        <div class="modal-content d-flex">
-          <div class="modal-header border">
-            <h4 class="h4">
-              <i class="fas fa-clipboard-check"></i>&nbsp;Control de auditorías
-            </h4>
-          </div>
-          <div class="modal-body">
-              <div class="col-md-12">
-                <div class="row">
-                  <p class="text-center">
-                    Controles para inicializar una nueva auditoría, ver
-                    auditorías anteriores y finalizar una auditoría iniciada.
-                  </p>
+      <div class="container">
+        <div class="row">
+          <div class="modal-content d-flex">
+            <div class="modal-header border">
+              <h4 class="h4">
+                <i class="fas fa-clipboard-check"></i>&nbsp;Control de auditorías
+              </h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                  <div class="row">
+                    <p class="text-center">
+                      Controles para inicializar una nueva auditoría, ver
+                      auditorías anteriores y finalizar una auditoría iniciada.
+                    </p>
+                  </div>
+                  <div class="col-md-12 d-flex flex-wrap justify-content-center">
+                    <button
+                      class="btn btn-primary border border-primary shadow clic-on-image mb-2"
+                      (click)="initializeIndexedDB()"
+                    >
+                      Iniciar
+                    </button>
+                    <button
+                      class="btn btn-success border border-success shadow clic-on-image ml-2 mr-2 mb-2"
+                      (click)="openAuditHistoryModal()"
+                    >
+                      Historial
+                    </button>
+                    <button
+                      class="btn btn-warning border border-warning shadow text-white clic-on-image mb-2"
+                      (click)="openDeleteAuditModal()"
+                    >
+                      Finalizar
+                    </button>
+                  </div>
                 </div>
-                <div class="col-md-12 d-flex flex-wrap justify-content-center">
-                  <button
-                    class="btn btn-primary border border-primary shadow clic-on-image mb-2"
-                    (click)="initializeIndexedDB()"
-                  >
-                    Iniciar
-                  </button>
-                  <button
-                    class="btn btn-success border border-success shadow clic-on-image ml-2 mr-2 mb-2"
-                  >
-                    Historial
-                  </button>
-                  <button
-                    class="btn btn-warning border border-warning shadow text-white clic-on-image mb-2"
-                    (click)="openDeleteAuditModal()"
-                  >
-                    Finalizar
-                  </button>
-                </div>
-              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="row mt-4">
-        <div class="modal-content d-flex">
-          <div class="modal-header border">
-            <h4 class="h4">
-              <i class="fas fa-list-alt"></i>&nbsp;Archivos de auditorías
-            </h4>
-          </div>
-          <div class="modal-body mb-2">
-            <div class="col">
-              <div class="custom-file shadow mb-3">
-                <input
-                  type="file"
-                  class="custom-file-input"
-                  style="cursor: pointer"
-                  id="fileInput"
-                  (change)="importJSON($event)"
-                  accept=".json"
-                  [title]="
-                    fileInput
-                      ? 'Cargar archivo: ' + fileInput.name
-                      : 'No se ha seleccionado un archivo'
-                  "
-                />
-                <label
-                  for="fileInput"
-                  class="custom-file-label"
-                  data-browse="Buscar"
-                  >{{
-                    fileInput ? fileInput.name : "Seleccione archivo"
-                  }}</label
-                >
-              </div>
-              <div class="row">
-                <div class="col-md-12 d-flex flex-wrap justify-content-center mt-2">
-                  <!-- Utiliza la clase col-sm para definir el comportamiento en dispositivos móviles -->
-                  <button
-                    class="btn btn-primary border border-primary shadow clic-on-image mb-2"
-                    (click)="openAuditListModal()"
-                    [disabled]="exportButtonDisabled | async"
+      <div class="container">
+        <div class="row mt-4">
+          <div class="modal-content d-flex">
+            <div class="modal-header border">
+              <h4 class="h4">
+                <i class="fas fa-list-alt"></i>&nbsp;Archivos de auditorías
+              </h4>
+            </div>
+            <div class="modal-body mb-2">
+              <div class="col">
+                <div class="custom-file shadow mb-3">
+                  <input
+                    type="file"
+                    class="custom-file-input"
+                    style="cursor: pointer"
+                    id="fileInput"
+                    (change)="importJSON($event)"
+                    accept=".json"
+                    [title]="
+                      fileInput
+                        ? 'Cargar archivo: ' + fileInput.name
+                        : 'No se ha seleccionado un archivo'
+                    "
+                  />
+                  <label
+                    for="fileInput"
+                    class="custom-file-label"
+                    data-browse="Buscar"
+                    >{{
+                      fileInput ? fileInput.name : "Seleccione archivo"
+                    }}</label
                   >
-                    Auditar
-                  </button>
-                  <button
-                    class="btn btn-success ml-2 mr-2 mb-2 border border-success shadow clic-on-image"
-                    (click)="exportToJSON()"
-                    [disabled]="exportButtonDisabled | async"
-                  >
-                    Exportar
-                  </button>
-                  <button
-                    class="btn btn-warning border text-white border-warning shadow clic-on-image mb-2"
-                    [disabled]="importButtonDisabled"
-                    (click)="importJSONData()"
-                  >
-                    Importar
-                  </button>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 d-flex flex-wrap justify-content-center mt-2">
+                    <!-- Utiliza la clase col-sm para definir el comportamiento en dispositivos móviles -->
+                    <button
+                      class="btn btn-primary border border-primary shadow clic-on-image mb-2"
+                      (click)="openAuditListModal()"
+                      [disabled]="exportButtonDisabled | async"
+                    >
+                      Auditar
+                    </button>
+                    <button
+                      class="btn btn-success ml-2 mr-2 mb-2 border border-success shadow clic-on-image"
+                      (click)="exportToJSON()"
+                      [disabled]="exportButtonDisabled | async"
+                    >
+                      Exportar
+                    </button>
+                    <button
+                      class="btn btn-warning border text-white border-warning shadow clic-on-image mb-2"
+                      [disabled]="importButtonDisabled"
+                      (click)="importJSONData()"
+                    >
+                      Importar
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -308,15 +313,15 @@
         >
           <button
             type="button"
-            class="btn btn-danger"
+            class="btn btn-danger shadow border border-danger"
             (click)="resetStockAndDifference()"
           >
             Reset
           </button>
           <div>
-            <button class="btn btn-primary mr-2" type="submit">Agregar</button>
+            <button class="btn btn-primary shadow border border-primary mr-2" type="submit">Agregar</button>
             <button
-              class="btn btn-secondary"
+              class="btn btn-secondary shadow border border-secondary"
               type="button"
               (click)="closeProductModal()"
             >
@@ -471,51 +476,74 @@
   </div>
 </div>
 
-<!-- Modal para visualizar lista de la auditoría -->
+<!-- Modal para visualizar historial de auditorías -->
 <div
   class="modal fade"
-  id="audit_list"
-  #audit_list
+  id="auditHistory"
+  #auditHistory
   tabindex="-1"
   role="dialog"
   aria-hidden="true"
 >
-  <div class="modal-content d-flex">
-    <div class="modal-header border">
-      <h4 class="h4">
-        <i class="fas fa-list-alt"></i>&nbsp;Listado de auditorías
-      </h4>
-    </div>
-    <div class="modal-body audit-list">
-      <div class="w-100">
-        <div class="table-responsive">
-          <table class="table">
-            <thead>
-              <tr class="product-detail-table-titles">
-                <th style="max-width: 20%">Fecha</th>
-                <th style="max-width: 30%">Ajustes</th>
-                <th style="max-width: 30%">Monto</th>
-                <th style="max-width: 20%">Usuario</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                *ngFor="let audit of allAudits; let even = even"
-                [ngClass]="{ 'table-row-even': even, 'table-row-odd': !even }"
-                class="audit-lists-row"
-              >
-                <td>
-                  <a type="button">{{
-                    convertDateToString(audit.createdAt)
-                  }}</a>
-                </td>
-                <td>{{ audit.totalQuantity | number : "1.2-2" }}</td>
-                <td>{{ audit.totalAmount | number : "1.2-2" }}</td>
-                <td>{{ audit.username }}</td>
-              </tr>
-            </tbody>
-          </table>
+  <div class="modal-dialog">
+    <div class="modal-content d-flex">
+      <div class="modal-header border">
+        <h5 class="modal-title">
+          <i class="fas fa-history"></i>&nbsp;Listado de auditorías
+        </h5>
+        <div>
+          <button
+              type="button"
+              class="close clic-on-icon"
+              aria-label="Close"
+              (click)="closeAuditHistoryModal()"
+            >
+              <span aria-hidden="true">
+                <i class="fas fa-close"></i>
+              </span>
+            </button>
         </div>
+      </div>
+      <div class="modal-body audit-list">
+        <div class="w-100">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr class="product-detail-table-titles">
+                  <th style="max-width: 20%">Fecha</th>
+                  <th style="max-width: 30%">Ajustes</th>
+                  <th style="max-width: 30%">Monto</th>
+                  <th style="max-width: 20%">Usuario</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let audit of allAudits; let even = even"
+                  [ngClass]="{ 'table-row-even': even, 'table-row-odd': !even }"
+                  class="audit-lists-row"
+                >
+                  <td>
+                    <a type="button">{{
+                      convertDateToString(audit.createdAt)
+                    }}</a>
+                  </td>
+                  <td>{{ audit.totalQuantity | number : "1.2-2" }}</td>
+                  <td>{{ audit.totalAmount | number : "1.2-2" }}</td>
+                  <td>{{ audit.username }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+              type="button"
+              class="btn btn-secondary shadow clic-on-image"
+              (click)="closeAuditHistoryModal()"
+            >
+              Cerrar
+            </button>
       </div>
     </div>
   </div>
@@ -556,14 +584,14 @@
             <div class="modal-footer">
               <button
                 type="submit"
-                class="btn btn-danger border border-danger clic-on-image"
+                class="btn btn-danger shadow border border-danger clic-on-image"
                 (click)="deleteIndexedDB()"
               >
                 Eliminar
               </button>
               <button
                 type="button"
-                class="btn btn-secondary clic-on-image"
+                class="btn btn-secondary shadow border border-secondary clic-on-image"
                 (click)="closeDeleteAuditModal()"
               >
                 Cerrar
