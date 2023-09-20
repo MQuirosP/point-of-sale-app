@@ -301,26 +301,20 @@ a.hide {
   text-decoration: none;
 }
 
-.customShadow {
+.custom-main-card {
   border-radius: 10px;
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
-.customShadow:hover {
-  box-shadow: 5px 5px 5px rgb(56, 55, 55);
-  transform: scale(1.05);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
-
-.bg-custom {
   background-color: rgb(242, 243, 206);
-  transition: background-color 0.3 ease, transform 0.3s ease-in-out;
+  transition: all 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease-in-out;
+  cursor: pointer;
+  border: 1px solid #ccc; /* Agrega un borde sólido inicial */
 }
 
-.bg-custom:hover {
+.custom-main-card:hover {
   background-color: #cdffd7;
   transform: scale(1.05);
-  cursor: pointer;
+  border: 1px solid #999; /* Cambia el color del borde en hover */
 }
+
 
 .front-panel-image {
   width: 120px;
@@ -353,12 +347,12 @@ a.hide {
   transition: transform 0.2s;
 }
 
-.clic-on-main-image:active {
-  transform: scale(0.95);
+/* .clic-on-main-image:active {
+  transform: scale(0.95); muy fea se ve la simulación de botón
   transition: transform 0.2s;
   box-shadow: inset 3px 3px 3px darkgray;
   background-color: #b4f5b4;
-}
+} */
 
 .custom-image-shadow {
   border-radius: 10px;
@@ -504,9 +498,13 @@ i.clic-on-icon {
   padding-bottom: 10px;
   text-align: center;
   border-radius: 10px;
-  transition: border 300ms ease-out;
+  /* transition: all 300ms ease-out; */
   overflow: hidden;
   white-space: nowrap;
+}
+
+h4 {
+  padding-top: 5px;
 }
 
 #fecha {
@@ -514,6 +512,7 @@ i.clic-on-icon {
   font-size: 15px;
   line-height: 1.5em;
 }
+
 
 .toast-container {
   position: fixed;
