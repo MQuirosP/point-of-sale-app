@@ -631,23 +631,33 @@ export class OptionsComponent implements OnInit {
   }
 
   private updateProvider(providerId: number, providerData: any) {
-    this.http
-      .put(`${this.backendUrl}providers/${providerId}`, providerData)
-      .subscribe({
-        next: (response: any) => {
-          if (response.success) {
-            this.toastr.success('Proveedor actualizado exitosamente.');
-            this.updateLocalProvider(providerId, providerData);
-          } else {
-            this.toastr.error('Error al actualizar el proveedor.');
-          }
-          this.getProviderList();
-        },
-        error: (error: any) => {
-          this.toastr.error('Error al actualizar el proveedor.', error);
-        },
-      });
-  }
+  this.http
+    .put(`${this.backendUrl}providers/${providerId}`, providerData)
+    .subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.showSuccessNotification('Proveedor actualizado exitosamente.');
+          this.updateLocalProvider(providerId, providerData);
+        } else {
+          this.showErrorNotification('Error al actualizar el proveedor.');
+        }
+        this.getProviderList();
+      },
+      error: (error: any) => {
+        this.showErrorNotification('Error al actualizar el proveedor.', error);
+      },
+    });
+}
+
+private showSuccessNotification(message: string) {
+  // Use Angular's built-in mechanism for showing success notifications
+  this.toastr.success(message);
+}
+
+private showErrorNotification(message: string, error?: any) {
+  // Use Angular's built-in mechanism for showing error notifications
+  this.toastr.error(message, error);
+}
 
   private updateLocalProvider(providerId: number, providerData: any) {
     this.filteredProviders = this.providers.map((provider) => {
