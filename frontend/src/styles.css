@@ -669,6 +669,7 @@ div.table-container {
 
 .total-box {
   width: 100%;
+  text-align: center;
   max-width: 350px;
   background-color: rgb(208, 212, 212);
   padding-top: 10px;
