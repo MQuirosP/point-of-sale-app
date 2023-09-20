@@ -152,7 +152,7 @@ h1 {
   overflow: hidden;
 }
 
-div.dropdown-menu > a.dropdown-item {
+div.dropdown-menu > a.dropdown-item, .dropdown > a, .dropdown-item {
   border: 1px solid transparent;
   color: #c0b5b5 !important;
 }

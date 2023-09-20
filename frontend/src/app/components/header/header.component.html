@@ -1,8 +1,5 @@
 <!-- Barra de navegación principal -->
-<nav
-  class="navbar navbar-expand-sm navbar-dark bg-dark p-0"
-  [@fadeAnimation]
->
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark p-0" [@fadeAnimation]>
   <div class="container d-flex">
     <a routerLink="/home" class="navbar-brand">Verdulería Sol</a>
     <button
@@ -15,7 +12,7 @@
       <span></span>
     </button>
     <div class="collapse navbar-collapse top-50 right-0" id="navbarCollapse">
-      <div class="navbar-nav me-auto">
+      <div class="me-auto">
         <ul *ngIf="isLoggedIn$ | async" class="navbar-nav">
           <li class="nav-item px-2">
             <a
@@ -43,78 +40,86 @@
           </li>
         </ul>
       </div>
-      <div class="navbar-nav ml-auto">
-        <div class="navbar-nav">
-          <ul class="navbar-nav ms-auto">
-            <li *ngIf="isLoggedIn$ | async" class="dropdown px-2">
+      <div class="dropdown ml-auto" >
+        <a
+          href="#"
+          type="button"
+          role="button"
+          class="btn dropdown-toggle nav-link"
+          data-toggle="dropdown"
+          routerLinkActive="router-link-active"
+          *ngIf="(isLoggedIn$ | async)"
+        >
+          <i class="fas fa-user-check "></i> Bienvenido {{ user }}
+        </a>
+        <span class="caret"></span>
+        <ul class="dropdown-menu bg-dark ms-auto">
+          <li>
               <a
-                href="#"
-                class="nav-link dropdown-toggle"
-                data-toggle="dropdown"
+                class="dropdown-item"
+                style="cursor: pointer"
+                (click)="openChangePasswordModal()"
               >
-                <i class="fas fa-user-check"></i> Bienvenido {{ user }}
+                <i class="fa-solid fa-pen-to-square"></i>&nbsp;Cambiar
+                contraseña
               </a>
-
-              <div class="dropdown-menu w-auto shadow bg-dark">
-                <a
-                  class="dropdown-item"
-                  style="cursor: pointer"
-                  (click)="openChangePasswordModal()"
-                >
-                  <i class="fa-solid fa-pen-to-square"></i>&nbsp;Cambiar
-                  contraseña
-                </a>
-                <a routerLink="/options" class="dropdown-item">
-                  <i class="fa-solid fa-cog"></i>&nbsp;Configuración
-                </a>
-                <a
-                  *ngIf="getUserRole() === 'administrator'"
-                  class="dropdown-item"
-                  (click)="createBackup()"
-                  style="cursor: pointer"
-                >
-                  <i class="fa-solid fa-database"></i>&nbsp;Respaldar BD
-                </a>
-                <li class="dropdown-divider"></li>
-                <a
-                  style="cursor: pointer"
-                  class="dropdown-item"
-                  (click)="onLogout()"
-                  *ngIf="isLoggedIn$ | async"
-                >
-                  <i class="fas fa-door-open"></i>&nbsp;Salir
-                </a>
-              </div>
-              <!-- </li> -->
-
-              <!-- Componente Login -->
             </li>
-
-            <li *ngIf="!(isLoggedIn$ | async)" class="nav-item px-2">
+            <li>
+              <a routerLink="/options" class="dropdown-item">
+                <i class="fa-solid fa-cog"></i>&nbsp;Configuración
+              </a>
+            </li>
+            <li>
               <a
-                routerLink="/login"
-                class="nav-link"
-                routerLinkActive="router-link-active"
+                *ngIf="getUserRole() === 'administrator'"
+                class="dropdown-item"
+                (click)="createBackup()"
+                style="cursor: pointer"
               >
-                <i class="fas fa-user"></i> Ingreso
+                <i class="fa-solid fa-database"></i>&nbsp;Respaldar BD
+              </a>
+            </li>
+              <li class="dropdown-divider"></li>
+              <li>
+              <a
+                style="cursor: pointer"
+                class="dropdown-item"
+                (click)="onLogout()"
+                *ngIf="isLoggedIn$ | async"
+              >
+                <i class="fas fa-door-open"></i>&nbsp;Salir
               </a>
             </li>
 
-            <!-- Registro usuarios -->
-            <li
-              *ngIf="!(isLoggedIn$ | async) && (allowRegisterUsers$ | async)"
-              class="nav-item"
+            
+        </ul>
+        <ul class="navbar-nav" *ngIf="!(isLoggedIn$ | async)">
+          <!-- Componente Login -->
+
+          <li  class="nav-item px-2">
+            <a
+              routerLink="/login"
+              class="nav-link"
+              routerLinkActive="router-link-active"
             >
-              <a
-                routerLink="/register"
-                class="nav-link px-2"
-                routerLinkActive="router-link-active"
-              >
-                <i class="fas fa-users"></i> Registrarse
-              </a>
-            </li>
-          </ul>
-        </div>
+              <i class="fas fa-user"></i> Ingreso
+            </a>
+          </li>
+
+          <!-- Registro usuarios -->
+          <li
+            *ngIf="!(isLoggedIn$ | async) && (allowRegisterUsers$ | async)"
+            class="nav-item"
+          >
+            <a
+              routerLink="/register"
+              class="nav-link px-2"
+              routerLinkActive="router-link-active"
+            >
+              <i class="fas fa-users"></i> Registrarse
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -179,7 +184,9 @@
                 "
               >
                 <div
-                  *ngIf="passwordForm.get('currentPassword').hasError('required')"
+                  *ngIf="
+                    passwordForm.get('currentPassword').hasError('required')
+                  "
                   class="error-message"
                 >
                   Contraseña actual es requerida.
@@ -245,14 +252,15 @@
                 "
               >
                 <div
-                  *ngIf="passwordForm.get('confirmPassword').hasError('required')"
+                  *ngIf="
+                    passwordForm.get('confirmPassword').hasError('required')
+                  "
                   class="error-message"
                 >
                   Confirmar contraseña es requerida.
                 </div>
               </div>
             </div>
-            
           </div>
           <div class="modal-footer">
             <button
