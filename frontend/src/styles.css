@@ -124,7 +124,7 @@ h1 {
 }
 
 .nav-link:hover::before {
-  transform: scaleX(1);
+  transform: scaleX(0.85);
 }
 
 .dropdown-toggle::after {
