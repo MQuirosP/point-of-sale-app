@@ -238,15 +238,8 @@
                   capture="environment"
                   accept="image/*"
                 />
-
-                <div
-                  class="suggestion-list shadow bg-white position-fixed mt-1"
-                  [style.width.px]="nameInput.offsetWidth"
-                >
                   <datalist
                     id="suggestionOptions"
-                    role="searchbox"
-                    class="form-select list-unstyled"
                   >
                     <option
                       *ngFor="
@@ -265,7 +258,6 @@
                       </a>
                     </option>
                   </datalist>
-                </div>
                 <div class="d-none">
                   <button (click)="toggleCamera()">Abrir Cámara</button>
                   <!-- Mostrar el video de la cámara -->
