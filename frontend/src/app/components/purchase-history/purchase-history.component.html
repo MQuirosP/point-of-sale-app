@@ -218,14 +218,10 @@
                   #nameInput
                   (keydown)="handleKeyDown($event)"
                 />
-                <div
-                  class="suggestion-list shadow bg-white position-fixed mt-1"
-                  [style.width.px]="nameInput.offsetWidth"
-                >
                   <datalist
                     id="suggestionOptions"
                     role="searchbox"
-                    class="form-select list-unstyled"
+                    class="form-select list-unstyled mt-1"
                   >
                     <option
                       *ngFor="
@@ -245,7 +241,6 @@
                       </a>
                     </option>
                   </datalist>
-                </div>
               </div>
               <div class="form-group form-row">
                 <div class="col">

@@ -350,6 +350,8 @@ export class PurchaseHistoryComponent {
   }
 
   handleKeyDown(event: KeyboardEvent): void {
+    // Este método se usaba cuando usábamos unsorted list para
+    // desplegar la lista de productos, con datalist no hace falta
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       event.preventDefault();
       if (this.productSuggestionList.length > 0) {
@@ -362,7 +364,7 @@ export class PurchaseHistoryComponent {
             this.productSuggestionList.length;
         }
   
-        // Scroll 
+        // Scroll solo si se usa ul
         const suggestionElement = document.querySelector('.selected');
         if (suggestionElement) {
           suggestionElement.scrollIntoView({
