@@ -889,8 +889,6 @@ input::-webkit-input-placeholder {
 
 .options-card-body-text {
   font-size: 18px;
-  display: block;
-  padding: 10px 0;
   text-align: center;
 }
 
