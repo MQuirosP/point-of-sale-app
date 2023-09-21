@@ -112,7 +112,7 @@
                   auditorías
                 </h4>
                 <span
-                  class="badge"
+                  class="badge clic-on-icon"
                   style="cursor: pointer;"
                   (click)="openAuditListModal()"
                   [ngClass]="{
@@ -163,7 +163,7 @@
                   <i class="fas fa-list-alt"></i>&nbsp;Archivos de auditorías
                 </h4>
                 <span
-                  class="badge"
+                  class="badge clic-on-icon"
                   *ngIf="!(exportButtonDisabled | async)"
                   style="cursor: pointer;"
                   (click)="openAuditListModal()"
@@ -342,20 +342,20 @@
         >
           <button
             type="button"
-            class="btn btn-danger shadow border border-danger"
+            class="btn btn-danger shadow border border-danger clic-on-image"
             (click)="resetStockAndDifference()"
           >
             Reset
           </button>
           <div>
             <button
-              class="btn btn-primary shadow border border-primary mr-2"
+              class="btn btn-primary shadow border border-primary mr-2 clic-on-image"
               type="submit"
             >
               Agregar
             </button>
             <button
-              class="btn btn-secondary shadow border border-secondary"
+              class="btn btn-secondary shadow border border-secondary clic-on-image"
               type="button"
               (click)="closeProductModal()"
             >

@@ -103,7 +103,7 @@ export class StockAuditComponent implements OnInit {
     const dbName = 'auditListDB';
     const storeName = 'products';
   
-    const request = indexedDB.open(dbName, 1);
+    const request = indexedDB.open(dbName);
   
     request.onupgradeneeded = (event) => {
       const db = (event.target as IDBOpenDBRequest).result;
@@ -143,10 +143,10 @@ export class StockAuditComponent implements OnInit {
         };
       } else {
         // Si el almacén ya existe, simplemente cerrar la base de datos y mostrar un mensaje
-        db.close();
         console.log(`El almacén "${storeName}" ya existe.`);
-        this.toastr.success("La lista para auditorías se ha activado satisfactoriamente.");
+        this.toastr.success("Ya existe una lista para auditorías activa.");
         console.log(`Base de datos "${dbName}" inicializada con éxito.`);
+        db.close();
       }
     };
   
