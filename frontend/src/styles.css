@@ -171,6 +171,7 @@ option {
   max-height: 200px;
   border-radius: 3px;
   overflow-y: auto;
+  background-color: #363434;
 }
 
 .suggestion-list::-webkit-scrollbar-corner {

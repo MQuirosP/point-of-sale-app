@@ -216,7 +216,6 @@
                 <input
                   type="search"
                   id="product_name"
-                  list="suggestionOptions"
                   formControlName="product_name"
                   class="form-control datalist-no-arrow"
                   autocomplete="off"
@@ -238,10 +237,26 @@
                   capture="environment"
                   accept="image/*"
                 />
-                  <datalist
+                <div class="d-none">
+                  <button (click)="toggleCamera()">Abrir Cámara</button>
+                  <!-- Mostrar el video de la cámara -->
+                  <video
+                    #video
+                    autoplay
+                    [hidden]="!isScanning"
+                    [style.width.px]="300"
+                  ></video>
+                </div>
+                <div
+                  class="suggestion-list position-fixed"
+                  [style.width.px]="nameInput.offsetWidth"
+                >
+                  <ul
                     id="suggestionOptions"
+                    class="list-unstyled"
+                    style="margin: 0; padding: 0 1px"
                   >
-                    <option
+                    <li
                       *ngFor="
                         let suggestion of productSuggestionList;
                         let i = index
@@ -256,17 +271,8 @@
                       >
                         {{ suggestion.name }}
                       </a>
-                    </option>
-                  </datalist>
-                <div class="d-none">
-                  <button (click)="toggleCamera()">Abrir Cámara</button>
-                  <!-- Mostrar el video de la cámara -->
-                  <video
-                    #video
-                    autoplay
-                    [hidden]="!isScanning"
-                    [style.width.px]="300"
-                  ></video>
+                    </li>
+                  </ul>
                 </div>
               </div>
               <div class="form-group form-row">
