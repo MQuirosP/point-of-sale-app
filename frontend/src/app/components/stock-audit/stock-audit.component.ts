@@ -670,14 +670,15 @@ export class StockAuditComponent implements OnInit {
         if (!db) {
           console.error(`La base de datos "${dbName}" no existe.`);
           this.toastr.warning(`No existe auditoría activa, por favor inicialice.`);
+          db.close();
           return;
         }
   
         // Verifica si el almacén 'products' existe
         if (!db.objectStoreNames.contains(storeName)) {
-          db.close();
           console.error(`El almacén "${storeName}" no existe.`);
           this.toastr.warning(`No existe auditoría activa, por favor inicialice.`);
+          db.close();
           return;
         }
   
@@ -695,6 +696,7 @@ export class StockAuditComponent implements OnInit {
               console.log('Producto agregado:', product);
               resolve();
               this.getAuditListProducts(null);
+              db.close();
             };
   
             addRequest.onerror = (event) => {
@@ -705,10 +707,10 @@ export class StockAuditComponent implements OnInit {
               }
   
               resolve();
+              db.close();
             };
           });
         });
-        db.close();
   
         Promise.all(importPromises)
           .then(() => {
