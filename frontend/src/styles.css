@@ -997,3 +997,8 @@ nav.navbar {
   border-radius: 5px;
   background-color: beige;
 }
+
+span.badge:hover {
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}

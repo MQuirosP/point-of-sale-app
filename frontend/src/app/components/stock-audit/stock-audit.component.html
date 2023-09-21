@@ -113,6 +113,8 @@
                 </h4>
                 <span
                   class="badge"
+                  style="cursor: pointer;"
+                  (click)="openAuditListModal()"
                   [ngClass]="{
                     'bg-danger shadow border border-dark': !(exportButtonDisabled | async),
                     'bg-transparent': exportButtonDisabled | async
@@ -163,6 +165,8 @@
                 <span
                   class="badge"
                   *ngIf="!(exportButtonDisabled | async)"
+                  style="cursor: pointer;"
+                  (click)="openAuditListModal()"
                   [ngClass]="{
                     'bg-danger shadow border border-dark': (auditListProducts$ | async).length >= 0,
                     'bg-transparent': (auditListProducts$ | async).length === null

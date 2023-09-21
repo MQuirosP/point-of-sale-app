@@ -173,6 +173,7 @@ export class StockAuditComponent implements OnInit {
         const auditListProducts = getAllRequest.result;
         this.auditListProducts = auditListProducts;
       };
+      db.close();
     };
 
     request.onerror = (event) => {
@@ -390,6 +391,7 @@ export class StockAuditComponent implements OnInit {
             event.target
           );
         };
+        db.close();
       };
 
       request.onerror = (event) => {
@@ -434,6 +436,7 @@ export class StockAuditComponent implements OnInit {
           event.target
         );
       };
+      db.close();
     };
   
     request.onerror = (event) => {
@@ -501,6 +504,7 @@ export class StockAuditComponent implements OnInit {
           event.target
         );
       };
+      db.close();
     };
 
     request.onerror = (event) => {
@@ -544,6 +548,7 @@ export class StockAuditComponent implements OnInit {
           this.auditModal.nativeElement.classList.add('show');
         }, 50);
       };
+      db.close();
     };
 
     request.onerror = (event) => {
@@ -618,6 +623,7 @@ export class StockAuditComponent implements OnInit {
 
         URL.revokeObjectURL(url);
       };
+      db.close();
     };
 
     request.onerror = (event) => {
@@ -696,6 +702,7 @@ export class StockAuditComponent implements OnInit {
             };
           });
         });
+        db.close();
   
         Promise.all(importPromises)
           .then(() => {
