@@ -371,7 +371,7 @@ export class StockAuditComponent implements OnInit {
         const db = (event.target as IDBOpenDBRequest).result;
 
         if (!db.objectStoreNames.contains('products')) {
-          this.toastr.info('No existe auditoría activa, por favor inicialice.')
+          this.toastr.warning('No existe auditoría activa, por favor inicialice.')
           return;
         }
 
@@ -540,7 +540,7 @@ export class StockAuditComponent implements OnInit {
         const auditListProducts = getAllRequest.result;
 
         if (auditListProducts.length === 0) {
-          this.toastr.info(
+          this.toastr.warning(
             'No se han agregado elementos a la lista para la auditoría.'
           );
           return;
