@@ -336,6 +336,7 @@ export class StockAuditComponent implements OnInit {
   }
 
   addProductToAuditList() {
+
     const purchase_price = this.selectedProduct.purchase_price;
     const realStockValue = this.productForm.get('real_stock').value;
     const differenceValue = this.productForm.get('difference').value;
@@ -368,6 +369,11 @@ export class StockAuditComponent implements OnInit {
 
       request.onsuccess = (event) => {
         const db = (event.target as IDBOpenDBRequest).result;
+
+        if (!db.objectStoreNames.contains('products')) {
+          this.toastr.info('No existe auditoría activa, por favor inicialice.')
+          return;
+        }
 
         const transaction = db.transaction('products', 'readwrite');
         const objectStore = transaction.objectStore('products');
