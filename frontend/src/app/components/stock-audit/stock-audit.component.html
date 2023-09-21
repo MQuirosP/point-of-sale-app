@@ -30,186 +30,205 @@
   <div class="row">
     <div class="col-md-4 mb-4">
       <section id="product-list">
-          <div class="modal-content">
-            <div
-              class="d-flex modal-header product-list-header border justify-content-between"
-            >
-              <!-- Encabezado del listado -->
-              <h4 class="h4">
-                <i class="fas fa-list-check"></i>&nbsp;Productos
-              </h4>
-              <div class="d-flex justify-content-md-end">
-                <div class="justify-content-md-end">
-                  <button
-                    class="btn btn-warning border-warning shadow clic-on-image mr-2"
-                    (click)="prevPage()"
-                    [disabled]="page === 0"
-                    style="color: white !important"
-                  >
-                    <span><i class="fa-solid fa-arrow-left"></i></span>
-                    <span class="d-md-none"></span>
-                  </button>
-                  <button
-                    class="btn btn-success border-success shadow clic-on-image"
-                    (click)="nextPage()"
-                    [disabled]="
-                      (products | productsFilter : page : searchTerm).length < 7
-                    "
-                  >
-                    <span class="d-md-none"></span>
-                    <span><i class="fa-solid fa-arrow-right"></i></span>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div class="modal-body">
-              <div class="w-100">
-                <div class="table-responsive">
-                  <table class="table">
-                    <thead>
-                      <tr class="product-detail-table-titles">
-                        <th class="text-left" style="width: 70%">Producto</th>
-                        <th class="text-right" style="width: 25%">Stock</th>
-                      </tr>
-                    </thead>
-                    <tbody class="">
-                      <tr
-                        *ngFor="
-                          let product of filteredProducts
-                            | productsFilter : page : searchTerm;
-                          let even = even
-                        "
-                        [ngClass]="{
-                          'table-row-even': even,
-                          'table-row-odd': !even
-                        }"
-                        class="pl-4 row-selected"
-                      >
-                        <td
-                          class="product-name"
-                          (click)="openProductModal(product)"
-                        >
-                          {{ product.name }}
-                        </td>
-                        <td class="text-right">
-                          {{ product.quantity | number : "1.2-2" }}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+        <div class="modal-content">
+          <div
+            class="d-flex modal-header product-list-header border justify-content-between"
+          >
+            <!-- Encabezado del listado -->
+            <h4 class="h4"><i class="fas fa-list-check"></i>&nbsp;Productos</h4>
+            <div class="d-flex justify-content-md-end">
+              <div class="justify-content-md-end">
+                <button
+                  class="btn btn-warning border-warning shadow clic-on-image mr-2"
+                  (click)="prevPage()"
+                  [disabled]="page === 0"
+                  style="color: white !important"
+                >
+                  <span><i class="fa-solid fa-arrow-left"></i></span>
+                  <span class="d-md-none"></span>
+                </button>
+                <button
+                  class="btn btn-success border-success shadow clic-on-image"
+                  (click)="nextPage()"
+                  [disabled]="
+                    (products | productsFilter : page : searchTerm).length < 7
+                  "
+                >
+                  <span class="d-md-none"></span>
+                  <span><i class="fa-solid fa-arrow-right"></i></span>
+                </button>
               </div>
             </div>
           </div>
+          <div class="modal-body">
+            <div class="w-100">
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr class="product-detail-table-titles">
+                      <th class="text-left" style="width: 70%">Producto</th>
+                      <th class="text-right" style="width: 25%">Stock</th>
+                    </tr>
+                  </thead>
+                  <tbody class="">
+                    <tr
+                      *ngFor="
+                        let product of filteredProducts
+                          | productsFilter : page : searchTerm;
+                        let even = even
+                      "
+                      [ngClass]="{
+                        'table-row-even': even,
+                        'table-row-odd': !even
+                      }"
+                      class="pl-4 row-selected"
+                    >
+                      <td
+                        class="product-name"
+                        (click)="openProductModal(product)"
+                      >
+                        {{ product.name }}
+                      </td>
+                      <td class="text-right">
+                        {{ product.quantity | number : "1.2-2" }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
     </div>
     <div class="col-md-4">
       <div class="col-md-12">
         <section id="audit-controls">
           <div class="row">
-              <div class="modal-content d-flex">
-                <div class="modal-header border">
-                  <h4 class="h4">
-                    <i class="fas fa-clipboard-check"></i>&nbsp;Control de
-                    auditorías
-                  </h4>
+            <div class="modal-content d-flex">
+              <div class="modal-header border">
+                <h4 class="h4">
+                  <i class="fas fa-clipboard-check"></i>&nbsp;Control de
+                  auditorías
+                </h4>
+                <span
+                  class="badge"
+                  [ngClass]="{
+                    'bg-danger shadow border border-dark': !(exportButtonDisabled | async),
+                    'bg-transparent': exportButtonDisabled | async
+                  }"
+                  [title]="'Auditoría iniciada'"
+                >
+                  {{ !(exportButtonDisabled | async) ? "1" : "" }}
+                </span>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <p class="text-center pl-2 pr-2">
+                    Controles para inicializar una nueva auditoría, ver
+                    auditorías anteriores y finalizar una auditoría iniciada.
+                  </p>
                 </div>
-                <div class="modal-body">
-                  <div class="row">
-                    <p class="text-center pl-2 pr-2">
-                      Controles para inicializar una nueva auditoría, ver
-                      auditorías anteriores y finalizar una auditoría iniciada.
-                    </p>
-                  </div>
-                  <div class="d-flex flex-wrap justify-content-center">
-                    <button
-                      class="btn btn-primary border border-primary shadow clic-on-image mb-2"
-                      (click)="initializeIndexedDB()"
-                    >
-                      Iniciar
-                    </button>
-                    <button
-                      class="btn btn-success border border-success shadow clic-on-image ml-2 mr-2 mb-2"
-                      (click)="openAuditHistoryModal()"
-                    >
-                      Historial
-                    </button>
-                    <button
-                      class="btn btn-warning border border-warning shadow text-white clic-on-image mb-2"
-                      (click)="openDeleteAuditModal()"
-                    >
-                      Finalizar
-                    </button>
-                  </div>
+                <div class="d-flex flex-wrap justify-content-center">
+                  <button
+                    class="btn btn-primary border border-primary shadow clic-on-image mb-2"
+                    (click)="initializeIndexedDB()"
+                  >
+                    Iniciar
+                  </button>
+                  <button
+                    class="btn btn-success border border-success shadow clic-on-image ml-2 mr-2 mb-2"
+                    (click)="openAuditHistoryModal()"
+                  >
+                    Historial
+                  </button>
+                  <button
+                    class="btn btn-warning border border-warning shadow text-white clic-on-image mb-2"
+                    (click)="openDeleteAuditModal()"
+                  >
+                    Finalizar
+                  </button>
                 </div>
               </div>
+            </div>
           </div>
         </section>
         <section id="audit-files">
-            <div class="row mt-4">
-              <div class="modal-content d-flex">
-                <div class="modal-header border">
-                  <h4 class="h4">
-                    <i class="fas fa-list-alt"></i>&nbsp;Archivos de auditorías
-                  </h4>
-                </div>
-                <div class="modal-body mb-1">
-                  <div class="col">
-                    <div class="custom-file shadow mb-3">
-                      <input
-                        type="file"
-                        class="custom-file-input"
-                        style="cursor: pointer"
-                        id="fileInput"
-                        (change)="importJSON($event)"
-                        accept=".json"
-                        [title]="
-                          fileInput
-                            ? 'Cargar archivo: ' + fileInput.name
-                            : 'No se ha seleccionado un archivo'
-                        "
-                      />
-                      <label
-                        for="fileInput"
-                        class="custom-file-label"
-                        data-browse="Buscar"
-                        >{{
-                          fileInput ? fileInput.name : "Seleccione archivo"
-                        }}</label
+          <div class="row mt-4">
+            <div class="modal-content d-flex">
+              <div class="modal-header border">
+                <h4 class="h4">
+                  <i class="fas fa-list-alt"></i>&nbsp;Archivos de auditorías
+                </h4>
+                <span
+                  class="badge"
+                  *ngIf="!(exportButtonDisabled | async)"
+                  [ngClass]="{
+                    'bg-danger shadow border border-dark': (auditListProducts$ | async).length >= 0,
+                    'bg-transparent': (auditListProducts$ | async).length === null
+                  }"
+                  [title]="'Productos en lista de auditoría'"
+                >
+                {{ (auditListProducts$ | async).length }}
+                </span>
+              </div>
+              <div class="modal-body mb-1">
+                <div class="col">
+                  <div class="custom-file shadow mb-3">
+                    <input
+                      type="file"
+                      class="custom-file-input"
+                      style="cursor: pointer"
+                      id="fileInput"
+                      (change)="importJSON($event)"
+                      accept=".json"
+                      [title]="
+                        fileInput
+                          ? 'Cargar archivo: ' + fileInput.name
+                          : 'No se ha seleccionado un archivo'
+                      "
+                    />
+                    <label
+                      for="fileInput"
+                      class="custom-file-label"
+                      data-browse="Buscar"
+                      >{{
+                        fileInput ? fileInput.name : "Seleccione archivo"
+                      }}</label
+                    >
+                  </div>
+                  <div class="row">
+                    <div
+                      class="col-md-12 d-flex flex-wrap justify-content-center mt-2"
+                    >
+                      <!-- Utiliza la clase col-sm para definir el comportamiento en dispositivos móviles -->
+                      <button
+                        class="btn btn-primary border border-primary shadow clic-on-image mb-2"
+                        (click)="openAuditListModal()"
+                        [disabled]="exportButtonDisabled | async"
                       >
-                    </div>
-                    <div class="row">
-                      <div
-                        class="col-md-12 d-flex flex-wrap justify-content-center mt-2"
+                        Auditar
+                      </button>
+                      <button
+                        class="btn btn-success ml-2 mr-2 mb-2 border border-success shadow clic-on-image"
+                        (click)="exportToJSON()"
+                        [disabled]="exportButtonDisabled | async"
                       >
-                        <!-- Utiliza la clase col-sm para definir el comportamiento en dispositivos móviles -->
-                        <button
-                          class="btn btn-primary border border-primary shadow clic-on-image mb-2"
-                          (click)="openAuditListModal()"
-                          [disabled]="exportButtonDisabled | async"
-                        >
-                          Auditar
-                        </button>
-                        <button
-                          class="btn btn-success ml-2 mr-2 mb-2 border border-success shadow clic-on-image"
-                          (click)="exportToJSON()"
-                          [disabled]="exportButtonDisabled | async"
-                        >
-                          Exportar
-                        </button>
-                        <button
-                          class="btn btn-warning border text-white border-warning shadow clic-on-image mb-2"
-                          [disabled]="importButtonDisabled"
-                          (click)="importJSONData()"
-                        >
-                          Importar
-                        </button>
-                      </div>
+                        Exportar
+                      </button>
+                      <button
+                        class="btn btn-warning border text-white border-warning shadow clic-on-image mb-2"
+                        [disabled]="importButtonDisabled"
+                        (click)="importJSONData()"
+                      >
+                        Importar
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
         </section>
       </div>
     </div>

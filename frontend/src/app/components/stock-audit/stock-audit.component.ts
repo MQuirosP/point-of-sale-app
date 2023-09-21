@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { fadeAnimation } from 'src/app/animations/fadeAnimation';
 import { Products } from 'src/app/interfaces/products';
 import { ProductService } from 'src/app/services/product.service';
@@ -48,6 +48,7 @@ export class StockAuditComponent implements OnInit {
   productForm: FormGroup;
   selectedProduct: Products;
   auditListProducts: ProductListStockAudit[] = [];
+  auditListProducts$ = new BehaviorSubject<any[]>([]);
 
   categoryOptions = [
     { value: 0, label: 'Consumo interno' },
@@ -81,6 +82,8 @@ export class StockAuditComponent implements OnInit {
       real_stock: [0, Validators.required],
       difference: [0, Validators.required],
     });
+
+    this.getAuditListProducts();
   }
 
   ngAfterViewInit(): void {
@@ -93,6 +96,8 @@ export class StockAuditComponent implements OnInit {
       this.subscription.unsubscribe();
     }
   }
+
+  
 
   initializeIndexedDB() {
     const dbName = 'auditListDB';
@@ -119,6 +124,7 @@ export class StockAuditComponent implements OnInit {
           const upgradedDb = (event.target as IDBOpenDBRequest).result;
           upgradedDb.createObjectStore(storeName, { keyPath: 'productId' });
           this.toastr.success("La lista para auditorías se ha activado satisfactoriamente.");
+          this.exportButtonDisabled = this.checkIfIndexedDBExists();
         };
   
         newRequest.onsuccess = (event) => {
@@ -372,6 +378,7 @@ export class StockAuditComponent implements OnInit {
           setTimeout(() => {
             this.exportButtonDisabled = Promise.resolve(false);
           }, 50);
+          this.auditListProducts$.next([...this.auditListProducts$.value, auditProduct]);
         };
 
         addRequest.onerror = (event) => {
@@ -395,22 +402,32 @@ export class StockAuditComponent implements OnInit {
     }
   }
 
-  getAuditListProducts(callback: (products: AuditListProducts[]) => void) {
+  getAuditListProducts(callback?: (products: AuditListProducts[]) => void) {
     const request = indexedDB.open('auditListDB');
-
+  
     request.onsuccess = (event) => {
       const db = request.result;
-
+  
+      // Verificar si el almacén 'products' existe antes de abrir la transacción
+      if (!db.objectStoreNames.contains('products')) {
+        console.warn('El almacén "products" no existe en la base de datos.');
+        // No hagas nada si el almacén no existe
+        return;
+      }
+  
       const transaction = db.transaction('products', 'readonly');
       const objectStore = transaction.objectStore('products');
-
+  
       const getAllRequest = objectStore.getAll();
-
+  
       getAllRequest.onsuccess = () => {
         const auditListProducts = getAllRequest.result;
-        callback(auditListProducts);
+        // Actualizar auditListProducts aquí
+        this.auditListProducts = auditListProducts;
+        this.auditListProducts$.next(auditListProducts);
+        // callback(auditListProducts);
       };
-
+  
       getAllRequest.onerror = (event) => {
         console.error(
           'Error al obtener la lista de productos de auditoría',
@@ -418,7 +435,7 @@ export class StockAuditComponent implements OnInit {
         );
       };
     };
-
+  
     request.onerror = (event) => {
       console.error(
         'Error al abrir la base de datos de auditoría',
@@ -426,6 +443,7 @@ export class StockAuditComponent implements OnInit {
       );
     };
   }
+  
 
   resetStockAndDifference(): void {
     this.productForm.get('real_stock').setValue(0);
@@ -557,6 +575,7 @@ export class StockAuditComponent implements OnInit {
       this.toastr.success('La lista de auditoría ha sido eliminada con éxito..');
       setTimeout(() => {
         this.closeDeleteAuditModal();
+        this.exportButtonDisabled = this.checkIfIndexedDBExists()
       }, 300);
     };
 
@@ -663,6 +682,7 @@ export class StockAuditComponent implements OnInit {
             addRequest.onsuccess = () => {
               console.log('Producto agregado:', product);
               resolve();
+              this.getAuditListProducts(null);
             };
   
             addRequest.onerror = (event) => {
@@ -688,6 +708,7 @@ export class StockAuditComponent implements OnInit {
               this.importButtonDisabled = true;
               setTimeout(() => {
                 this.exportButtonDisabled = Promise.resolve(false);
+                this.getAuditListProducts(null);
               }, 50);
             }
           })
