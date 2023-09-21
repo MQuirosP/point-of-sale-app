@@ -1,4 +1,4 @@
-import { style } from '@angular/animations';
+import Dexie from 'dexie';
 import {
   ChangeDetectorRef,
   Component,
@@ -97,117 +97,68 @@ export class StockAuditComponent implements OnInit {
     }
   }
 
-  
-
   initializeIndexedDB() {
     const dbName = 'auditListDB';
     const storeName = 'products';
   
-    const request = indexedDB.open(dbName);
+    // Define una instancia de la base de datos con Dexie
+    const db = new Dexie(dbName);
   
-    request.onupgradeneeded = (event) => {
-      const db = (event.target as IDBOpenDBRequest).result;
-      // Crear el objeto de almacenamiento "products" si no existe
-      db.createObjectStore(storeName, { keyPath: 'productId' });
-    };
+    // Define el esquema de la base de datos
+    db.version(1).stores({
+      [storeName]: '++productId',
+    });
   
-    request.onsuccess = (event) => {
-      const db = (event.target as IDBOpenDBRequest).result;
-  
-      // Verificar si el almacén 'products' existe
-      if (!db.objectStoreNames.contains(storeName)) {
-        // Si no existe, cerrar la base de datos y mostrar un mensaje
-        db.close();
-        const newRequest = indexedDB.open(dbName, 2);
-  
-        newRequest.onupgradeneeded = (event) => {
-          const upgradedDb = (event.target as IDBOpenDBRequest).result;
-          upgradedDb.createObjectStore(storeName, { keyPath: 'productId' });
-          this.toastr.success("La lista para auditorías se ha activado satisfactoriamente.");
-          this.exportButtonDisabled = this.checkIfIndexedDBExists();
-        };
-  
-        newRequest.onsuccess = (event) => {
-          const upgradedDb = (event.target as IDBOpenDBRequest).result;
-          upgradedDb.close();
-          console.log(`El almacén "${storeName}" ha sido creado satisfactoriamente.`);
-          this.toastr.success("La lista para auditorías se ha activado satisfactoriamente.");
-          console.log(`Base de datos "${dbName}" inicializada con éxito.`);
-        };
-  
-        newRequest.onerror = (event) => {
-          console.error(
-            'Error al abrir la base de datos de IndexedDB.',
-            event.target
-          );
-        };
-      } else {
-        // Si el almacén ya existe, simplemente cerrar la base de datos y mostrar un mensaje
-        console.log(`El almacén "${storeName}" ya existe.`);
-        this.toastr.success("Ya existe una lista para auditorías activa.");
-        console.log(`Base de datos "${dbName}" inicializada con éxito.`);
-        db.close();
-      }
-    };
-  
-    request.onerror = (event) => {
-      console.error(
-        'Error al abrir la base de datos de IndexedDB.',
-        event.target
-      );
-    };
+    db.open().then(() => {
+      // La base de datos y el almacén se crean automáticamente si no existen
+      console.log(`Base de datos "${dbName}" inicializada con éxito.`);
+      this.toastr.success('La lista para auditorías se ha activado satisfactoriamente.');
+      this.exportButtonDisabled = this.checkIfIndexedDBExists();
+    }).catch((error) => {
+      console.error('Error al abrir la base de datos de Dexie:', error);
+    });
   }
-  
   
   loadAuditListProducts() {
-    const request = indexedDB.open('auditListDB');
+    const db = new Dexie('auditListDB');
+    db.version(1).stores({
+      products: '++productId,productName', // Ajusta la estructura según tus necesidades
+    });
 
-    request.onsuccess = (event) => {
-      const db = request.result;
-
-      const transaction = db.transaction('products', 'readonly');
-      const objectStore = transaction.objectStore('products');
-      const getAllRequest = objectStore.getAll();
-
-      getAllRequest.onsuccess = () => {
-        const auditListProducts = getAllRequest.result;
-        this.auditListProducts = auditListProducts;
-      };
-      db.close();
-    };
-
-    request.onerror = (event) => {
-      console.error(
-        'Error al abrir la base de datos de auditoría',
-        event.target
-      );
-    };
+    db.transaction('r', db['products'], async () => {
+      const auditListProducts = await db['products'].toArray();
+      this.auditListProducts = auditListProducts;
+    }).catch((error) => {
+      console.error('Error al cargar los productos de auditoría', error);
+    });
   }
 
-  checkIfIndexedDBExists(): Promise<boolean> {
-    return new Promise<boolean>((resolve) => {
-      const request = indexedDB.open('auditListDB');
-
-      request.onsuccess = () => {
-        const db = request.result as IDBDatabase;
-        const objectStoreNames = db.objectStoreNames;
-
-        if (objectStoreNames.contains('products')) {
-          // La base de datos y el almacén existen
-          resolve(false);
-        } else {
-          // La base de datos existe, pero el almacén no
-          resolve(true);
-        }
-
-        db.close(); // Cerrar la base de datos después de la verificación
-      };
-
-      request.onerror = () => {
-        // La base de datos no existe
-        resolve(true);
-      };
-    });
+  async checkIfIndexedDBExists(): Promise<boolean> {
+    const dbName = 'auditListDB';
+    const storeName = 'products'; // Cambia el tipo a 'string'
+  
+    // Define una instancia de la base de datos con Dexie
+    const db = new Dexie(dbName);
+  
+    try {
+      // Abre la base de datos y maneja el proceso
+      await db.open();
+  
+      // Verifica si el almacén 'products' existe
+      if (db.tables.some(table => table.name === storeName)) {
+        // La base de datos y el almacén existen
+        return false;
+      } else {
+        // La base de datos existe, pero el almacén no
+        return true;
+      }
+    } catch (error) {
+      // La base de datos no existe
+      return true;
+    } finally {
+      // Cierra la base de datos después de la verificación
+      db.close();
+    }
   }
 
   getUserRole(): string {
@@ -336,12 +287,11 @@ export class StockAuditComponent implements OnInit {
   }
 
   addProductToAuditList() {
-
     const purchase_price = this.selectedProduct.purchase_price;
     const realStockValue = this.productForm.get('real_stock').value;
     const differenceValue = this.productForm.get('difference').value;
     const adjustedAmountValue = differenceValue * purchase_price;
-
+  
     const auditProduct = {
       ...this.selectedProduct,
       real_stock: realStockValue,
@@ -349,67 +299,41 @@ export class StockAuditComponent implements OnInit {
       adjustedQuantity: differenceValue,
       adjustedAmount: adjustedAmountValue,
     };
-
-    const existingProductIndex = this.auditListProducts.findIndex(
-      (product) => product.productId === auditProduct.productId
-    );
-
-    if (existingProductIndex !== -1) {
-      this.toastr.warning('El producto ya está en la lista de auditoría.');
-    } else {
-      const request = indexedDB.open('auditListDB');
-
-      request.onupgradeneeded = (event) => {
-        const db = (event.target as IDBOpenDBRequest).result;
-
-        if (!db.objectStoreNames.contains('products')) {
-          db.createObjectStore('products', { keyPath: 'productId' });
-        }
-      };
-
-      request.onsuccess = (event) => {
-        const db = (event.target as IDBOpenDBRequest).result;
-
-        if (!db.objectStoreNames.contains('products')) {
-          this.toastr.warning('No existe auditoría activa, por favor inicialice.')
-          return;
-        }
-
-        const transaction = db.transaction('products', 'readwrite');
-        const objectStore = transaction.objectStore('products');
-
-        const addRequest = objectStore.put(auditProduct);
-
-        addRequest.onsuccess = () => {
-          this.toastr.success('Producto agregado a la lista de auditoría.');
-          setTimeout(() => {
+  
+    // Define el nombre de la base de datos y el nombre del almacén
+    const dbName = 'auditListDB';
+    const storeName = 'products';
+  
+    // Define una instancia de la base de datos con Dexie
+    const db = new Dexie(dbName);
+  
+    // Abre la base de datos y maneja el proceso
+    db.open().then(() => {
+      // Utiliza la función table() para obtener una referencia a la tabla
+      const productTable = db.table(storeName);
+  
+      // Resto del código ...
+      // Verifica si el producto ya existe en la lista de auditoría
+      productTable.get(auditProduct.productId).then((existingProduct) => {
+        if (existingProduct) {
+          this.toastr.warning('El producto ya está en la lista de auditoría.');
+        } else {
+          // Agrega el producto a la lista de auditoría
+          productTable.put(auditProduct).then(() => {
+            this.toastr.success('Producto agregado a la lista de auditoría.');
             this.exportButtonDisabled = Promise.resolve(false);
-          }, 50);
-          this.auditListProducts$.next([...this.auditListProducts$.value, auditProduct]);
-        };
-
-        addRequest.onerror = (event) => {
-          this.toastr.error(
-            'Error al agregar el producto a la lista de auditoría.'
-          );
-          console.error(
-            'Error al guardar el producto en IndexedDB',
-            event.target
-          );
-        };
-        db.close();
-      };
-
-      request.onerror = (event) => {
-        this.toastr.error('Error al abrir la base de datos de IndexedDB.');
-        console.error(
-          'Error al abrir la base de datos de IndexedDB',
-          event.target
-        );
-      };
-    }
+            this.auditListProducts$.next([...this.auditListProducts$.value, auditProduct]);
+          }).catch((error) => {
+            this.toastr.error('Error al agregar el producto a la lista de auditoría.');
+            console.error('Error al guardar el producto en IndexedDB:', error);
+          });
+        }
+      });
+    }).catch((error) => {
+      this.toastr.error('Error al abrir la base de datos de Dexie:', error);
+      console.error('Error al abrir la base de datos de Dexie:', error);
+    });
   }
-
   getAuditListProducts(callback?: (products: AuditListProducts[]) => void) {
     const request = indexedDB.open('auditListDB');
   
@@ -579,26 +503,47 @@ export class StockAuditComponent implements OnInit {
   }
 
   deleteIndexedDB() {
-    const request = indexedDB.deleteDatabase('auditListDB');
-
-    request.onsuccess = (event) => {
-      console.log('La lista de auditoría ha sido eliminada con éxito.');
-      this.toastr.success('La lista de auditoría ha sido eliminada con éxito..');
-      setTimeout(() => {
+    const dbName = 'auditListDB';
+  
+    // Define una instancia de la base de datos con Dexie
+    const db = new Dexie(dbName);
+  
+    // Abre la base de datos
+    db.open()
+      .then(() => {
+        // Obtiene una referencia al almacén de objetos
+        const objectStore = db.table('products');
+  
+        // Cuenta el número de registros en el almacén
+        return objectStore.count();
+      })
+      .then((count) => {
+        if (count === 0) {
+          // No hay registros en la base de datos, puedes eliminarla
+          return db.delete();
+        } else {
+          // La base de datos no está vacía, muestra un mensaje
+          console.log('La lista de auditoría no está vacía. No se puede eliminar.');
+          this.toastr.warning('La lista de auditoría no está vacía. No se puede eliminar.');
+          return Promise.reject('La base de datos no está vacía');
+        }
+      })
+      .then(() => {
+        // La base de datos se eliminó con éxito
+        console.log('La lista de auditoría ha sido eliminada con éxito.');
+        this.toastr.success('La lista de auditoría ha sido eliminada con éxito.');
         this.closeDeleteAuditModal();
-        this.exportButtonDisabled = this.checkIfIndexedDBExists()
-      }, 300);
-    };
-
-    request.onerror = (event) => {
-      console.error(
-        'Error al eliminar la lista de auditoría.',
-        event.target
-      );
-      this.toastr.error('Error al eliminar la lista de auditoría.');
-    };
+        this.exportButtonDisabled = this.checkIfIndexedDBExists();
+      })
+      .catch((error) => {
+        console.error('Error al eliminar la lista de auditoría:', error);
+        if (error !== 'La base de datos no está vacía') {
+          this.toastr.error('Error al eliminar la lista de auditoría.');
+        }
+      });
   }
-
+  
+  
   exportToJSON() {
     const request = indexedDB.open('auditListDB');
 
@@ -719,6 +664,7 @@ export class StockAuditComponent implements OnInit {
               this.toastr.warning(message);
             } else {
               this.toastr.success('Información importada con éxito.');
+              db.close();
               this.fileInput = null;
               this.importButtonDisabled = true;
               setTimeout(() => {
