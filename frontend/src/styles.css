@@ -184,8 +184,10 @@ option {
 }
 
 .suggestion-list::-webkit-scrollbar-corner {
-  border-radius: 10px;
+  /* border-radius: 10px; */
+  background-color: transparent;
 }
+
 
 .dropdown-item:hover,
 div.dropdown-menu > .dropdown-item:hover {
