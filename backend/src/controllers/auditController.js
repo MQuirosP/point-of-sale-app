@@ -1,4 +1,5 @@
 const auditService = require("./../services/auditService");
+const productService = require("./../services/productService");
 const responseUtils = require("../utils/responseUtils");
 const { appLogger } = require("../utils/logger");
 
@@ -6,6 +7,7 @@ async function createAudit(req, res) {
   try {
     const { username, consecutive, items } = req.body;
 
+    console.log(req.body);
     const newAuditDocument = await auditService.createAuditDocument(
       username,
       consecutive
@@ -17,6 +19,16 @@ async function createAudit(req, res) {
         newAuditDocument.doc_number,
         item
       );
+
+      const productId = item.productId;
+      const newQuantity = item.quantity + item.adjusted_quantity;
+
+      const productData = {
+        quantity: newQuantity,
+      }
+
+      // Aquí puedes llamar a la función para actualizar las cantidades de productos
+      await productService.updateProduct(productId, productData);
     }
 
     const response = {

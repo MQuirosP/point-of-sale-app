@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 })
 export class StockAuditService {
 
-  backendUrl: string = environment.apiUrl + "stock-audit"
+  backendUrl: string = environment.apiUrl + "audits"
 
   constructor(
     private http: HttpClient,
@@ -15,5 +15,9 @@ export class StockAuditService {
 
   fetchAllAudits() {
     return this.http.get(`${this.backendUrl}`)
+  }
+
+  createAuditEntry(documentData: any) {
+    return this.http.post(`${this.backendUrl}`, documentData)
   }
 }

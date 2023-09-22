@@ -1,3 +1,4 @@
+import { response } from 'express';
 import Dexie from 'dexie';
 import {
   ChangeDetectorRef,
@@ -17,8 +18,8 @@ import { StockAuditService } from 'src/app/services/stock-audit.service';
 interface ProductListStockAudit extends Products {
   real_stock?: number;
   difference?: number;
-  adjustedQuantity?: number;
-  adjustedAmount?: number;
+  adjusted_quantity?: number;
+  adjusted_amount?: number;
 }
 
 interface AuditListProducts extends ProductListStockAudit {
@@ -296,8 +297,8 @@ export class StockAuditComponent implements OnInit {
       ...this.selectedProduct,
       real_stock: realStockValue,
       difference: differenceValue,
-      adjustedQuantity: differenceValue,
-      adjustedAmount: adjustedAmountValue,
+      adjusted_quantity: differenceValue,
+      adjusted_amount: adjustedAmountValue,
     };
   
     // Define el nombre de la base de datos y el nombre del almacén
@@ -706,21 +707,22 @@ export class StockAuditComponent implements OnInit {
   private calculateQuantityAndAmount(audit: any): void {
     const totalQuantity = audit.auditProducts.reduce(
       (total: number, item: any) => {
-        return total + parseFloat(item.adjusted_quantity);
+        return total + this.getAbsoluteValue(parseFloat(item.adjusted_quantity));
       },
       0
     );
-
+  
     const totalAmount = audit.auditProducts.reduce(
       (total: number, item: any) => {
-        return total + parseFloat(item.adjusted_amount);
+        return total + this.getAbsoluteValue(parseFloat(item.adjusted_amount));
       },
       0
     );
-
+  
     audit.totalQuantity = totalQuantity;
     audit.totalAmount = totalAmount;
   }
+  
 
   convertDateToString(auditDate: any): string {
     const day = auditDate.getUTCDate();
@@ -750,6 +752,7 @@ export class StockAuditComponent implements OnInit {
   }
 
   openAuditHistoryModal() {
+    this.getAllAudits();
     this.auditHistory.nativeElement.style.display = "block";
     this.auditHistory.nativeElement.classList.add('opening');
     setTimeout(() => {
@@ -765,4 +768,73 @@ export class StockAuditComponent implements OnInit {
       this.auditHistory.nativeElement.style.display = 'none';
     }, 300);
   }
+
+  createAuditDocument() {
+    // Obtener el nombre de usuario desde el almacenamiento local
+    const username = localStorage.getItem("username");
+  
+    // Tu array de productos
+    const auditListProducts = this.auditListProducts;
+  
+    // Crear el objeto auditData con username y items
+    const auditData = {
+      username: username,
+      items: auditListProducts
+    };
+  
+    // Hacer la petición POST
+    this.audits.createAuditEntry(auditData).subscribe({
+      next: (response: any) => {
+        if(response?.success) {
+          this.toastr.success("Documento de auditoría guardado satisfactoriamente. Espere un momento mientras se finaliza y cierran las tablas.")
+          this.clearAuditListDB();
+          setTimeout(() => {
+            this.deleteIndexedDB();
+            this.auditListProducts = [];
+          }, 2000)
+          this.getAllAudits();
+          this.refreshProductList();
+        }
+      },
+      error: (error: any) => {
+        this.toastr.error("No se pudo registrar los cambios, intente nuevamente.")
+      }
+    });
+  }
+  
+  clearAuditListDB() {
+    const dbName = "auditListDB";
+    const request = indexedDB.open(dbName);
+  
+    request.onsuccess = function (event) {
+      const db = request.result as IDBDatabase; // Hacer una conversión de tipo
+  
+      const objectStoreName = "products"; // Reemplaza con el nombre de tu almacén
+      const transaction = db.transaction(objectStoreName, "readwrite");
+      const objectStore = transaction.objectStore(objectStoreName);
+  
+      const clearRequest = objectStore.clear();
+  
+      clearRequest.onsuccess = function () {
+        console.log("Se han eliminado todos los registros en el almacén de objetos.");
+      };
+  
+      clearRequest.onerror = function (event) {
+        console.error("Error al borrar registros:", (event.target as IDBRequest).error); // Hacer una conversión de tipo
+      };
+  
+      transaction.oncomplete = function () {
+        db.close();
+      };
+    };
+  
+    request.onerror = function (event) {
+      console.error("Error al abrir la base de datos:", (event.target as IDBRequest).error); // Hacer una conversión de tipo
+    };
+  }
+
+  getAbsoluteValue(value: number): number {
+    return Math.abs(value);
+  }
+
 }
