@@ -542,10 +542,10 @@
             </div>
           </div>
         </form>
-        <div class="container">
+        <div class="container pt-4" style="height: 400px; overflow-y: scroll;" *ngIf="sales.length > 0">
           <!-- Aquí se muestra la lista de ventas -->
           <div *ngFor="let sale of sales" class="card custom-card shadow mb-3">
-            <div class="sale-summary">
+            <div class="sale-summary" >
               <div class="card-header d-flex justify-content-start">
                 <div
                   class="align-items-start"
