@@ -515,7 +515,7 @@
           <span aria-hidden="true"><i class="fas fa-close"></i></span>
         </button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body pb-0">
         <form>
           <div class="row d-flex justify-content-center">
             <div class="form-group sticky-top" style="max-width: 170px">
@@ -533,7 +533,7 @@
             </div>
           </div>
         </form>
-        <div class="container pt-4" style="height: 400px; overflow-y: scroll;" *ngIf="purchases.length > 0">
+        <div class="container pt-1" style="height: 350px; overflow-y: scroll;" *ngIf="purchases.length > 0">
           <!-- Aquí se muestra la lista de compras -->
           <div
             *ngFor="let purchase of purchases"

@@ -34,6 +34,75 @@ body {
   font-style: normal;
 }
 
+/* width */
+::-webkit-scrollbar {
+  width: 12px;
+  background-color: #ddd;
+  border-radius: 10px;
+  border: 1px solid #999;
+}
+
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  border: 1px solid #555;
+  background: #aaa;
+  border-radius: 10px;
+  box-shadow: inset 0 0 5px rgb(255, 255, 255);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #777;
+  transition: all 0.3s;
+}
+
+/* Estilo para el botón de flecha hacia abajo */
+::-webkit-scrollbar-button:vertical:increment {
+  background-image: url('assets/arrow-down.png'); /* Ruta de la imagen */
+  background-size: contain; /* Ajusta el tamaño de la imagen según el botón */
+  background-repeat: no-repeat; /* Evita la repetición de la imagen */
+  width: 20px; /* Ancho del botón */
+  height: 15px; /* Altura del botón */
+  background-position: center center; /* Ajusta la posición vertical */
+  box-shadow: -1px -1px -1px #fff;
+}
+
+/* Estilo para el botón de flecha hacia arriba */
+::-webkit-scrollbar-button:vertical:decrement {
+  background-image: url('assets/arrow-up.png'); /* Ruta de la imagen */
+  background-size: contain; /* Ajusta el tamaño de la imagen según el botón */
+  background-repeat: no-repeat; /* Evita la repetición de la imagen */
+  width: 20px; /* Ancho del botón */
+  height: 15px; /* Altura del botón */
+  background-position: center center; /* Ajusta la posición vertical */
+  box-shadow: -1px -1px -1px #fff;
+}
+
+::-webkit-scrollbar-button:vertical:increment:active {
+  background-color: #ccc; /* Cambia el color de fondo al hacer clic */
+  border-radius: 10px;
+  border: 1px solid #aaa;
+  box-shadow: inset 1px 1px 1px #aaa;
+  translate:calc(-50% -50%)
+}
+
+/* Estilo cuando se hace clic en el botón de flecha hacia arriba */
+::-webkit-scrollbar-button:vertical:decrement:active {
+  background-color: #ccc; /* Cambia el color de fondo al hacer clic */
+  border-radius: 10px;
+  border: 1px solid #aaa;
+  box-shadow: inset 1px 1px 1px #aaa;
+}
+
 .navbar-brand {
   margin: 0 20px 0 10px;
   padding: 0;
@@ -964,7 +1033,7 @@ app-header {
 /* Estilo para el contenido principal */
 .main-content {
   margin-top: 70px;
-  height: calc(90vh - 70px);
+  height: calc(90vh - 75px);
   overflow-y: auto;
 }
 
