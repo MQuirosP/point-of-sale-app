@@ -253,8 +253,8 @@
                 >
                   <ul
                     id="suggestionOptions"
-                    class="list-unstyled "
-                    style="margin: 0; padding: 0 1px;"
+                    class="list-unstyled"
+                    style="margin: 0; padding: 0 1px"
                   >
                     <li
                       *ngFor="
@@ -542,7 +542,6 @@
             </div>
           </div>
         </form>
-
         <div class="container">
           <!-- Aquí se muestra la lista de ventas -->
           <div *ngFor="let sale of sales" class="card custom-card shadow mb-3">
@@ -688,15 +687,15 @@
             </div>
           </div>
         </div>
-        <div class="modal-footer mt-3">
-          <button
-            type="button"
-            class="btn btn-secondary border border-secondary clic-on-image"
-            (click)="closeSaleHistoryModal()"
-          >
-            Cerrar
-          </button>
-        </div>
+      </div>
+      <div class="modal-footer mt-3">
+        <button
+          type="button"
+          class="btn btn-secondary border border-secondary clic-on-image"
+          (click)="closeSaleHistoryModal()"
+        >
+          Cerrar
+        </button>
       </div>
     </div>
   </div>
