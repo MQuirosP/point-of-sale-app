@@ -183,11 +183,9 @@ option {
   background-color: #363434;
 }
 
-.suggestion-list::-webkit-scrollbar-corner {
-  /* border-radius: 10px; */
-  background-color: transparent;
+.suggestion-list {
+  overflow-x: hidden;
 }
-
 
 .dropdown-item:hover,
 div.dropdown-menu > .dropdown-item:hover {
