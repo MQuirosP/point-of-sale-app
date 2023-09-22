@@ -90,8 +90,8 @@
   role="dialog"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-lg modal-shadow" role="document">
-    <div class="modal-content">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content modal-shadow">
       <form [formGroup]="saleForm" (ngSubmit)="createSale($event)">
         <div class="modal-header border">
           <h5 class="modal-title">
@@ -327,6 +327,31 @@
               </div>
             </div>
             <div class="col-md-6">
+              <div class="row total-box">
+                <div class="col flex-column align-items-center">
+                  <h6 class="total-box-titles">Sub Total</h6>
+                  <p class="total-invoice">
+                    {{ subTotalSaleAmount | currency : "CRC" : "₡" }}
+                  </p>
+                </div>
+                <div class="col flex-column align-items-center">
+                  <h6 class="total-box-titles">Impuestos</h6>
+                  <p class="total-invoice">
+                    {{ totalTaxesAmount | currency : "CRC" : "₡" }}
+                  </p>
+                </div>
+                <div class="col flex-column align-items-center">
+                  <h6
+                    class="total-box-titles"
+                    style="padding-right: 0 !important"
+                  >
+                    Total
+                  </h6>
+                  <p class="total-invoice">
+                    {{ totalSaleAmount | currency : "CRC" : "₡" : "1.2-2" }}
+                  </p>
+                </div>
+              </div>
               <div class="table-container">
                 <h6 class="h6 mb-1 text-center">Lista de productos</h6>
                 <table
@@ -434,31 +459,7 @@
             </div>
           </div>
           <div class="mt-2">
-            <div class="row total-box">
-              <div class="col flex-column align-items-center">
-                <h6 class="total-box-titles">Sub Total</h6>
-                <p class="total-invoice">
-                  {{ subTotalSaleAmount | currency : "CRC" : "₡" }}
-                </p>
-              </div>
-              <div class="col flex-column align-items-center">
-                <h6 class="total-box-titles">Impuestos</h6>
-                <p class="total-invoice">
-                  {{ totalTaxesAmount | currency : "CRC" : "₡" }}
-                </p>
-              </div>
-              <div class="col flex-column align-items-center">
-                <h6
-                  class="total-box-titles"
-                  style="padding-right: 0 !important"
-                >
-                  Total
-                </h6>
-                <p class="total-invoice">
-                  {{ totalSaleAmount | currency : "CRC" : "₡" : "1.2-2" }}
-                </p>
-              </div>
-            </div>
+            
           </div>
         </div>
         <div class="modal-footer d-flex justify-content-between">

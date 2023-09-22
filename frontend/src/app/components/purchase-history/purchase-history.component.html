@@ -99,9 +99,9 @@
   role="dialog"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-lg modal-dialog-scrollable">
-    <form [formGroup]="purchaseForm" (ngSubmit)="createPurchase($event)">
-      <div class="modal-content modal-shadow">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content modal-shadow">
+        <form [formGroup]="purchaseForm" (ngSubmit)="createPurchase($event)">
         <div class="modal-header border">
           <h5 class="modal-title">
             <i class="fas fa-edit"></i>&nbsp;Registro de compras
@@ -338,11 +338,31 @@
               </div>
             </div>
             <div class="col-md-6">
+              <div class="row total-box">
+                <div class="col flex-column align-items-center">
+                  <h6 class="total-box-titles">Sub Total</h6>
+                  <p class="total-invoice">
+                    {{ subTotalPurchaseAmount | currency : "CRC" : "₡" }}
+                  </p>
+                </div>
+                <div class="col flex-column align-items-center">
+                  <h6 class="total-box-titles">I.V.A.</h6>
+                  <p class="total-invoice">
+                    {{ totalTaxesAmount | currency : "CRC" : "₡" }}
+                  </p>
+                </div>
+                <div class="col flex-column align-items-center">
+                  <h6 class="total-box-titles">Total</h6>
+                  <p class="total-invoice">
+                    {{ totalPurchaseAmount | currency : "CRC" : "₡" }}
+                  </p>
+                </div>
+              </div>
               <div class="table-container">
                 <h6 class="h6 mb-1 text-center">Lista de productos</h6>
                 <table
                   class="table table-responsive-lg table-hover"
-                  style="table-layout: fixed"
+                  style="table-layout: fixed;"
                 >
                   <thead>
                     <tr class="custom-row">
@@ -439,26 +459,7 @@
               </div>
             </div>
           </div>
-          <div class="row total-box">
-            <div class="col flex-column align-items-center">
-              <h6 class="total-box-titles">Sub Total</h6>
-              <p class="total-invoice">
-                {{ subTotalPurchaseAmount | currency : "CRC" : "₡" }}
-              </p>
-            </div>
-            <div class="col flex-column align-items-center">
-              <h6 class="total-box-titles">I.V.A.</h6>
-              <p class="total-invoice">
-                {{ totalTaxesAmount | currency : "CRC" : "₡" }}
-              </p>
-            </div>
-            <div class="col flex-column align-items-center">
-              <h6 class="total-box-titles">Total</h6>
-              <p class="total-invoice">
-                {{ totalPurchaseAmount | currency : "CRC" : "₡" }}
-              </p>
-            </div>
-          </div>
+          
         </div>
         <div class="modal-footer d-flex justify-content-between">
           <button
@@ -485,8 +486,8 @@
             </button>
           </div>
         </div>
+      </form>
       </div>
-    </form>
   </div>
 </div>
 
