@@ -36,7 +36,7 @@
         data-interval="5000"
         #carousel
       >
-        <div class="card card-height custom-main-card shadow clic-on-image">
+        <div class="card card-height custom-main-card shadow">
           <!-- Primer tarjeta, carrusel de productos -->
           <div
             *ngIf="
@@ -105,7 +105,7 @@
                 data-slide="prev"
               >
                 <a
-                  class="text-decoration-none clic-on-image"
+                  class="text-decoration-none"
                   data-target="#carousel"
                   role="button"
                   data-slide="prev"
@@ -118,7 +118,7 @@
                   (click)="openSaleModal()"
                   type="button"
                   role="button"
-                  class="btn roundButton my-clic clic-on-image hidden-link my-clic text-decoration-none"
+                  class="btn roundButton my-clic hidden-link my-clic text-decoration-none"
                 >
                   <i class="fas fa-shopping-cart"></i>
                 </a>
@@ -130,7 +130,7 @@
                 data-slide="next"
               >
                 <a
-                  class="text-decoration-none clic-on-image"
+                  class="text-decoration-none"
                   data-target="#carousel"
                   role="button"
                   data-slide="next"
@@ -146,7 +146,7 @@
     <!-- Segunda tarjeta, Mis Ventas -->
     <div class="col-md-4 text-center mb-3">
       <div
-        class="card card-height custom-main-card shadow clic-on-image"
+        class="card card-height custom-main-card shadow"
       >
         <h4>Mis ventas</h4>
         <div>
@@ -154,7 +154,7 @@
             <img
               src="assets/cashier-machine.png"
               alt="Ventas"
-              class="front-panel-image custom-image-shadow clic-on-main-image"
+              class="front-panel-image"
             />
           </a>
         </div>
@@ -163,7 +163,7 @@
     <!-- Tercera tarjeta, Mis Compras -->
     <div class="col-md-4 text-center mb-3">
       <div
-        class="card card-height custom-main-card shadow clic-on-image"
+        class="card card-height custom-main-card shadow"
       >
         <h4>Mis compras</h4>
         <div>
@@ -171,7 +171,7 @@
             <img
               src="assets/seller.png"
               alt="Compras"
-              class="front-panel-image custom-image-shadow clic-on-main-image"
+              class="front-panel-image custom-image-shadow"
             />
           </a>
         </div>
@@ -191,18 +191,12 @@
     </div>
     <!-- Quinta tarjeta, logo y reportes -->
     <div class="col-md-8 d-none d-md-block mb-3">
-      <div class="card-height custom-main-card">
+      <div class="card-height shadow">
         <a routerLink="/reports">
           <img
             src="assets/verduleria-sol.webp"
             alt=""
-            class="card card-height border shadow customShadow clic-on-image"
-            style="
-              border-radius: 10px;
-              width: 100%;
-              height: 100%;
-              cursor: pointer;
-            "
+            class="main-image"
           />
         </a>
       </div>

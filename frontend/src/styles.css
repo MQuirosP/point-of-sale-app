@@ -54,6 +54,15 @@ body {
   height: auto;
 }
 
+.main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  border: 1px solid lightgray;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
 .login-box {
   position: relative;
   display: flex;
@@ -294,8 +303,9 @@ a.hide {
 }
 
 .card-height {
-  min-height: 140px;
-  max-height: 140px;
+  /* min-height: 140px;
+  max-height: 140px; */
+  height: 140px;
 }
 
 .underline {
@@ -316,6 +326,9 @@ a.hide {
   border: 1px solid #999; /* Cambia el color del borde en hover */
 }
 
+.custom-main-card:active {
+  transform: scale(0.99);
+}
 
 .front-panel-image {
   width: 120px;
@@ -333,32 +346,37 @@ a.hide {
   box-shadow: inset 2px 2px 2px darkgray;
   background-color: #7ef37e;
 }
+.clic-on-main-image {
+  position: relative;
+  transition: all 0.2s ease;
+}
 
 .clic-on-image:active {
-  transform: scale(0.95);
+  transform: scale(0.90);
   transition: transform 0.2s;
 }
 
-.clic-on-main-image {
-  padding: 10px;
+.clic-on-main-image:hover {
+  transform: scale(1.02);
+  transition: transform 0.2s;
 }
 
-.clic-on-main-image:hover {
-  transform: scale(1);
+.clic-on-main-image:active {
+  transform: scale(0.99);
   transition: transform 0.2s;
 }
 
 /* .clic-on-main-image:active {
-  transform: scale(0.95); muy fea se ve la simulación de botón
+  transform: scale(0.95); 
   transition: transform 0.2s;
   box-shadow: inset 3px 3px 3px darkgray;
   background-color: #b4f5b4;
 } */
 
-.custom-image-shadow {
+/* .custom-image-shadow {
   border-radius: 10px;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
+} */
 
 .my-title:hover {
   text-shadow: 2px 2px 2px darkgray;
