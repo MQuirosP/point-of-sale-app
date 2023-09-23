@@ -734,7 +734,7 @@ tr.custom-row td {
 }
 
 div.table-container {
-  height: 300px;
+  max-height: 400px;
   overflow-y: visible;
   overflow-x: hidden;
 }
@@ -761,11 +761,10 @@ div.table-container {
   max-width: 350px;
   background-color: rgb(208, 212, 212);
   padding-top: 10px;
-  margin: 0 auto;
-  margin-bottom: 10px;
+  margin: 0.5% 1%;
   border-radius: 10px;
   border: 1px solid darkgray;
-  box-shadow: 0 0 10px #00000033, 0 0 10px rgba(0, 0, 0, 0.1),
+  box-shadow: inset 0 0 10px #00000033, 0 0 10px rgba(0, 0, 0, 0.1),
     0 0 20px rgba(0, 0, 0, 0.1), 0 0 30px rgba(0, 0, 0, 0.1);
 }
 
