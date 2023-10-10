@@ -120,7 +120,7 @@
         </div>
         <div class="modal-body">
           <div class="row">
-            <div class="col">
+            <div class="col-md-6">
               <div class="form-group form-row">
                 <div class="col">
                   <label for="customer_name">Cliente:</label>
@@ -333,6 +333,33 @@
                   Agregar
                 </button>
               </div>
+              <div class="">
+                <div class="row total-box">
+                  <div class="col flex-column align-items-center">
+                    <h6 class="total-box-titles">Sub Total</h6>
+                    <p class="total-invoice">
+                      {{ subTotalSaleAmount | currency : "CRC" : "₡" }}
+                    </p>
+                  </div>
+                  <div class="col flex-column align-items-center">
+                    <h6 class="total-box-titles">Impuestos</h6>
+                    <p class="total-invoice">
+                      {{ totalTaxesAmount | currency : "CRC" : "₡" }}
+                    </p>
+                  </div>
+                  <div class="col flex-column align-items-center">
+                    <h6
+                      class="total-box-titles"
+                      style="padding-right: 0 !important"
+                    >
+                      Total
+                    </h6>
+                    <p class="total-invoice">
+                      {{ totalSaleAmount | currency : "CRC" : "₡" : "1.2-2" }}
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="col-md-6">
               <div class="table-container">
@@ -441,33 +468,7 @@
               </div>
             </div>
           </div>
-          <div class="mt-2">
-            <div class="row total-box">
-              <div class="col flex-column align-items-center">
-                <h6 class="total-box-titles">Sub Total</h6>
-                <p class="total-invoice">
-                  {{ subTotalSaleAmount | currency : "CRC" : "₡" }}
-                </p>
-              </div>
-              <div class="col flex-column align-items-center">
-                <h6 class="total-box-titles">Impuestos</h6>
-                <p class="total-invoice">
-                  {{ totalTaxesAmount | currency : "CRC" : "₡" }}
-                </p>
-              </div>
-              <div class="col flex-column align-items-center">
-                <h6
-                  class="total-box-titles"
-                  style="padding-right: 0 !important"
-                >
-                  Total
-                </h6>
-                <p class="total-invoice">
-                  {{ totalSaleAmount | currency : "CRC" : "₡" : "1.2-2" }}
-                </p>
-              </div>
-            </div>
-          </div>
+          
         </div>
         <div class="modal-footer d-flex justify-content-between">
           <button
