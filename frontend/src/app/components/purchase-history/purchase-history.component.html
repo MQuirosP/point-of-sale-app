@@ -499,6 +499,7 @@
   role="dialog"
   aria-labelledby="purchaseHistoryModal"
   aria-hidden="true"
+  style="height: 100vh;"
 >
   <div class="modal-dialog" role="document">
     <div class="modal-content modal-shadow">
@@ -533,12 +534,14 @@
             </div>
           </div>
         </form>
-        <div class="container pt-4" style="height: 400px; overflow-y: scroll;" *ngIf="purchases.length > 0">
+        <div 
+        class="container pt-2 history-card" 
+        *ngIf="purchases.length > 0"
+        >
           <!-- Aquí se muestra la lista de compras -->
           <div
             *ngFor="let purchase of purchases"
-            class="card custom-card shadow mb-3"
-          >
+            class="card custom-card shadow mb-2">
             <div class="sale-summary">
               <div class="card-header d-flex justify-content-start">
                 <div
@@ -664,7 +667,7 @@
                     </tr>
                   </tbody>
                 </table>
-                <div class="card-footer">
+                <div class="card-footer pt-0 mt-0">
                   <div class="mb-2">
                     <button
                       *ngIf="
@@ -672,7 +675,7 @@
                         isCurrentDate(purchase.createdAt) &&
                         getUserRole() !== 'user'
                       "
-                      class="btn btn-danger shadow clic-on-image"
+                      class="btn btn-danger shadow clic-on-image mr-2"
                       (click)="
                         cancelPurchase(purchase);
                         togglePurchaseDetails(purchase)
@@ -690,7 +693,7 @@
       <div class="modal-footer mt-3">
         <button
           type="button"
-          class="btn btn-secondary shadow clic-on-image"
+          class="btn btn-secondary border border-secondary shadow clic-on-image"
           (click)="closePurchaseHistoryModal()"
         >
           Cerrar
