@@ -36,24 +36,22 @@
 <!-- Tarjetas registro de usuarios, Proveedores y clientes -->
 <div class="container final-div">
   <div class="row">
-    <div class="col-12 col-md-4 mb-3">
+    <div class="col-md-4 mb-3">
       <section id="configuracion" [@fadeAnimation]>
-        <div class="container">
+        <div class="">
           <div class="card shadow">
-            <div class="card-header modal-header text-center">
+            <div class="card-header modal-header mb-2">
               <h5 class="modal-title">
                 <i class="fa fa-users"></i> Registro de usuarios
               </h5>
             </div>
             <div class="card-body">
-              <div class="container custom-control custom-switch pl-0">
-                <div class="row">
-                  <div class="col-md-12 text-center options-card-body-text">
-                    Activar el registro de usuarios.
-                  </div>
+                <div class="options-card-body-text">
+                  <p>Activar el registro de usuarios.</p>
                 </div>
-                <div class="col-4 col-md-4"></div>
-                <div class="col-4 col-md-4 mt-2 ml-1 mx-auto">
+                <div
+                  class="col-4 col-md-4 mx-auto custom-control custom-switch"
+                >
                   <input
                     *ngIf="getUserRole() !== 'user'"
                     type="checkbox"
@@ -64,10 +62,7 @@
                     [checked]="activateRegister"
                     (click)="toggleCheckbox()"
                   />
-                  <label
-                    for="activateRegister"
-                    class="custom-control-label"
-                  >
+                  <label for="activateRegister" class="custom-control-label">
                     <span
                       [ngStyle]="{
                         color: activateRegister ? 'green' : 'red'
@@ -76,28 +71,25 @@
                     >
                   </label>
                 </div>
-                <div class="col-md-4"></div>
-              </div>
             </div>
           </div>
         </div>
       </section>
     </div>
-    <div class="col-12 col-md-4 mb-3">
-      <section id="proveedores" [@fadeAnimation]>
-        <div class="container">
+    <div class="col-md-4 mb-3">
+      <section id="providers" [@fadeAnimation]>
+        <div class="">
           <div class="card shadow">
-            <div class="card-header modal-header text-center">
+            <div class="card-header modal-header">
               <h5 class="modal-title">
                 <i class="fa fa-people-line"></i> Mis proveedores
               </h5>
             </div>
-            <div class="card-body">
-              <fieldset class="row">
-                <legend class="text-center options-card-body-text">
-                  Mantenimiento de proveedores
-                </legend>
-                <div class="col-12 text-center options-button-container">
+            <div class="card-body mt-2">
+                <div class="options-card-body-text">
+                  <p>Mantenimiento de proveedores</p>
+                </div>
+                <div class="options-button-container">
                   <a
                     role="button"
                     class="btn btn-primary border border-primary clic-on-image"
@@ -106,27 +98,25 @@
                     Ver lista
                   </a>
                 </div>
-              </fieldset>
             </div>
           </div>
         </div>
       </section>
     </div>
-    <div class="col-12 col-md-4 mb-3">
-      <section [@fadeAnimation]>
-        <div class="container">
+    <div class="col-md-4 mb-3">
+      <section [@fadeAnimation] id="customers">
+        <div class="">
           <div class="card shadow">
-            <div class="card-header modal-header text-center">
+            <div class="card-header modal-header">
               <h5 class="modal-title">
                 <i class="fas fa-people-group"></i> Mis clientes
               </h5>
             </div>
-            <div class="card-body">
-              <fieldset class="row">
-                <legend class="text-center options-card-body-text">
-                  Mantenimiento de clientes
-                </legend>
-                <div class="col-12 text-center options-button-container">
+            <div class="card-body mt-2">
+                <div class="options-card-body-text">
+                  <p>Mantenimiento de clientes</p>
+                </div>
+                <div class="options-button-container">
                   <a
                     role="button"
                     class="btn btn-primary border border-primary clic-on-image"
@@ -135,7 +125,6 @@
                     Ver lista
                   </a>
                 </div>
-              </fieldset>
             </div>
           </div>
         </div>
@@ -143,24 +132,23 @@
     </div>
   </div>
   <div class="row" *ngIf="getUserRole() !== 'user'">
-    <div class="col-12 col-md-4 mb-3">
-      <section id="configuracion" [@fadeAnimation]>
-        <div class="container">
+    <div class="col-md-4 mb-3">
+      <section id="useres" [@fadeAnimation]>
+        <div class="">
           <div class="card shadow">
-            <div class="card-header modal-header text-center">
+            <div class="card-header modal-header">
               <h5 class="modal-title">
                 <i class="fa fa-users-between-lines"></i> Mis usuarios
               </h5>
             </div>
-            <div class="card-body" style="margin-bottom: 14px">
-              <fieldset class="row">
-                <legend
-                  class="text-center options-card-body-text"
-                  style="font-size: 18px"
-                >
-                  Mantenimiento de usuarios
-                </legend>
-                <div class="col-12 text-center options-button-container">
+            <div class="card-body mt-2">
+                <div
+                  class="options-card-body-text"
+                ><p>
+                    Mantenimiento de usuarios
+                </p>
+                </div>
+                <div class="options-button-container">
                   <a
                     role="button"
                     class="btn btn-primary border border-primary clic-on-image"
@@ -169,14 +157,38 @@
                     Ver lista
                   </a>
                 </div>
-              </fieldset>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="col-md-4 mb-3">
+      <section id="stock" [@fadeAnimation]>
+        <div class="">
+          <div class="card shadow">
+            <div class="card-header modal-header text-center">
+              <h5 class="modal-title">
+                <i class="fas fa-list-numeric"></i>&nbsp;Control del inventario
+              </h5>
+            </div>
+            <div class="card-body mt-2">
+                <div class="options-card-body-text">
+                  <p>Control de existencias y ajustes</p>
+                </div>
+                <div class="options-button-container">
+                  <a routerLink="/stock-audit"
+                    role="button"
+                    class="btn btn-primary border border-primary clic-on-image"
+                  >
+                    Ver opciones
+                  </a>
+                </div>
             </div>
           </div>
         </div>
       </section>
     </div>
   </div>
-  <div style="margin-bottom: 100px"></div>
 </div>
 
 <!-- Modal para listado de proveedores -->

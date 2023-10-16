@@ -24,9 +24,7 @@
 <div class="container final-div justify-content-center" [@fadeAnimation]>
   <div class="row justify-content-center">
     <div class="col-md-6 d-flex justify-content-center mb-3">
-      <div
-        class="card shadow card-height border col-md-8 customShadow bg-custom clic-on-image"
-      >
+      <div class="card card-height col-md-8 custom-main-card shadow">
         <div class="d-flex">
           <a class="text-decoration-none" (click)="openSaleModal()">
             <div class="card-body">
@@ -43,9 +41,7 @@
       </div>
     </div>
     <div class="col-md-6 d-flex justify-content-center mb-3">
-      <div
-        class="card shadow card-height border col-md-8 customShadow bg-custom clic-on-image"
-      >
+      <div class="card card-height col-md-8 custom-main-card shadow">
         <div class="d-flex">
           <a class="text-decoration-none" (click)="openSaleHistoryModal()">
             <div class="card-body">
@@ -59,9 +55,7 @@
   </div>
   <div class="row">
     <div class="col-md-6 d-flex justify-content-center">
-      <div
-        class="card shadow card-height col-md-8 border customShadow mb-3 bg-custom clic-on-image"
-      >
+      <div class="card card-height col-md-8 custom-main-card shadow">
         <div class="d-flex">
           <a routerLink="/product-list" class="text-decoration-none">
             <div class="card-body">
@@ -73,9 +67,7 @@
       </div>
     </div>
     <div class="col-md-6 d-flex justify-content-center">
-      <div
-        class="card shadow card-height col-md-8 border customShadow bg-custom clic-on-image"
-      >
+      <div class="card card-height col-md-8 custom-main-card shadow">
         <div class="d-flex">
           <a routerLink="/reports" class="text-decoration-none">
             <div class="card-body">
@@ -120,7 +112,7 @@
         </div>
         <div class="modal-body">
           <div class="row">
-            <div class="col">
+            <div class="col-md-6">
               <div class="form-group form-row">
                 <div class="col">
                   <label for="customer_name">Cliente:</label>
@@ -216,7 +208,6 @@
                 <input
                   type="search"
                   id="product_name"
-                  list="suggestionOptions"
                   formControlName="product_name"
                   class="form-control datalist-no-arrow"
                   autocomplete="off"
@@ -238,17 +229,26 @@
                   capture="environment"
                   accept="image/*"
                 />
-
+                <div class="d-none">
+                  <button (click)="toggleCamera()">Abrir Cámara</button>
+                  <!-- Mostrar el video de la cámara -->
+                  <video
+                    #video
+                    autoplay
+                    [hidden]="!isScanning"
+                    [style.width.px]="300"
+                  ></video>
+                </div>
                 <div
-                  class="suggestion-list shadow bg-white position-fixed mt-1"
+                  class="suggestion-list position-fixed border-white shadow mt-1"
                   [style.width.px]="nameInput.offsetWidth"
                 >
-                  <datalist
+                  <ul
                     id="suggestionOptions"
-                    role="searchbox"
-                    class="form-select list-unstyled"
+                    class="list-unstyled"
+                    style="margin: 0; padding: 0 1px"
                   >
-                    <option
+                    <li
                       *ngFor="
                         let suggestion of productSuggestionList;
                         let i = index
@@ -263,18 +263,8 @@
                       >
                         {{ suggestion.name }}
                       </a>
-                    </option>
-                  </datalist>
-                </div>
-                <div class="d-none">
-                  <button (click)="toggleCamera()">Abrir Cámara</button>
-                  <!-- Mostrar el video de la cámara -->
-                  <video
-                    #video
-                    autoplay
-                    [hidden]="!isScanning"
-                    [style.width.px]="300"
-                  ></video>
+                    </li>
+                  </ul>
                 </div>
               </div>
               <div class="form-group form-row">
@@ -334,6 +324,33 @@
                 >
                   Agregar
                 </button>
+              </div>
+              <div class="">
+                <div class="row total-box">
+                  <div class="col flex-column align-items-center">
+                    <h6 class="total-box-titles">Sub Total</h6>
+                    <p class="total-invoice">
+                      {{ subTotalSaleAmount | currency : "CRC" : "₡" }}
+                    </p>
+                  </div>
+                  <div class="col flex-column align-items-center">
+                    <h6 class="total-box-titles">Impuestos</h6>
+                    <p class="total-invoice">
+                      {{ totalTaxesAmount | currency : "CRC" : "₡" }}
+                    </p>
+                  </div>
+                  <div class="col flex-column align-items-center">
+                    <h6
+                      class="total-box-titles"
+                      style="padding-right: 0 !important"
+                    >
+                      Total
+                    </h6>
+                    <p class="total-invoice">
+                      {{ totalSaleAmount | currency : "CRC" : "₡" : "1.2-2" }}
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="col-md-6">
@@ -443,39 +460,12 @@
               </div>
             </div>
           </div>
-          <div class="mt-2">
-            <div class="row total-box">
-              <div class="col flex-column align-items-center">
-                <h6 class="text-center total-box-titles">Sub Total</h6>
-                <p class="text-center total-invoice">
-                  {{ subTotalSaleAmount | currency : "CRC" : "₡" }}
-                </p>
-              </div>
-              <div class="col flex-column align-items-center">
-                <h6 class="text-center total-box-titles">Impuestos</h6>
-                <p class="text-center total-invoice">
-                  {{ totalTaxesAmount | currency : "CRC" : "₡" }}
-                </p>
-              </div>
-              <div class="col flex-column align-items-center">
-                <h6
-                  class="text-center total-box-titles"
-                  style="padding-right: 0 !important"
-                >
-                  Total
-                </h6>
-                <p class="text-center total-invoice">
-                  {{ totalSaleAmount | currency : "CRC" : "₡" : "1.2-2" }}
-                </p>
-              </div>
-            </div>
-          </div>
         </div>
         <div class="modal-footer d-flex justify-content-between">
           <button
             type="button"
             (click)="clearSaleFormData()"
-            class="btn btn-danger border border-danger"
+            class="btn btn-danger border border-danger clic-on-image"
           >
             Reset
           </button>
@@ -510,8 +500,9 @@
   role="dialog"
   aria-labelledby="saleHistoryModal"
   aria-hidden="true"
+  style="height: 100vh"
 >
-  <div class="modal-dialog modal-dialog-scrollable" role="document">
+  <div class="modal-dialog" role="document">
     <div class="modal-content modal-shadow">
       <div class="modal-header border">
         <h5 class="modal-title">
@@ -544,10 +535,13 @@
             </div>
           </div>
         </form>
-
-        <div class="container">
+        <div
+          class="container pt-2 history-card"
+          *ngIf="sales.length > 0"
+        >
           <!-- Aquí se muestra la lista de ventas -->
-          <div *ngFor="let sale of sales" class="card custom-card shadow mb-3">
+          <div *ngFor="let sale of sales" 
+            class="card custom-card shadow mb-2">
             <div class="sale-summary">
               <div class="card-header d-flex justify-content-start">
                 <div
@@ -665,7 +659,10 @@
                     </tr>
                   </tbody>
                 </table>
-                <div class="card-footer" *ngIf="sale.status === 'aceptado'">
+                <div
+                  class="card-footer pt-0 mt-0"
+                  *ngIf="sale.status === 'aceptado'"
+                >
                   <div class="mb-2">
                     <button
                       *ngIf="
@@ -690,15 +687,15 @@
             </div>
           </div>
         </div>
-        <div class="modal-footer mt-3">
-          <button
-            type="button"
-            class="btn btn-secondary border border-secondary clic-on-image"
-            (click)="closeSaleHistoryModal()"
-          >
-            Cerrar
-          </button>
-        </div>
+      </div>
+      <div class="modal-footer mt-3">
+        <button
+          type="button"
+          class="btn btn-secondary border border-secondary clic-on-image"
+          (click)="closeSaleHistoryModal()"
+        >
+          Cerrar
+        </button>
       </div>
     </div>
   </div>

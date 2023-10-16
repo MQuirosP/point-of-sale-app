@@ -95,6 +95,9 @@ router.put('/api/providers/:id', providerController.editProvider);
 router.post('/api/providers/', providerController.createProvider);
 router.delete('/api/providers/:id', providerController.deleteProvider);
 
+// RUTAS MANEJO DE AUDITORIAS
+router.get("/api/stock-audit", auditController.getAllAudits);
+
 // RUTAS REPORTES VENTAS/COMPRAS
 router.post('/api/sales-report', excelReportsController.generateSalesReport);
 router.post('/api/purchases-report', excelReportsController.generatePurchasesReport)

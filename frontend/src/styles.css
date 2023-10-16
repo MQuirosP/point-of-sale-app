@@ -34,6 +34,75 @@ body {
   font-style: normal;
 }
 
+/* width */
+::-webkit-scrollbar {
+  width: 12px;
+  background-color: #ddd;
+  border-radius: 10px;
+  border: 1px solid #999;
+}
+
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  border: 1px solid #555;
+  background: #aaa;
+  border-radius: 10px;
+  box-shadow: inset 0 0 5px rgb(255, 255, 255);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #777;
+  transition: all 0.3s;
+}
+
+/* Estilo para el botón de flecha hacia abajo */
+::-webkit-scrollbar-button:vertical:increment {
+  background-image: url('assets/arrow-down.png'); /* Ruta de la imagen */
+  background-size: contain; /* Ajusta el tamaño de la imagen según el botón */
+  background-repeat: no-repeat; /* Evita la repetición de la imagen */
+  width: 20px; /* Ancho del botón */
+  height: 15px; /* Altura del botón */
+  background-position: center center; /* Ajusta la posición vertical */
+  box-shadow: -1px -1px -1px #fff;
+}
+
+/* Estilo para el botón de flecha hacia arriba */
+::-webkit-scrollbar-button:vertical:decrement {
+  background-image: url('assets/arrow-up.png'); /* Ruta de la imagen */
+  background-size: contain; /* Ajusta el tamaño de la imagen según el botón */
+  background-repeat: no-repeat; /* Evita la repetición de la imagen */
+  width: 20px; /* Ancho del botón */
+  height: 15px; /* Altura del botón */
+  background-position: center center; /* Ajusta la posición vertical */
+  box-shadow: -1px -1px -1px #fff;
+}
+
+::-webkit-scrollbar-button:vertical:increment:active {
+  background-color: #ccc; /* Cambia el color de fondo al hacer clic */
+  border-radius: 10px;
+  border: 1px solid #aaa;
+  box-shadow: inset 1px 1px 1px #aaa;
+  translate:calc(-50% -50%)
+}
+
+/* Estilo cuando se hace clic en el botón de flecha hacia arriba */
+::-webkit-scrollbar-button:vertical:decrement:active {
+  background-color: #ccc; /* Cambia el color de fondo al hacer clic */
+  border-radius: 10px;
+  border: 1px solid #aaa;
+  box-shadow: inset 1px 1px 1px #aaa;
+}
+
 .navbar-brand {
   margin: 0 20px 0 10px;
   padding: 0;
@@ -54,18 +123,27 @@ body {
   height: auto;
 }
 
-.login-box {
-  border-radius: 5px;
+.main-image {
+  width: 100%;
   height: 100%;
+  object-fit: fill;
+  border: 1px solid lightgray;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.login-box {
+  position: relative;
+  display: flex;
+  margin: 0 auto ;
+  margin-top: 50px;
+  border-radius: 5px;
   overflow: hidden;
   max-width: 300px;
+  
 }
 
 .main-board-style {
-  /* position: fixed;
-  width: 100%;
-  top: 70px;
-  z-index: 1; */
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.85);
   -webkit-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.85);
   -moz-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.85);
@@ -99,10 +177,6 @@ h1 {
   }
 }
 
-/* .header {
-  background-color: #f0f0f0;
-} */
-
 #main-header {
   min-height: 0px;
 }
@@ -128,7 +202,7 @@ h1 {
 }
 
 .nav-link:hover::before {
-  transform: scaleX(1);
+  transform: scaleX(0.85);
 }
 
 .dropdown-toggle::after {
@@ -156,7 +230,7 @@ h1 {
   overflow: hidden;
 }
 
-div.dropdown-menu > a.dropdown-item {
+div.dropdown-menu > a.dropdown-item, .dropdown > a, .dropdown-item {
   border: 1px solid transparent;
   color: #c0b5b5 !important;
 }
@@ -175,10 +249,11 @@ option {
   max-height: 200px;
   border-radius: 3px;
   overflow-y: auto;
+  background-color: #363434;
 }
 
-.suggestion-list::-webkit-scrollbar-corner {
-  border-radius: 10px;
+.suggestion-list {
+  overflow-x: hidden;
 }
 
 .dropdown-item:hover,
@@ -297,33 +372,31 @@ a.hide {
 }
 
 .card-height {
-  min-height: 140px;
-  max-height: 140px;
+  /* min-height: 140px;
+  max-height: 140px; */
+  height: 140px;
 }
 
 .underline {
   text-decoration: none;
 }
 
-.customShadow {
+.custom-main-card {
   border-radius: 10px;
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
-.customShadow:hover {
-  box-shadow: 5px 5px 5px rgb(56, 55, 55);
-  transform: scale(1.05);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
-
-.bg-custom {
   background-color: rgb(242, 243, 206);
-  transition: background-color 0.3 ease, transform 0.3s ease-in-out;
+  transition: all 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease-in-out;
+  cursor: pointer;
+  border: 1px solid #ccc; /* Agrega un borde sólido inicial */
 }
 
-.bg-custom:hover {
+.custom-main-card:hover {
   background-color: #cdffd7;
   transform: scale(1.05);
-  cursor: pointer;
+  border: 1px solid #999; /* Cambia el color del borde en hover */
+}
+
+.custom-main-card:active {
+  transform: scale(0.99);
 }
 
 .front-panel-image {
@@ -342,32 +415,37 @@ a.hide {
   box-shadow: inset 2px 2px 2px darkgray;
   background-color: #7ef37e;
 }
+.clic-on-main-image {
+  position: relative;
+  transition: all 0.2s ease;
+}
 
 .clic-on-image:active {
-  transform: scale(0.95);
+  transform: scale(0.90);
   transition: transform 0.2s;
 }
 
-.clic-on-main-image {
-  padding: 10px;
-}
-
 .clic-on-main-image:hover {
-  transform: scale(1);
+  transform: scale(1.02);
   transition: transform 0.2s;
 }
 
 .clic-on-main-image:active {
-  transform: scale(0.95);
+  transform: scale(0.99);
+  transition: transform 0.2s;
+}
+
+/* .clic-on-main-image:active {
+  transform: scale(0.95); 
   transition: transform 0.2s;
   box-shadow: inset 3px 3px 3px darkgray;
   background-color: #b4f5b4;
-}
+} */
 
-.custom-image-shadow {
+/* .custom-image-shadow {
   border-radius: 10px;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
+} */
 
 .my-title:hover {
   text-shadow: 2px 2px 2px darkgray;
@@ -508,9 +586,13 @@ i.clic-on-icon {
   padding-bottom: 10px;
   text-align: center;
   border-radius: 10px;
-  transition: border 300ms ease-out;
+  /* transition: all 300ms ease-out; */
   overflow: hidden;
   white-space: nowrap;
+}
+
+h4 {
+  padding-top: 5px;
 }
 
 #fecha {
@@ -518,6 +600,7 @@ i.clic-on-icon {
   font-size: 15px;
   line-height: 1.5em;
 }
+
 
 .toast-container {
   position: fixed;
@@ -624,98 +707,6 @@ i.clic-on-icon {
     -5px -5px -10px rgba(255, 0, 0, 0.5);
 }
 
-/* .ng-select .ng-select-container {
-  min-height: 38px;
-}
-
-.ng-select.ng-invalid.ng-touched .ng-select-container {
-  border-color: #e70303;
-  box-shadow: 20px 20px 30px rgba(255, 0, 0, 0.5),
-    -20px -20px -30px rgba(255, 0, 0, 0.5);
-}
-
-.ng-select.ng-valid.ng-touched.custom .ng-select-container {
-  border-color: #25a719;
-  box-shadow: 30px 30px 40px rgba(0, 255, 0, 1),
-    -30px -30px -40px rgba(0, 255, 0, 1);
-}
-
-.ng-dropdown-panel
-  .ng-dropdown-panel-items
-  .ng-option.ng-option-selected
-  .ng-option-label,
-.ng-dropdown-panel
-  .ng-dropdown-panel-items
-  .ng-option.ng-option-selected.ng-option-marked
-  .ng-option-label {
-  font-weight: normal;
-}
-
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected,
-.ng-dropdown-panel
-  .ng-dropdown-panel-items
-  .ng-option.ng-option-selected.ng-option-marked {
-  background-color: white;
-}
-
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected,
-.ng-dropdown-panel
-  .ng-dropdown-panel-items
-  .ng-option.ng-option-selected.ng-option-marked {
-  color: #333;
-  background-color: rgb(129, 124, 124);
-}
-
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected,
-.ng-dropdown-panel
-  .ng-dropdown-panel-items
-  .ng-option.ng-option-selected.ng-option-marked:hover {
-  color: white;
-  background-color: rgb(129, 124, 124);
-}
-
-/* OJO AQUI */
-/* .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
-  background-color: rgb(129, 124, 124);
-  color: #070707 !important;
-  font-style: italic;
-  opacity: 0;
-  transition: 0.15s ease;
-}
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
-  background-color: rgb(129, 124, 124);
-  color: #fff !important;
-  font-style: italic;
-  opacity: 1;
-  transition: 0.15s ease;
-}
-
-.ng-dropdown-panel.ng-select-bottom {
-  top: 100%;
-  border-bottom-right-radius: 10px;
-  border-bottom-left-radius: 10px;
-  border-top-color: #e6e6e6;
-}
-
-.ng-dropdown-panel .ng-dropdown-panel-items {
-  border-radius: 10px;
-  border-left: white;
-  border-right: white;
-}
-
-.ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
-  color: #000 !important;
-  font-style: italic;
-  background-color: rgb(197, 197, 197);
-  opacity: 1;
-  transition: all 0.1s ease;
-  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2), -4px -4px -8px rgba(0, 0, 0, 0.2);
-}
-
-.ng-placeholder {
-  font-style: italic !important;
-} */
-
 .custom-input {
   border: 1px solid rgba(185, 173, 173, 0.651);
   width: 50px;
@@ -743,7 +734,7 @@ tr.custom-row td {
 
 div.table-container {
   max-height: 400px;
-  overflow-y: hidden;
+  overflow-y: visible;
   overflow-x: hidden;
 }
 
@@ -765,6 +756,7 @@ div.table-container {
 
 .total-box {
   width: 100%;
+  text-align: center;
   max-width: 350px;
   background-color: rgb(208, 212, 212);
   padding-top: 10px;
@@ -985,8 +977,6 @@ input::-webkit-input-placeholder {
 
 .options-card-body-text {
   font-size: 18px;
-  display: block;
-  padding: 10px 0;
   text-align: center;
 }
 
@@ -1006,7 +996,7 @@ input::-webkit-input-placeholder {
 
 .final-div {
   position: relative;
-  margin-top: 30px;
+  margin-top: 20px;
   transform: translateX(-50% -50%);
   z-index: 0;
 }
@@ -1042,7 +1032,7 @@ app-header {
 /* Estilo para el contenido principal */
 .main-content {
   margin-top: 70px;
-  height: calc(90vh - 70px);
+  height: calc(90vh - 75px);
   overflow-y: auto;
 }
 
@@ -1093,4 +1083,14 @@ nav.navbar {
   border: 1px solid rgba(167, 155, 155, 0.692);
   border-radius: 5px;
   background-color: beige;
+}
+
+span.badge:hover {
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.history-card {
+  overflow-y: scroll;
+  height: 55vh
 }

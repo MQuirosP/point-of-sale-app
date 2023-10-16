@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { fadeAnimation } from 'src/app/animations/fadeAnimation';
 import { OptionsService } from 'src/app/services/optionsService';
 import { environment } from 'src/environments/environment';
@@ -21,12 +21,12 @@ interface NewUser {
   styleUrls: ['./register-user.component.css'],
   animations: [fadeAnimation],
 })
-export class RegisterUserComponent implements OnInit {
+export class RegisterUserComponent implements AfterViewInit {
   newUserForm: FormGroup;
   backendUrl = `${environment.apiUrl}users/`;
   userList: any[]=[];
 
-  allowRegisterUsers$: Observable<boolean>;
+  allowRegisterUsers$: Observable<boolean> = of(false);
 
   constructor(
     private formBuilder: FormBuilder,
@@ -36,6 +36,7 @@ export class RegisterUserComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.getRegisterStatus();
     this.newUserForm = this.formBuilder.group({
       username: ['', Validators.required],
       name: ['', Validators.required],
@@ -45,12 +46,15 @@ export class RegisterUserComponent implements OnInit {
     });
 
     this.getUsersList();
-    this.getRegisterStatus();
+  }
+  
+  ngAfterViewInit() {
+    
   }
 
   getRegisterStatus() {
     this.optionsService.fetchRegisterStatus().subscribe((status) => {
-      this.allowRegisterUsers$ = this.optionsService.fetchRegisterStatus();
+      this.allowRegisterUsers$ = of(status);
     });
   }
 

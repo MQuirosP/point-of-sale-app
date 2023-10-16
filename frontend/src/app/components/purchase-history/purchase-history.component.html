@@ -23,9 +23,9 @@
 <!-- Opciones de Mis compras -->
 <div class="container final-div justify-content-center" [@fadeAnimation]>
   <div class="row justify-content-center">
-    <div class="col-md-6 d-flex justify-content-center">
+    <div class="col-md-6 d-flex justify-content-center mb-3">
       <div
-        class="card shadow card-height border col-md-8 mb-3 customShadow bg-custom clic-on-image"
+        class="ccard card-height col-md-8 custom-main-card shadow"
       >
         <div class="d-flex">
           <a class="text-decoration-none" (click)="openPurchaseModal()">
@@ -42,9 +42,9 @@
         </div>
       </div>
     </div>
-    <div class="col-md-6 d-flex justify-content-center">
+    <div class="col-md-6 d-flex justify-content-center mb-3">
       <div
-        class="card shadow card-height border col-md-8 mb-3 customShadow bg-custom clic-on-image"
+        class="card card-height col-md-8 custom-main-card shadow"
       >
         <div class="d-flex">
           <a (click)="openPurchaseHistoryModal()" class="text-decoration-none">
@@ -60,7 +60,7 @@
   <div class="row">
     <div class="col-md-6 d-flex justify-content-center">
       <div
-        class="card shadow card-height border col-md-8 mb-3 customShadow bg-custom clic-on-image"
+        class="card card-height col-md-8 custom-main-card shadow"
       >
         <div class="d-flex">
           <a routerLink="/product-list" class="text-decoration-none">
@@ -74,7 +74,7 @@
     </div>
     <div class="col-md-6 d-flex justify-content-center">
       <div
-        class="card shadow card-height border col-md-8 mb-3 customShadow bg-custom clic-on-image"
+        class="card card-height col-md-8 custom-main-card shadow"
       >
         <div class="d-flex">
           <a routerLink="/reports" class="text-decoration-none">
@@ -199,7 +199,6 @@
                 <input
                   type="search"
                   id="product_name"
-                  list="suggestionOptions"
                   formControlName="product_name"
                   class="form-control datalist-no-arrow"
                   (input)="searchProduct()"
@@ -219,15 +218,15 @@
                   (keydown)="handleKeyDown($event)"
                 />
                 <div
-                  class="suggestion-list shadow bg-white position-fixed mt-1"
+                  class="suggestion-list position-fixed border-white shadow mt-1"
                   [style.width.px]="nameInput.offsetWidth"
                 >
-                  <datalist
+                  <ul
                     id="suggestionOptions"
-                    role="searchbox"
-                    class="form-select list-unstyled"
+                    class="list-unstyled"
+                    style="margin: 0; padding: 0 1px"
                   >
-                    <option
+                    <li
                       *ngFor="
                         let suggestion of productSuggestionList;
                         let i = index
@@ -243,8 +242,8 @@
                       >
                         {{ suggestion.name }}
                       </a>
-                    </option>
-                  </datalist>
+                    </li>
+                  </ul>
                 </div>
               </div>
               <div class="form-group form-row">
@@ -442,20 +441,20 @@
           </div>
           <div class="row total-box">
             <div class="col flex-column align-items-center">
-              <h6 class="text-center total-box-titles">Sub Total</h6>
-              <p class="text-center total-invoice">
+              <h6 class="total-box-titles">Sub Total</h6>
+              <p class="total-invoice">
                 {{ subTotalPurchaseAmount | currency : "CRC" : "₡" }}
               </p>
             </div>
             <div class="col flex-column align-items-center">
-              <h6 class="text-center total-box-titles">I.V.A.</h6>
-              <p class="text-center total-invoice">
+              <h6 class="total-box-titles">I.V.A.</h6>
+              <p class="total-invoice">
                 {{ totalTaxesAmount | currency : "CRC" : "₡" }}
               </p>
             </div>
             <div class="col flex-column align-items-center">
-              <h6 class="text-center total-box-titles">Total</h6>
-              <p class="text-center total-invoice">
+              <h6 class="total-box-titles">Total</h6>
+              <p class="total-invoice">
                 {{ totalPurchaseAmount | currency : "CRC" : "₡" }}
               </p>
             </div>
@@ -465,7 +464,7 @@
           <button
             type="button"
             (click)="resetForm()"
-            class="btn btn-danger border border-danger"
+            class="btn btn-danger border border-danger clic-on-image"
           >
             Reset
           </button>
@@ -500,8 +499,9 @@
   role="dialog"
   aria-labelledby="purchaseHistoryModal"
   aria-hidden="true"
+  style="height: 100vh;"
 >
-  <div class="modal-dialog modal-dialog-scrollable" role="document">
+  <div class="modal-dialog" role="document">
     <div class="modal-content modal-shadow">
       <div class="modal-header border">
         <h5 class="modal-title">
@@ -534,17 +534,18 @@
             </div>
           </div>
         </form>
-
-        <div class="container">
+        <div 
+        class="container pt-2 history-card" 
+        *ngIf="purchases.length > 0"
+        >
           <!-- Aquí se muestra la lista de compras -->
           <div
             *ngFor="let purchase of purchases"
-            class="card custom-card shadow mb-3"
-          >
+            class="card custom-card shadow mb-2">
             <div class="sale-summary">
               <div class="card-header d-flex justify-content-start">
                 <div
-                  class="d-flex align-items-start"
+                  class="align-items-start"
                   style="height: 30px; width: 30px"
                 >
                   <a
@@ -636,7 +637,6 @@
                   </div>
                   <div class="col-4"></div>
                 </div>
-
                 <table class="table">
                   <thead>
                     <tr class="custom-row">
@@ -667,7 +667,7 @@
                     </tr>
                   </tbody>
                 </table>
-                <div class="card-footer">
+                <div class="card-footer pt-0 mt-0">
                   <div class="mb-2">
                     <button
                       *ngIf="
@@ -675,7 +675,7 @@
                         isCurrentDate(purchase.createdAt) &&
                         getUserRole() !== 'user'
                       "
-                      class="btn btn-danger shadow clic-on-image"
+                      class="btn btn-danger shadow clic-on-image mr-2"
                       (click)="
                         cancelPurchase(purchase);
                         togglePurchaseDetails(purchase)
@@ -689,15 +689,15 @@
             </div>
           </div>
         </div>
-        <div class="modal-footer mt-3">
-          <button
-            type="button"
-            class="btn btn-secondary shadow clic-on-image"
-            (click)="closePurchaseHistoryModal()"
-          >
-            Cerrar
-          </button>
-        </div>
+      </div>
+      <div class="modal-footer mt-3">
+        <button
+          type="button"
+          class="btn btn-secondary border border-secondary shadow clic-on-image"
+          (click)="closePurchaseHistoryModal()"
+        >
+          Cerrar
+        </button>
       </div>
     </div>
   </div>
