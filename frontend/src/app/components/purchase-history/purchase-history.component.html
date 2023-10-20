@@ -430,22 +430,22 @@
               </div>
             </div>
           </div>
-          <div class="row mb-0 pb-0">
-            <div class="col-md-6 table">
+          <div class="row">
+            <div class="col-md-6 table d-flex justify-content-center">
               <div class="row total-box">
-                <div class="col-4">
+                <div class="col-md-4">
                   <h6 class="total-box-titles">Sub Total</h6>
                   <p class="total-invoice">
                     {{ subTotalPurchaseAmount | currency : "CRC" : "₡" }}
                   </p>
                 </div>
-                <div class="col-4">
+                <div class="col-md-4">
                   <h6 class="total-box-titles">I.V.A.</h6>
                   <p class="total-invoice">
                     {{ totalTaxesAmount | currency : "CRC" : "₡" }}
                   </p>
                 </div>
-                <div class="col-4">
+                <div class="col-md-4">
                   <h6 class="total-box-titles">Total</h6>
                   <p class="total-invoice">
                     {{ totalPurchaseAmount | currency : "CRC" : "₡" }}

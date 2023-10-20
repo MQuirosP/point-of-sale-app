@@ -760,7 +760,7 @@ div.table-container {
   /* min-width: 350px; */
   background-color: rgb(208, 212, 212);
   padding-top: 10px;
-  margin: 0.5% 1%;
+  /* margin: 0.5% 1%; */
   border-radius: 10px;
   border: 1px solid darkgray;
   box-shadow: inset 0 0 10px #00000033, 0 0 10px rgba(0, 0, 0, 0.1),
@@ -1099,3 +1099,4 @@ span.badge:hover {
   overflow-y: scroll;
   height: 55vh
 }
+

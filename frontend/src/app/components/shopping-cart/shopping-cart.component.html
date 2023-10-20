@@ -434,21 +434,21 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-6 table">
+            <div class="col-md-6 table d-flex justify-content-center">
                 <div class="row total-box">
-                  <div class="col-4  ">
+                  <div class="col-md-4  ">
                     <h6 class="total-box-titles">Sub Total</h6>
                     <p class="total-invoice">
                       {{ subTotalSaleAmount | currency : "CRC" : "₡" }}
                     </p>
                   </div>
-                  <div class="col-4  ">
+                  <div class="col-md-4  ">
                     <h6 class="total-box-titles">Impuestos</h6>
                     <p class="total-invoice">
                       {{ totalTaxesAmount | currency : "CRC" : "₡" }}
                     </p>
                   </div>
-                  <div class="col-4  ">
+                  <div class="col-md-4  ">
                     <h6
                       class="total-box-titles"
                       style="padding-right: 0 !important"
