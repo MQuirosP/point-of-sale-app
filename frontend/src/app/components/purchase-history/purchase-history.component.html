@@ -24,9 +24,7 @@
 <div class="container final-div justify-content-center" [@fadeAnimation]>
   <div class="row justify-content-center">
     <div class="col-md-6 d-flex justify-content-center mb-3">
-      <div
-        class="ccard card-height col-md-8 custom-main-card shadow"
-      >
+      <div class="ccard card-height col-md-8 custom-main-card shadow">
         <div class="d-flex">
           <a class="text-decoration-none" (click)="openPurchaseModal()">
             <div class="card-body">
@@ -43,9 +41,7 @@
       </div>
     </div>
     <div class="col-md-6 d-flex justify-content-center mb-3">
-      <div
-        class="card card-height col-md-8 custom-main-card shadow"
-      >
+      <div class="card card-height col-md-8 custom-main-card shadow">
         <div class="d-flex">
           <a (click)="openPurchaseHistoryModal()" class="text-decoration-none">
             <div class="card-body">
@@ -59,9 +55,7 @@
   </div>
   <div class="row">
     <div class="col-md-6 d-flex justify-content-center">
-      <div
-        class="card card-height col-md-8 custom-main-card shadow"
-      >
+      <div class="card card-height col-md-8 custom-main-card shadow">
         <div class="d-flex">
           <a routerLink="/product-list" class="text-decoration-none">
             <div class="card-body">
@@ -73,9 +67,7 @@
       </div>
     </div>
     <div class="col-md-6 d-flex justify-content-center">
-      <div
-        class="card card-height col-md-8 custom-main-card shadow"
-      >
+      <div class="card card-height col-md-8 custom-main-card shadow">
         <div class="d-flex">
           <a routerLink="/reports" class="text-decoration-none">
             <div class="card-body">
@@ -99,9 +91,9 @@
   role="dialog"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-lg modal-dialog-scrollable">
-    <form [formGroup]="purchaseForm" (ngSubmit)="createPurchase($event)">
-      <div class="modal-content modal-shadow">
+  <div class="modal-dialog modal-lg modal-shadow" role="document">
+    <div class="modal-content">
+      <form [formGroup]="purchaseForm" (ngSubmit)="createPurchase($event)">
         <div class="modal-header border">
           <h5 class="modal-title">
             <i class="fas fa-edit"></i>&nbsp;Registro de compras
@@ -117,7 +109,7 @@
             </span>
           </button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body form-modal">
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
@@ -341,8 +333,7 @@
               <div class="table-container">
                 <h6 class="h6 mb-1 text-center">Lista de productos</h6>
                 <table
-                  class="table table-responsive-lg table-hover"
-                  style="table-layout: fixed"
+                  class="table table-hover"
                 >
                   <thead>
                     <tr class="custom-row">
@@ -439,24 +430,28 @@
               </div>
             </div>
           </div>
-          <div class="row total-box">
-            <div class="col flex-column align-items-center">
-              <h6 class="total-box-titles">Sub Total</h6>
-              <p class="total-invoice">
-                {{ subTotalPurchaseAmount | currency : "CRC" : "₡" }}
-              </p>
-            </div>
-            <div class="col flex-column align-items-center">
-              <h6 class="total-box-titles">I.V.A.</h6>
-              <p class="total-invoice">
-                {{ totalTaxesAmount | currency : "CRC" : "₡" }}
-              </p>
-            </div>
-            <div class="col flex-column align-items-center">
-              <h6 class="total-box-titles">Total</h6>
-              <p class="total-invoice">
-                {{ totalPurchaseAmount | currency : "CRC" : "₡" }}
-              </p>
+          <div class="row mb-0 pb-0">
+            <div class="col-md-6 table">
+              <div class="row total-box">
+                <div class="col-4">
+                  <h6 class="total-box-titles">Sub Total</h6>
+                  <p class="total-invoice">
+                    {{ subTotalPurchaseAmount | currency : "CRC" : "₡" }}
+                  </p>
+                </div>
+                <div class="col-4">
+                  <h6 class="total-box-titles">I.V.A.</h6>
+                  <p class="total-invoice">
+                    {{ totalTaxesAmount | currency : "CRC" : "₡" }}
+                  </p>
+                </div>
+                <div class="col-4">
+                  <h6 class="total-box-titles">Total</h6>
+                  <p class="total-invoice">
+                    {{ totalPurchaseAmount | currency : "CRC" : "₡" }}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -485,8 +480,8 @@
             </button>
           </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
 </div>
 
@@ -499,7 +494,7 @@
   role="dialog"
   aria-labelledby="purchaseHistoryModal"
   aria-hidden="true"
-  style="height: 100vh;"
+  style="height: 100vh"
 >
   <div class="modal-dialog" role="document">
     <div class="modal-content modal-shadow">
@@ -534,14 +529,12 @@
             </div>
           </div>
         </form>
-        <div 
-        class="container pt-2 history-card" 
-        *ngIf="purchases.length > 0"
-        >
+        <div class="container pt-2 history-card" *ngIf="purchases.length > 0">
           <!-- Aquí se muestra la lista de compras -->
           <div
             *ngFor="let purchase of purchases"
-            class="card custom-card shadow mb-2">
+            class="card custom-card shadow mb-2"
+          >
             <div class="sale-summary">
               <div class="card-header d-flex justify-content-start">
                 <div

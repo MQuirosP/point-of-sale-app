@@ -43,3 +43,7 @@ p {
   line-height: 1;
   margin-bottom: 10px;
 }
+
+.form-modal {
+  height: 70vh;
+}
