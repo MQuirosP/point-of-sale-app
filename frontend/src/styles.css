@@ -650,6 +650,23 @@ h4 {
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2), -4px -4px 8px rgba(0, 0, 0, 0.2);
 }
 
+.toast-icon::before {
+  content: '\2713'; /* Código de caracter para un checkmark */
+  font-family: 'Arial', sans-serif; /* Fuente del ícono */
+  margin-right: 10px; /* Espaciado entre el ícono y el texto del Toastr */
+}
+
+.icon {
+  display: flex;
+  align-items: center; /* Centra verticalmente el contenido (ícono y texto) */
+}
+
+/* Opcional: ajusta el margen entre el ícono y el texto si es necesario */
+.icon i {
+  margin-right: 10px; /* Ajusta el margen a tu preferencia */
+}
+
+
 .table-row-even {
   background-color: #f3f3f3;
 }

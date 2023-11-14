@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { ToastrService } from 'ngx-toastr';
+import { ToastrIcons } from './toastr-icons';
 
 @Injectable({
   providedIn: 'root',
@@ -80,7 +81,11 @@ export class LoginService {
             this.cookieService.set(this.COOKIE_Name, name);
             this.setLoggedIn(true, username, name);
             this.toastr.success(
-              `¡Bienvenido ${this.capitalizeFirstLetter(name)}!`
+              `${
+                ToastrIcons.success.iconClass
+              } ¡Bienvenido ${this.capitalizeFirstLetter(name)}!`,
+              '',
+              ToastrIcons.success.options
             );
             setTimeout(() => {
               this.router.navigate(['/home']);
@@ -96,7 +101,9 @@ export class LoginService {
             response.message.status === 'pending'
           ) {
             this.toastr.error(
-              'Usuario ya está registrado pero está pendiente de aceptación por parte del administrador.'
+              ToastrIcons.error.iconClass,
+              'Usuario ya está registrado pero está pendiente de aceptación por parte del administrador.',
+              ToastrIcons.error.options
             );
             this.setLoggedIn(false, '', '');
           } else {
@@ -108,7 +115,9 @@ export class LoginService {
           this.setLoggedIn(false, '', '');
           console.log(error);
           this.toastr.error(
-            `Error autenticando el usuario. Valide las credenciales.`
+            `${ToastrIcons.error.iconClass} Error autenticando el usuario. Valide las credenciales.`,
+            '',
+            ToastrIcons.error.options
           );
           return of(null);
         })
@@ -151,11 +160,19 @@ export class LoginService {
           localStorage.removeItem('status');
           this.setLoggedIn(false, '', '');
           this.cookieService.delete(this.COOKIE_Name);
-          this.toastr.success('Sesión cerrada exitosamente.');
+          this.toastr.success(
+            `${ToastrIcons.success.iconClass} Sesión cerrada exitosamente.`,
+            '',
+            ToastrIcons.success.options
+          );
           this.router.navigate(['/login']);
         }),
         catchError((error) => {
-          this.toastr.error('Error al cerrar sesión.');
+          this.toastr.error(
+            ToastrIcons.error.iconClass,
+            'Error al cerrar sesión.',
+            ToastrIcons.error.options
+          );
           console.log(error);
           return of(null);
         })
