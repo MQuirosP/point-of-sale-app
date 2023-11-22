@@ -89,7 +89,7 @@ export class StockAuditComponent implements OnInit {
 
   ngAfterViewInit(): void {
     this.refreshProductList();
-    this.getAllAudits();
+    // this.getAllAudits();
   }
 
   ngOnDestroy() {
@@ -731,8 +731,9 @@ export class StockAuditComponent implements OnInit {
           ...audit,
           createdAt: new Date(audit.createdAt),
           updatedAt: new Date(audit.updatedAt),
-          auditProducts: audit.auditItems,
+          // auditProducts: audit.auditItems,
         }));
+        console.log(this.allAudits);
         this.allAudits.forEach((audit: any) => {
           this.calculateQuantityAndAmount(audit);
         });
@@ -741,7 +742,7 @@ export class StockAuditComponent implements OnInit {
   }
 
   private calculateQuantityAndAmount(audit: any): void {
-    const totalQuantity = audit.auditProducts.reduce(
+    const totalQuantity = audit.auditItems.reduce(
       (total: number, item: any) => {
         return (
           total + this.getAbsoluteValue(parseFloat(item.adjusted_quantity))
@@ -750,7 +751,7 @@ export class StockAuditComponent implements OnInit {
       0
     );
 
-    const totalAmount = audit.auditProducts.reduce(
+    const totalAmount = audit.auditItems.reduce(
       (total: number, item: any) => {
         return total + this.getAbsoluteValue(parseFloat(item.adjusted_amount));
       },
