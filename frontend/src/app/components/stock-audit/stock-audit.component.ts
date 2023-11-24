@@ -39,7 +39,7 @@ export class StockAuditComponent implements OnInit {
   deleteAuditModal!: ElementRef;
   @ViewChild('auditHistory', { static: false }) auditHistory!: ElementRef;
 
-  filteredProducts: any[] = [];
+  filteredProducts: Products[] = [];
   public products: Products[] = [];
   subscription: Subscription = new Subscription();
   page: number = 0;
@@ -48,7 +48,7 @@ export class StockAuditComponent implements OnInit {
   productForm: FormGroup;
   selectedProduct: Products;
   auditListProducts: ProductListStockAudit[] = [];
-  auditListProducts$ = new BehaviorSubject<any[]>([]);
+  auditListProducts$ = new BehaviorSubject<ProductListStockAudit[]>([]);
 
   categoryOptions = [
     { value: 0, label: 'Consumo interno' },
