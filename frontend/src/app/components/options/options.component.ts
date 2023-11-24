@@ -121,15 +121,18 @@ export class OptionsComponent implements OnInit {
       this.activateRegister = status;
       this.changeDetectorRef.detectChanges();
     });
-    this.getProviderList();
-    this.getCustomerList();
-    this.filterCustomers();
-    this.filterProviders();
-    this.getUserList();
-    this.filterUsers();
+    
   }
   
   ngAfterViewInit() {
+    // Trasladamos la llamada de las listas a la apertura del respectivo Modal
+    // this.getProviderList();
+    // this.getCustomerList();
+    // this.getUserList();
+    // Eliminamos las llamadas a los filtros, se trasladan a sus respectivos métodos en el html
+    // this.filterCustomers();
+    // this.filterProviders();
+    // this.filterUsers();
   }
 
   getUserRole(): string {
@@ -295,6 +298,7 @@ export class OptionsComponent implements OnInit {
   }
 
   openCustomerListModal() {
+    this.getCustomerList();
     this.customerListModal.nativeElement.style.display = 'block';
     this.customerListModal.nativeElement.classList.add('opening');
     setTimeout(() => {
@@ -554,6 +558,7 @@ export class OptionsComponent implements OnInit {
   }
 
   openProviderListModal() {
+    this.getProviderList();
     this.providerListModal.nativeElement.style.display = 'block';
     this.providerListModal.nativeElement.classList.add('opening');
     setTimeout(() => {
@@ -704,6 +709,7 @@ private showErrorNotification(message: string, error?: any) {
 
   // DE AQUÍ EN ADELANTE EXCLUSIVAMENTE USUARIOS
   openUsersListModal() {
+    this.getUserList();
     this.usersListModal.nativeElement.style.display = 'block';
     this.usersListModal.nativeElement.classList.add('opening');
     setTimeout(() => {
