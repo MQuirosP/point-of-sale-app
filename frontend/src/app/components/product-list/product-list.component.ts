@@ -129,14 +129,14 @@ export class ProductListComponent implements OnInit {
 
     this.subscription = this.productService.getProducts().subscribe({
       next: (response: any) => {
+        const productsArray = response?.message?.products;
+
         if (
-          response &&
-          response.success &&
-          response.message &&
-          response.message.products &&
-          response.message.products.length > 0
+          productsArray &&
+          Array.isArray(productsArray) &&
+          productsArray.length > 0
         ) {
-          this.products = response.message.products.map((product: any) => {
+          this.products = productsArray.map((product: any) => {
             return { ...product, showIcons: false };
           });
 
