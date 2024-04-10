@@ -184,7 +184,7 @@ export class ProductListComponent implements OnInit {
     if (value && product) {
       this.modalTitle = value ? 'Edición' : 'Registro';
       // this.modalActionLabel = value;
-      this.changeDetectorRef.detectChanges();
+      // this.changeDetectorRef.detectChanges();
       this.productModal.nativeElement.style.display = 'block';
       this.productModal.nativeElement.classList.add('opening');
       setTimeout(() => {
@@ -198,7 +198,7 @@ export class ProductListComponent implements OnInit {
       this.modalTitle = value ? 'Edición' : 'Registro';
       // this.modalActionLabel = !value;
       this.productForm.reset();
-      this.changeDetectorRef.detectChanges();
+      // this.changeDetectorRef.detectChanges();
       this.productModal.nativeElement.style.display = 'block';
       this.productModal.nativeElement.classList.add('opening');
       setTimeout(() => {
