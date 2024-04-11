@@ -467,13 +467,13 @@ export class ProductListComponent implements OnInit {
     salePriceControl.setValue(Number(value.toFixed(2)));
   
     if (isEditForm && value !== oldSalePrice) {
-      salePriceControl.setValue(value.toFixed(2));
+      salePriceControl.setValue(value.toFixed());
     }
   }
   
   deleteProduct(productData: Products) {
     const password = this.password;
-    const int_code = this.productToDelete.int_code;
+    const int_code = productData.int_code;
 
     this.productService.deleteProduct(int_code, password).subscribe({
       next: (response: any) => {
