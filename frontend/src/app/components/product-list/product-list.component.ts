@@ -430,12 +430,12 @@ export class ProductListComponent implements OnInit {
 
   public calculateTotal(isEditForm: boolean = false): void {
     const controls = ['purchase_price', 'margin', 'taxes', 'taxPercentage', 'sale_price'];
-  
+
     const recalculate = () => {
       const values = controls.map(controlName => this.productForm.get(controlName).value);
-  
+
       const [purchasePrice, margin, taxes, taxPercentage, oldSalePrice] = values;
-  
+
       if (!taxes) {
         if (!isNaN(purchasePrice) && !isNaN(margin) && margin >= 0) {
           let total = purchasePrice / (1 - margin / 100);
@@ -454,23 +454,23 @@ export class ProductListComponent implements OnInit {
         }
       }
     };
-  
+
     controls.slice(0, -1).forEach(controlName =>
       this.productForm.get(controlName).valueChanges.subscribe(recalculate)
     );
-  
+
     recalculate();
   }
-  
+
   private setSalePrice(value: number, isEditForm: boolean = false, oldSalePrice?: number): void {
     const salePriceControl = this.productForm.get('sale_price');
     salePriceControl.setValue(Number(value.toFixed(2)));
-  
+
     if (isEditForm && value !== oldSalePrice) {
       salePriceControl.setValue(value.toFixed());
     }
   }
-  
+
   deleteProduct(productData: Products) {
     const password = this.password;
     const int_code = productData.int_code;
