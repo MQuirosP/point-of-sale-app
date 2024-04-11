@@ -429,68 +429,48 @@ export class ProductListComponent implements OnInit {
   }
 
   public calculateTotal(isEditForm: boolean = false): void {
-    const purchasePriceControl = this.productForm.get('purchase_price');
-    const marginControl = this.productForm.get('margin');
-    const taxesControl = this.productForm.get('taxes');
-    const taxPercentageControl = this.productForm.get('taxPercentage');
-    const salePriceControl = this.productForm.get('sale_price');
-
-    const oldSalePrice = salePriceControl.value;
-
+    const controls = ['purchase_price', 'margin', 'taxes', 'taxPercentage', 'sale_price'];
+  
     const recalculate = () => {
-      const purchasePrice = purchasePriceControl.value;
-      const margin = marginControl.value;
-      const taxes = taxesControl.value;
-      const taxPercentage = taxPercentageControl.value;
-
+      const values = controls.map(controlName => this.productForm.get(controlName).value);
+  
+      const [purchasePrice, margin, taxes, taxPercentage, oldSalePrice] = values;
+  
       if (!taxes) {
         if (!isNaN(purchasePrice) && !isNaN(margin) && margin >= 0) {
-          const total = purchasePrice / (1 - margin / 100);
-          if (!isNaN(total) && total !== Infinity) {
-            salePriceControl.setValue(Number(total.toFixed(2)));
-
-            if (isEditForm && total !== oldSalePrice) {
-              salePriceControl.setValue(parseFloat(total.toFixed(2)));
-            }
-          } else {
-            salePriceControl.setValue(0);
-          }
+          let total = purchasePrice / (1 - margin / 100);
+          total = !isNaN(total) && total !== Infinity ? total : 0;
+          this.setSalePrice(total, isEditForm, oldSalePrice);
         } else {
-          salePriceControl.setValue(0);
+          this.setSalePrice(0);
         }
       } else {
-        if (
-          !isNaN(purchasePrice) &&
-          !isNaN(margin) &&
-          margin >= 0 &&
-          !isNaN(taxPercentage) &&
-          taxPercentage >= 0
-        ) {
-          const total =
-            purchasePrice / (1 - margin / 100) / (1 - taxPercentage / 100);
-          if (!isNaN(total) && total !== Infinity) {
-            salePriceControl.setValue(Number(total.toFixed(2)));
-
-            if (isEditForm && total !== oldSalePrice) {
-              salePriceControl.setValue(parseFloat(total.toFixed(2)));
-            }
-          } else {
-            salePriceControl.setValue(0);
-          }
+        if (!isNaN(purchasePrice) && !isNaN(margin) && margin >= 0 && !isNaN(taxPercentage) && taxPercentage >= 0) {
+          let total = purchasePrice / (1 - margin / 100) / (1 - taxPercentage / 100);
+          total = !isNaN(total) && total !== Infinity ? total : 0;
+          this.setSalePrice(total, isEditForm, oldSalePrice);
         } else {
-          salePriceControl.setValue(0);
+          this.setSalePrice(0);
         }
       }
     };
-
-    purchasePriceControl.valueChanges.subscribe(recalculate);
-    marginControl.valueChanges.subscribe(recalculate);
-    taxesControl.valueChanges.subscribe(recalculate);
-    taxPercentageControl.valueChanges.subscribe(recalculate);
-
+  
+    controls.slice(0, -1).forEach(controlName =>
+      this.productForm.get(controlName).valueChanges.subscribe(recalculate)
+    );
+  
     recalculate();
   }
-
+  
+  private setSalePrice(value: number, isEditForm: boolean = false, oldSalePrice?: number): void {
+    const salePriceControl = this.productForm.get('sale_price');
+    salePriceControl.setValue(Number(value.toFixed(2)));
+  
+    if (isEditForm && value !== oldSalePrice) {
+      salePriceControl.setValue(value.toFixed(2));
+    }
+  }
+  
   deleteProduct(productData: Products) {
     const password = this.password;
     const int_code = this.productToDelete.int_code;
