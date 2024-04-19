@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { Quagga } from 'quagga';
+// import { Quagga } from 'quagga';
 import { environment } from 'src/environments/environment';
 import {
   NgbDateStruct,
@@ -143,87 +143,87 @@ export class ShoppingCartComponent {
     }
   }
 
-  toggleCamera() {
-    if (!this.isScanning) {
-      this.startScanning();
-    } else {
-      this.stopScanning();
-    }
-  }
+  // toggleCamera() {
+  //   if (!this.isScanning) {
+  //     this.startScanning();
+  //   } else {
+  //     this.stopScanning();
+  //   }
+  // }
 
-  startScanning() {
-    const video = this.videoElement.nativeElement;
+  // startScanning() {
+  //   const video = this.videoElement.nativeElement;
 
-    // Verifica si el navegador admite la API de getUserMedia
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices
-        .getUserMedia({ video: true })
-        .then((stream) => {
-          this.isScanning = true;
-          video.srcObject = stream;
-          video.play();
+  //   // Verifica si el navegador admite la API de getUserMedia
+  //   if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+  //     navigator.mediaDevices
+  //       .getUserMedia({ video: true })
+  //       .then((stream) => {
+  //         this.isScanning = true;
+  //         video.srcObject = stream;
+  //         video.play();
 
-          const onDetected = (result) => {
-            this.saleForm.get('product_name').setValue(result.codeResult.code);
-            this.stopScanning();
-          };
+  //         const onDetected = (result) => {
+  //           this.saleForm.get('product_name').setValue(result.codeResult.code);
+  //           this.stopScanning();
+  //         };
 
-          const scanner = Quagga.decoder({
-            readers: [
-              'code_128_reader',
-              'ean_reader',
-              'ean_8_reader',
-              'code_39_reader',
-              'code_39_vin_reader',
-              'codabar_reader',
-              'upc_reader',
-              'upc_e_reader',
-              'i2of5_reader',
-            ],
-            debug: {
-              showCanvas: true,
-              showPatches: true,
-              showFoundPatches: true,
-              showSkeleton: true,
-              showLabels: true,
-              showPatchLabels: true,
-              showRemainingPatchLabels: true,
-              boxFromPatches: {
-                showTransformed: true,
-                showTransformedBox: true,
-                showBB: true,
-              },
-            },
-          })
-            .locator({ patchSize: 'medium' })
-            .fromVideo(video, {
-              constraints: {
-                width: 800,
-                height: 600,
-                facingMode: 'environment',
-              },
-            });
+  //         const scanner = Quagga.decoder({
+  //           readers: [
+  //             'code_128_reader',
+  //             'ean_reader',
+  //             'ean_8_reader',
+  //             'code_39_reader',
+  //             'code_39_vin_reader',
+  //             'codabar_reader',
+  //             'upc_reader',
+  //             'upc_e_reader',
+  //             'i2of5_reader',
+  //           ],
+  //           debug: {
+  //             showCanvas: true,
+  //             showPatches: true,
+  //             showFoundPatches: true,
+  //             showSkeleton: true,
+  //             showLabels: true,
+  //             showPatchLabels: true,
+  //             showRemainingPatchLabels: true,
+  //             boxFromPatches: {
+  //               showTransformed: true,
+  //               showTransformedBox: true,
+  //               showBB: true,
+  //             },
+  //           },
+  //         })
+  //           .locator({ patchSize: 'medium' })
+  //           .fromVideo(video, {
+  //             constraints: {
+  //               width: 800,
+  //               height: 600,
+  //               facingMode: 'environment',
+  //             },
+  //           });
 
-          scanner.addEventListener('detected', onDetected);
-          scanner.start();
-        })
-        .catch((error) => {
-          console.error('Error al acceder a la cámara:', error);
-        });
-    } else {
-      console.error('El navegador no admite la API de getUserMedia');
-    }
-  }
+  //         scanner.addEventListener('detected', onDetected);
+  //         scanner.start();
+  //       })
+  //       .catch((error) => {
+  //         console.error('Error al acceder a la cámara:', error);
+  //       });
+  //   } else {
+  //     console.error('El navegador no admite la API de getUserMedia');
+  //   }
+  // }
 
-  stopScanning() {
-    this.isScanning = false;
-    const video = this.videoElement.nativeElement;
-    if (video.srcObject) {
-      const stream = video.srcObject as MediaStream;
-      stream.getTracks().forEach((track) => track.stop());
-      video.srcObject = null;
-    }
-  }
+  // stopScanning() {
+  //   this.isScanning = false;
+  //   const video = this.videoElement.nativeElement;
+  //   if (video.srcObject) {
+  //     const stream = video.srcObject as MediaStream;
+  //     stream.getTracks().forEach((track) => track.stop());
+  //     video.srcObject = null;
+  //   }
+  // }
 
   getCurrentDateString(): string {
     const currentDate = this.calendar.getToday();
