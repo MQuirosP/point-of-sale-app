@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-// import { Quagga } from 'quagga';
+import Quagga from 'quagga';
 import { environment } from 'src/environments/environment';
 import {
   NgbDateStruct,
@@ -143,87 +143,124 @@ export class ShoppingCartComponent {
     }
   }
 
-  // toggleCamera() {
-  //   if (!this.isScanning) {
-  //     this.startScanning();
-  //   } else {
-  //     this.stopScanning();
-  //   }
-  // }
+  toggleCamera() {
+    if (!this.isScanning) {
+      this.startScanning();
+    } else {
+      this.stopScanning();
+    }
+  }
 
-  // startScanning() {
-  //   const video = this.videoElement.nativeElement;
+  startScanning() {
+    const video = this.videoElement.nativeElement;
+    const playBeepSound = () => {
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gain = audioContext.createGain();
 
-  //   // Verifica si el navegador admite la API de getUserMedia
-  //   if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-  //     navigator.mediaDevices
-  //       .getUserMedia({ video: true })
-  //       .then((stream) => {
-  //         this.isScanning = true;
-  //         video.srcObject = stream;
-  //         video.play();
+      oscillator.connect(gain);
+      gain.connect(audioContext.destination);
 
-  //         const onDetected = (result) => {
-  //           this.saleForm.get('product_name').setValue(result.codeResult.code);
-  //           this.stopScanning();
-  //         };
+      oscillator.type = 'triangle'; // Tipo de onda: 'sine', 'square', 'sawtooth', 'triangle'
+      oscillator.frequency.setValueAtTime(440, audioContext.currentTime); // Frecuencia en Hz (440 es el tono A4)
+      gain.gain.setValueAtTime(0.5, audioContext.currentTime); // Volumen (0.5 es el 50% del máximo)
 
-  //         const scanner = Quagga.decoder({
-  //           readers: [
-  //             'code_128_reader',
-  //             'ean_reader',
-  //             'ean_8_reader',
-  //             'code_39_reader',
-  //             'code_39_vin_reader',
-  //             'codabar_reader',
-  //             'upc_reader',
-  //             'upc_e_reader',
-  //             'i2of5_reader',
-  //           ],
-  //           debug: {
-  //             showCanvas: true,
-  //             showPatches: true,
-  //             showFoundPatches: true,
-  //             showSkeleton: true,
-  //             showLabels: true,
-  //             showPatchLabels: true,
-  //             showRemainingPatchLabels: true,
-  //             boxFromPatches: {
-  //               showTransformed: true,
-  //               showTransformedBox: true,
-  //               showBB: true,
-  //             },
-  //           },
-  //         })
-  //           .locator({ patchSize: 'medium' })
-  //           .fromVideo(video, {
-  //             constraints: {
-  //               width: 800,
-  //               height: 600,
-  //               facingMode: 'environment',
-  //             },
-  //           });
+      oscillator.start();
+      oscillator.stop(audioContext.currentTime + 0.1); // Reproduce por 0.1 segundos
+    };
 
-  //         scanner.addEventListener('detected', onDetected);
-  //         scanner.start();
-  //       })
-  //       .catch((error) => {
-  //         console.error('Error al acceder a la cámara:', error);
-  //       });
-  //   } else {
-  //     console.error('El navegador no admite la API de getUserMedia');
-  //   }
-  // }
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices
+        .getUserMedia({ video: true })
+        .then((stream) => {
+          this.isScanning = true;
+          video.srcObject = stream;
+          video.play();
 
-  // stopScanning() {
-  //   this.isScanning = false;
-  //   const video = this.videoElement.nativeElement;
-  //   if (video.srcObject) {
-  //     const stream = video.srcObject as MediaStream;
-  //     stream.getTracks().forEach((track) => track.stop());
-  //     video.srcObject = null;
-  //   }
-  // }
+          // Inicializa Quagga
+          Quagga.init({
+            inputStream: {
+              name: 'Live',
+              type: 'LiveStream',
+              target: video,
+              constraints: {
+                width: { ideal: 1280 },
+                height: { ideal: 720 },
+                facingMode: 'environment',
+              },
+              singleChannel: true // true: only the red color-channel is read
+            },
+            decoder: {
+              readers: [
+                'code_128_reader',
+                'ean_reader',
+                'ean_8_reader',
+                // Agrega otros lectores si es necesario
+              ],
+            },
+            locator: {
+              halfSample: true,
+              patchSize: 'large', // Ajusta el tamaño del parche
+              debug: {
+                drawBoundingBox: true, // Habilita el dibujo del recuadro
+                drawScanline: true,    // Habilita la línea de escaneo
+                showPattern: true      // Muestra el patrón de escaneo
+              }
+            },
+            locate: true,
+            multiple: false, // Opcional: Ajusta según necesidad
+            frequency: 10,
+          }, (err: any) => {
+            if (err) {
+              console.error('Error al inicializar Quagga:', err);
+              return;
+            }
+            Quagga.start();
+          });
+
+          // Maneja el evento de detección
+          Quagga.onDetected((result: { codeResult: { code: any; }; }) => {
+            if (result && result.codeResult && result.codeResult.code) {
+              const detectedCode = result.codeResult.code.trim();
+              console.log('Código detectado:', detectedCode);
+
+              // Actualiza el formulario con el código detectado
+              this.saleForm.get('product_name').setValue(detectedCode);
+
+              // Llama a searchProduct para asociar el producto
+              this.searchProduct();
+              playBeepSound();
+              // Detener escaneo si se encontró un producto coincidente
+              this.stopScanning(); // Descomentar si deseas detener el escaneo después de encontrar un código
+            }
+          });
+        })
+        .catch((error) => {
+          console.error('Error al acceder a la cámara:', error);
+        });
+    } else {
+      console.error('El navegador no admite la API de getUserMedia');
+    }
+  }
+
+
+  stopScanning() {
+    this.isScanning = false;
+    const video = this.videoElement.nativeElement;
+
+    // Detiene la reproducción del video y detiene las pistas del stream
+    if (video.srcObject) {
+      const stream = video.srcObject as MediaStream;
+      stream.getTracks().forEach((track) => track.stop());
+      video.srcObject = null;
+    }
+
+    // Detiene Quagga y elimina el evento 'onDetected'
+    Quagga.stop();
+    Quagga.offDetected(); // Elimina cualquier callback registrado en onDetected
+  }
+
+
 
   getCurrentDateString(): string {
     const currentDate = this.calendar.getToday();
@@ -563,10 +600,10 @@ export class ShoppingCartComponent {
 
       if (existingProductIndex !== -1) {
         const existingProduct = this.productList[existingProductIndex];
-        
+
         const validation = this.validateQuantityTransaction(existingProduct)
 
-        if(!validation) {
+        if (!validation) {
           this.toastr.warning('Error')
           return;
         }
@@ -591,7 +628,7 @@ export class ShoppingCartComponent {
   }
 
   private validateQuantityTransaction(currentTransaction: Products) {
-    if(currentTransaction.quantity > this.permisibleStock) {
+    if (currentTransaction.quantity > this.permisibleStock) {
       this.toastr.warning(`Stock de producto ${currentTransaction.name} inferior al digitado.`)
       return false;
     } else {
@@ -603,11 +640,11 @@ export class ShoppingCartComponent {
     this.subTotalSaleAmount = this.productList.reduce((subTotal, product) => {
       return subTotal + (product.sub_total || 0);
     }, 0);
-  
+
     this.totalTaxesAmount = this.productList.reduce((taxesTotal, product) => {
       return taxesTotal + (product.taxes_amount || 0);
     }, 0);
-  
+
     // Calcula el total solo si tanto subTotalSaleAmount como totalTaxesAmount son números válidos
     if (!isNaN(this.subTotalSaleAmount) && !isNaN(this.totalTaxesAmount)) {
       this.totalSaleAmount = +this.totalTaxesAmount + this.subTotalSaleAmount;
@@ -616,7 +653,7 @@ export class ShoppingCartComponent {
       this.totalSaleAmount = 0;
     }
   }
-  
+
 
   removeProduct(product: Products) {
     if (product.isRemoved) return;
@@ -717,11 +754,11 @@ export class ShoppingCartComponent {
 
   updateProduct(product: Products, event: Event): void {
     const newQuantity = (event.target as HTMLInputElement).valueAsNumber;
-  
+
     const productIndex = this.productList.findIndex(
       (p: Products) => p.int_code === product.int_code
     );
-    
+
 
     if (isNaN(newQuantity)) {
       this.toastr.error("La cantidad debe ser un número válido. Por favor, verifique.");
@@ -736,7 +773,7 @@ export class ShoppingCartComponent {
       this.toastr.error("La cantidad no puede ser igual a 0. Por favor, verifique.");
       return; // Sale del método si la cantidad es igual a 0.
     }
-  
+
     if (productIndex !== -1) {
       this.getProductDataAndUpdateProductList(
         product,
@@ -745,7 +782,7 @@ export class ShoppingCartComponent {
       );
     }
   }
-  
+
 
   private getProductDataAndUpdateProductList(
     product: Products,
@@ -880,7 +917,7 @@ export class ShoppingCartComponent {
   }
 
   formatOption(customer: any): string {
-    if(!customer) {
+    if (!customer) {
       this.saleForm.get('customer_name').reset();
     }
     const formattedName = `${customer.customer_name} ${customer.customer_first_lastname} ${customer.customer_second_lastname}`;

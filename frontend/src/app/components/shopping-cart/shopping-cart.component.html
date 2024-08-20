@@ -229,15 +229,21 @@
                   capture="environment"
                   accept="image/*"
                 />
-                <div class="d-none">
-                  <!-- <button (click)="toggleCamera()">Abrir Cámara</button> -->
-                  <!-- Mostrar el video de la cámara -->
-                  <video
-                    #video
-                    autoplay
-                    [hidden]="!isScanning"
-                    [style.width.px]="300"
-                  ></video>
+                <div class="d-flex justify-content-center align-items-center mt-2">
+                  <button (click)="toggleCamera()" class="btn btn-primary">
+                    <i class="fa fa-camera"></i>
+                  </button>
+                  <div class="text-center" style="width: 300px;">
+                    <video
+                      #video
+                      autoplay
+                      [hidden]="!isScanning"
+                      class="floating-label"
+                      
+                      
+                      style="z-index: 1000; opacity: 1; width: 100%;"
+                    ></video>
+                  </div>
                 </div>
                 <div
                   class="suggestion-list position-fixed border-white shadow mt-1"
