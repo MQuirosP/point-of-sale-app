@@ -195,7 +195,6 @@ export class ShoppingCartComponent {
                 'code_128_reader',
                 'ean_reader',
                 'ean_8_reader',
-                // Agrega otros lectores si es necesario
               ],
             },
             locator: {
@@ -208,7 +207,7 @@ export class ShoppingCartComponent {
               }
             },
             locate: true,
-            multiple: false, // Opcional: Ajusta según necesidad
+            multiple: false,
             frequency: 10,
           }, (err: any) => {
             if (err) {
@@ -231,7 +230,7 @@ export class ShoppingCartComponent {
               this.searchProduct();
               playBeepSound();
               // Detener escaneo si se encontró un producto coincidente
-              this.stopScanning(); // Descomentar si deseas detener el escaneo después de encontrar un código
+              this.stopScanning();
             }
           });
         })
@@ -242,7 +241,6 @@ export class ShoppingCartComponent {
       console.error('El navegador no admite la API de getUserMedia');
     }
   }
-
 
   stopScanning() {
     this.isScanning = false;
@@ -259,8 +257,6 @@ export class ShoppingCartComponent {
     Quagga.stop();
     Quagga.offDetected(); // Elimina cualquier callback registrado en onDetected
   }
-
-
 
   getCurrentDateString(): string {
     const currentDate = this.calendar.getToday();
