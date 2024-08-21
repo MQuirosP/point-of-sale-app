@@ -221,7 +221,7 @@ export class ShoppingCartComponent {
           Quagga.onDetected((result: { codeResult: { code: any; }; }) => {
             if (result && result.codeResult && result.codeResult.code) {
               const detectedCode = result.codeResult.code.trim();
-              console.log('Código detectado:', detectedCode);
+              // console.log('Código detectado:', detectedCode);
 
               // Actualiza el formulario con el código detectado
               this.saleForm.get('product_name').setValue(detectedCode);
