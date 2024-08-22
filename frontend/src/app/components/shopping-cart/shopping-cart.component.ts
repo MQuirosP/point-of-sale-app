@@ -153,22 +153,25 @@ export class ShoppingCartComponent {
 
   startScanning() {
     const video = this.videoElement.nativeElement;
+    
+    
+  
     const playBeepSound = () => {
       const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
       const oscillator = audioContext.createOscillator();
       const gain = audioContext.createGain();
-
+  
       oscillator.connect(gain);
       gain.connect(audioContext.destination);
-
-      oscillator.type = 'triangle'; // Tipo de onda: 'sine', 'square', 'sawtooth', 'triangle'
-      oscillator.frequency.setValueAtTime(440, audioContext.currentTime); // Frecuencia en Hz (440 es el tono A4)
-      gain.gain.setValueAtTime(0.5, audioContext.currentTime); // Volumen (0.5 es el 50% del máximo)
-
+  
+      oscillator.type = 'triangle';
+      oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
+      gain.gain.setValueAtTime(0.5, audioContext.currentTime);
+  
       oscillator.start();
-      oscillator.stop(audioContext.currentTime + 0.1); // Reproduce por 0.1 segundos
+      oscillator.stop(audioContext.currentTime + 0.1);
     };
-
+  
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices
         .getUserMedia({ video: true })
@@ -176,7 +179,7 @@ export class ShoppingCartComponent {
           this.isScanning = true;
           video.srcObject = stream;
           video.play();
-
+  
           // Inicializa Quagga
           Quagga.init({
             inputStream: {
@@ -199,11 +202,11 @@ export class ShoppingCartComponent {
             },
             locator: {
               halfSample: true,
-              patchSize: 'large', // Ajusta el tamaño del parche
+              patchSize: 'large',
               debug: {
-                drawBoundingBox: true, // Habilita el dibujo del recuadro
-                drawScanline: true,    // Habilita la línea de escaneo
-                showPattern: true      // Muestra el patrón de escaneo
+                drawBoundingBox: true,
+                drawScanline: true,
+                showPattern: true
               }
             },
             locate: true,
@@ -216,20 +219,14 @@ export class ShoppingCartComponent {
             }
             Quagga.start();
           });
-
+  
           // Maneja el evento de detección
           Quagga.onDetected((result: { codeResult: { code: any; }; }) => {
             if (result && result.codeResult && result.codeResult.code) {
               const detectedCode = result.codeResult.code.trim();
-              // console.log('Código detectado:', detectedCode);
-
-              // Actualiza el formulario con el código detectado
               this.saleForm.get('product_name').setValue(detectedCode);
-
-              // Llama a searchProduct para asociar el producto
               this.searchProduct();
               playBeepSound();
-              // Detener escaneo si se encontró un producto coincidente
               this.stopScanning();
             }
           });
@@ -241,7 +238,7 @@ export class ShoppingCartComponent {
       console.error('El navegador no admite la API de getUserMedia');
     }
   }
-
+  
   stopScanning() {
     this.isScanning = false;
     const video = this.videoElement.nativeElement;
