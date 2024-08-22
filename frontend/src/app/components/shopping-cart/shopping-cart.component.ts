@@ -151,27 +151,25 @@ export class ShoppingCartComponent {
     }
   }
 
+  playBeepSound() {
+    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+
+    oscillator.connect(gain);
+    gain.connect(audioContext.destination);
+
+    oscillator.type = 'square';
+    oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
+    gain.gain.setValueAtTime(0.9, audioContext.currentTime);
+
+    oscillator.start();
+    oscillator.stop(audioContext.currentTime + 0.1);
+  };
+
   startScanning() {
     const video = this.videoElement.nativeElement;
-    
-    
-  
-    const playBeepSound = () => {
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-      const oscillator = audioContext.createOscillator();
-      const gain = audioContext.createGain();
-  
-      oscillator.connect(gain);
-      gain.connect(audioContext.destination);
-  
-      oscillator.type = 'triangle';
-      oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
-      gain.gain.setValueAtTime(0.5, audioContext.currentTime);
-  
-      oscillator.start();
-      oscillator.stop(audioContext.currentTime + 0.1);
-    };
-  
+
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices
         .getUserMedia({ video: true })
@@ -179,7 +177,7 @@ export class ShoppingCartComponent {
           this.isScanning = true;
           video.srcObject = stream;
           video.play();
-  
+
           // Inicializa Quagga
           Quagga.init({
             inputStream: {
@@ -219,14 +217,14 @@ export class ShoppingCartComponent {
             }
             Quagga.start();
           });
-  
+
           // Maneja el evento de detección
           Quagga.onDetected((result: { codeResult: { code: any; }; }) => {
+            this.playBeepSound();
             if (result && result.codeResult && result.codeResult.code) {
               const detectedCode = result.codeResult.code.trim();
               this.saleForm.get('product_name').setValue(detectedCode);
               this.searchProduct();
-              playBeepSound();
               this.stopScanning();
             }
           });
@@ -238,7 +236,7 @@ export class ShoppingCartComponent {
       console.error('El navegador no admite la API de getUserMedia');
     }
   }
-  
+
   stopScanning() {
     this.isScanning = false;
     const video = this.videoElement.nativeElement;
