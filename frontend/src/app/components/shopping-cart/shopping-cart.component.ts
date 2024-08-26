@@ -17,6 +17,7 @@ import { ProductService } from 'src/app/services/product.service';
 import { productAnimations } from 'src/app/animations/product-list-animation';
 import { Products } from 'src/app/interfaces/products';
 import { Sales } from 'src/app/interfaces/sales';
+import { Customers } from 'src/app/interfaces/customers';
 
 interface ApiSaleResponse {
   success: boolean;
@@ -65,7 +66,7 @@ export class ShoppingCartComponent {
   customer_id: number = 0;
   formattedCustomerNames: { [key: string]: string } = {};
   customer_dni: string;
-  customersList: any[] = [];
+  customersList: Customers[] = [];
   customerSuggestionList: any[] = [];
 
   initialSaleFormData: any;
@@ -907,7 +908,8 @@ export class ShoppingCartComponent {
       });
   }
 
-  formatOption(customer: any): string {
+  formatOption(customer: Customers): string {
+    console.log(customer);
     if (!customer) {
       this.saleForm.get('customer_name').reset();
     }
