@@ -400,9 +400,12 @@ a.hide {
 }
 
 .front-panel-image {
-  width: 120px;
-  height: 90px;
+  width: 20vw; /* La imagen ocupará el 20% del ancho de la ventana */
+  height: auto;
+  max-width: 120px; /* Limita el tamaño máximo */
+  max-height: 90px;
 }
+
 
 .my-clic:hover {
   box-shadow: 2px 1px 1px darkgray;
