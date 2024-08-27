@@ -145,12 +145,12 @@
                       role="searchbox"
                       class="form-select"
                     >
-                      <option
-                        *ngFor="let customer of customersList"
-                        [value]="formatOption(customer)"
-                      >
-                        {{ formattedCustomerNames[customer.customer_name] }}
-                      </option>
+                    <option
+                    *ngFor="let customer of customersList"
+                    [value]="formattedCustomerNames[customer.customer_id]"
+                  >
+                    {{ formattedCustomerNames[customer.customer_id] }}
+                  </option>
                     </datalist>
                   </div>
                 </div>

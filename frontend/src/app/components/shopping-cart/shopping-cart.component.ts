@@ -888,33 +888,35 @@ export class ShoppingCartComponent {
     this.ticketService.generateTicket(doc_number);
   }
 
+  private customersSubscription: Subscription;
+
   fetchCustomers(): void {
-    this.saleService
-      .getCustomers()
-      .pipe(take(1))
-      .subscribe({
-        next: (response: any) => {
-          const customers = response?.message?.customers;
-          if (Array.isArray(customers) && customers.length > 0) {
-            this.customersList = customers;
-          } else {
-            this.customersList = [];
-          }
-        },
-        error: (error: any) => {
-          console.log('Error al recuperar clientes');
-          this.toastr.error('Error al recuperar la lista de clientes.');
-        },
-      });
+    this.saleService.getCustomers().pipe(take(1)).subscribe({
+      next: (response: any) => {
+        const customers = response?.message?.customers;
+        if (Array.isArray(customers) && customers.length > 0) {
+          this.customersList = customers;
+          this.customersList.forEach((customer) => {
+            this.formattedCustomerNames[customer.customer_id] = `${customer.customer_name} ${customer.customer_first_lastname} ${customer.customer_second_lastname}`;
+          });
+        } else {
+          this.customersList = [];
+        }
+      },
+      error: (error: any) => {
+        console.log('Error al recuperar clientes');
+        this.toastr.error('Error al recuperar la lista de clientes.');
+      },
+    });
   }
 
-  formatOption(customer: Customers): string {
-    console.log(customer);
-    if (!customer) {
-      this.saleForm.get('customer_name').reset();
-    }
-    const formattedName = `${customer.customer_name} ${customer.customer_first_lastname} ${customer.customer_second_lastname}`;
-    this.formattedCustomerNames[customer.customer_id] = formattedName;
-    return formattedName;
-  }
+  // formatOption(customer: Customers): string {
+  //   console.log(customer);
+  //   if (!customer) {
+  //     this.saleForm.get('customer_name').reset();
+  //   }
+  //   const formattedName = `${customer.customer_name} ${customer.customer_first_lastname} ${customer.customer_second_lastname}`;
+  //   this.formattedCustomerNames[customer.customer_id] = formattedName;
+  //   return formattedName;
+  // }
 }

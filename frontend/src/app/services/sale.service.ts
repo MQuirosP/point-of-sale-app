@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Sales } from '../interfaces/sales';
+import { Customers } from '../interfaces/customers';
 
 
 interface ApiSaleResponse {
@@ -36,6 +37,6 @@ export class SaleService {
   }
 
   getCustomers() {
-    return this.http.get<any>(`${this.backendUrl}customers`);
+    return this.http.get<Customers>(`${this.backendUrl}customers`);
   }
 }
