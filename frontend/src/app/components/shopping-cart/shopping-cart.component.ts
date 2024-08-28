@@ -63,11 +63,11 @@ export class ShoppingCartComponent {
   permisibleStock: number = 0;
 
   // Consultar clientes
-  customer_id: number = 0;
+  // customer_id: number = 0;
   formattedCustomerNames: { [key: string]: string } = {};
-  customer_dni: string;
+  // customer_dni: string;
   customersList: Customers[] = [];
-  customerSuggestionList: any[] = [];
+  // customerSuggestionList: Customers[] = [];
 
   initialSaleFormData: any;
 
@@ -560,6 +560,7 @@ export class ShoppingCartComponent {
         this.toastr.warning(
           'Se debe seleccionar un producto para agregar a la lista.'
         );
+        console.log(response);
       },
     });
   }
@@ -887,8 +888,6 @@ export class ShoppingCartComponent {
   generateTicket(doc_number: string): void {
     this.ticketService.generateTicket(doc_number);
   }
-
-  private customersSubscription: Subscription;
 
   fetchCustomers(): void {
     this.saleService.getCustomers().pipe(take(1)).subscribe({
