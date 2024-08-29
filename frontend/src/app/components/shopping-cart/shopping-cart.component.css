@@ -43,3 +43,13 @@ p {
   line-height: 1;
   margin-bottom: 10px;
 }
+
+.video-styled {
+  padding: 0;
+  border-radius: 0.5rem; /* Esquinas redondeadas */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); /* Sombra */
+  border: 2px solid #ccc; /* Borde */
+  object-fit: cover; /* Asegura que el video se ajuste al contenedor */
+}
+
+

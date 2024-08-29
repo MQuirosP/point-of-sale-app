@@ -63,11 +63,11 @@ export class ShoppingCartComponent {
   permisibleStock: number = 0;
 
   // Consultar clientes
-  // customer_id: number = 0;
+  customer_id: number = 0;
   formattedCustomerNames: { [key: string]: string } = {};
-  // customer_dni: string;
+  customer_dni: string;
   customersList: Customers[] = [];
-  // customerSuggestionList: Customers[] = [];
+  customerSuggestionList: any[] = [];
 
   initialSaleFormData: any;
 
@@ -154,19 +154,28 @@ export class ShoppingCartComponent {
 
   playBeepSound() {
     const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-    const oscillator = audioContext.createOscillator();
-    const gain = audioContext.createGain();
+    const oscillator = this.createOscillator(audioContext);
+    const gain = this.createGain(audioContext);
 
     oscillator.connect(gain);
     gain.connect(audioContext.destination);
 
-    oscillator.type = 'square';
-    oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
-    gain.gain.setValueAtTime(0.9, audioContext.currentTime);
-
     oscillator.start();
     oscillator.stop(audioContext.currentTime + 0.1);
-  };
+  }
+
+  private createOscillator(audioContext: AudioContext): OscillatorNode {
+    const oscillator = audioContext.createOscillator();
+    oscillator.type = 'square';
+    oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
+    return oscillator;
+  }
+
+  private createGain(audioContext: AudioContext): GainNode {
+    const gain = audioContext.createGain();
+    gain.gain.setValueAtTime(0.9, audioContext.currentTime);
+    return gain;
+  }
 
   startScanning() {
     const video = this.videoElement.nativeElement;
@@ -202,11 +211,6 @@ export class ShoppingCartComponent {
             locator: {
               halfSample: true,
               patchSize: 'large',
-              debug: {
-                drawBoundingBox: true,
-                drawScanline: true,
-                showPattern: true
-              }
             },
             locate: true,
             multiple: false,
@@ -216,7 +220,42 @@ export class ShoppingCartComponent {
               console.error('Error al inicializar Quagga:', err);
               return;
             }
+            console.log('Quagga inicializado correctamente');
             Quagga.start();
+          });
+
+          // Maneja el evento de procesamiento para dibujar en el canvas
+          Quagga.onProcessed((result: any) => {
+            console.log("onProcessed event triggered", result); // Mensaje de depuración
+            const drawingCtx = Quagga.canvas.ctx.overlay;
+            const drawingCanvas = Quagga.canvas.dom.overlay;
+
+            // Ajustar el tamaño del canvas para que coincida con el del video
+            drawingCanvas.width = video.clientWidth;
+            drawingCanvas.height = video.clientHeight;
+            drawingCanvas.style.position = 'absolute';
+            drawingCanvas.style.top = '0';
+            drawingCanvas.style.left = '0';
+            drawingCanvas.style.zIndex = '1000';
+
+            drawingCtx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
+
+            if (result) {
+              if (result.boxes) {
+                result.boxes.filter((box: any) => box !== result.box)
+                  .forEach((box: any) => {
+                    Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, drawingCtx, { color: 'green', lineWidth: 2 });
+                  });
+              }
+
+              if (result.box) {
+                Quagga.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, drawingCtx, { color: 'black', lineWidth: 2 });
+              }
+
+              if (result.codeResult && result.codeResult.code) {
+                Quagga.ImageDebug.drawPath(result.line, { x: 'x', y: 'y' }, drawingCtx, { color: 'red', lineWidth: 3 });
+              }
+            }
           });
 
           // Maneja el evento de detección
@@ -560,7 +599,6 @@ export class ShoppingCartComponent {
         this.toastr.warning(
           'Se debe seleccionar un producto para agregar a la lista.'
         );
-        console.log(response);
       },
     });
   }

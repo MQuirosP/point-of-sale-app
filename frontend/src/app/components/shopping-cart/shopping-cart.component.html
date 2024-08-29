@@ -88,7 +88,6 @@
   #newSaleModal
   tabindex="-1"
   role="dialog"
-  
 >
   <div class="modal-dialog modal-lg modal-shadow" role="document">
     <div class="modal-content">
@@ -136,6 +135,8 @@
                       saleForm.get('customer_name').invalid,
                     'italic-text': !saleForm.get('customer_name').value,
                   }"
+                    aria-controls="customerOptions"
+                    aria-label="Seleccione cliente"
                   />
                   <div
                     class="suggestion-list shadow bg-white position-fixed mt-1"
@@ -144,13 +145,14 @@
                       id="customerOptions"
                       role="searchbox"
                       class="form-select"
+                      aria-labelledby="customerOptions"
                     >
-                    <option
-                    *ngFor="let customer of customersList"
-                    [value]="formattedCustomerNames[customer.customer_id]"
-                  >
-                    {{ formattedCustomerNames[customer.customer_id] }}
-                  </option>
+                      <option
+                        *ngFor="let customer of customersList"
+                        [value]="formattedCustomerNames[customer.customer_id]"
+                      >
+                        {{ formattedCustomerNames[customer.customer_id] }}
+                      </option>
                     </datalist>
                   </div>
                 </div>
@@ -223,26 +225,38 @@
                       saleForm.get('product_name').invalid
                   }"
                   (input)="searchProduct()"
-                  (focus)="handleBarcodeInput($event)"
+                  (keypress)="handleKeyDown($event)"
                   #nameInput
-                  (keydown)="handleKeyDown($event)"
                   capture="environment"
                   accept="image/*"
                 />
-                <div class="d-flex justify-content-center align-items-center mt-2">
+
+                <div
+                  class="d-flex justify-content-center align-items-center mt-2"
+                >
                   <button (click)="toggleCamera()" class="btn btn-primary">
                     <i class="fa fa-camera"></i>
                   </button>
-                  <div class="text-center" style="width: 300px;">
+                  <div
+                    class="d-flex justify-content-center align-items-center mt-2 position-relative"
+                    style="width: 300px"
+                  >
                     <video
+                      id="video"
                       #video
                       autoplay
                       [hidden]="!isScanning"
-                      class="floating-label"
-                      style="z-index: 1000; opacity: 1; width: 100%;"
+                      class="floating-label video-styled"
+                      style="
+                        z-index: 900;
+                        opacity: 1;
+                        width: 100%;
+                        height: 150px;
+                      "
                     ></video>
                   </div>
                 </div>
+
                 <div
                   class="suggestion-list position-fixed border-white shadow mt-1"
                   [style.width.px]="nameInput.offsetWidth"
@@ -329,14 +343,11 @@
                   Agregar
                 </button>
               </div>
-              
             </div>
             <div class="col-md-6">
               <div class="table-container">
                 <h6 class="h6 mb-1 text-center">Lista de productos</h6>
-                <table
-                  class="table table-hover"
-                >
+                <table class="table table-hover">
                   <thead>
                     <tr class="custom-row">
                       <th
@@ -439,31 +450,31 @@
           </div>
           <div class="row">
             <div class="col-md-6 table d-flex justify-content-center">
-                <div class="row total-box">
-                  <div class="col-md-4  ">
-                    <h6 class="total-box-titles">Sub Total</h6>
-                    <p class="total-invoice">
-                      {{ subTotalSaleAmount | currency : "CRC" : "₡" }}
-                    </p>
-                  </div>
-                  <div class="col-md-4  ">
-                    <h6 class="total-box-titles">Impuestos</h6>
-                    <p class="total-invoice">
-                      {{ totalTaxesAmount | currency : "CRC" : "₡" }}
-                    </p>
-                  </div>
-                  <div class="col-md-4  ">
-                    <h6
-                      class="total-box-titles"
-                      style="padding-right: 0 !important"
-                    >
-                      Total
-                    </h6>
-                    <p class="total-invoice">
-                      {{ totalSaleAmount | currency : "CRC" : "₡" : "1.2-2" }}
-                    </p>
-                  </div>
+              <div class="row total-box">
+                <div class="col-md-4">
+                  <h6 class="total-box-titles">Sub Total</h6>
+                  <p class="total-invoice">
+                    {{ subTotalSaleAmount | currency : "CRC" : "₡" }}
+                  </p>
                 </div>
+                <div class="col-md-4">
+                  <h6 class="total-box-titles">Impuestos</h6>
+                  <p class="total-invoice">
+                    {{ totalTaxesAmount | currency : "CRC" : "₡" }}
+                  </p>
+                </div>
+                <div class="col-md-4">
+                  <h6
+                    class="total-box-titles"
+                    style="padding-right: 0 !important"
+                  >
+                    Total
+                  </h6>
+                  <p class="total-invoice">
+                    {{ totalSaleAmount | currency : "CRC" : "₡" : "1.2-2" }}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -505,7 +516,6 @@
   tabindex="-1"
   role="dialog"
   aria-labelledby="saleHistoryModal"
-  
   style="height: 100vh"
 >
   <div class="modal-dialog" role="document">
@@ -520,7 +530,7 @@
           aria-label="Close"
           (click)="closeSaleHistoryModal()"
         >
-          <span ><i class="fas fa-close"></i></span>
+          <span><i class="fas fa-close"></i></span>
         </button>
       </div>
       <div class="modal-body">
@@ -541,13 +551,9 @@
             </div>
           </div>
         </form>
-        <div
-          class="container pt-2 history-card"
-          *ngIf="sales.length > 0"
-        >
+        <div class="container pt-2 history-card" *ngIf="sales.length > 0">
           <!-- Aquí se muestra la lista de ventas -->
-          <div *ngFor="let sale of sales" 
-            class="card custom-card shadow mb-2">
+          <div *ngFor="let sale of sales" class="card custom-card shadow mb-2">
             <div class="sale-summary" [@fadeAnimation]>
               <div class="card-header d-flex justify-content-start">
                 <div
