@@ -179,118 +179,147 @@ export class ShoppingCartComponent {
 
   startScanning() {
     const video = this.videoElement.nativeElement;
-    const canvas = document.getElementById('overlay') as HTMLCanvasElement;
-    const ctx = canvas.getContext('2d');
-  
+    const canvas = this.getCanvasElement();
+    const ctx = this.getCanvasContext(canvas);
+
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices.getUserMedia({ video: true })
         .then((stream) => {
-          this.isScanning = true;
-          video.srcObject = stream;
-          video.play();
-  
-          // Inicializa Quagga
-          Quagga.init({
-            inputStream: {
-              name: 'Live',
-              type: 'LiveStream',
-              target: video,
-              constraints: {
-                width: { ideal: 1280 },
-                height: { ideal: 720 },
-                facingMode: 'environment',
-              },
-              singleChannel: true
-            },
-            decoder: {
-              readers: ['code_128_reader', 'ean_reader', 'ean_8_reader']
-            },
-            locator: {
-              halfSample: true,
-              patchSize: 'large',
-            },
-            locate: true,
-            multiple: false,
-            frequency: 5,
-          }, (err: any) => {
-            if (err) {
-              console.error('Error al inicializar Quagga:', err);
-              return;
-            }
-            Quagga.start();
-          });
-  
-          // Maneja el evento de procesamiento para dibujar en el canvas
-          Quagga.onProcessed((result: any) => {
-            if (ctx) {
-              const videoWidth = video.videoWidth;
-              const videoHeight = video.videoHeight;
-  
-              // Asegura que el canvas tenga el tamaño correcto
-              canvas.width = videoWidth;
-              canvas.height = videoHeight;
-  
-              ctx.clearRect(0, 0, canvas.width, canvas.height);
-  
-              if (result) {
-                if (result.boxes) {
-                  result.boxes.filter((box: any) => box !== result.box)
-                    .forEach((box: any) => {
-                      Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, ctx, { color: 'green', lineWidth: 5 });
-                    });
-                }
-  
-                if (result.box) {
-                  Quagga.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, ctx, { color: 'green', lineWidth: 5 });
-                }
-  
-                if (result.codeResult && result.codeResult.code) {
-                  Quagga.ImageDebug.drawPath(result.line, { x: 'x', y: 'y' }, ctx, { color: 'red', lineWidth: 8 });
-                }
-              }
-            }
-          });
-  
-          // Maneja el evento de detección
-          Quagga.onDetected((result: { codeResult: { code: any; }; }) => {
-            this.playBeepSound();
-            if (result && result.codeResult && result.codeResult.code) {
-              const detectedCode = result.codeResult.code.trim();
-              this.saleForm.get('product_name').setValue(detectedCode);
-              this.searchProduct();
-              this.stopScanning();
-            }
-          });
+          this.setupVideoStream(stream, video);
+          this.initializeQuagga(video, canvas, ctx);
         })
-        .catch((error) => {
-          console.error('Error al acceder a la cámara:', error);
-        });
+        .catch(this.handleCameraError);
     } else {
       console.error('El navegador no admite la API de getUserMedia');
     }
   }
-  
+
   stopScanning() {
     this.isScanning = false;
+    this.stopVideoStream();
+    this.stopQuagga();
+    this.clearCanvas();
+  }
+
+  private setupVideoStream(stream: MediaStream, video: HTMLVideoElement) {
+    this.isScanning = true;
+    video.srcObject = stream;
+    video.play();
+  }
+
+  private initializeQuagga(video: HTMLVideoElement, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D | null) {
+    Quagga.init({
+      inputStream: {
+        name: 'Live',
+        type: 'LiveStream',
+        target: video,
+        constraints: {
+          width: { ideal: 1280 },
+          height: { ideal: 720 },
+          facingMode: 'environment',
+        },
+        singleChannel: true
+      },
+      decoder: {
+        readers: ['code_128_reader', 'ean_reader', 'ean_8_reader']
+      },
+      locator: {
+        halfSample: true,
+        patchSize: 'large',
+      },
+      locate: true,
+      multiple: false,
+      frequency: 5,
+    }, (err: any) => {
+      if (err) {
+        console.error('Error al inicializar Quagga:', err);
+        return;
+      }
+      Quagga.start();
+    });
+
+    this.setupQuaggaEvents(ctx, video, canvas);
+  }
+
+  private setupQuaggaEvents(ctx: CanvasRenderingContext2D | null, video: HTMLVideoElement, canvas: HTMLCanvasElement) {
+    Quagga.onProcessed((result: any) => {
+      this.processQuaggaResult(result, ctx, video, canvas);
+    });
+
+    Quagga.onDetected((result: { codeResult: { code: any; }; }) => {
+      this.handleBarcodeDetected(result);
+    });
+  }
+
+  private processQuaggaResult(result: any, ctx: CanvasRenderingContext2D | null, video: HTMLVideoElement, canvas: HTMLCanvasElement) {
+    if (!ctx) return;
+
+    const videoWidth = video.videoWidth;
+    const videoHeight = video.videoHeight;
+
+    // Asegura que el canvas tenga el tamaño correcto
+    canvas.width = videoWidth;
+    canvas.height = videoHeight;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    if (result) {
+      if (result.boxes) {
+        result.boxes.filter((box: any) => box !== result.box)
+          .forEach((box: any) => {
+            Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, ctx, { color: 'green', lineWidth: 5 });
+          });
+      }
+
+      if (result.box) {
+        Quagga.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, ctx, { color: 'green', lineWidth: 5 });
+      }
+
+      if (result.codeResult && result.codeResult.code) {
+        Quagga.ImageDebug.drawPath(result.line, { x: 'x', y: 'y' }, ctx, { color: 'red', lineWidth: 8 });
+      }
+    }
+  }
+
+  private handleBarcodeDetected(result: { codeResult: { code: string } }) {
+    this.playBeepSound();
+    const detectedCode = result.codeResult.code.trim();
+    this.saleForm.get('product_name').setValue(detectedCode);
+    this.searchProduct();
+    this.stopScanning();
+  }
+
+  private stopVideoStream() {
     const video = this.videoElement.nativeElement;
-    const canvas = document.getElementById('overlay') as HTMLCanvasElement;
-    const ctx = canvas.getContext('2d');
-  
-    // Detiene la reproducción del video y detiene las pistas del stream
     if (video.srcObject) {
       const stream = video.srcObject as MediaStream;
       stream.getTracks().forEach((track) => track.stop());
       video.srcObject = null;
     }
-  
-    // Detiene Quagga y elimina el evento 'onDetected'
+  }
+
+  private stopQuagga() {
     Quagga.stop();
     Quagga.offDetected(); // Elimina cualquier callback registrado en onDetected
-  
-    // Limpia el canvas
+  }
+
+  private clearCanvas() {
+    const canvas = this.getCanvasElement();
+    const ctx = this.getCanvasContext(canvas);
     if (ctx) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
+  }
+
+  private handleCameraError(error: any) {
+    console.error('Error al acceder a la cámara:', error);
+  }
+
+  private getCanvasElement(): HTMLCanvasElement {
+    return document.getElementById('overlay') as HTMLCanvasElement;
+  }
+
+  private getCanvasContext(canvas: HTMLCanvasElement): CanvasRenderingContext2D | null {
+    return canvas.getContext('2d');
   }
 
   getCurrentDateString(): string {
@@ -946,14 +975,4 @@ export class ShoppingCartComponent {
       },
     });
   }
-
-  // formatOption(customer: Customers): string {
-  //   console.log(customer);
-  //   if (!customer) {
-  //     this.saleForm.get('customer_name').reset();
-  //   }
-  //   const formattedName = `${customer.customer_name} ${customer.customer_first_lastname} ${customer.customer_second_lastname}`;
-  //   this.formattedCustomerNames[customer.customer_id] = formattedName;
-  //   return formattedName;
-  // }
 }
