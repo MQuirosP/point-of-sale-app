@@ -214,7 +214,6 @@
                   class="form-control datalist-no-arrow"
                   autocomplete="off"
                   [spellcheck]="false"
-                  style="cursor: text"
                   placeholder="Seleccione producto..."
                   [ngClass]="{
                     'is-valid':
@@ -234,6 +233,7 @@
                 <div
                   class="suggestion-list position-fixed border-white shadow mt-1"
                   [style.width.px]="nameInput.offsetWidth"
+                  style="z-index: 1"
                 >
                   <ul
                     id="suggestionOptions"
@@ -270,6 +270,7 @@
                   style="width: 300px"
                   [hidden]="!isScanning"
                 >
+                  <!-- Canvas overlay para Quagga -->
                   <video
                     [ngClass]="{
                       'video-container-small': isScanning,
@@ -279,12 +280,13 @@
                     autoplay
                     class="floating-label"
                   ></video>
-                  <!-- Canvas overlay para Quagga -->
                   <canvas
                     id="overlay"
+                    #overlay
                     [hidden]="!isScanning"
-                    [ngClass]="{ 'canvas-style': isScanning }"
-                  ></canvas>
+                    [ngClass]="{ 'canvas-style': isScanning, 'floating-label': isScanning }"
+                  >
+                  </canvas>
                 </div>
               </div>
 

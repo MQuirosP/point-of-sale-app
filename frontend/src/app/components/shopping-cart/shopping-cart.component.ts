@@ -1,5 +1,4 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import Quagga from 'quagga';
 import { environment } from 'src/environments/environment';
 import {
   NgbDateStruct,
@@ -18,6 +17,7 @@ import { productAnimations } from 'src/app/animations/product-list-animation';
 import { Products } from 'src/app/interfaces/products';
 import { Sales } from 'src/app/interfaces/sales';
 import { Customers } from 'src/app/interfaces/customers';
+import { ScannerService } from 'src/app/services/scanner.service';
 
 interface ApiSaleResponse {
   success: boolean;
@@ -78,6 +78,7 @@ export class ShoppingCartComponent {
   saleHistoryModal!: ElementRef;
   @ViewChild('nameInput') nameInput!: ElementRef;
   @ViewChild('video') videoElement: ElementRef<HTMLVideoElement>;
+  @ViewChild('overlay') overlay!: ElementRef;
   isScanning: boolean = false;
   selectedProduct: any;
   product_name: any;
@@ -92,7 +93,8 @@ export class ShoppingCartComponent {
     private saleService: SaleService,
     private productService: ProductService,
     private dateFormatter: NgbDateParserFormatter,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private barcodeScannerService: ScannerService
   ) {
     this.date = this.getCurrentDate();
     this.selectedDate = this.calendar.getToday();
@@ -152,176 +154,25 @@ export class ShoppingCartComponent {
     }
   }
 
-  playBeepSound() {
-    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-    const oscillator = this.createOscillator(audioContext);
-    const gain = this.createGain(audioContext);
-
-    oscillator.connect(gain);
-    gain.connect(audioContext.destination);
-
-    oscillator.start();
-    oscillator.stop(audioContext.currentTime + 0.1);
-  }
-
-  private createOscillator(audioContext: AudioContext): OscillatorNode {
-    const oscillator = audioContext.createOscillator();
-    oscillator.type = 'square';
-    oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
-    return oscillator;
-  }
-
-  private createGain(audioContext: AudioContext): GainNode {
-    const gain = audioContext.createGain();
-    gain.gain.setValueAtTime(0.9, audioContext.currentTime);
-    return gain;
-  }
-
   startScanning() {
     const video = this.videoElement.nativeElement;
-    const canvas = this.getCanvasElement();
-    const ctx = this.getCanvasContext(canvas);
-
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ video: true })
-        .then((stream) => {
-          this.setupVideoStream(stream, video);
-          this.initializeQuagga(video, canvas, ctx);
-        })
-        .catch(this.handleCameraError);
-    } else {
-      console.error('El navegador no admite la API de getUserMedia');
-    }
+    const canvas = this.overlay.nativeElement;
+    const ctx = canvas.getContext('2d');
+    this.isScanning=true;
+    
+    this.barcodeScannerService.startScanning(video, canvas, ctx, (detectedCode) => {
+      this.saleForm.get('product_name').setValue(detectedCode);
+      this.searchProduct();
+      this.stopScanning();
+    });
   }
 
   stopScanning() {
     this.isScanning = false;
-    this.stopVideoStream();
-    this.stopQuagga();
-    this.clearCanvas();
+    const video = this.videoElement.nativeElement as HTMLVideoElement;
+    const canvas = this.overlay.nativeElement as HTMLCanvasElement;
+    this.barcodeScannerService.stopScanning(video, canvas);
   }
-
-  private setupVideoStream(stream: MediaStream, video: HTMLVideoElement) {
-    this.isScanning = true;
-    video.srcObject = stream;
-    video.play();
-  }
-
-  private initializeQuagga(video: HTMLVideoElement, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D | null) {
-    Quagga.init({
-      inputStream: {
-        name: 'Live',
-        type: 'LiveStream',
-        target: video,
-        constraints: {
-          width: { ideal: 1280 },
-          height: { ideal: 720 },
-          facingMode: 'environment',
-        },
-        singleChannel: true
-      },
-      decoder: {
-        readers: ['code_128_reader', 'ean_reader', 'ean_8_reader']
-      },
-      locator: {
-        halfSample: true,
-        patchSize: 'large',
-      },
-      locate: true,
-      multiple: false,
-      frequency: 5,
-    }, (err: any) => {
-      if (err) {
-        console.error('Error al inicializar Quagga:', err);
-        return;
-      }
-      Quagga.start();
-    });
-
-    this.setupQuaggaEvents(ctx, video, canvas);
-  }
-
-  private setupQuaggaEvents(ctx: CanvasRenderingContext2D | null, video: HTMLVideoElement, canvas: HTMLCanvasElement) {
-    Quagga.onProcessed((result: any) => {
-      this.processQuaggaResult(result, ctx, video, canvas);
-    });
-
-    Quagga.onDetected((result: { codeResult: { code: any; }; }) => {
-      this.handleBarcodeDetected(result);
-    });
-  }
-
-  private processQuaggaResult(result: any, ctx: CanvasRenderingContext2D | null, video: HTMLVideoElement, canvas: HTMLCanvasElement) {
-    if (!ctx) return;
-
-    const videoWidth = video.videoWidth;
-    const videoHeight = video.videoHeight;
-
-    // Asegura que el canvas tenga el tamaño correcto
-    canvas.width = videoWidth;
-    canvas.height = videoHeight;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    if (result) {
-      if (result.boxes) {
-        result.boxes.filter((box: any) => box !== result.box)
-          .forEach((box: any) => {
-            Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, ctx, { color: 'green', lineWidth: 5 });
-          });
-      }
-
-      if (result.box) {
-        Quagga.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, ctx, { color: 'green', lineWidth: 5 });
-      }
-
-      if (result.codeResult && result.codeResult.code) {
-        Quagga.ImageDebug.drawPath(result.line, { x: 'x', y: 'y' }, ctx, { color: 'red', lineWidth: 8 });
-      }
-    }
-  }
-
-  private handleBarcodeDetected(result: { codeResult: { code: string } }) {
-    this.playBeepSound();
-    const detectedCode = result.codeResult.code.trim();
-    this.saleForm.get('product_name').setValue(detectedCode);
-    this.searchProduct();
-    this.stopScanning();
-  }
-
-  private stopVideoStream() {
-    const video = this.videoElement.nativeElement;
-    if (video.srcObject) {
-      const stream = video.srcObject as MediaStream;
-      stream.getTracks().forEach((track) => track.stop());
-      video.srcObject = null;
-    }
-  }
-
-  private stopQuagga() {
-    Quagga.stop();
-    Quagga.offDetected(); // Elimina cualquier callback registrado en onDetected
-  }
-
-  private clearCanvas() {
-    const canvas = this.getCanvasElement();
-    const ctx = this.getCanvasContext(canvas);
-    if (ctx) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
-  }
-
-  private handleCameraError(error: any) {
-    console.error('Error al acceder a la cámara:', error);
-  }
-
-  private getCanvasElement(): HTMLCanvasElement {
-    return document.getElementById('overlay') as HTMLCanvasElement;
-  }
-
-  private getCanvasContext(canvas: HTMLCanvasElement): CanvasRenderingContext2D | null {
-    return canvas.getContext('2d');
-  }
-
   getCurrentDateString(): string {
     const currentDate = this.calendar.getToday();
     return this.dateFormatter.format(currentDate);

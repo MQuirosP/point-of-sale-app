@@ -192,18 +192,18 @@
                   id="product_name"
                   formControlName="product_name"
                   class="form-control datalist-no-arrow"
-                  (input)="searchProduct()"
                   autocomplete="off"
                   [spellcheck]="false"
                   placeholder="Seleccione producto..."
                   [ngClass]="{
                     'is-valid':
-                      purchaseForm.get('product_name').touched &&
-                      purchaseForm.get('product_name').valid,
+                    purchaseForm.get('product_name').touched &&
+                    purchaseForm.get('product_name').valid,
                     'is-invalid':
-                      purchaseForm.get('product_name').touched &&
-                      purchaseForm.get('product_name').invalid
+                    purchaseForm.get('product_name').touched &&
+                    purchaseForm.get('product_name').invalid
                   }"
+                  (input)="searchProduct()"
                   (focus)="handleBarcodeInput($event)"
                   #nameInput
                   (keydown)="handleKeyDown($event)"
