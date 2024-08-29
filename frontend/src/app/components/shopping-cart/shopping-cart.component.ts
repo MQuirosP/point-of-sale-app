@@ -179,15 +179,16 @@ export class ShoppingCartComponent {
 
   startScanning() {
     const video = this.videoElement.nativeElement;
-
+    const canvas = document.getElementById('overlay') as HTMLCanvasElement;
+    const ctx = canvas.getContext('2d');
+  
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices
-        .getUserMedia({ video: true })
+      navigator.mediaDevices.getUserMedia({ video: true })
         .then((stream) => {
           this.isScanning = true;
           video.srcObject = stream;
           video.play();
-
+  
           // Inicializa Quagga
           Quagga.init({
             inputStream: {
@@ -199,14 +200,10 @@ export class ShoppingCartComponent {
                 height: { ideal: 720 },
                 facingMode: 'environment',
               },
-              singleChannel: true // true: only the red color-channel is read
+              singleChannel: true
             },
             decoder: {
-              readers: [
-                'code_128_reader',
-                'ean_reader',
-                'ean_8_reader',
-              ],
+              readers: ['code_128_reader', 'ean_reader', 'ean_8_reader']
             },
             locator: {
               halfSample: true,
@@ -214,50 +211,46 @@ export class ShoppingCartComponent {
             },
             locate: true,
             multiple: false,
-            frequency: 10,
+            frequency: 5,
           }, (err: any) => {
             if (err) {
               console.error('Error al inicializar Quagga:', err);
               return;
             }
-            console.log('Quagga inicializado correctamente');
             Quagga.start();
           });
-
+  
           // Maneja el evento de procesamiento para dibujar en el canvas
           Quagga.onProcessed((result: any) => {
-            console.log("onProcessed event triggered", result); // Mensaje de depuración
-            const drawingCtx = Quagga.canvas.ctx.overlay;
-            const drawingCanvas = Quagga.canvas.dom.overlay;
-
-            // Ajustar el tamaño del canvas para que coincida con el del video
-            drawingCanvas.width = video.clientWidth;
-            drawingCanvas.height = video.clientHeight;
-            drawingCanvas.style.position = 'absolute';
-            drawingCanvas.style.top = '0';
-            drawingCanvas.style.left = '0';
-            drawingCanvas.style.zIndex = '1000';
-
-            drawingCtx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
-
-            if (result) {
-              if (result.boxes) {
-                result.boxes.filter((box: any) => box !== result.box)
-                  .forEach((box: any) => {
-                    Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, drawingCtx, { color: 'green', lineWidth: 2 });
-                  });
-              }
-
-              if (result.box) {
-                Quagga.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, drawingCtx, { color: 'black', lineWidth: 2 });
-              }
-
-              if (result.codeResult && result.codeResult.code) {
-                Quagga.ImageDebug.drawPath(result.line, { x: 'x', y: 'y' }, drawingCtx, { color: 'red', lineWidth: 3 });
+            if (ctx) {
+              const videoWidth = video.videoWidth;
+              const videoHeight = video.videoHeight;
+  
+              // Asegura que el canvas tenga el tamaño correcto
+              canvas.width = videoWidth;
+              canvas.height = videoHeight;
+  
+              ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+              if (result) {
+                if (result.boxes) {
+                  result.boxes.filter((box: any) => box !== result.box)
+                    .forEach((box: any) => {
+                      Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, ctx, { color: 'green', lineWidth: 5 });
+                    });
+                }
+  
+                if (result.box) {
+                  Quagga.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, ctx, { color: 'green', lineWidth: 5 });
+                }
+  
+                if (result.codeResult && result.codeResult.code) {
+                  Quagga.ImageDebug.drawPath(result.line, { x: 'x', y: 'y' }, ctx, { color: 'red', lineWidth: 8 });
+                }
               }
             }
           });
-
+  
           // Maneja el evento de detección
           Quagga.onDetected((result: { codeResult: { code: any; }; }) => {
             this.playBeepSound();
@@ -276,21 +269,28 @@ export class ShoppingCartComponent {
       console.error('El navegador no admite la API de getUserMedia');
     }
   }
-
+  
   stopScanning() {
     this.isScanning = false;
     const video = this.videoElement.nativeElement;
-
+    const canvas = document.getElementById('overlay') as HTMLCanvasElement;
+    const ctx = canvas.getContext('2d');
+  
     // Detiene la reproducción del video y detiene las pistas del stream
     if (video.srcObject) {
       const stream = video.srcObject as MediaStream;
       stream.getTracks().forEach((track) => track.stop());
       video.srcObject = null;
     }
-
+  
     // Detiene Quagga y elimina el evento 'onDetected'
     Quagga.stop();
     Quagga.offDetected(); // Elimina cualquier callback registrado en onDetected
+  
+    // Limpia el canvas
+    if (ctx) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
   }
 
   getCurrentDateString(): string {

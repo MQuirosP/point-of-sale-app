@@ -225,38 +225,12 @@
                       saleForm.get('product_name').invalid
                   }"
                   (input)="searchProduct()"
-                  (keypress)="handleKeyDown($event)"
+                  (focus)="handleBarcodeInput($event)"
+                  (keydown)="handleKeyDown($event)"
                   #nameInput
                   capture="environment"
                   accept="image/*"
                 />
-
-                <div
-                  class="d-flex justify-content-center align-items-center mt-2"
-                >
-                  <button (click)="toggleCamera()" class="btn btn-primary">
-                    <i class="fa fa-camera"></i>
-                  </button>
-                  <div
-                    class="d-flex justify-content-center align-items-center mt-2 position-relative"
-                    style="width: 300px"
-                  >
-                    <video
-                      id="video"
-                      #video
-                      autoplay
-                      [hidden]="!isScanning"
-                      class="floating-label video-styled"
-                      style="
-                        z-index: 900;
-                        opacity: 1;
-                        width: 100%;
-                        height: 150px;
-                      "
-                    ></video>
-                  </div>
-                </div>
-
                 <div
                   class="suggestion-list position-fixed border-white shadow mt-1"
                   [style.width.px]="nameInput.offsetWidth"
@@ -285,6 +259,29 @@
                   </ul>
                 </div>
               </div>
+              <div
+                class="d-flex justify-content-center align-items-center mt-2"
+              >
+                <button (click)="toggleCamera()" class="btn btn-primary">
+                  <i class="fa fa-camera"></i>
+                </button>
+                <div
+                  class="d-flex justify-content-center align-items-center mt-2 position-relative"
+                  style="width: 300px"
+                  [hidden]="!isScanning"
+                >
+                  <video
+                    [ngClass]="{ 'video-container-small': isScanning, 'video-styled': isScanning }"
+                    #video
+                    autoplay
+                    
+                    class="floating-label"
+                  ></video>
+                  <!-- Canvas overlay para Quagga -->
+                  <canvas id="overlay" [hidden]="!isScanning" [ngClass]="{ 'canvas-style': isScanning }"></canvas>
+                </div>
+              </div>
+
               <div class="form-group form-row">
                 <div class="col">
                   <label for="product_quantity">Cantidad:</label>
