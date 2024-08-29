@@ -73,7 +73,13 @@ export class ScannerService {
   }
 
 
-  private initializeQuagga(video: HTMLVideoElement, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D | null, onDetectedCallback: (code: string) => void) {
+  private initializeQuagga(
+    video: HTMLVideoElement, 
+    canvas: HTMLCanvasElement, 
+    ctx: CanvasRenderingContext2D | null, 
+    onDetectedCallback: (code: string) => void) 
+    {
+
     this.updateCanvasDimensions(video);
 
     // Verifica el contexto del canvas
@@ -112,10 +118,16 @@ export class ScannerService {
       Quagga.start();
     });
 
-    this.setupQuaggaEvents(video, canvas, ctx, onDetectedCallback); // Actualizado
+    this.setupQuaggaEvents(video, canvas, ctx, onDetectedCallback); 
   }
 
-  private setupQuaggaEvents(video: HTMLVideoElement, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D | null, onDetectedCallback: (code: string) => void) {
+  private setupQuaggaEvents(
+    video: HTMLVideoElement, 
+    canvas: HTMLCanvasElement, 
+    ctx: CanvasRenderingContext2D | null, 
+    onDetectedCallback: (code: string) => void) 
+    {
+
     Quagga.onProcessed((result: any) => {
       if (ctx) {
         this.processQuaggaResult(result, ctx, video, canvas);
@@ -131,7 +143,13 @@ export class ScannerService {
   }
 
 
-  private processQuaggaResult(result: any, ctx: CanvasRenderingContext2D | null, video: HTMLVideoElement, canvas: HTMLCanvasElement) {
+  private processQuaggaResult(
+    result: any, 
+    ctx: CanvasRenderingContext2D | null, 
+    video: HTMLVideoElement, 
+    canvas: HTMLCanvasElement) 
+    {
+
     if (!ctx) return;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -156,7 +174,15 @@ export class ScannerService {
     }
   }
 
-  private drawAdjustedPath(path: any[], offsetX: number, offsetY: number, ctx: CanvasRenderingContext2D, color: string, lineWidth: number) {
+  private drawAdjustedPath(
+    path: any[], 
+    offsetX: number, 
+    offsetY: number, 
+    ctx: CanvasRenderingContext2D, 
+    color: string, 
+    lineWidth: number) 
+    {
+      
     ctx.beginPath();
     ctx.lineWidth = lineWidth;
     ctx.strokeStyle = color;
