@@ -136,7 +136,7 @@ export class ScannerService {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    console.log('Quagga result:', result); // Verifica los resultados en la consola
+    // console.log('Quagga result:', result); 
 
     const { offsetX, offsetY } = this.calculateOffset(video, canvas);
 
