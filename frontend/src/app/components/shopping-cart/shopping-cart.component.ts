@@ -70,6 +70,7 @@ export class ShoppingCartComponent {
   customerSuggestionList: any[] = [];
 
   initialSaleFormData: any;
+  isScanning: boolean = false;
 
   private showNewSaleModalSubscription: Subscription;
 
@@ -79,7 +80,6 @@ export class ShoppingCartComponent {
   @ViewChild('nameInput') nameInput!: ElementRef;
   @ViewChild('video') videoElement: ElementRef<HTMLVideoElement>;
   @ViewChild('overlay') overlay!: ElementRef;
-  isScanning: boolean = false;
   selectedProduct: any;
   product_name: any;
   selectedIndex: number = -1;
@@ -173,6 +173,7 @@ export class ShoppingCartComponent {
     const canvas = this.overlay.nativeElement as HTMLCanvasElement;
     this.barcodeScannerService.stopScanning(video, canvas);
   }
+  
   getCurrentDateString(): string {
     const currentDate = this.calendar.getToday();
     return this.dateFormatter.format(currentDate);

@@ -21,6 +21,7 @@ import { ProductService } from 'src/app/services/product.service';
 import { productAnimations } from 'src/app/animations/product-list-animation';
 import { Purchase } from 'src/app/interfaces/purchases';
 import { Products } from 'src/app/interfaces/products';
+import { ScannerService } from 'src/app/services/scanner.service';
 
 interface ApiPurchaseResponse {
   success: boolean;
@@ -78,6 +79,7 @@ export class PurchaseHistoryComponent {
   providersList: any[] = [];
   providerSuggestionList: any[] = [];
   isProviderValid: boolean = false;
+  isScanning: boolean = false;
 
   @ViewChild('newPurchaseModal', { static: false })
   newPurchaseModal!: ElementRef;
@@ -86,6 +88,8 @@ export class PurchaseHistoryComponent {
   @ViewChild('productQuantityInput')
   productQuantityInput: ElementRef<HTMLInputElement>;
   @ViewChild('nameInput') nameInput!: ElementRef;
+  @ViewChild('video') videoElement: ElementRef<HTMLVideoElement>;
+  @ViewChild('overlay') overlay!: ElementRef;
   selectedProvider: any;
   selectedIndex: number = -1;
 
@@ -97,7 +101,8 @@ export class PurchaseHistoryComponent {
     private purchaseService: PurchaseService,
     private formBuilder: FormBuilder,
     private productCache: ProductCacheService,
-    private productService: ProductService
+    private productService: ProductService,
+    private barcodeScannerService: ScannerService,
   ) {
     // DEFINICIÓN FORMULARIO PARA COMPRAS
     this.purchaseForm = this.formBuilder.group({
@@ -179,6 +184,34 @@ export class PurchaseHistoryComponent {
       this.purchaseHistoryModal.nativeElement.style.display = 'none';
     });
     this.selectedDate = this.calendar.getToday();
+  }
+
+  toggleCamera() {
+    if (!this.isScanning) {
+      this.startScanning();
+    } else {
+      this.stopScanning();
+    }
+  }
+
+  startScanning() {
+    const video = this.videoElement.nativeElement;
+    const canvas = this.overlay.nativeElement;
+    const ctx = canvas.getContext('2d');
+    this.isScanning=true;
+    
+    this.barcodeScannerService.startScanning(video, canvas, ctx, (detectedCode) => {
+      this.purchaseForm.get('product_name').setValue(detectedCode);
+      this.searchProduct();
+      this.stopScanning();
+    });
+  }
+
+  stopScanning() {
+    this.isScanning = false;
+    const video = this.videoElement.nativeElement as HTMLVideoElement;
+    const canvas = this.overlay.nativeElement as HTMLCanvasElement;
+    this.barcodeScannerService.stopScanning(video, canvas);
   }
 
   isCurrentDate(createdAt: string): boolean {

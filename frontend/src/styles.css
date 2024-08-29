@@ -1118,3 +1118,28 @@ span.badge:hover {
   overflow-y: scroll;
   height: 55vh
 }
+
+.video-styled {
+  opacity: 1;
+  width: 100%;
+  padding: 0;
+  border-radius: 0.5rem; /* Esquinas redondeadas */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); /* Sombra */
+  border: 2px solid #ccc; /* Borde */
+  object-fit: cover; /* Asegura que el video se ajuste al contenedor */
+}
+
+.video-container-small {
+  height: 300px;
+  z-index: 2000;
+}
+
+.canvas-style {
+  position: absolute;
+  margin-left: 10px;
+  border: solid rgb(52, 245, 4) 3px;
+  top: 0px;
+  left: 0px;
+  /* width: 800px; */
+  z-index: 2000;
+}
