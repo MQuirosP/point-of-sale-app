@@ -103,7 +103,7 @@ export class ScannerService {
       },
       locate: true,
       multiple: false,
-      frequency: 5,
+      frequency: 3,
     }, (err: any) => {
       if (err) {
         console.error('Error al inicializar Quagga:', err);
