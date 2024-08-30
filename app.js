@@ -6,10 +6,10 @@ const http = require("http");
 const sequelize = require("./backend/src/database/sequelize");
 const routes = require("./backend/src/routes");
 const cors = require("cors");
-const compression = require("compression")
+const compression = require("compression");
+const path = require("path");
 
 // Configuración de la aplicación
-
 const server = http.createServer(app);
 const port = process.env.APP_PORT;
 
@@ -30,7 +30,16 @@ server.listen(port, () => {
 
 app.use(express.json());
 app.use(cors(corsOptions));
-app.use(compression())
+app.use(compression());
+
+// Configuración de archivos estáticos
+app.use(express.static(path.join(__dirname, "public"), {
+  setHeaders: (res, path) => {
+    if (path.endsWith(".js")) {
+      res.setHeader("Content-Type", "application/javascript; charset=utf-8");
+    }
+  }
+}));
 
 // Rutas
 app.use("/", routes);
