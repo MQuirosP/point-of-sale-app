@@ -112,7 +112,7 @@ export class ScannerService {
       canvas.height = 300; // Mantén el tamaño específico del canvas
       canvas.style.width = `${video.videoWidth - 340}px`; // Ajusta el estilo si es necesario
       canvas.style.height = `${video.videoHeight - 280}px`; // Ajusta el estilo si es necesario
-      console.log('Canvas dimensions updated:', canvas.width, canvas.height);
+      // console.log('Canvas dimensions updated:', canvas.width, canvas.height);
     }
   }
 
