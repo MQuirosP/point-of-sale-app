@@ -1110,8 +1110,8 @@ span.badge:hover {
 }
 
 .form-modal {
-  overflow-y: scroll;
-  height: 75vh
+  overflow-y: auto;
+  height: 62vh
 }
 
 .history-card {
