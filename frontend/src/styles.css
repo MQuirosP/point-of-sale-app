@@ -144,9 +144,9 @@ body {
 }
 
 .main-board-style {
-  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.85);
   -webkit-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.85);
   -moz-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.85);
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.85);
 }
 
 h1 i {
@@ -322,9 +322,9 @@ a.hide {
 
 #pie-pagina {
   padding-top: 10px;
-  box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.85);
   -webkit-box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.85);
   -moz-box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.85);
+  box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.85);
 }
 
 .footer {

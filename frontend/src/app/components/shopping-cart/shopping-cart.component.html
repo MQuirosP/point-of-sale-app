@@ -137,13 +137,15 @@
                   }"
                     aria-controls="customerOptions"
                     aria-label="Seleccione cliente"
+                    [attr.aria-expanded]="isExpanded ? 'true' : 'false'"
+                    (input)="onInputChange($event)"
                   />
                   <div
                     class="suggestion-list shadow bg-white position-fixed mt-1"
                   >
                     <datalist
                       id="customerOptions"
-                      role="searchbox"
+                      role="listbox"
                       class="form-select"
                       aria-labelledby="customerOptions"
                     >
@@ -262,7 +264,7 @@
               <div
                 class="d-flex d-md-none justify-content-center align-items-center mt-2 mb-2"
               >
-                <button (click)="toggleCamera()" class="btn btn-primary">
+                <button (click)="toggleCamera()" class="btn btn-primary" title="camera-button">
                   <i class="fa fa-camera"></i>
                 </button>
                 <div
@@ -284,7 +286,10 @@
                     id="overlay"
                     #overlay
                     [hidden]="!isScanning"
-                    [ngClass]="{ 'canvas-style': isScanning, 'floating-label': isScanning }"
+                    [ngClass]="{
+                      'canvas-style': isScanning,
+                      'floating-label': isScanning
+                    }"
                   >
                   </canvas>
                 </div>
@@ -309,20 +314,9 @@
                 </div>
                 <div class="col">
                   <label for="product_price">Precio:</label>
-                  <!-- <label for="product_taxes" class="form-check-label ml-5">
-                    <input
-                      type="checkbox"
-                      id="product_taxes"
-                      class="form-check-input shadow"
-                      formControlName="product_taxes"
-                      [checked]="selectedProductTaxes"
-                      readonly
-                    />
-                    {{ selectedProductTaxes ? "Gravado" : "Exento" }}
-                  </label> -->
                   <input
                     type="number"
-                    id="price"
+                    id="product_price"
                     formControlName="product_price"
                     class="form-control text-right"
                     [ngClass]="{
@@ -546,6 +540,7 @@
               <input
                 type="date"
                 name="sale-date"
+                id="sale-date"
                 class="form-control input-group-text shadow mb-1"
                 [(ngModel)]="selectedDate"
                 (ngModelChange)="filterSalesByDate()"
@@ -570,6 +565,7 @@
                     class="ml-2"
                     (click)="toggleSaleDetails(sale)"
                     style="cursor: pointer"
+                    title="show_details"
                   >
                     <i
                       class="clic-on-icon"

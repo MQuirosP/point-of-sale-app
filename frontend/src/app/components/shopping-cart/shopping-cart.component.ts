@@ -83,6 +83,7 @@ export class ShoppingCartComponent {
   selectedProduct: any;
   product_name: any;
   selectedIndex: number = -1;
+  isExpanded: boolean;
 
   constructor(
     private modalService: ModalService,
@@ -144,6 +145,11 @@ export class ShoppingCartComponent {
     if (this.showNewSaleModalSubscription) {
       this.showNewSaleModalSubscription.unsubscribe();
     }
+  }
+
+  onInputChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.isExpanded = input.value.length > 0; // Muestra la lista si hay algo escrito
   }
 
   toggleCamera() {
