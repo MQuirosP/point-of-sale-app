@@ -1,6 +1,11 @@
 const jwt = require("jsonwebtoken");
 
 function authMiddleware(req, res, next) {
+  // Excluir la ruta de login de la autenticación
+  if (req.path === "/api/users/login" && req.method === "POST") {
+    return next();
+  }
+
   // Extraer el token del encabezado Authorization
   const token = req.header("Authorization")?.replace("Bearer ", "");
 
