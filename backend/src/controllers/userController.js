@@ -128,15 +128,21 @@ async function getUserByUsername(req, res) {
   const { username } = req.params;
   try {
     const user = await userService.getUserByUsername(username);
+
+    // Retornar inmediatamente si se encuentra el usuario
     if (user) {
-      responseUtils.sendSuccessResponse(res, user);
-    } else {
-      responseUtils.sendErrorResponse(res, "User does not exist", 404);
+      return responseUtils.sendSuccessResponse(res, user);
     }
+
+    // Retornar inmediatamente si el usuario no existe
+    return responseUtils.sendErrorResponse(res, "User does not exist", 200);
+
   } catch (error) {
-    responseUtils.sendErrorResponse(res, "Error retrieving user");
+    // Manejar cualquier error durante la obtención del usuario
+    return responseUtils.sendErrorResponse(res, "Error retrieving user", 500);
   }
 }
+
 
 async function getUserById(req, res) {
   const { id } = req.params;
