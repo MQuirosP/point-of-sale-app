@@ -199,7 +199,6 @@
   tabindex="-1"
   role="dialog"
   aria-labelledby="providerListModalLabel"
-  aria-hidden="true"
 >
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content modal-shadow">
@@ -213,7 +212,7 @@
           (click)="closeProviderListModal()"
           aria-label="Cerrar"
         >
-          <span aria-hidden="true"><i class="fas fa-close"></i></span>
+          <span ><i class="fas fa-close"></i></span>
         </button>
       </div>
       <div class="modal-body">
@@ -322,7 +321,6 @@
   tabindex="-1"
   role="dialog"
   aria-labelledby="providerInfoModalLabel"
-  aria-hidden="true"
 >
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content modal-shadow">
@@ -336,7 +334,7 @@
           aria-label="Close"
           (click)="closeProviderInfoModal()"
         >
-          <span aria-hidden="true"><i class="fas fa-close"></i></span>
+          <span><i class="fas fa-close"></i></span>
         </button>
       </div>
       <div class="modal-body">
@@ -482,7 +480,6 @@
   tabindex="-1"
   role="dialog"
   aria-labelledby="customerListModalLabel"
-  aria-hidden="true"
 >
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content modal-shadow">
@@ -496,7 +493,7 @@
           (click)="closeCustomerListModal()"
           aria-label="Cerrar"
         >
-          <span aria-hidden="true"><i class="fas fa-close"></i></span>
+          <span ><i class="fas fa-close"></i></span>
         </button>
       </div>
       <div class="modal-body">
@@ -607,7 +604,6 @@
   tabindex="-1"
   role="dialog"
   aria-labelledby="customerInfoModalLabel"
-  aria-hidden="true"
 >
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content modal-shadow">
@@ -621,7 +617,7 @@
           aria-label="Close"
           (click)="closeCustomerInfoModal()"
         >
-          <span aria-hidden="true"><i class="fas fa-close"></i></span>
+          <span ><i class="fas fa-close"></i></span>
         </button>
       </div>
       <div class="modal-body">
@@ -807,7 +803,6 @@
   tabindex="-1"
   role="dialog"
   aria-labelledby="usersListModalLabel"
-  aria-hidden="true"
 >
   <div class="modal-dialog modal-dialog-scrollable" role="document">
     <div class="modal-content modal-shadow">
@@ -821,7 +816,7 @@
           (click)="closeUsersListModal()"
           aria-label="Cerrar"
         >
-          <span aria-hidden="true"><i class="fas fa-close"></i></span>
+          <span ><i class="fas fa-close"></i></span>
         </button>
       </div>
       <div class="modal-body">
@@ -864,6 +859,7 @@
                       class=""
                       style="cursor: pointer; min-width: 150px"
                       tabindex="-1"
+                      [attr.inert]="user.showIcons ? true : null"
                     >
                       {{ user.username }}
                     </span>
@@ -936,7 +932,6 @@
   tabindex="-1"
   role="dialog"
   aria-labelledby="userInfoModalLabel"
-  aria-hidden="true"
 >
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content modal-shadow">
@@ -950,7 +945,7 @@
           aria-label="Close"
           (click)="closeUserInfoModal()"
         >
-          <span aria-hidden="true"><i class="fas fa-close"></i></span>
+          <span ><i class="fas fa-close"></i></span>
         </button>
       </div>
       <div class="modal-body">
@@ -1092,7 +1087,6 @@
   tabindex="-1"
   role="dialog"
   aria-labelledby="resetPasswordModalLabel"
-  aria-hidden="true"
 >
   <div class="modal-dialog" role="document" style="width: 300px">
     <div class="modal-content modal-shadow">
@@ -1106,7 +1100,7 @@
           aria-label="Close"
           (click)="closeResetPasswordModal()"
         >
-          <span aria-hidden="true">
+          <span >
             <i class="fas fa-close"></i>
           </span>
         </button>

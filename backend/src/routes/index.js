@@ -9,13 +9,20 @@ router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
 // Middleware para autenticación en métodos POST, PUT y DELETE
-// router.use((req, res, next) => {
-//   if (["POST", "PUT", "DELETE"].includes(req.method)) {
-//     authMiddleware(req, res, next);
-//   } else {
-//     next();
-//   }
-// });
+router.use((req, res, next) => {
+    // Excluir la ruta de login de la autenticación
+    if (req.path === "/api/users/login/" && req.method === "POST") {
+      return next();
+    }
+  
+    // Aplicar autenticación para todos los demás métodos POST, PUT y DELETE
+    if (["POST", "PUT", "DELETE"].includes(req.method)) {
+      return authMiddleware(req, res, next);
+    }
+  
+    next();
+  });
+  
 
 // Importar y usar las rutas modularizadas
 router.use("/api/products", require("./products"));
