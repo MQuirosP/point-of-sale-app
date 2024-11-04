@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "postgres",
-    "password": "admin",
+    "password": "3az5bkhr",
     "database": "verduleria_db",
     "host": "127.0.0.1",
     "dialect": "postgres",
@@ -9,7 +9,7 @@
   },
   "test": {
     "username": "postgres",
-    "password": "admin",
+    "password": "3az5bkhr",
     "database": "verduleria_db",
     "host": "127.0.0.1",
     "dialect": "postgres"
