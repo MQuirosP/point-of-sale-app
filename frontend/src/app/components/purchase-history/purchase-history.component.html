@@ -133,21 +133,25 @@
                       purchaseForm.get('provider_name').invalid,
                       'italic-text': !purchaseForm.get('provider_name').value,
                   }"
-                  (focus)="searchProviders($event)"
+                  aria-controls="providerOptions"
+                  aria-label="Seleccione proveedor"
+                  [attr.aria-expanded]="isExpanded ? 'true' : 'false'"
+                  (input)="onInputChange($event)"
                 />
                 <div
                   class="suggestion-list shadow bg-white position-fixed mt-1"
                 >
                   <datalist
                     id="providerOptions"
-                    role="searchbox"
+                    role="listbox"
                     class="form-select"
+                    aria-labelledby="providerOptions"
                   >
                     <option
-                      *ngFor="let provider of providerSuggestionList"
-                      [value]="formatOption(provider)"
+                      *ngFor="let provider of providersList"
+                      [value]="formattedProviderNames[provider.provider_id]"
                     >
-                      {{ provider_name[provider.provider_name] }}
+                      {{ formattedProviderNames[provider.provider_name] }}
                     </option>
                   </datalist>
                 </div>

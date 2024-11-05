@@ -6,7 +6,7 @@ import {
   NgbDateParserFormatter,
   NgbDateStruct,
 } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, forkJoin, throwError } from 'rxjs';
+import { Observable, forkJoin, take, throwError } from 'rxjs';
 import { fadeAnimation } from 'src/app/animations/fadeAnimation';
 import { ToastrService } from 'ngx-toastr';
 import { PurchaseService } from 'src/app/services/purchase.service';
@@ -75,11 +75,12 @@ export class PurchaseHistoryComponent {
 
   // Consultar proveedores
   provider_id: number = 0;
-  provider_name:  { [key: string]: string } = {};
+  formattedProviderNames:  { [key: string]: string } = {};
   providersList: any[] = [];
   providerSuggestionList: any[] = [];
   isProviderValid: boolean = false;
   isScanning: boolean = false;
+  isExpanded: boolean;
 
   @ViewChild('newPurchaseModal', { static: false })
   newPurchaseModal!: ElementRef;
@@ -92,6 +93,7 @@ export class PurchaseHistoryComponent {
   @ViewChild('overlay') overlay!: ElementRef;
   selectedProvider: any;
   selectedIndex: number = -1;
+  provider_name: any;
 
   constructor(
     private http: HttpClient,
@@ -723,11 +725,14 @@ export class PurchaseHistoryComponent {
   }
 
   fetchProviders() {
-    this.purchaseService.getProviders().subscribe({
+    this.purchaseService.getProviders().pipe(take(1)).subscribe({
       next: (response: any) => {
         const providers = response?.message?.providers;
         if (Array.isArray(providers) && providers.length > 0) {
           this.providersList = providers;
+          this.providersList.forEach((provider) => {
+            this.formattedProviderNames[provider.provider_id] = `${provider.provider_name}`
+          })
         } else {
           this.providersList = [];
         }
@@ -739,38 +744,43 @@ export class PurchaseHistoryComponent {
     });
   }
 
-  searchProviders(event: Event) {
-    const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
-    if (Array.isArray(this.providersList) && this.providersList.length > 0) {
-      this.providerSuggestionList = this.providersList.filter(
-        (provider: any) =>
-          provider.provider_name.toLowerCase().includes(searchTerm) ||
-          provider.provider_dni.toLowerCase().includes(searchTerm)
-      );
-    } else {
-      this.providerSuggestionList = [];
-    }
-
-    if (this.providerSuggestionList.length === 1) {
-      const suggestion = this.providerSuggestionList[0];
-      this.selectedProvider = suggestion;
-      this.provider_id = suggestion.provider_id;
-      this.providerSuggestionList = []; // Limpiar la lista de sugerencias de proveedores
-      (document.getElementById('provider_name') as HTMLInputElement).value =
-        this.formatOption(suggestion); // Establecer el valor en el input
-    } else {
-      this.provider_id = null;
-    }
+  onInputChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.isExpanded = input.value.length > 0; // Muestra la lista si hay algo escrito
   }
 
-  formatOption(provider: any): string {
-    if(!provider) {
-      this.purchaseForm.get('provider_name').reset();
-    }
-    const formattedName = `${provider.provider_name} ${provider.provider_dni}` 
-    this.provider_name[provider.providerId] = formattedName;
-    return formattedName;
-  }
+  // searchProviders(event: Event) {
+  //   const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
+  //   if (Array.isArray(this.providersList) && this.providersList.length > 0) {
+  //     this.providerSuggestionList = this.providersList.filter(
+  //       (provider: any) =>
+  //         provider.provider_name.toLowerCase().includes(searchTerm) ||
+  //         provider.provider_dni.toLowerCase().includes(searchTerm)
+  //     );
+  //   } else {
+  //     this.providerSuggestionList = [];
+  //   }
+
+  //   if (this.providerSuggestionList.length === 1) {
+  //     const suggestion = this.providerSuggestionList[0];
+  //     this.selectedProvider = suggestion;
+  //     this.provider_id = suggestion.provider_id;
+  //     this.providerSuggestionList = []; // Limpiar la lista de sugerencias de proveedores
+  //     (document.getElementById('provider_name') as HTMLInputElement).value =
+  //       this.formatOption(suggestion); // Establecer el valor en el input
+  //   } else {
+  //     this.provider_id = null;
+  //   }
+  // }
+
+  // formatOption(provider: any): string {
+  //   if(!provider) {
+  //     this.purchaseForm.get('provider_name').reset();
+  //   }
+  //   const formattedName = `${provider.provider_name} ${provider.provider_dni}` 
+  //   this.provider_name[provider.providerId] = formattedName;
+  //   return formattedName;
+  // }
 
   formatTaxPercentage(taxPercentage) {
     // Redondear el número sin decimales
