@@ -7,7 +7,7 @@ const Sequelize = require("sequelize");
 const process = require("process");
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || "development";
-const config = require(path.join(__dirname, "../../config/config.json"))[env];
+const config = require("../../../config/config.json")[env];
 const db = {};
 
 let sequelize;
@@ -60,30 +60,34 @@ Object.keys(db).forEach((modelName) => {
   }
 });
 
-// Código para sincronizar la base de datos
-sequelize
-  .sync()
-  .then(() => {
-    debug("Base de datos sincronizada correctamente.");
-  })
-  .catch((error) => {
-    debug("Error al sincronizar la base de datos:", error);
-  });
+// Código para sincronizar la base de datos solo si es en desarrollo
+if (env === "development") {
+  sequelize
+    .sync()
+    .then(() => {
+      debug("Base de datos sincronizada correctamente.");
+    })
+    .catch((error) => {
+      debug("Error al sincronizar la base de datos:", error);
+    });
+}
+
+// Llama a la función de sincronización al final solo si es en desarrollo
+if (env === "development") {
+  const syncDatabase = async () => {
+    try {
+      await sequelize.sync({ force: false }); // Cambia a true solo en desarrollo si necesitas reiniciar las tablas
+      debug("Base de datos sincronizada correctamente.");
+    } catch (error) {
+      debug("Error al sincronizar la base de datos:", error);
+    }
+  };
+
+  syncDatabase();
+}
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
-
-const syncDatabase = async () => {
-  try {
-    await sequelize.sync({ force: true }); // Cambia a true solo en desarrollo si necesitas reiniciar las tablas
-    debug("Base de datos sincronizada correctamente.");
-  } catch (error) {
-    debug("Error al sincronizar la base de datos:", error);
-  }
-};
-
-// Llama a la función de sincronización al final
-// syncDatabase();
 
 module.exports = {
   db,
