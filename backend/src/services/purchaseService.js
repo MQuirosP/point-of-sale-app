@@ -127,98 +127,16 @@ async function getPurchasesByDate(date) {
 }
 
 async function createPurchase(purchaseData) {
-  const transaction = await sequelize.transaction();
-
-  try {
-    const {
-      providerId,
-      provider_name,
-      paymentMethod,
-      doc_number,
-      status,
-      sub_total,
-      taxes_amount,
-      purchaseItems,
-    } = purchaseData;
-
-    console.log(purchaseItems);
-
-    if (!Array.isArray(purchaseItems) || purchaseItems.length === 0) {
-      throw new Error("Invalid or empty 'products' array");
-    }
-
-    const purchase = await Purchase.create(
-      {
-        providerId,
-        provider_name,
-        paymentMethod,
-        doc_number,
-        status,
-        sub_total,
-        taxes_amount,
-      },
-      { transaction }
-    );
-
-    let purchaseTotal = 0;
-    const productList = [];
-
-    for (const item of purchaseItems) {
-      console.log("OJO AQUI", item.productId);
-      const { productId, quantity, taxes_amount, sub_total } = item;
-      if (!productId) {
-        throw new Error("int_code is missing or undefined");
-      }
-
-      const product = await productService.getProductoByPk(productId);
-
-      if (product) {
-        const newStock = product.quantity + quantity;
-        await productService.updateProduct(productId, {
-          quantity: newStock,
-        });
-
-        const purchaseItemTotal = product.purchase_price * quantity + taxes_amount;
-        purchaseTotal += purchaseItemTotal;
-
-        const purchaseItem = await PurchaseItems.create(
-          {
-            purchaseId: purchase.purchaseId,
-            int_code: product.int_code,
-            purchase_price: product.purchase_price,
-            quantity,
-            name: product.name,
-            taxes_amount: taxes_amount,
-            sub_total: sub_total,
-            total: purchaseItemTotal,
-            status: "aceptado",
-          },
-          { transaction }
-        );
-
-        productList.push(purchaseItem);
-      } else {
-        await transaction.rollback();
-        throw new Error(`Product with int_code '${int_code}' not found`);
-      }
-    }
-
-    purchase.total = purchaseTotal;
-    await purchase.save({ transaction });
-
-    await transaction.commit();
-
-    appLogger.info("Purchase created successfully");
-    return {
-      purchase,
-      purchaseItems,
-    };
-  } catch (error) {
-    await transaction.rollback();
-    appLogger.error("Error creating purchase", error);
-    throw error;
-  }
+  console.log(purchaseData);
+  return sequelize.transaction(async (t) => {
+    const purchase = await Purchase.create(purchaseData, {
+      include: [{ model: PurchaseItems, as: "purchaseItems" }],
+      transaction: t,
+    });
+    return purchase;
+  });
 }
+
 
 async function cancelPurchaseItem(intCode, purchaseId) {
   try {

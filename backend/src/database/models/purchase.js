@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       Purchase.belongsToMany(models.Product, {
         through: models.PurchaseItems,
         foreignKey: "purchaseId",
-        otherKey: "int_code",
+        otherKey: "productId",
         as: "products",
       });
       Purchase.hasMany(models.PurchaseItems, {

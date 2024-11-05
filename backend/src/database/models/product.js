@@ -4,14 +4,20 @@ const { formatDate } = require('../../utils/dateUtils');
 
 module.exports = (sequelize, DataTypes) => {
   class Product extends Model {
-    static associate(models) {
+    static associate = (models) => {
       Product.belongsToMany(models.Purchase, {
-        through: models.PurchaseItems,
-        foreignKey: 'int_code',
-        otherKey: 'purchaseId',
-        as: 'purchases',
+          through: models.PurchaseItems, // Nombre de la tabla intermedia
+          foreignKey: 'productId', // Clave foránea en PurchaseItems
+          otherKey: 'purchaseId', // Clave foránea en Purchase
+          as: 'purchases', // Alias para la relación
       });
-    }
+  
+      // Aquí puedes definir la relación con PurchaseItems
+      Product.hasMany(models.PurchaseItems, {
+          foreignKey: 'productId', // Clave foránea en PurchaseItems
+          as: 'purchaseItems', // Alias para la relación
+      });
+  };
   }
 
   Product.init(

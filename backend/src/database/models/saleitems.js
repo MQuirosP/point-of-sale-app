@@ -10,27 +10,25 @@ module.exports = (sequelize, DataTypes) => {
         as: 'sale',
       });
       SaleItems.belongsTo(models.Product, {
-        foreignKey: 'int_code',
+        foreignKey: 'productId',
         as: 'product',
       });
     }
   }
   SaleItems.init(
     {
-      sequence: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      status: {
+        status: {
         type: DataTypes.STRING,
         allowNull: true,
         validate: {
           isIn: [["aceptado", "anulada"]],
         },
       },
-      saleId: DataTypes.INTEGER,
-      int_code: DataTypes.STRING,
+      saleId: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true},
+      int_code: {type: DataTypes.STRING},
       sale_price: DataTypes.DECIMAL,
       quantity: DataTypes.FLOAT,
       createdAt:{

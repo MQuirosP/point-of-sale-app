@@ -16,10 +16,10 @@ function backupDataBase() {
   const backupPath = path.join(backupFolder, `${backupName}.backup`);
 
   // Ruta completa al ejecutable pg_dump
-  const pgDumpPath = "C:\\Program Files\\PostgreSQL\\15\\bin\\pg_dump.exe";
+  const pgDumpPath = "C:\\Program Files\\PostgreSQL\\17\\bin\\pg_dump.exe";
 
   // Contraseña de la base de datos
-  const password = "admin"; // Reemplaza con la contraseña correcta
+  const password = "3az5bkhr"; // Reemplaza con la contraseña correcta
 
   // Establecer la variable de entorno PGPASSWORD con la contraseña
   process.env.PGPASSWORD = password;

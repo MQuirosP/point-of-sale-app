@@ -70,6 +70,7 @@ async function createPurchase(req, res) {
       status,
       sub_total,
       taxes_amount,
+      total,
       purchaseItems,
     } = req.body;
     const existingPurchase = await purchaseService.getPurchaseByDocNumber(
@@ -104,17 +105,18 @@ async function createPurchase(req, res) {
       status,
       taxes_amount,
       sub_total,
+      total,
       purchaseItems,
     };
 
-    // const transaction = await sequelize.transaction();
+    const transaction = await sequelize.transaction();
 
     try {
       const { purchase, purchaseItems } = await purchaseService.createPurchase(
         purchaseData
       );
-      purchase.purchaseItems = purchaseItems;
-      // await transaction.commit();
+      // purchase.purchaseItems = purchaseItems;
+      await transaction.commit();
       appLogger.info("Purchase created successfully");
       responseUtils.sendSuccessResponse(
         res,
@@ -123,6 +125,7 @@ async function createPurchase(req, res) {
       );
     } catch (error) {
       // await transaction.rollback();
+      console.log(error);
       appLogger.error("Error creating purchase", error);
       responseUtils.sendErrorResponse(res, "Error creating purchase");
     }

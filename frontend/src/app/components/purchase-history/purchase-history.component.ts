@@ -451,7 +451,7 @@ export class PurchaseHistoryComponent {
       productId,
       int_code,
       name,
-      price: productNewPrice?.value,
+      purchase_price: productNewPrice?.value,
       quantity: productQuantity?.value,
       taxes: this.selectedProductTaxes,
       isNew: true,
@@ -459,6 +459,7 @@ export class PurchaseHistoryComponent {
       category_id,
       sale_price,
       margin,
+      
     };
 
     this.calculateProductAmounts(product, taxPercentage);
@@ -479,13 +480,18 @@ export class PurchaseHistoryComponent {
 
   private calculateProductAmounts(product: Products, taxPercent: number) {
     if (product.taxes) {
-      const priceWithTaxes = product.price / (1 - taxPercent / 100);
-      const taxesPerItem = priceWithTaxes - product.price;
-      product.taxes_amount = taxesPerItem * product.quantity;
-      product.sub_total = product.price * product.quantity;
+      const priceWithTaxes = product.purchase_price / (1 - taxPercent / 100);
+      const taxesPerItem = priceWithTaxes - product.purchase_price;
+      const subTotal = product.purchase_price * product.quantity
+      const taxesAmount = taxesPerItem * product.quantity;
+      const totalAmount = (priceWithTaxes + taxesPerItem) * product.quantity;
+      product.taxes_amount = taxesAmount;
+      product.sub_total = subTotal;
+      product.total = totalAmount;
     } else {
       product.taxes_amount = 0;
-      product.sub_total = product.price * product.quantity;
+      product.sub_total = Number(product.price * product.quantity);
+      product.total = Number(product.price * product.quantity);
     }
   }
 
@@ -528,7 +534,6 @@ export class PurchaseHistoryComponent {
 
   async createPurchase(event: Event) {
     const providerName = this.purchaseForm.get('provider_name').value;
-
     if (!providerName) {
       this.toastr.warning('Seleccione un proveedor.');
     } else if (!this.validatePurchaseData(event)) {
@@ -604,8 +609,9 @@ export class PurchaseHistoryComponent {
       }
 
       const data = {
-        purchase_price: product.price,
+        purchase_price: product.purchase_price,
       };
+      console.log(data);
       return this.http.put(
         `${this.backendUrl}products/${cachedProduct.productId}`,
         data
@@ -626,9 +632,8 @@ export class PurchaseHistoryComponent {
       taxes_amount: this.totalTaxesAmount || 0,
       purchaseItems: this.productList.map((product) => ({ ...product })),
       createdAt: '',
-      total: 0,
+      total: this.subTotalPurchaseAmount + this.totalTaxesAmount,
     };
-
     this.purchaseService.createPurchase(purchase).subscribe({
       next: () => {
         this.toastr.success('Compra registrada exitosamente.');

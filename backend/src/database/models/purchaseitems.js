@@ -5,16 +5,17 @@ const Product = require('./product')
 
 module.exports = (sequelize, DataTypes) => {
   class PurchaseItems extends Model {
-    static associate(models) {
+    static associate = (models) => {
       PurchaseItems.belongsTo(models.Purchase, {
-        foreignKey: "purchaseId",
-        as: "purchase",
+          foreignKey: 'purchaseId',
+          as: 'purchase', // Alias para la relación
       });
+  
       PurchaseItems.belongsTo(models.Product, {
-        foreignKey: "int_code",
-        as: "product",
+          foreignKey: 'productId', // Debe referirse a productId en lugar de int_code
+          as: 'product', // Alias para la relación
       });
-    }
+  };
   }
   PurchaseItems.init(
     {
@@ -23,10 +24,11 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
+      productId: DataTypes.INTEGER,
       purchaseId: DataTypes.INTEGER,
       int_code: DataTypes.STRING,
       purchase_price: DataTypes.DECIMAL,
-      quantity: DataTypes.FLOAT,
+      quantity: DataTypes.DECIMAL(10, 2),
       sub_total: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: true,
