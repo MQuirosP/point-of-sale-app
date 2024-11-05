@@ -108,8 +108,10 @@ async function deleteProduct(req, res) {
   try {
     const { int_code } = req.params;
     const { password } = req.body;
-
-    if (password !== process.env.DELETE_PASSWORD) {
+    console.log(password);
+    const myPassword = process.env.DELETE_PASSWORD;
+    console.log(myPassword);
+    if (password.trim() !== myPassword.trim()) {
       return responseUtils.sendErrorResponse(res, "Invalid password", 403);
     }
 

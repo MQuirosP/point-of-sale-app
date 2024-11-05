@@ -54,16 +54,16 @@ export class ProductListComponent implements OnInit {
     private productService: ProductService
   ) {
     this.productForm = this.formBuilder.group({
-      productId: [0],
+      productId: [Number(0)],
       int_code: [''],
       name: ['', Validators.required],
       description: ['', Validators.required],
-      category_id: ['', [Validators.required]],
-      purchase_price: [0, Validators.required],
-      sale_price: [0, Validators.required],
-      taxes: [false, Validators.required],
-      taxPercentage: [{ value: null, disabled: true }, Validators.required],
-      margin: [0, Validators.required],
+      category_id: [Number(''), Validators.required],
+      purchase_price: [Number(0), Validators.required],
+      sale_price: [Number(0), Validators.required],
+      taxes: [Boolean(false), Validators.required],
+      taxPercentage: [{ value: Number(null), disabled: true }, Validators.required],
+      margin: [Number(0), Validators.required],
     });
     this.productForm.get('taxes').valueChanges.subscribe((taxesValue) => {
       if (taxesValue) {
@@ -250,15 +250,24 @@ export class ProductListComponent implements OnInit {
   }
 
   private updateProductForm(product: Products) {
-    // const selectedCategory = this.categoryOptions.find(
-    //   (option) => option.value === product.category_id
-    // );
-
-    this.productForm.patchValue({
+    // Convierte los campos numéricos a números explícitamente antes de pasarlos al formulario
+    const formattedProduct = {
       ...product,
+      purchase_price: Number(product.purchase_price).toFixed(2),
+      sale_price: Number(product.sale_price).toFixed(2),
+      margin: Number(product.margin).toFixed(2),
+      taxPercentage: Number(product.taxPercentage).toFixed(2),
+      quantity: Number(product.quantity).toFixed(3),
+      category_id: Number(product.category_id),
+    };
+  
+    this.productForm.patchValue({
+      ...formattedProduct,
+      // Si necesitas un valor específico en category_id, puedes agregarlo aquí
       // category_id: selectedCategory,
     });
   }
+  
 
   editProduct() {
     const controls = this.productForm.controls;
@@ -473,6 +482,7 @@ export class ProductListComponent implements OnInit {
 
   deleteProduct(productData: Products) {
     const password = this.password;
+    console.log(password);
     const int_code = productData.int_code;
 
     this.productService.deleteProduct(int_code, password).subscribe({
