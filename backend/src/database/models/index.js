@@ -73,6 +73,18 @@ sequelize
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+const syncDatabase = async () => {
+  try {
+    await sequelize.sync({ force: true }); // Cambia a true solo en desarrollo si necesitas reiniciar las tablas
+    debug("Base de datos sincronizada correctamente.");
+  } catch (error) {
+    debug("Error al sincronizar la base de datos:", error);
+  }
+};
+
+// Llama a la función de sincronización al final
+// syncDatabase();
+
 module.exports = {
   db,
   Product: db.Product,
@@ -85,6 +97,6 @@ module.exports = {
   Customer: db.Customer,
   BlacklistedToken: db.BlacklistedToken,
   Options: db.Options,
-  AuditDocument: db.AuditDocument,
-  AuditItem: db.AuditItem,
+  // AuditDocument: db.AuditDocument,
+  // AuditItem: db.AuditItem,
 };

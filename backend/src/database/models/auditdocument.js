@@ -18,7 +18,9 @@ module.exports = (sequelize, DataTypes) => {
   }
   AuditDocument.init(
     {
-      doc_number: DataTypes.STRING,
+      doc_number: {
+        type: DataTypes.STRING,
+      unique: true},
       username: DataTypes.STRING, // Cambio de "date" a "username"
       auditId: DataTypes.INTEGER,
     },

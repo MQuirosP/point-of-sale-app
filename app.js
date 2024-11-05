@@ -11,7 +11,7 @@ const dbLogger = require("./backend/src/utils/logger").dbLogger;
 
 const app = express();
 const server = require("http").createServer(app);
-const port = process.env.APP_PORT;
+const port = process.env.APP_PORT || 3000;
 
 const corsOptions = {
   origin: [
@@ -25,6 +25,7 @@ const corsOptions = {
 };
 
 server.listen(port, () => {
+  console.log(port);
   appLogger.debug(`Server running on port ${port}`);
 });
 
