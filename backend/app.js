@@ -1,13 +1,13 @@
 const express = require("express");
-const sequelize = require("./backend/src/database/sequelize");
-const routes = require("./backend/src/routes/index");
+const sequelize = require("./src/database/sequelize");
+const routes = require("./src/routes/index");
 const cors = require("cors");
 const compression = require("compression");
 const path = require("path");
 
 require("dotenv").config();
-const appLogger = require("./backend/src/utils/logger").appLogger;
-const dbLogger = require("./backend/src/utils/logger").dbLogger;
+const appLogger = require("./src/utils/logger").appLogger;
+const dbLogger = require("./src/utils/logger").dbLogger;
 
 const app = express();
 const server = require("http").createServer(app);
