@@ -107,7 +107,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         order: [["createdAt", "DESC"]],
       });
-      console.log(lastSale);
+      // console.log(lastSale);
 
       // const maxDocNumber = await Sale.max("doc_number", {
       //   where: { doc_number: { $like: `${year}${month}${day}-%` } },

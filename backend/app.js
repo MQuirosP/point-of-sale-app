@@ -25,7 +25,6 @@ const corsOptions = {
 };
 
 server.listen(port, () => {
-  console.log(port);
   appLogger.debug(`Server running on port ${port}`);
 });
 

@@ -219,7 +219,6 @@ async function createSale(saleData) {
 }
 
 async function cancelSaleItem(intCode, saleId) {
-  console.log("AQUI", intCode, saleId);
   try {
     const saleItem = await SaleItems.findOne({
       where: { int_code: intCode, saleId: saleId },

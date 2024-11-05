@@ -63,7 +63,6 @@ async function createProduct(productData) {
 
 
 async function updateProduct(productId, productData) {
-  console.log(productId, productData);
   try {
     const [updatedRowsCount, [updatedProduct]] = await Product.update(
       productData,

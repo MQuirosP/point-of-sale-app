@@ -33,13 +33,13 @@ module.exports = (sequelize, DataTypes) => {
       },
       name: DataTypes.STRING,
       description: DataTypes.STRING,
-      purchase_price: DataTypes.DECIMAL(10, 5),
-      quantity: DataTypes.DECIMAL(10, 5),
-      sale_price: DataTypes.DECIMAL(10, 5),
+      purchase_price: DataTypes.DECIMAL(10, 2),
+      quantity: DataTypes.DECIMAL(10, 2),
+      sale_price: DataTypes.DECIMAL(10, 2),
       taxes: DataTypes.BOOLEAN,
-      margin: DataTypes.DECIMAL(10, 5),
+      margin: DataTypes.DECIMAL(10, 2),
       taxPercentage: {
-        type: DataTypes.DECIMAL(10, 5),
+        type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
       },
       category_id: {

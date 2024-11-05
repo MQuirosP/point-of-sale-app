@@ -77,5 +77,24 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
 
+  SaleItems.afterCreate(async (saleItem, options) => {
+    const product = await sequelize.models.Product.findByPk(saleItem.productId);
+    if (product) {
+      product.quantity -= saleItem.quantity;
+      await product.save();
+    }
+  });
+
+  SaleItems.afterUpdate(async (saleItem, options) => {
+    // Aquí puedes manejar la lógica para actualizar el stock si cambió la cantidad
+    const original = await SaleItem.findOne({ where: { id: saleItem.id }, transaction: options.transaction });
+    const product = await sequelize.models.Product.findByPk(saleItem.productId);
+    if (product) {
+      // Ajustar stock según la diferencia
+      product.quantity += original.quantity - saleItem.quantity;
+      await product.save();
+    }
+  });
+
   return SaleItems;
 };

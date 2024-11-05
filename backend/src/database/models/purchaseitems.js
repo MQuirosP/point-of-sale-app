@@ -74,5 +74,30 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
 
+  PurchaseItems.afterCreate(async (purchaseItem, options) => {
+    const product = await sequelize.models.Product.findByPk(purchaseItem.productId);
+    product.quantity = Number(product.quantity)
+    if (product) {
+      // Asegúrate de convertir a número
+      const quantityToAdd = Number(purchaseItem.quantity);
+      product.quantity += quantityToAdd;
+      await product.save();
+    }
+  });
+  
+  PurchaseItems.afterUpdate(async (purchaseItem, options) => {
+    const original = await PurchaseItems.findOne({ where: { id: purchaseItem.id }, transaction: options.transaction });
+    const product = await sequelize.models.Product.findByPk(purchaseItem.productId);
+    if (product) {
+      // Asegúrate de convertir a número
+      const originalQuantity = Number(original.quantity);
+      const newQuantity = Number(purchaseItem.quantity);
+      
+      // Ajustar stock según la diferencia
+      product.quantity += newQuantity - originalQuantity;
+      await product.save();
+    }
+  });
+  
   return PurchaseItems;
 };
