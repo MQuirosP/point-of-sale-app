@@ -19,9 +19,10 @@ async function createAudit(req, res) {
         newAuditDocument.doc_number,
         item
       );
+      item.quantity = Number(item.quantity);
 
       const productId = item.productId;
-      const newQuantity = item.quantity + item.adjusted_quantity;
+      const newQuantity = Number(item.quantity + item.adjusted_quantity);
 
       const productData = {
         quantity: newQuantity,

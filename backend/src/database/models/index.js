@@ -101,6 +101,6 @@ module.exports = {
   Customer: db.Customer,
   BlacklistedToken: db.BlacklistedToken,
   Options: db.Options,
-  // AuditDocument: db.AuditDocument,
-  // AuditItem: db.AuditItem,
+  AuditDocument: db.AuditDocument,
+  AuditItem: db.AuditItem,
 };

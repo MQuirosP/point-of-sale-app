@@ -2,6 +2,7 @@ const { AuditDocument, AuditItem } = require("./../database/models");
 
 module.exports = {
   createAuditDocument: async (username, consecutive) => {
+    console.log(username);
     const newAuditDocument = await AuditDocument.create({
       doc_number: "", // Será generado automáticamente
       auditId: consecutive,
