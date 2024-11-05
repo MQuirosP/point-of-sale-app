@@ -250,7 +250,6 @@
   #productInfoModal
   tabindex="-1"
   role="dialog"
-  aria-hidden="true"
 >
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content modal-shadow">
@@ -265,7 +264,7 @@
             (click)="closeProductModal()"
             aria-label="Cerrar"
           >
-            <span aria-hidden="true"><i class="fas fa-close"></i></span>
+            <span><i class="fas fa-close"></i></span>
           </button>
         </div>
         <div class="modal-body">
@@ -380,7 +379,7 @@
   role="dialog"
   tabindex="-1"
   aria-labelledby="auditModal"
-  aria-hidden="true"
+
 >
   <div class="modal-dialog modal-xl modal-dialog-scrollable">
     <div class="modal-content modal-shadow">
@@ -394,7 +393,7 @@
           class="close clic-on-icon"
           (click)="closeAuditListModal()"
         >
-          <span aria-hidden="true"><i class="fas fa-close"></i></span>
+          <span><i class="fas fa-close"></i></span>
         </button>
       </div>
       <div class="table-responsive">
@@ -522,7 +521,7 @@
   #auditHistory
   tabindex="-1"
   role="dialog"
-  aria-hidden="true"
+
 >
   <div class="modal-dialog">
     <div class="modal-content d-flex">
@@ -537,7 +536,7 @@
             aria-label="Close"
             (click)="closeAuditHistoryModal()"
           >
-            <span aria-hidden="true">
+            <span>
               <i class="fas fa-close"></i>
             </span>
           </button>
@@ -596,7 +595,7 @@
   tabindex="-1"
   role="dialog"
   aria-labelledby="deleteAuditModalLabel"
-  aria-hidden="true"
+
 >
   <div class="d-flex align-content-center justify-content-center">
     <div
@@ -610,7 +609,7 @@
             <i class="fas fa-exclamation-circle"></i>&nbsp;Finalizar auditoría
           </h5>
           <button class="close clic-on-icon" (click)="closeDeleteAuditModal()">
-            <span aria-hidden="true"><i class="fas fa-close"></i></span>
+            <span><i class="fas fa-close"></i></span>
           </button>
         </div>
         <div class="modal-body">
