@@ -732,7 +732,6 @@ export class StockAuditComponent implements OnInit {
           updatedAt: new Date(audit.updatedAt),
           // auditProducts: audit.auditItems,
         }));
-        console.log(this.allAudits);
         this.allAudits.forEach((audit: any) => {
           this.calculateQuantityAndAmount(audit);
         });
