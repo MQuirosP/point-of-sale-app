@@ -35,11 +35,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       provider_name: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
       },
       paymentMethod: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
         validate: {
           isIn: [["contado", "credito"]],
         },
@@ -47,11 +47,11 @@ module.exports = (sequelize, DataTypes) => {
       doc_number: DataTypes.STRING,
       sub_total: {
         type: DataTypes.DECIMAL(10, 2),
-        allowNull: true,
+        allowNull: false,
       },
       taxes_amount: {
         type: DataTypes.DECIMAL(10, 2),
-        allowNull: true,
+        allowNull: false,
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -73,14 +73,17 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          isIn: [["aceptado", "anulada"]],
+          isIn: [["aceptado", "anulado"]],
         },
       },
       observations: {
         type: DataTypes.TEXT,
         allowNull: true,
       },
-      total: DataTypes.DECIMAL,
+      total: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
+      },
     },
     {
       sequelize,
@@ -101,9 +104,7 @@ module.exports = (sequelize, DataTypes) => {
       sub_total: this.sub_total,
       taxes_amount: this.taxes_amount,
       total: this.total,
-      purchaseItems: this.purchaseItems.map((item) =>
-        item.getView()
-      ),
+      purchaseItems: this.purchaseItems.map((item) => item.getView()),
     };
   };
 

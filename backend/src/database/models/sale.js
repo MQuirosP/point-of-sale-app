@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       paymentMethod: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
         validate: {
           isIn: {
             args: [["contado", "crédito", "sinpe", "tarjeta", "transferencia"]],
@@ -48,6 +48,7 @@ module.exports = (sequelize, DataTypes) => {
       doc_number: {
         type: DataTypes.STRING,
         autoIncrement: false,
+        allowNull: false,
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -67,9 +68,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       status: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
+        defaultValue: "aceptado",
         validate: {
-          isIn: [["aceptado", "anulada"]],
+          isIn: [["aceptado", "anulado"]],
         },
       },
       observations: {
@@ -78,11 +80,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       sub_total: {
         type: DataTypes.DECIMAL(10, 2),
-        allowNull: true,
+        allowNull: false,
       },
       taxes_amount: {
         type: DataTypes.DECIMAL(10, 2),
-        allowNull: true,
+        allowNull: false,
       },
       total: DataTypes.DECIMAL,
     },
@@ -92,7 +94,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  Sale.beforeCreate(async (sale) => {
+  Sale.beforeValidate(async (sale) => {
     try {
       const currentDate = new Date();
       const year = currentDate.getFullYear().toString().padStart(4, "0");
@@ -122,6 +124,7 @@ module.exports = (sequelize, DataTypes) => {
       sale.doc_number = `${year}${month}${day}-${consecutive
         .toString()
         .padStart(6, "0")}`;
+        console.log("Assigned doc_number:", sale.doc_number);
     } catch (error) {
       // Manejar el error si ocurre alguna excepción
       appLogger.error("Error generating doc_number:", error);

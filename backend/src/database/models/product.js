@@ -1,23 +1,23 @@
-'use strict';
-const { Model } = require('sequelize');
-const { formatDate } = require('../../utils/dateUtils');
+"use strict";
+const { Model } = require("sequelize");
+const { formatDate } = require("../../utils/dateUtils");
 
 module.exports = (sequelize, DataTypes) => {
   class Product extends Model {
     static associate = (models) => {
       Product.belongsToMany(models.Purchase, {
-          through: models.PurchaseItems, // Nombre de la tabla intermedia
-          foreignKey: 'productId', // Clave foránea en PurchaseItems
-          otherKey: 'purchaseId', // Clave foránea en Purchase
-          as: 'purchases', // Alias para la relación
+        through: models.PurchaseItems, // Nombre de la tabla intermedia
+        foreignKey: "productId", // Clave foránea en PurchaseItems
+        otherKey: "purchaseId", // Clave foránea en Purchase
+        as: "purchases", // Alias para la relación
       });
-  
+
       // Aquí puedes definir la relación con PurchaseItems
       Product.hasMany(models.PurchaseItems, {
-          foreignKey: 'productId', // Clave foránea en PurchaseItems
-          as: 'purchaseItems', // Alias para la relación
+        foreignKey: "productId", // Clave foránea en PurchaseItems
+        as: "purchaseItems", // Alias para la relación
       });
-  };
+    };
   }
 
   Product.init(
@@ -30,63 +30,70 @@ module.exports = (sequelize, DataTypes) => {
       int_code: {
         type: DataTypes.STRING,
         unique: true,
-      },
-      name: DataTypes.STRING,
-      description: DataTypes.STRING,
-      purchase_price: DataTypes.DECIMAL(10, 2),
-      quantity: DataTypes.DECIMAL(10, 2),
-      sale_price: DataTypes.DECIMAL(10, 2),
-      taxes: DataTypes.BOOLEAN,
-      margin: DataTypes.DECIMAL(10, 2),
-      taxPercentage: {
-        type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
       },
+      name: { type: DataTypes.STRING, allowNull: false },
+      description: { type: DataTypes.STRING, allowNull: true },
+      purchase_price: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
+      quantity: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
+      sale_price: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
+      taxes: DataTypes.BOOLEAN,
+      margin: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
+      taxPercentage: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
+
       category_id: {
         type: DataTypes.INTEGER,
         validate: {
           isIn: [[0, 1]],
         },
+        defaultValue: 1,
       },
       category_name: {
         type: DataTypes.STRING,
+        defaultValue: "Venta Directa",
+        validate: {
+          isIn: [["Consumo interno", "Venta Directa"]],
+        },
       },
       createdAt: {
         type: DataTypes.DATE,
-        field: 'createdAt',
+        field: "createdAt",
         get() {
-          const rawValue = this.getDataValue('createdAt');
+          const rawValue = this.getDataValue("createdAt");
           return formatDate(rawValue);
         },
       },
       updatedAt: {
         type: DataTypes.DATE,
-        field: 'updatedAt',
+        field: "updatedAt",
         get() {
-          const rawValue = this.getDataValue('updatedAt');
+          const rawValue = this.getDataValue("updatedAt");
           return formatDate(rawValue);
         },
       },
     },
     {
       sequelize,
-      modelName: 'Product',
+      modelName: "Product",
       hooks: true,
     }
   );
 
   Product.beforeCreate((product, options) => {
-    const categoryId = product.getDataValue('category_id');
-    console.log(categoryId);
-    product.setDataValue('category_name', categoryId === 1 ? 'Venta Directa' : 'Consumo Interno');
+    const categoryId = product.getDataValue("category_id");
+    product.setDataValue(
+      "category_name",
+      categoryId === 1 ? "Venta Directa" : "Consumo Interno"
+    );
   });
-  
-  Product.beforeUpdate((product, options) => {;
-    const categoryId = product.getDataValue('category_id');
-    console.log(categoryId);
-    product.setDataValue('category_name', categoryId === 1 ? 'Venta Directa' : 'Consumo Interno');
+
+  Product.beforeUpdate((product, options) => {
+    const categoryId = product.getDataValue("category_id");
+    product.setDataValue(
+      "category_name",
+      categoryId === 1 ? "Venta Directa" : "Consumo Interno"
+    );
   });
-  
 
   Product.prototype.getView = function () {
     return {
