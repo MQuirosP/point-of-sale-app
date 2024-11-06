@@ -62,7 +62,10 @@ export class ProductListComponent implements OnInit {
       purchase_price: [Number(0), Validators.required],
       sale_price: [Number(0), Validators.required],
       taxes: [Boolean(false), Validators.required],
-      taxPercentage: [{ value: Number(null), disabled: true }, Validators.required],
+      taxPercentage: [
+        { value: Number(null), disabled: true },
+        Validators.required,
+      ],
       margin: [Number(0), Validators.required],
     });
     this.productForm.get('taxes').valueChanges.subscribe((taxesValue) => {
@@ -102,16 +105,21 @@ export class ProductListComponent implements OnInit {
 
   toggleTaxPercentage() {
     const taxPercentageControl = this.productForm.get('taxPercentage');
+    const taxesValue = this.productForm.get('taxes')?.value;
 
-    if (this.productForm.get('taxes').value) {
+    if (taxesValue) {
       taxPercentageControl?.disable();
       taxPercentageControl?.setValue(0);
     } else {
       taxPercentageControl?.enable();
       if (this.editMode) {
-        taxPercentageControl?.setValue(this.productInfo.taxPercentage);
+        taxPercentageControl?.setValue(
+          parseFloat((this.productInfo.taxPercentage || 0).toString()).toFixed(
+            2
+          )
+        );
       } else {
-        taxPercentageControl?.setValue(0);
+        taxPercentageControl?.setValue('0.00');
       }
     }
   }
@@ -224,8 +232,9 @@ export class ProductListComponent implements OnInit {
       next: (response: any) => {
         if (response.success && response.message && response.message.product) {
           const product = response.message.product;
-          this.updateProductForm(product);
-          this.productInfo = { ...product };
+          const regularizedProduct = this.validateProductDataTypes(product);
+          this.updateProductForm(regularizedProduct);
+          this.productInfo = { ...regularizedProduct };
           this.toastr.success('Información de producto recuperada con éxito.');
         } else {
           console.log('No se encontró el producto');
@@ -260,14 +269,13 @@ export class ProductListComponent implements OnInit {
       quantity: Number(product.quantity).toFixed(3),
       category_id: Number(product.category_id),
     };
-  
+
     this.productForm.patchValue({
       ...formattedProduct,
       // Si necesitas un valor específico en category_id, puedes agregarlo aquí
       // category_id: selectedCategory,
     });
   }
-  
 
   editProduct() {
     const controls = this.productForm.controls;
@@ -294,11 +302,15 @@ export class ProductListComponent implements OnInit {
         return;
       }
     }
-    const productData: Products = this.extractProductFormData();
+    const productData: Products = this.validateProductDataTypes(
+      this.extractProductFormData()
+    );
     this.updateProduct(productData);
   }
 
   private arePropertiesChanged(newData: Products, oldData: Products): boolean {
+    // newData = this.validateProductDataTypes(newData);
+    // oldData = this.validateProductDataTypes(oldData);
     if (!newData || !oldData) {
       return false;
     }
@@ -308,11 +320,12 @@ export class ProductListComponent implements OnInit {
 
   private updateProduct(productData: Products) {
     const productId = productData.productId;
+    productData = this.validateProductDataTypes(productData);
+    this.productInfo = this.validateProductDataTypes(this.productInfo);
     const propertiesChanged = this.arePropertiesChanged(
       productData,
       this.productInfo
     );
-
     if (!propertiesChanged) {
       this.toastr.info(
         'No se realizaron cambios en la información del producto.'
@@ -415,12 +428,13 @@ export class ProductListComponent implements OnInit {
   public resetProductForm() {
     const formData = this.extractProductFormData();
     const propertiesChanged = this.arePropertiesChanged(
-      formData,
-      this.productInfo
+      this.validateProductDataTypes(formData),
+      this.validateProductDataTypes(this.productInfo)
     );
 
     if (this.editMode && propertiesChanged) {
       this.productForm.reset();
+      this.validateProductDataTypes(this.productInfo);
       setTimeout(() => {
         this.updateProductForm(this.productInfo);
         this.toastr.success(
@@ -438,12 +452,21 @@ export class ProductListComponent implements OnInit {
   }
 
   public calculateTotal(isEditForm: boolean = false): void {
-    const controls = ['purchase_price', 'margin', 'taxes', 'taxPercentage', 'sale_price'];
+    const controls = [
+      'purchase_price',
+      'margin',
+      'taxes',
+      'taxPercentage',
+      'sale_price',
+    ];
 
     const recalculate = () => {
-      const values = controls.map(controlName => this.productForm.get(controlName).value);
+      const values = controls.map(
+        (controlName) => this.productForm.get(controlName).value
+      );
 
-      const [purchasePrice, margin, taxes, taxPercentage, oldSalePrice] = values;
+      const [purchasePrice, margin, taxes, taxPercentage, oldSalePrice] =
+        values;
 
       if (!taxes) {
         if (!isNaN(purchasePrice) && !isNaN(margin) && margin >= 0) {
@@ -454,8 +477,15 @@ export class ProductListComponent implements OnInit {
           this.setSalePrice(0);
         }
       } else {
-        if (!isNaN(purchasePrice) && !isNaN(margin) && margin >= 0 && !isNaN(taxPercentage) && taxPercentage >= 0) {
-          let total = purchasePrice / (1 - margin / 100) / (1 - taxPercentage / 100);
+        if (
+          !isNaN(purchasePrice) &&
+          !isNaN(margin) &&
+          margin >= 0 &&
+          !isNaN(taxPercentage) &&
+          taxPercentage >= 0
+        ) {
+          let total =
+            purchasePrice / (1 - margin / 100) / (1 - taxPercentage / 100);
           total = !isNaN(total) && total !== Infinity ? total : 0;
           this.setSalePrice(total, isEditForm, oldSalePrice);
         } else {
@@ -464,14 +494,20 @@ export class ProductListComponent implements OnInit {
       }
     };
 
-    controls.slice(0, -1).forEach(controlName =>
-      this.productForm.get(controlName).valueChanges.subscribe(recalculate)
-    );
+    controls
+      .slice(0, -1)
+      .forEach((controlName) =>
+        this.productForm.get(controlName).valueChanges.subscribe(recalculate)
+      );
 
     recalculate();
   }
 
-  private setSalePrice(value: number, isEditForm: boolean = false, oldSalePrice?: number): void {
+  private setSalePrice(
+    value: number,
+    isEditForm: boolean = false,
+    oldSalePrice?: number
+  ): void {
     const salePriceControl = this.productForm.get('sale_price');
     salePriceControl.setValue(Number(value.toFixed(2)));
 
@@ -482,7 +518,6 @@ export class ProductListComponent implements OnInit {
 
   deleteProduct(productData: Products) {
     const password = this.password;
-    console.log(password);
     const int_code = productData.int_code;
 
     this.productService.deleteProduct(int_code, password).subscribe({
@@ -552,5 +587,19 @@ export class ProductListComponent implements OnInit {
     if (code && code.length === expectedCodeLength) {
       this.nameInput.nativeElement.focus();
     }
+  }
+  validateProductDataTypes(product: Products): Products {
+    return {
+      ...product,
+      purchase_price: product.purchase_price ? Number(product.purchase_price) : 0,
+      sale_price: product.sale_price ? Number(product.sale_price) : 0,
+      price: product.price ? Number(product.price) : 0,
+      quantity: product.quantity ? Number(product.quantity) : 0,
+      taxes_amount: product.taxes_amount ? Number(product.taxes_amount) : 0,
+      sub_total: product.sub_total ? Number(product.sub_total) : 0,
+      total: product.total ? Number(product.total) : 0,
+      taxPercentage: product.taxPercentage ? Number(product.taxPercentage) : 0,
+      margin: product.margin ? Number(product.margin) : 0,
+    };
   }
 }
