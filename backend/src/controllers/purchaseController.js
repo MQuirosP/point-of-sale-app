@@ -4,6 +4,7 @@ const { appLogger } = require("../utils/logger");
 const responseUtils = require("../utils/responseUtils");
 const productService = require("../services/productService");
 const sequelize = require("../database/sequelize");
+const { Purchase } = require("../database/models");
 
 async function getAllPurchases(req, res) {
   try {
@@ -118,11 +119,7 @@ async function createPurchase(req, res) {
       // purchase.purchaseItems = purchaseItems;
       await transaction.commit();
       appLogger.info("Purchase created successfully");
-      responseUtils.sendSuccessResponse(
-        res,
-        { purchase },
-        201
-      );
+      responseUtils.sendSuccessResponse(res, { purchase }, 201);
     } catch (error) {
       // await transaction.rollback();
       console.log(error);
@@ -137,59 +134,21 @@ async function createPurchase(req, res) {
 
 async function cancelPurchase(req, res) {
   const { doc_number } = req.params;
-
   try {
-    const purchases = await purchaseService.getPurchaseByDocNumber(doc_number);
-    if (!purchases || purchases.length === 0) {
+    const purchase = await purchaseService.cancelPurchase(doc_number);
+    if (!purchase) {
       return responseUtils.sendErrorResponse(res, "Purchase not found", 404);
     }
 
-    const transaction = await sequelize.transaction();
-
-    try {
-      for (const purchase of purchases) {
-        if (purchase.status === "anulada") {
-          return responseUtils.sendErrorResponse(
-            res,
-            "Purchase is already cancelled",
-            400
-          );
-        }
-
-        purchase.status = "anulada";
-        await purchase.save({ transaction });
-
-        for (const purchaseItem of purchase.purchaseItems) {
-          const product = await productService.getProductByIntCode(
-            purchaseItem.int_code
-          );
-          const newStock = product.quantity - purchaseItem.quantity;
-          await productService.updateProduct(
-            product.productId,
-            { quantity: newStock },
-            { transaction }
-          );
-
-          await purchaseService.cancelPurchaseItem(
-            purchaseItem.int_code,
-            purchase.purchaseId
-          );
-        }
-      }
-
-      await transaction.commit();
-      responseUtils.sendSuccessResponse(res, {
-        message: "Purchase cancelled successfully",
-      });
-    } catch (error) {
-      await transaction.rollback();
-      responseUtils.sendErrorResponse(res, "Failed to cancel purchase", 400);
-    }
+    responseUtils.sendSuccessResponse(res, {
+      message: "Purchase cancelled successfully",
+    });
   } catch (error) {
     appLogger.error("Error cancelling purchase", error);
     responseUtils.sendErrorResponse(res, "Error cancelling purchase");
   }
 }
+
 
 async function deletePurchase(req, res) {
   try {

@@ -105,7 +105,7 @@ module.exports = (sequelize, DataTypes) => {
 
   PurchaseItems.afterUpdate(async (purchaseItem, options) => {
     const original = await PurchaseItems.findOne({
-      where: { id: purchaseItem.id },
+      where: { purchaseId: purchaseItem.purchaseId },
       transaction: options.transaction,
     });
     const product = await sequelize.models.Product.findByPk(

@@ -45,7 +45,7 @@ const getAllPurchases = async () => {
 
 async function getPurchaseByDocNumber(doc_number) {
   try {
-    const purchase = await Purchase.findAll({
+    const purchase = await Purchase.findOne({
       where: { doc_number },
       attributes: [
         "purchaseId",
@@ -137,17 +137,60 @@ async function createPurchase(purchaseData) {
   });
 }
 
+async function cancelPurchase(doc_number) {
+  try {
+    const purchase = await Purchase.findOne({
+      where: { doc_number },
+      include: [
+        {
+          model: PurchaseItems,
+          as: "purchaseItems",
+          attributes: ["int_code", "name", "quantity", "purchase_price", "sub_total", "taxes_amount", "total"],
+        },
+      ],
+    });
+
+    if (!purchase) {
+      return null; // No se encuentra la compra
+    }
+
+    if (purchase.status === "anulado") {
+      throw new Error("Purchase is already cancelled");
+    }
+
+    // Actualizar estado de la compra a "anulado"
+    purchase.status = "anulado";
+    await purchase.save();
+
+    // Actualizar los productos en stock
+    for (const purchaseItem of purchase.purchaseItems) {
+      const product = await productService.getProductByIntCode(purchaseItem.int_code);
+      const newStock = product.quantity - purchaseItem.quantity;
+      await productService.updateProduct(product.productId, { quantity: newStock });
+      await this.cancelPurchaseItem(purchaseItem.int_code, purchase.purchaseId);
+    }
+
+    return purchase; // Retorna la compra con el estado actualizado
+
+  } catch (error) {
+    appLogger.error("Error cancelling purchase", error);
+    throw error;
+  }
+}
+
+
 
 async function cancelPurchaseItem(intCode, purchaseId) {
   try {
     const purchaseItem = await PurchaseItems.findOne({
-      where: { int_code: intCode, purchaseId: purchaseId },
+      where: { int_code: intCode },
     });
+    console.log(purchaseItem);
     if (!purchaseItem) {
       throw new Error("Purchase item not found");
     }
 
-    purchaseItem.status = "anulada";
+    purchaseItem.status = "anulado";
     purchaseItem.quantity = 0;
     await purchaseItem.save();
 
@@ -173,6 +216,7 @@ module.exports = {
   getPurchaseByDocNumber,
   getPurchasesByDate,
   createPurchase,
+  cancelPurchase,
   cancelPurchaseItem,
   deletePurchase,
 };
