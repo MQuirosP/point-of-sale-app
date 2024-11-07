@@ -1,4 +1,4 @@
-import { OptionsService } from './services/options.service';
+import { OptionsService } from './services/optionsService';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -15,7 +15,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DigitalWatchComponent } from './components/digital-watch/digital-watch.component'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ModalService } from './services/modal.service';
+import { ModalService } from './services/modalService';
 import { BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import { LoginService } from './services/login.service';
 import { RegisterUserComponent } from './components/register-user/register-user.component';

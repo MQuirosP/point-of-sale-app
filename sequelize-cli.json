@@ -1,0 +1,12 @@
+{
+    "development": {
+      "username": "postgres",
+      "password": "admin",
+      "database": "patitos",
+      "host": "127.0.0.1",
+      "dialect": "postgres",
+      "modelsDir": "backend/src/database/models",
+      "seedersDir": "backend/src/database/seeders",
+      "migrationsDir": "backend/src/database/migrations"
+    }
+  }

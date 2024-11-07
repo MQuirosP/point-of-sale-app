@@ -3,7 +3,7 @@ const saleService = require("../services/saleService");
 const { appLogger } = require("../utils/logger");
 const responseUtils = require("../utils/responseUtils");
 const sequelize = require("../database/sequelize");
-const { Sale } = require("../database/models");
+const { Sale } = require("../database/models/sale");
 
 async function getAllSales(req, res) {
   try {

@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, of } from 'rxjs';
 import { fadeAnimation } from 'src/app/animations/fadeAnimation';
-import { OptionsService } from 'src/app/services/options.service';
+import { OptionsService } from 'src/app/services/optionsService';
 import { environment } from 'src/environments/environment';
 
 interface NewUser {

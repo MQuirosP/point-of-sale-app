@@ -2,8 +2,8 @@ require("dotenv").config();
 const purchaseService = require("../services/purchaseService");
 const { appLogger } = require("../utils/logger");
 const responseUtils = require("../utils/responseUtils");
-const sequelize = require("../database/sequelize");
-const { Purchase } = require("../database/models");
+// const sequelize = require("../database/sequelize");
+const { Purchase } = require("../database/models/purchase");
 
 async function getAllPurchases(req, res) {
   try {
