@@ -1,6 +1,5 @@
 "use strict";
 const { Op, Model } = require("sequelize");
-const { appLogger } = require("../../utils/logger");
 const { formatDate } = require("../../utils/dateUtils");
 
 module.exports = (sequelize, DataTypes) => {
@@ -36,11 +35,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       paymentMethod: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         validate: {
           isIn: {
             args: [["contado", "crédito", "sinpe", "tarjeta", "transferencia"]],
-            msg: "El método de pago debe ser contado, crédito, sinpe, tarjeta o transferencia",
           },
         },
       },
@@ -48,7 +46,6 @@ module.exports = (sequelize, DataTypes) => {
       doc_number: {
         type: DataTypes.STRING,
         autoIncrement: false,
-        allowNull: false,
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -68,8 +65,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       status: {
         type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: "aceptado",
+        allowNull: true,
         validate: {
           isIn: [["aceptado", "anulado"]],
         },
@@ -80,11 +76,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       sub_total: {
         type: DataTypes.DECIMAL(10, 2),
-        allowNull: false,
+        allowNull: true,
       },
       taxes_amount: {
         type: DataTypes.DECIMAL(10, 2),
-        allowNull: false,
+        allowNull: true,
       },
       total: DataTypes.DECIMAL,
     },
@@ -94,7 +90,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  Sale.beforeValidate(async (sale) => {
+  Sale.beforeCreate(async (sale) => {
     try {
       const currentDate = new Date();
       const year = currentDate.getFullYear().toString().padStart(4, "0");
@@ -124,7 +120,6 @@ module.exports = (sequelize, DataTypes) => {
       sale.doc_number = `${year}${month}${day}-${consecutive
         .toString()
         .padStart(6, "0")}`;
-        console.log("Assigned doc_number:", sale.doc_number);
     } catch (error) {
       // Manejar el error si ocurre alguna excepción
       appLogger.error("Error generating doc_number:", error);

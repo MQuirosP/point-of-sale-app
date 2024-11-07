@@ -1,19 +1,17 @@
 "use strict";
 const { Model } = require("sequelize");
 const { formatDate } = require("../../utils/dateUtils");
-const Product = require("./product");
 
 module.exports = (sequelize, DataTypes) => {
   class PurchaseItems extends Model {
     static associate = (models) => {
       PurchaseItems.belongsTo(models.Purchase, {
         foreignKey: "purchaseId",
-        as: "purchase", // Alias para la relación
+        as: "purchase", 
       });
-
       PurchaseItems.belongsTo(models.Product, {
-        foreignKey: "productId", // Debe referirse a productId en lugar de int_code
-        as: "product", // Alias para la relación
+        foreignKey: "productId", 
+        as: "product", 
       });
     };
   }
@@ -43,6 +41,22 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
       },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      total: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
+      },
+      status: {
+        type: DataTypes.STRING,
+        defaultValue: "aceptado",
+        allowNull: false,
+        validate: {
+          isIn: [["aceptado", "anulado"]],
+        },
+      },
       createdAt: {
         type: DataTypes.DATE,
         field: "createdAt",
@@ -59,23 +73,11 @@ module.exports = (sequelize, DataTypes) => {
           return formatDate(rawValue);
         },
       },
-      name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      total: { type: DataTypes.DECIMAL(10, 2) },
-      status: {
-        type: DataTypes.STRING,
-        defaultValue: "aceptado",
-        allowNull: false,
-        validate: {
-          isIn: [["aceptado", "anulado"]],
-        },
-      },
     },
     {
       sequelize,
       modelName: "PurchaseItems",
+      tableName: "PurchaseItems",
     }
   );
   PurchaseItems.prototype.getView = function () {
@@ -94,31 +96,12 @@ module.exports = (sequelize, DataTypes) => {
     const product = await sequelize.models.Product.findByPk(
       purchaseItem.productId
     );
-    product.quantity = Number(product.quantity);
     if (product) {
-      // Asegúrate de convertir a número
+      
+      product.quantity = Number(product.quantity);
       const quantityToAdd = Number(purchaseItem.quantity);
       product.quantity += quantityToAdd;
-      await product.save();
-    }
-  });
-
-  PurchaseItems.afterUpdate(async (purchaseItem, options) => {
-    const original = await PurchaseItems.findOne({
-      where: { purchaseId: purchaseItem.purchaseId },
-      transaction: options.transaction,
-    });
-    const product = await sequelize.models.Product.findByPk(
-      purchaseItem.productId
-    );
-    if (product) {
-      // Asegúrate de convertir a número
-      const originalQuantity = Number(original.quantity);
-      const newQuantity = Number(purchaseItem.quantity);
-
-      // Ajustar stock según la diferencia
-      product.quantity += newQuantity - originalQuantity;
-      await product.save();
+      await product.save({ transaction: options.transaction });
     }
   });
 

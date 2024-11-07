@@ -2,7 +2,6 @@ require("dotenv").config();
 const purchaseService = require("../services/purchaseService");
 const { appLogger } = require("../utils/logger");
 const responseUtils = require("../utils/responseUtils");
-const productService = require("../services/productService");
 const sequelize = require("../database/sequelize");
 const { Purchase } = require("../database/models");
 
@@ -69,6 +68,7 @@ async function createPurchase(req, res) {
       paymentMethod,
       doc_number,
       status,
+      quantity,
       sub_total,
       taxes_amount,
       total,
@@ -77,7 +77,6 @@ async function createPurchase(req, res) {
     const existingPurchase = await purchaseService.getPurchaseByDocNumber(
       doc_number
     );
-
     if (
       existingPurchase &&
       existingPurchase.find((purchase) => purchase.doc_number === doc_number)
@@ -104,6 +103,7 @@ async function createPurchase(req, res) {
       provider_name,
       paymentMethod,
       status,
+      quantity,
       taxes_amount,
       sub_total,
       total,
@@ -113,15 +113,12 @@ async function createPurchase(req, res) {
     const transaction = await sequelize.transaction();
 
     try {
-      const { purchase, purchaseItems } = await purchaseService.createPurchase(
-        purchaseData
-      );
-      // purchase.purchaseItems = purchaseItems;
+      const { purchase } = await purchaseService.createPurchase(purchaseData);
       await transaction.commit();
       appLogger.info("Purchase created successfully");
       responseUtils.sendSuccessResponse(res, { purchase }, 201);
     } catch (error) {
-      // await transaction.rollback();
+      await transaction.rollback();
       console.log(error);
       appLogger.error("Error creating purchase", error);
       responseUtils.sendErrorResponse(res, "Error creating purchase");
@@ -148,7 +145,6 @@ async function cancelPurchase(req, res) {
     responseUtils.sendErrorResponse(res, "Error cancelling purchase");
   }
 }
-
 
 async function deletePurchase(req, res) {
   try {

@@ -17,18 +17,13 @@ module.exports = (sequelize, DataTypes) => {
   }
   SaleItems.init(
     {
-      status: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          isIn: [["aceptado", "anulado"]],
-        },
-      },
-      saleId: {
+      sequence: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
+      productId: DataTypes.INTEGER,
+      saleId: DataTypes.INTEGER,
       int_code: { 
         type: DataTypes.STRING,
         allowNull: false,
@@ -38,8 +33,32 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
       },
       quantity: {
-        type: DataTypes.FLOAT,
+        type: DataTypes.DECIMAL(10, 2),
         allowNull: false
+      },
+      sub_total: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
+      },
+      taxes_amount: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
+      },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      total: {
+        type:DataTypes.DECIMAL,
+        allowNull: false
+      },
+      status: {
+        type: DataTypes.STRING,
+        defaultValue: "aceptado",
+        allowNull: false,
+        validate: {
+          isIn: [["aceptado", "anulado"]],
+        },
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -56,22 +75,6 @@ module.exports = (sequelize, DataTypes) => {
           const rawValue = this.getDataValue("createdAt");
           return formatDate(rawValue);
         },
-      },
-      name: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
-      sub_total: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: false,
-      },
-      taxes_amount: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: false,
-      },
-      total: {
-        type:DataTypes.DECIMAL,
-        allowNull: false
       },
     },
     {
@@ -94,24 +97,15 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   SaleItems.afterCreate(async (saleItem, options) => {
-    const product = await sequelize.models.Product.findByPk(saleItem.productId);
+    const product = await sequelize.models.Product.findByPk(
+      saleItem.productId
+    );
     if (product) {
-      product.quantity -= saleItem.quantity;
-      await product.save();
-    }
-  });
-
-  SaleItems.afterUpdate(async (saleItem, options) => {
-    // Aquí puedes manejar la lógica para actualizar el stock si cambió la cantidad
-    const original = await saleItem.findOne({
-      where: { id: saleItem.id },
-      transaction: options.transaction,
-    });
-    const product = await sequelize.models.Product.findByPk(saleItem.productId);
-    if (product) {
-      // Ajustar stock según la diferencia
-      product.quantity += original.quantity - saleItem.quantity;
-      await product.save();
+      // Asegúrate de convertir a número y restar del inventario
+      product.quantity = Number(product.quantity)
+      const quantityToSubtract = Number(saleItem.quantity);
+      product.quantity -= quantityToSubtract;
+      await product.save({ transaction: options.transaction });
     }
   });
 

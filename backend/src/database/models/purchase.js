@@ -5,10 +5,6 @@ const { formatDate } = require("../../utils/dateUtils");
 module.exports = (sequelize, DataTypes) => {
   class Purchase extends Model {
     static associate(models) {
-      Purchase.belongsTo(models.Provider, {
-        foreignKey: "providerId",
-        as: "provider",
-      });
       Purchase.belongsToMany(models.Product, {
         through: models.PurchaseItems,
         foreignKey: "purchaseId",
@@ -18,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
       Purchase.hasMany(models.PurchaseItems, {
         foreignKey: "purchaseId",
         as: "purchaseItems",
+      });
+      Purchase.belongsTo(models.Provider, {
+        foreignKey: "providerId",
+        as: "provider",
       });
     }
   }
@@ -44,12 +44,32 @@ module.exports = (sequelize, DataTypes) => {
           isIn: [["contado", "credito"]],
         },
       },
-      doc_number: DataTypes.STRING,
+      doc_number: {
+        type: DataTypes.STRING,
+        autoIncrement: false,
+        allowNull: false,
+      },
       sub_total: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
       },
       taxes_amount: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
+      },
+      status: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: "aceptado",
+        validate: {
+          isIn: [["aceptado", "anulado"]],
+        },
+      },
+      observations: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      total: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
       },
@@ -68,21 +88,6 @@ module.exports = (sequelize, DataTypes) => {
           const rawValue = this.getDataValue("createdAt");
           return formatDate(rawValue);
         },
-      },
-      status: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          isIn: [["aceptado", "anulado"]],
-        },
-      },
-      observations: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-      },
-      total: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: false,
       },
     },
     {

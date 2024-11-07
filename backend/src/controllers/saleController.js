@@ -2,7 +2,6 @@ require("dotenv").config();
 const saleService = require("../services/saleService");
 const { appLogger } = require("../utils/logger");
 const responseUtils = require("../utils/responseUtils");
-const productService = require("../services/productService");
 const sequelize = require("../database/sequelize");
 const { Sale } = require("../database/models");
 
@@ -67,83 +66,68 @@ async function getSalesByDate(req, res) {
 }
 
 async function createSale(req, res) {
+  console.log(req.body);
   try {
     const {
-      paymentMethod,
-      products,
       customerId,
       customer_name,
-      taxes_amount,
+      paymentMethod,
+      status,
       sub_total,
+      taxes_amount,
+      total,
+      saleItems,
     } = req.body;
 
+    const validStatuses = ["aceptado", "anulado"];
+    if (!validStatuses.includes(status)) {
+      return responseUtils.sendErrorResponse(
+        res,
+        "Invalid status provided",
+        400
+      );
+    }
+
     const saleData = {
-      paymentMethod,
       customerId,
-      products,
       customer_name,
+      paymentMethod,
+      status,
       taxes_amount,
       sub_total,
+      total,
+      saleItems,
     };
-    
-    const { sale, saleItems } = await saleService.createSale(saleData);
-    sale.saleItems = saleItems;
-    responseUtils.sendSuccessResponse(res, { Sale: sale.getView() }, 201);
+
+    const transaction = await sequelize.transaction();
+    try {
+      const { sale } = await saleService.createSale(saleData);
+      await transaction.commit();
+      appLogger.info("Sale created succesfully");
+      responseUtils.sendSuccessResponse(res, { sale }, 201);
+    } catch (error) {
+      await transaction.rollback();
+      console.log(error);
+      appLogger.error("Error creating sale", error);
+      responseUtils.sendErrorResponse(res, "Error creating sale");
+    }
   } catch (error) {
     appLogger.error("Error creating sale", error);
-    responseUtils.sendErrorResponse(
-      res,
-      error.message || "Error creating sale"
-    );
+    responseUtils.sendErrorResponse(res, "Error creating sale");
   }
 }
 
 async function cancelSale(req, res) {
   const { doc_number } = req.params;
   try {
-    const sales = await saleService.getSaleByDocNumber(doc_number);
-    if (!sales || sales.length === 0) {
+    const sale = await saleService.cancelSale(doc_number);
+    if (!sale) {
       return responseUtils.sendErrorResponse(res, "Sale not found", 404);
     }
 
-    const transaction = await sequelize.transaction();
-
-    try {
-      for (const sale of sales) {
-        if (sale.status === "anulada") {
-          return responseUtils.sendErrorResponse(
-            res,
-            "Sale is already cancelled",
-            400
-          );
-        }
-
-        sale.status = "anulada";
-        await sale.save({ transaction });
-
-        for (const saleItem of sale.saleItems) {
-          const product = await productService.getProductByIntCode(
-            saleItem.int_code
-          );
-          const newStock = product.quantity + saleItem.quantity;
-          await productService.updateProduct(
-            product.productId,
-            { quantity: newStock },
-            { transaction }
-          );
-
-          await saleService.cancelSaleItem(saleItem.int_code, sale.saleId);
-        }
-      }
-
-      await transaction.commit();
-      responseUtils.sendSuccessResponse(res, {
-        message: "Sale cancelled successfully",
-      });
-    } catch (error) {
-      await transaction.rollback();
-      responseUtils.sendErrorResponse(res, "Failed to cancel sale", 400);
-    }
+    responseUtils.sendSuccessResponse(res, {
+      message: "Sale cancelled successfully",
+    });
   } catch (error) {
     appLogger.error("Error cancelling sale", error);
     responseUtils.sendErrorResponse(res, "Error cancelling sale");

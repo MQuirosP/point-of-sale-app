@@ -12,27 +12,16 @@ const getAllPurchases = async () => {
         "purchaseId",
         "doc_number",
         "provider_name",
-        "createdAt",
-        "updatedAt",
+        "paymentMethod",
         "status",
         "sub_total",
         "taxes_amount",
         "total",
+        "createdAt",
+        "updatedAt",
       ],
       include: [
-        {
-          model: PurchaseItems,
-          as: "purchaseItems",
-          attributes: [
-            "int_code",
-            "name",
-            "quantity",
-            "purchase_price",
-            "sub_total",
-            "taxes_amount",
-            "total",
-          ],
-        },
+        { model: PurchaseItems, as: "purchaseItems" }
       ],
       order: [["purchaseId", "ASC"]],
     });
@@ -59,19 +48,7 @@ async function getPurchaseByDocNumber(doc_number) {
         "total",
       ],
       include: [
-        {
-          model: PurchaseItems,
-          as: "purchaseItems",
-          attributes: [
-            "int_code",
-            "name",
-            "quantity",
-            "purchase_price",
-            "sub_total",
-            "taxes_amount",
-            "total",
-          ],
-        },
+        { model: PurchaseItems, as: "purchaseItems" }
       ],
     });
     return purchase;
@@ -94,6 +71,7 @@ async function getPurchasesByDate(date) {
         "purchaseId",
         "doc_number",
         "provider_name",
+        "paymentMethod",
         "createdAt",
         "updatedAt",
         "status",
@@ -101,21 +79,7 @@ async function getPurchasesByDate(date) {
         "taxes_amount",
         "total",
       ],
-      include: [
-        {
-          model: PurchaseItems,
-          as: "purchaseItems",
-          attributes: [
-            "int_code",
-            "name",
-            "quantity",
-            "purchase_price",
-            "sub_total",
-            "taxes_amount",
-            "total",
-          ],
-        },
-      ],
+      include: [{ model: PurchaseItems, as: "purchaseItems" }],
       order: [["purchaseId", "ASC"]],
     });
 
@@ -127,7 +91,6 @@ async function getPurchasesByDate(date) {
 }
 
 async function createPurchase(purchaseData) {
-  console.log(purchaseData);
   return sequelize.transaction(async (t) => {
     const purchase = await Purchase.create(purchaseData, {
       include: [{ model: PurchaseItems, as: "purchaseItems" }],
@@ -141,55 +104,40 @@ async function cancelPurchase(doc_number) {
   try {
     const purchase = await Purchase.findOne({
       where: { doc_number },
-      include: [
-        {
-          model: PurchaseItems,
-          as: "purchaseItems",
-          attributes: ["int_code", "name", "quantity", "purchase_price", "sub_total", "taxes_amount", "total"],
-        },
-      ],
+      include: [{ model: PurchaseItems, as: "purchaseItems" }],
     });
 
-    if (!purchase) {
-      return null; // No se encuentra la compra
-    }
+    if (!purchase) return null; // No se encuentra la compra
 
-    if (purchase.status === "anulado") {
-      throw new Error("Purchase is already cancelled");
-    }
+    if (purchase.status === "anulado") throw new Error("Purchase is already cancelled");
 
-    // Actualizar estado de la compra a "anulado"
     purchase.status = "anulado";
     await purchase.save();
 
-    // Actualizar los productos en stock
     for (const purchaseItem of purchase.purchaseItems) {
-      const product = await productService.getProductByIntCode(purchaseItem.int_code);
-      const newStock = product.quantity - purchaseItem.quantity;
-      await productService.updateProduct(product.productId, { quantity: newStock });
+      const product = await productService.getProductByIntCode(
+        purchaseItem.int_code
+      );
+      const newStock = Number(product.quantity) - Number(purchaseItem.quantity);
+      await productService.updateProduct(product.productId, {
+        quantity: newStock,
+      });
       await this.cancelPurchaseItem(purchaseItem.int_code, purchase.purchaseId);
     }
-
     return purchase; // Retorna la compra con el estado actualizado
-
   } catch (error) {
     appLogger.error("Error cancelling purchase", error);
     throw error;
   }
 }
 
-
-
 async function cancelPurchaseItem(intCode, purchaseId) {
   try {
     const purchaseItem = await PurchaseItems.findOne({
-      where: { int_code: intCode },
+      where: { int_code: intCode, purchaseId: purchaseId },
     });
-    console.log(purchaseItem);
-    if (!purchaseItem) {
-      throw new Error("Purchase item not found");
-    }
-
+    if (!purchaseItem) throw new Error("Purchase item not found");
+    purchaseItem.quantity = Number(purchaseItem.quantity);
     purchaseItem.status = "anulado";
     purchaseItem.quantity = 0;
     await purchaseItem.save();

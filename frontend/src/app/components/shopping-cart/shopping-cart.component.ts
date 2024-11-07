@@ -587,7 +587,7 @@ export class ShoppingCartComponent {
     }, 200);
   }
 
-  createSale(event: Event): void {
+  createSale(event: Event) {
     if (this.saleForm.get('customer_name').valid) {
       const customerFullName = this.saleForm.get('customer_name').value;
       const sale = this.buildSaleObject(customerFullName);
@@ -606,26 +606,33 @@ export class ShoppingCartComponent {
 
   private buildSaleObject(customerFullName: string): any {
     return {
+      customerId: this.customer_id,
       customer_name: customerFullName,
       paymentMethod: this.paymentMethod,
+      status: "aceptado",
       sub_total: this.subTotalSaleAmount.toFixed(2),
       taxes_amount: this.totalTaxesAmount.toFixed(2),
       total: this.totalSaleAmount.toFixed(2),
-      products: this.buildProductList(),
+      saleItems: this.buildProductList(),
     };
   }
 
   private buildProductList(): any[] {
+    console.log(this.productList);
     return this.productList.map((product) => ({
+      productId: product.productId,
       int_code: product.int_code,
+      name: product.name,
+      status: "aceptado",
+      sale_price: product.sale_price,
       quantity: product.quantity,
       sub_total: product.sub_total,
       taxes_amount: product.taxes_amount,
+      total: product.total
     }));
   }
 
   private saveSale(sale: Sales): void {
-    console.log(sale);
     this.saleService.createSale(sale).subscribe({
       next: () => {
         this.handleSaleCreationSuccess();
