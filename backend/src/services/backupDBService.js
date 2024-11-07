@@ -19,10 +19,10 @@ function backupDataBase() {
   const pgDumpPath = "C:\\Program Files\\PostgreSQL\\17\\bin\\pg_dump.exe";
 
   // Contraseña de la base de datos
-  const password = "3az5bkhr"; // Reemplaza con la contraseña correcta
+  const password = process.env.PGPASSWORD; // Reemplaza con la contraseña correcta
 
   // Establecer la variable de entorno PGPASSWORD con la contraseña
-  process.env.PGPASSWORD = password;
+  // process.env.PGPASSWORD = password;
 
   // Comando para realizar el respaldo usando pg_dump
   const command = `"${pgDumpPath}" --file "${backupPath}" --host "localhost" --port "5432" --username "postgres" --no-password --verbose --role "postgres" --format=d "verduleria_db"`;
