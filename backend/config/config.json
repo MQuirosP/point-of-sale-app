@@ -1,21 +1,12 @@
 {
   "development": {
-    "username": "postgres",
-    "password": "3az5bkhr",
-    "database": "verduleria_db",
-    "host": "127.0.0.1",
-    "dialect": "postgres",
-    "migrations-path":"./backend/migrations"
+    "use_env_variable":"DATABASE_URL"
+    
   },
   "test": {
-    "username": "postgres",
-    "password": "3az5bkhr",
-    "database": "verduleria_db",
-    "host": "127.0.0.1",
-    "dialect": "postgres"
+    "use_env_variable":"DATABASE_URL"
   },
   "production": {
-    "use_env_variable": "DATABASE_URL",
-    "dialect": "postgres"
+    "use_env_variable": "DATABASE_URL"
   }
 }
