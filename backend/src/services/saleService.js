@@ -107,7 +107,7 @@ async function cancelSale(doc_number) {
 
     if (sale.status === "anulado") throw new Error("Sale is already cancelled");
 
-    sale.status = "anulado;"
+    sale.status = "anulado";
     await sale.save();
 
     for (const saleItem of sale.saleItems) {
