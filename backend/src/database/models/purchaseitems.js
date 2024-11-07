@@ -7,11 +7,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate = (models) => {
       PurchaseItems.belongsTo(models.Purchase, {
         foreignKey: "purchaseId",
-        as: "purchase", 
+        as: "purchase",
       });
       PurchaseItems.belongsTo(models.Product, {
-        foreignKey: "productId", 
-        as: "product", 
+        foreignKey: "productId",
+        as: "product",
       });
     };
   }
@@ -97,7 +97,6 @@ module.exports = (sequelize, DataTypes) => {
       purchaseItem.productId
     );
     if (product) {
-      
       product.quantity = Number(product.quantity);
       const quantityToAdd = Number(purchaseItem.quantity);
       product.quantity += quantityToAdd;

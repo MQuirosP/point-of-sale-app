@@ -7,7 +7,7 @@ async function createAudit(req, res) {
   try {
     const { username, consecutive, items } = req.body;
 
-    console.log(req.body);
+    // console.log(req.body);
     const newAuditDocument = await auditService.createAuditDocument(
       username,
       consecutive

@@ -32,13 +32,13 @@ app.use(express.json());
 app.use(cors(corsOptions));
 app.use(compression());
 
-// app.use(express.static(path.join(__dirname, "public"), {
-//   setHeaders: (res, path) => {
-//     if (path.endsWith(".js")) {
-//       res.setHeader("Content-Type", "application/javascript; charset=utf-8");
-//     }
-//   }
-// }));
+app.use(express.static(path.join(__dirname, "public"), {
+  setHeaders: (res, path) => {
+    if (path.endsWith(".js")) {
+      res.setHeader("Content-Type", "application/javascript; charset=utf-8");
+    }
+  }
+}));
 
 app.use("/", routes);
 

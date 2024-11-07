@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, NgZone } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ModalService } from 'src/app/services/modalService';
+import { ModalService } from 'src/app/services/modal.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { fadeAnimation } from 'src/app/animations/fadeAnimation';

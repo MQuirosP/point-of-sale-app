@@ -9,7 +9,7 @@ import {
 import { LoginService } from 'src/app/services/login.service';
 import { Observable, Subscription, switchMap } from 'rxjs';
 import { fadeAnimation } from 'src/app/animations/fadeAnimation';
-import { OptionsService } from 'src/app/services/optionsService';
+import { OptionsService } from 'src/app/services/options.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ProductCacheService } from 'src/app/services/product-cache.service';

@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
-import { OptionsService } from './../../services/optionsService';
+import { OptionsService } from '../../services/options.service';
 import { fadeAnimation } from 'src/app/animations/fadeAnimation';
 import { environment } from 'src/environments/environment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
