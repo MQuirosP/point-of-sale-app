@@ -43,7 +43,9 @@ async function getAllUsers() {
   try {
     const users = await User.findAll({
       order: [["userId", "ASC"]],
+      attributes: ["username", "name", "lastname", "role", "status", "email"]
     });
+    console.log(users);
     return users;
   } catch (error) {
     appLogger.error("Error fetching users", error);

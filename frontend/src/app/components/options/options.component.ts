@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
-import { OptionsService } from '../../services/optionsService';
+import { OptionsService } from '../../services/options.service';
 import { fadeAnimation } from 'src/app/animations/fadeAnimation';
 import { environment } from 'src/environments/environment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -262,8 +262,7 @@ export class OptionsComponent implements OnInit {
   }
 
   openCustomerInfoModal(value: any, customer: any) {
-    let customer_id = customer.customer_id;
-    if (value === true && customer_id) {
+    if (value === true && customer) {
       this.modalTitle = value ? 'Edición' : 'Registro';
       this.modalActionLabel = value;
       this.changeDetectorRef.detectChanges();
@@ -271,7 +270,7 @@ export class OptionsComponent implements OnInit {
       this.customerInfoModal.nativeElement.classList.add('opening', 'modal-background');
       setTimeout(() => {
         this.customerInfoModal.nativeElement.classList.add('show');
-        this.getCustomerInfo(customer_id);
+        this.updateCustomerForm(customer);
         this.toggleIcons(customer)
       }, 50);
     } else {
@@ -522,8 +521,7 @@ export class OptionsComponent implements OnInit {
   }
 
   openProviderInfoModal(value: any, provider: any) {
-    let provider_id = provider.provider_id;
-    if (value === true && provider_id) {
+    if (value === true && provider) {
       this.modalTitle = value ? 'Edición' : 'Registro';
       this.modalActionLabel = value;
       this.changeDetectorRef.detectChanges();
@@ -531,7 +529,7 @@ export class OptionsComponent implements OnInit {
       this.providerInfoModal.nativeElement.classList.add('opening', 'modal-background');
       setTimeout(() => {
         this.providerInfoModal.nativeElement.classList.add('show');
-        this.getProviderInfo(provider_id);
+        this.updateProviderForm(provider);
         this.toggleIcons(provider)
       }, 50);
     } else {
@@ -727,8 +725,8 @@ private showErrorNotification(message: string, error?: any) {
   }
 
   openUserInfoModal(value: any, user: any) {
-    let user_id = user.userId;
-    if (value === true && user_id) {
+    console.log(this.filteredUsers);
+    if (value === true && user) {
       this.modalTitle = value ? 'Edición' : 'Registro';
       this.modalActionLabel = value;
       this.changeDetectorRef.detectChanges();
@@ -738,7 +736,7 @@ private showErrorNotification(message: string, error?: any) {
         this.usersInfoModal.nativeElement.classList.add('show');
       }, 50);
       setTimeout(() => {
-        this.getUserInfo(user);
+        this.updateUserForm(user);
       }, 300);
     } else {
       this.modalTitle = value ? 'Edición' : 'Registro';
@@ -766,6 +764,7 @@ private showErrorNotification(message: string, error?: any) {
   getUserList() {
     this.http.get(`${this.backendUrl}users`).subscribe({
       next: (response: any) => {
+        console.log(response);
         if (response.success && response.message.Users) {
           this.users = response.message.Users.map((user: any) => {
             return { ...user, showIcons: false };
@@ -840,6 +839,7 @@ private showErrorNotification(message: string, error?: any) {
   }
 
   private updateUserForm(user: any) {
+    console.log(user);
     const { userId, name, lastname, username, email, role, status } = user;
 
     this.userForm.patchValue({

@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { LoginService } from '../services/login.service';
 import { CookieService } from 'ngx-cookie-service';
-import { OptionsService } from '../services/optionsService';
+import { OptionsService } from '../services/options.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {

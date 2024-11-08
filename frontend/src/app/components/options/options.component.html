@@ -262,8 +262,8 @@
                         class="mr-3"
                         role="button"
                         (click)="
-                          openProviderInfoModal(true, provider);
-                          this.editMode = true
+                          this.editMode = true;
+                          openProviderInfoModal(this.editMode, provider);
                         "
                       >
                         <i

@@ -80,19 +80,19 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  // User.prototype.getView = function () {
-  //   return {
-  //     userId: this.userId,
-  //     username: this.username,
-  //     name: this.name,
-  //     lastname: this.lastname,
-  //     role: this.role,
-  //     status: this.status,
-  //     email: this.email,
-  //     // createdAt: this.createdAt,
-  //     // updatedAt: this.updatedAt,
-  //   }
-  // }
+  User.prototype.getView = function () {
+    return {
+      userId: this.userId,
+      username: this.username,
+      name: this.name,
+      lastname: this.lastname,
+      role: this.role,
+      status: this.status,
+      email: this.email,
+      // createdAt: this.createdAt,
+      // updatedAt: this.updatedAt,
+    }
+  }
 
   return User;
 };

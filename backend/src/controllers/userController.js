@@ -109,7 +109,7 @@ async function getAllUsers(req, res) {
       userId: users.userId,
       username: users.username,
       // password: users.password,
-      // email: users.email,
+      email: users.email,
       name: users.name,
       lastname: users.lastname,
       role: users.role,

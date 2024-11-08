@@ -5,7 +5,7 @@ import {
   NgbCalendar,
   NgbDateParserFormatter,
 } from '@ng-bootstrap/ng-bootstrap';
-import { ModalService } from '../../services/modalService';
+import { ModalService } from '../../services/modal.service';
 import { fadeAnimation } from 'src/app/animations/fadeAnimation';
 import { ToastrService } from 'ngx-toastr';
 import { TicketService } from 'src/app/services/ticket.service';
