@@ -725,7 +725,6 @@ private showErrorNotification(message: string, error?: any) {
   }
 
   openUserInfoModal(value: any, user: any) {
-    console.log(this.filteredUsers);
     if (value === true && user) {
       this.modalTitle = value ? 'Edición' : 'Registro';
       this.modalActionLabel = value;
@@ -764,7 +763,6 @@ private showErrorNotification(message: string, error?: any) {
   getUserList() {
     this.http.get(`${this.backendUrl}users`).subscribe({
       next: (response: any) => {
-        console.log(response);
         if (response.success && response.message.Users) {
           this.users = response.message.Users.map((user: any) => {
             return { ...user, showIcons: false };
@@ -821,7 +819,7 @@ private showErrorNotification(message: string, error?: any) {
           this.toastr.warning('Usuario no encontrado.');
         }
       },
-      error: (error: any) => {
+      error: (error: Error) => {
         this.toastr.error('Error al obtener el usuario.');
       },
     });
@@ -839,7 +837,6 @@ private showErrorNotification(message: string, error?: any) {
   }
 
   private updateUserForm(user: any) {
-    console.log(user);
     const { userId, name, lastname, username, email, role, status } = user;
 
     this.userForm.patchValue({
@@ -953,7 +950,6 @@ private showErrorNotification(message: string, error?: any) {
   deleteUser(id: number) {
     this.http.get(`${this.backendUrl}users/id/${id}`).subscribe({
       next: (response: any) => {
-        console.log(response);
         if (response.message.User.username === this.superUser) {
           this.toastr.warning('Usuario administrador no puede ser eliminado.');
           return;
@@ -1015,7 +1011,6 @@ private showErrorNotification(message: string, error?: any) {
   }
 
   resetPassword(username: string) {
-    console.log(username);
     if (username === this.superUser) {
       this.toastr.warning(
         `No tiene permisos para cambiar la contraseña al usuario.`
