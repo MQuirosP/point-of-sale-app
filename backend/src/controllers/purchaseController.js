@@ -31,8 +31,8 @@ async function getPurchaseByDocNumber(req, res) {
     if (!purchase || purchase.length === 0) {
       return responseUtils.sendErrorResponse(res, "Purchase not found", 201);
     }
-    const purchaseView = purchase.map((purchase) => purchase.getView());
-    responseUtils.sendSuccessResponse(res, { Purchase: purchaseView });
+    // const purchaseView = purchase.map((purchase) => purchase.getView());
+    responseUtils.sendSuccessResponse(res, purchase.getView());
   } catch (error) {
     appLogger.error("Error getting purchase by id", error);
     responseUtils.sendErrorResponse(res, "Error retrieving purchase");
