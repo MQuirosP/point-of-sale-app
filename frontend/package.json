@@ -5,6 +5,10 @@
   "author": "Mario Quirós Pizarro",
   "productName": "Mi Punto de Venta",
   "main": "index.js",
+  "build": {
+    "appId": "com.example.app",
+    "files": ["**/*", "dist/**/*"]
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -12,7 +16,9 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "echo 'No linting configured'",
-    "electron": "electron ."
+    "electron": "electron .",
+    "dist": "electron-builder",
+    "electron-package": "electron-packager . Verduleria-app --platform=win32 --arch=x64"
   },
   "private": true,
   "dependencies": {
@@ -56,6 +62,7 @@
     "@angular/compiler-cli": "^16.0.0",
     "@types/jasmine": "~4.3.0",
     "electron": "^26.1.0",
+    "electron-builder": "^25.1.8",
     "jasmine-core": "~4.6.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",

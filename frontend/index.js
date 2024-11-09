@@ -10,7 +10,7 @@ function createWindow() {
     title: "Mi Punto de Venta",
     icon: path.join(__dirname, "favicon.ico"),
     webPreferences: {
-      nodeIntegration: true,
+      nodeIntegration: false,
       webSecurity: true,
     },
     autoHideMenuBar: true,
@@ -22,6 +22,8 @@ function createWindow() {
     "verduleria-app",
     "index.html"
   );
+
+  // win.webContents.openDevTools();
 
   win.loadFile(indexPath);
 
