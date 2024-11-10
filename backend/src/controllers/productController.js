@@ -1,9 +1,8 @@
 const productService = require("../services/productService");
-const { dbLogger, appLogger } = require("../utils/logger");
+const { appLogger } = require("../utils/logger");
 const responseUtils = require("../utils/responseUtils");
-const jwtAuthMiddleware = require("./../../authMiddleware");
 
-async function getAllProducts(req, res) {
+async function getAllProducts(res) {
   try {
     const products = await productService.getAllProducts();
     const productsView = products.map((products) => products.getView());

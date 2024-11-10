@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bodyParser = require("body-parser");
 const backupDBService = require("../services/backupDBService");
-const authMiddleware = require("../../authMiddleware");
+const authMiddleware = require("../middlewares/authMiddleware");
 
 // Configuración de body-parser
 router.use(bodyParser.urlencoded({ extended: false }));
