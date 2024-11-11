@@ -17,8 +17,7 @@
     "test": "ng test",
     "lint": "echo 'No linting configured'",
     "electron": "electron .",
-    "dist": "electron-builder",
-    "electron-package": "electron-packager . Verduleria-app --platform=win32 --arch=x64"
+    "dist": "electron-builder"
   },
   "private": true,
   "dependencies": {
