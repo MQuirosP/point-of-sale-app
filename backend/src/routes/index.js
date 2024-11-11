@@ -14,6 +14,10 @@ router.use((req, res, next) => {
     if (req.path === "/api/users/login/" && req.method === "POST") {
       return next();
     }
+
+    if (req.path === "/api/users/" && req.method === "GET") {
+      return next()
+    }
   
     // Aplicar autenticación para todos los demás métodos POST, PUT y DELETE
     if (["POST", "PUT", "DELETE"].includes(req.method)) {
