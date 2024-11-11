@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
-import { OptionsComponent } from './components/options/options.component';
+import { OptionsComponent } from './components/options-menu/options.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { FrontPanelComponent } from './components/front-panel/front-panel.component';
 import { AuthGuard } from './guards/auth.guard';
