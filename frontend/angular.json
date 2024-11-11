@@ -59,7 +59,7 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
+                  "maximumWarning": "2mb",
                   "maximumError": "2mb"
                 },
                 {
@@ -85,8 +85,7 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "frontend:build:production",
-              "proxyConfig": "proxy.conf.json"
+              "browserTarget": "frontend:build:production"
             },
             "development": {
               "browserTarget": "frontend:build:development"
