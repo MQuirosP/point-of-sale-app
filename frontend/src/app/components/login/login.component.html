@@ -20,10 +20,11 @@
 
 <!-- Plantilla login -->
 <div class="container" [@fadeAnimation]>
-    <div class="login-box shadow bg-white border">
+  <div class="login-box shadow bg-white border">
+    <div class="card">
       <form (ngSubmit)="onSubmit()">
         <div class="modal-header border">
-          <h4 class="modal-title">
+          <h4 class="card-title">
             <i class="fas fa-check-circle"></i>&nbsp;Inicio de sesión
           </h4>
         </div>
@@ -41,13 +42,9 @@
                 autocomplete="off"
                 (focus)="addFloatingLabelClass('username')"
                 (blur)="removeFloatingLabelClass('username')"
-                style="border-radius: 5px 0 0 5px; font-size: 1.1rem;"
+                style="border-radius: 5px 0 0 5px; font-size: 1.1rem"
               />
-              <div class="input-group-append">
-                <span class="input-group-text"
-                  ><i class="fas fa-user"></i
-                ></span>
-              </div>
+              <span class="input-group-text"><i class="fa fa-user"></i></span>
             </div>
           </div>
           <div class="form-group mt-2 mb-4">
@@ -62,13 +59,15 @@
                 name="password"
                 (focus)="addFloatingLabelClass('password')"
                 (blur)="removeFloatingLabelClass('password')"
-                style="border-radius: 5px 0 0 5px; font-size: 1.1rem; letter-spacing: 2px;"
+                style="
+                  border-radius: 5px 0 0 5px;
+                  font-size: 1.1rem;
+                  letter-spacing: 2px;
+                "
               />
-              <div class="input-group-append">
-                <span class="input-group-text"
-                  ><i class="fas fa-passport"></i
-                ></span>
-              </div>
+              <span class="input-group-text"
+                ><i class="fas fa-passport"></i
+              ></span>
             </div>
           </div>
           <div class="card-footer text-center" style="margin-top: 25px">
@@ -83,4 +82,5 @@
         </div>
       </form>
     </div>
+  </div>
 </div>

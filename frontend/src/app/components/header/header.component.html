@@ -4,8 +4,8 @@
     <a routerLink="/home" class="navbar-brand">Verdulería Sol</a>
     <button
       class="navbar-toggler collapsed mr-1"
-      data-toggle="collapse"
-      data-target="#navbarCollapse"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarCollapse"
       title="collapse-button"
     >
       <span class="navbar-toggler-icon"></span>
@@ -41,20 +41,20 @@
           </li>
         </ul>
       </div>
-      <div class="dropdown ml-auto" >
+      <div class="dropdown ml-auto">
         <a
-          href="#"
-          type="button"
           role="button"
-          class="dropdown-toggle nav-link"
-          data-toggle="dropdown"
-          *ngIf="(isLoggedIn$ | async)"
+          class="btn btn-primary dropdown-toggle mb-2 text-white"
+          data-bs-toggle="collapse"
+          data-bs-target="#useroptions"
+          *ngIf="isLoggedIn$ | async"
         >
-          <i class="fas fa-user-check "></i> Bienvenido {{ user }}
+          <i class="fas fa-user-check"></i> Bienvenido {{ user }}
         </a>
         <span class="caret"></span>
-        <ul class="dropdown-menu dropdown-menu-right bg-dark">
-          <li>
+        <div id="useroptions">
+          <ul class="dropdown-menu dropdown-menu-right bg-dark">
+            <li>
               <a
                 class="dropdown-item"
                 style="cursor: pointer"
@@ -79,24 +79,25 @@
                 <i class="fa-solid fa-database"></i>&nbsp;Respaldar BD
               </a>
             </li>
-              <li class="dropdown-divider"></li>
-              <li>
+            <li class="dropdown-divider"></li>
+            <li>
               <a
                 style="cursor: pointer"
                 class="dropdown-item"
                 (click)="onLogout()"
+                data-bs-toggle="collapse"
+                data-bs-target="#useroptions"
                 *ngIf="isLoggedIn$ | async"
               >
                 <i class="fas fa-door-open"></i>&nbsp;Salir
               </a>
             </li>
-
-            
-        </ul>
+          </ul>
+        </div>
         <ul class="navbar-nav" *ngIf="!(isLoggedIn$ | async)">
           <!-- Componente Login -->
 
-          <li  class="nav-item px-2">
+          <li class="nav-item px-2">
             <a
               routerLink="/login"
               class="nav-link"
