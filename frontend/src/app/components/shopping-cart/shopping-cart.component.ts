@@ -204,6 +204,7 @@ export class ShoppingCartComponent {
       this.newSaleModal.nativeElement.classList.remove('show');
       this.newSaleModal.nativeElement.classList.remove('closing');
       this.newSaleModal.nativeElement.style.display = 'none';
+      this.modalService.showNewSaleModal.next(false);
     }, 300);
   }
 

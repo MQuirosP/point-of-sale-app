@@ -139,6 +139,7 @@ export class LoginService {
       this.toastr.error('No se ha iniciado sesión.');
       return;
     }
+    this.setLoggedIn(false)
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',

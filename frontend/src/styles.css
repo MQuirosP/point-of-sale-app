@@ -4,14 +4,7 @@ html {
   margin: 0;
   padding: 0;
   font-size: 1rem;
-  background: url(src/assets/bg-pattern.png), #7b4397;
-  background: url(src/assets/bg-pattern.png),
-    -webkit-gradient(linear, right top, left top, from(#7b4397), to(#dc2430));
-  background: url(src/assets/bg-pattern.png),
-    linear-gradient(to left, #a8e6ce, #6d9bcc);
-  /* linear-gradient(to left, #9765a1, #ee1d1d); */
-  transition: opacity 100ms;
-  z-index: 1;
+  
 }
 
 @media (min-width: 360px) and (max-width: 600px) {
@@ -1045,14 +1038,16 @@ app-header {
   left: 0;
   width: 100%;
   z-index: 1;
+  height: 10%;
   background-color: #fff;
 }
 
 /* Estilo para el contenido principal */
-.main-content {
+#main-header {
+  display: flex;
+  align-items: center;
   margin-top: 70px;
-  height: calc(90vh - 75px);
-  overflow-y: auto;
+  height: 10vh;
 }
 
 app-footer {
@@ -1142,4 +1137,33 @@ span.badge:hover {
   left: 0px;
   /* width: 800px; */
   z-index: 2000;
+}
+
+aside {
+  position: fixed;
+  top: 10%;
+  left: 0;
+  width: 19.7%;
+  height: calc(100vh - 18%);
+  background-color: #363434;
+  z-index: -1;
+  background: url(src/assets/bg-pattern.png), #7b4397;
+  background: url(src/assets/bg-pattern.png),
+    -webkit-gradient(linear, right top, left top, from(#7b4397), to(#dc2430));
+  background: url(src/assets/bg-pattern.png),
+  linear-gradient(to left, #9765a1, #ee1d1d);
+}
+
+main {
+  position: absolute;
+  right: 0;
+  width: 80%;
+  height: calc(100vh - 60px);
+  background: url(src/assets/bg-pattern.png), #7b4397;
+  background: url(src/assets/bg-pattern.png),
+    -webkit-gradient(linear, right top, left top, from(#7b4397), to(#dc2430));
+  background: url(src/assets/bg-pattern.png),
+    linear-gradient(to left, #a8e6ce, #6d9bcc);
+  /* linear-gradient(to left, #9765a1, #ee1d1d); */
+  transition: opacity 100ms;
 }

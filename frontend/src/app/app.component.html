@@ -1,7 +1,25 @@
 <app-header></app-header>
+<aside
+  class="aside"
+  [ngClass]="{ 'aside-expanded': isLoggedIn$ | async, 'aside-collapsed': !(isLoggedIn$ | async) }"
+>
+  <div class="container mt-3">
+    <ul class="list-unstyled">
+      <li>
+        <a routerLink="shopping-cart" role="button" class="text-white"><i class="fas fa-shopping-cart"></i>&nbsp;Ventas</a>
+      </li>
+      <li>
+        <a routerLink="purchase-history" role="button" class="text-white"><i class="fas fa-shopping-basket"></i>&nbsp;Compras</a>
+      </li>
+      <li>
+        <a routerLink="product-list" role="button" class="text-white"><i class="fas fa-receipt"></i>&nbsp;Lista de productos</a>
+      </li>
+    </ul>
+  </div>
+</aside>
 
-<div class="main-content">
-    <router-outlet></router-outlet>
-</div>
+<main [ngClass]="{ 'main-full': !(isLoggedIn$ | async), 'main-reduced': isLoggedIn$ | async }">
+  <router-outlet></router-outlet>
+</main>
 
 <app-footer></app-footer>
