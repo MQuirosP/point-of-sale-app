@@ -1,13 +1,18 @@
+.final-div {
+  margin-top: 20px;
+  overflow-y: calc(100vh + 30px);
+  /* height: calc(80vh + 10px); */
+}
 
-  td {
-    padding-top: 9px;
-    padding-bottom: 9px;
-  }
-  
-  th {
-    padding-top: 10px;
-    padding-bottom: 10px;
-  }
+td {
+  padding-top: 9px;
+  padding-bottom: 9px;
+}
+
+th {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
 
 /* .product-list-header {
   padding-top: 8px;
@@ -60,24 +65,26 @@
 }
 
 /* Establece un ancho fijo para todas las columnas en la tabla */
-th, td {
-  white-space: nowrap; 
-  min-width: 100px; 
+th,
+td {
+  white-space: nowrap;
+  min-width: 100px;
   max-width: 100px;
-  overflow: hidden; 
-  text-overflow: ellipsis; 
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Establece el ancho fijo para todas las columnas en dispositivos móviles */
 @media (max-width: 767px) {
-  th, td {
+  th,
+  td {
     width: auto;
-    min-width: auto; 
-    max-width: auto; 
-    overflow: visible; 
-    text-overflow: clip; 
+    min-width: auto;
+    max-width: auto;
+    overflow: visible;
+    text-overflow: clip;
   }
-  th:nth-child(4){
+  th:nth-child(4) {
     min-width: 190px;
   }
   td:nth-child(1) {
@@ -88,10 +95,10 @@ th, td {
   }
 }
 
-@media (max-width: 768px) {
-  .final-div {
-    top: -10px;
-    margin-bottom: 120px !important;
-  }
+::-webkit-scrollbar {
+  height: 80vh;
+  width: 12px;
+  background-color: #ddd;
+  border-radius: 10px;
+  border: 1px solid #999;
 }
-

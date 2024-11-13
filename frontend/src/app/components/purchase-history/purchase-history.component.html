@@ -24,7 +24,7 @@
 <div class="container final-div justify-content-center" [@fadeAnimation]>
   <div class="row justify-content-center">
     <div class="col-md-6 d-flex justify-content-center mb-3">
-      <div class="ccard card-height col-md-8 custom-main-card shadow">
+      <div class="card card-height col-md-8 custom-main-card shadow">
         <div class="d-flex">
           <a class="text-decoration-none" (click)="openPurchaseModal()">
             <div class="card-body">
@@ -99,12 +99,12 @@
           </h5>
           <button
             type="button"
-            class="close clic-on-icon"
+            class="roundButton clic-on-icon"
             aria-label="Close"
             (click)="closePurchaseModal()"
           >
             <span aria-hidden="true">
-              <i class="fas fa-close"></i>
+              <i class="fa-solid fa-xmark text-danger fs-4"></i>
             </span>
           </button>
         </div>
@@ -112,14 +112,14 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label for="provider_name">Proveedor:</label>
+                <label for="provider_name" class="form-label">Proveedor:</label>
                 <input
                   type="search"
                   role="combobox"
                   id="provider_name"
                   list="providerOptions"
                   formControlName="provider_name"
-                  class="form-control datalist-no-arrow"
+                  class="form-control"
                   autocomplete="off"
                   [spellcheck]="false"
                   style="cursor: text"
@@ -144,7 +144,7 @@
                   <datalist
                     id="providerOptions"
                     role="listbox"
-                    class="form-select"
+                    class=""
                     aria-labelledby="providerOptions"
                   >
                     <option
@@ -156,9 +156,9 @@
                   </datalist>
                 </div>
               </div>
-              <div class="form-group form-row">
-                <div class="col">
-                  <label for="doc_number">Documento:</label>
+              <div class="row">
+                <div class="col-md-6">
+                  <label for="doc_number" class="form-label">Documento:</label>
                   <input
                     type="text"
                     id="doc_number"
@@ -176,12 +176,12 @@
                     }"
                   />
                 </div>
-                <div class="col">
-                  <label for="paymentMethod">Método de pago:</label>
+                <div class="col-md-6">
+                  <label for="paymentMethod" class="form-label">Método de pago:</label>
                   <select
                     id="paymentMethod"
                     formControlName="paymentMethod"
-                    class="custom-select is-valid"
+                    class="form-control is-valid"
                     style="padding-top: 5px"
                   >
                     <option value="contado" selected>Contado</option>
@@ -189,8 +189,8 @@
                   </select>
                 </div>
               </div>
-              <div class="form-group">
-                <label for="product_name">Producto:</label>
+              <div class="col mt-2">
+                <label for="product_name" class="form-label">Producto:</label>
                 <input
                   type="search"
                   id="product_name"
@@ -274,9 +274,9 @@
                 </div>
               </div>
 
-              <div class="form-group form-row">
-                <div class="col">
-                  <label for="product_quantity">Cantidad:</label>
+              <div class="row mt-2">
+                <div class="col-md-6">
+                  <label for="product_quantity" class="form-label">Cantidad:</label>
                   <input
                     type="number"
                     id="product_quantity"
@@ -297,7 +297,7 @@
                 </div>
                 <div class="col">
                   <div class="d-flex justify-content-between">
-                    <label for="product_price">Precio:</label>
+                    <label for="product_price" class="form-label">Precio:</label>
                     <label
                       *ngIf="selectedProduct"
                       for=""
@@ -330,11 +330,11 @@
               </div>
 
               <div
-                class="form-group form-row"
+                class="row mt-2"
                 style="margin-top: 10px !important"
               >
-                <div class="col">
-                  <label for="product_new_price">Precio actual:</label>
+                <div class="col-md-6">
+                  <label for="product_new_price" class="form-label">Precio actual:</label>
                   <input
                     type="number"
                     id="product_new_price"
@@ -352,7 +352,7 @@
                     }"
                   />
                 </div>
-                <div class="col">
+                <div class="col-md-6 mt-2">
                   <div class="d-flex justify-content-center">
                     <button
                       type="button"
@@ -467,7 +467,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-6 table d-flex justify-content-center">
+            <div class="col-md-6 d-flex justify-content-center">
               <div class="row total-box">
                 <div class="col-md-4">
                   <h6 class="total-box-titles">Sub Total</h6>
@@ -503,7 +503,7 @@
             <button
               *ngIf="getUserRole() !== 'user'"
               type="submit"
-              class="btn btn-primary shadow mr-2 clic-on-image"
+              class="btn btn-primary shadow me-2 clic-on-image"
             >
               Guardar
             </button>
@@ -540,11 +540,11 @@
         </h5>
         <button
           type="button"
-          class="close clic-on-icon"
+          class="roundButton clic-on-icon"
           aria-label="Close"
           (click)="closePurchaseHistoryModal()"
         >
-          <span aria-hidden="true"><i class="fas fa-close"></i></span>
+          <span aria-hidden="true"><i class="fa-solid fa-xmark text-danger fs-4"></i></span>
         </button>
       </div>
       <div class="modal-body">

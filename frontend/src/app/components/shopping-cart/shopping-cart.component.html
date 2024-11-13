@@ -99,12 +99,12 @@
           <div>
             <button
               type="button"
-              class="close clic-on-icon"
+              class="roundButton clic-on-icon"
               aria-label="Close"
               (click)="closeSaleModal()"
             >
               <span>
-                <i class="fas fa-close"></i>
+                <i class="fa-solid fa-xmark text-danger fs-4"></i>
               </span>
             </button>
           </div>
@@ -112,16 +112,14 @@
         <div class="modal-body form-modal">
           <div class="row">
             <div class="col-md-6">
-              <div class="form-group form-row">
-                <div class="col">
-                  <label for="customer_name">Cliente:</label>
+                  <label for="customer_name" class="form-label">Cliente:</label>
                   <input
                     type="search"
                     role="combobox"
                     id="customer_name"
                     list="customerOptions"
                     formControlName="customer_name"
-                    class="form-control datalist-no-arrow"
+                    class="form-control"
                     autocomplete="off"
                     [spellcheck]="false"
                     style="cursor: text"
@@ -135,8 +133,8 @@
                       saleForm.get('customer_name').invalid,
                     'italic-text': !saleForm.get('customer_name').value,
                   }"
-                    aria-controls="customerOptions"
-                    aria-label="Seleccione cliente"
+                    aria-bs-controls="customerOptions"
+                    aria-bs-label="Seleccione cliente"
                     [attr.aria-expanded]="isExpanded ? 'true' : 'false'"
                     (input)="onInputChange($event)"
                   />
@@ -146,22 +144,20 @@
                     <datalist
                       id="customerOptions"
                       role="listbox"
-                      class="form-select"
+                      class=""
                       aria-labelledby="customerOptions"
                     >
                       <option
                         *ngFor="let customer of customersList"
                         [value]="formattedCustomerNames[customer.customer_id]"
                       >
-                        {{ formattedCustomerNames[customer.customer_id] }}
+                      {{ formattedCustomerNames[customer.customer_id] }}
                       </option>
                     </datalist>
-                  </div>
-                </div>
               </div>
-              <div class="form-group form-row">
-                <div class="col">
-                  <label for="paymentMethod">Método de pago:</label>
+              <div class="row mt-2">
+                <div class="col-md-6">
+                  <label for="paymentMethod" class="form-label">Método de pago:</label>
                   <input
                     id="paymentMethod"
                     type="search"
@@ -191,8 +187,8 @@
                   </datalist>
                 </div>
 
-                <div class="col">
-                  <label for="date">Fecha:</label>
+                <div class="col-md-6">
+                  <label for="date" class="form-label">Fecha:</label>
                   <input
                     type="text"
                     id="date"
@@ -207,13 +203,13 @@
                   />
                 </div>
               </div>
-              <div class="form-group">
-                <label for="product_name">Producto:</label>
+              <div class="col mt-2">
+                <label for="product_name" class="form-label">Producto:</label>
                 <input
                   type="search"
                   id="product_name"
                   formControlName="product_name"
-                  class="form-control datalist-no-arrow"
+                  class="form-control "
                   autocomplete="off"
                   [spellcheck]="false"
                   placeholder="Seleccione producto..."
@@ -295,9 +291,9 @@
                 </div>
               </div>
 
-              <div class="form-group form-row">
-                <div class="col">
-                  <label for="product_quantity">Cantidad:</label>
+              <div class="row mt-2">
+                <div class="col-md-6">
+                  <label for="product_quantity" class="form-label">Cantidad:</label>
                   <input
                     type="number"
                     id="product_quantity"
@@ -312,8 +308,8 @@
                     }"
                   />
                 </div>
-                <div class="col">
-                  <label for="product_price">Precio:</label>
+                <div class="col-md-6">
+                  <label for="product_price" class="form-label">Precio:</label>
                   <input
                     type="number"
                     id="product_price"
@@ -335,7 +331,7 @@
               <div class="d-flex justify-content-center">
                 <button
                   type="button"
-                  class="btn btn-primary shadow clic-on-image mb-3"
+                  class="btn btn-primary shadow clic-on-image mt-3 mb-3"
                   (click)="addProduct(selectedProduct)"
                   [disabled]="saleForm.get('product_name').value === ''"
                 >
@@ -448,7 +444,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-6 table d-flex justify-content-center">
+            <div class="col-md-6 d-flex justify-content-center">
               <div class="row total-box">
                 <div class="col-md-4">
                   <h6 class="total-box-titles">Sub Total</h6>
@@ -485,10 +481,10 @@
           >
             Reset
           </button>
-          <div class="justify-content-center">
+          <div class="">
             <button
               type="button"
-              class="btn btn-primary mr-2 shadow clic-on-image"
+              class="btn btn-primary me-2 shadow clic-on-image"
               (click)="createSale($event)"
             >
               Guardar
@@ -524,13 +520,15 @@
           <i class="fas fa-history"></i>&nbsp;Historial de ventas
         </h5>
         <button
-          type="button"
-          class="close clic-on-icon"
-          aria-label="Close"
-          (click)="closeSaleHistoryModal()"
-        >
-          <span><i class="fas fa-close"></i></span>
-        </button>
+              type="button"
+              class="roundButton clic-on-icon"
+              aria-label="Close"
+              (click)="closeSaleHistoryModal()"
+            >
+              <span>
+                <i class="fa-solid fa-xmark text-danger fs-4"></i>
+              </span>
+            </button>
       </div>
       <div class="modal-body">
         <form class="">
@@ -562,7 +560,7 @@
                 >
                   <a
                     role="button"
-                    class="ml-2"
+                    class="ms-2"
                     (click)="toggleSaleDetails(sale)"
                     style="cursor: pointer"
                     title="show_details"
@@ -682,7 +680,7 @@
                         sale.status === 'aceptado' &&
                         isCurrentDate(sale.createdAt)
                       "
-                      class="btn btn-danger clic-on-image mr-2"
+                      class="btn btn-danger clic-on-image me-2"
                       (click)="cancelSale(sale); toggleSaleDetails(sale)"
                     >
                       Anular

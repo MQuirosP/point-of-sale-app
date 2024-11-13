@@ -6,7 +6,7 @@
 .container .list-unstyled a {
     text-decoration: none;
     color: rgb(151, 149, 149);
-    font-size: 1.2em;
+    font-size: 1.1rem;
     letter-spacing: 2px;
 }
 
@@ -38,4 +38,34 @@
     width: 80%; /* Ajuste según el ancho del aside */
     transition: width 0.3s ease;
   }
+  
+  /* Configuración general */
+body, html {
+  height: 100%;
+  margin: 0;
+}
+
+.container-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Ocupa toda la altura de la ventana */
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-left: 0;
+  transition: margin-left 0.3s ease;
+}
+
+.aside-expanded ~ main {
+  margin-left: 250px; /* Espacio cuando aside está expandido */
+}
+
+footer {
+  height: 50px; /* Altura fija del footer */
+  flex-shrink: 0;
+}
+
   

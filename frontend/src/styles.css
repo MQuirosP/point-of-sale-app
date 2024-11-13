@@ -497,14 +497,15 @@ a.hide {
 
 .roundButton {
   border-radius: 30px;
+  border: 0;
   color: rgb(218, 223, 191);
   transition: background-color 0.5 ease, transform 0.3s ease;
-  background-color: rgb(242, 243, 206);
+  background-color: rgba(242, 243, 206, 0);
   transform-style: preserve-3d;
 }
 
 .roundButton:hover {
-  transform: translateY(-2px) translateZ(2px);
+  transform: translateY(0px) translateY(-1px);
 }
 
 .hidden-link {
@@ -1007,10 +1008,7 @@ input::-webkit-input-placeholder {
 }
 
 .final-div {
-  position: relative;
-  margin-top: 20px;
-  transform: translateX(-50% -50%);
-  z-index: 0;
+  margin-top: 40px;
 }
 
 @media (max-width: 768px) {
@@ -1106,7 +1104,6 @@ span.badge:hover {
 
 .form-modal {
   overflow-y: auto;
-  height: 62vh
 }
 
 .history-card {
@@ -1158,7 +1155,7 @@ main {
   position: absolute;
   right: 0;
   width: 80%;
-  height: calc(100vh - 60px);
+  height: calc(100% - 30px);
   background: url(src/assets/bg-pattern.png), #7b4397;
   background: url(src/assets/bg-pattern.png),
     -webkit-gradient(linear, right top, left top, from(#7b4397), to(#dc2430));

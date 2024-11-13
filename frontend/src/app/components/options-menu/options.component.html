@@ -13,7 +13,8 @@
         <a
           routerLink="/"
           role="button"
-          class="btn btn-warning border border-warning shadow clic-on-image mr-2"
+          class="btn btn-warning border border-warning shadow clic-on-image"
+          style="margin-right: 10px;"
         >
           <i class="fas fa-arrow-left"></i>
           <span class="d-none d-md-inline">&nbsp;Volver</span>
@@ -50,19 +51,20 @@
                   <p>Activar el registro de usuarios.</p>
                 </div>
                 <div
-                  class="col-4 col-md-4 mx-auto custom-control custom-switch"
+                  class="col-4 col-md-4 mx-auto form-check form-switch"
                 >
                   <input
                     *ngIf="getUserRole() !== 'user'"
                     type="checkbox"
-                    class="custom-control-input"
+                    class="form-check-input"
+                    style="cursor: pointer;"
                     id="activateRegister"
                     name="activateRegister"
                     [(ngModel)]="activateRegister"
                     [checked]="activateRegister"
                     (click)="toggleCheckbox()"
                   />
-                  <label for="activateRegister" class="custom-control-label">
+                  <label for="activateRegister" class="form-check-label">
                     <span
                       [ngStyle]="{
                         color: activateRegister ? 'green' : 'red'

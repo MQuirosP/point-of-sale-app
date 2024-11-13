@@ -29,7 +29,7 @@
 <div class="container final-div" [@fadeAnimation]>
   <div class="modal-content" style="max-width: 100%">
     <div class="card-header product-list-header border">
-      <div class="row">
+      <div class="row ">
         <div class="col-md-6 align-items-center">
           <!-- Encabezado del listado -->
           <h5 class="modal-title">
@@ -40,7 +40,7 @@
           <!-- Contenedor de los botones Agregar, Anterior y Siguiente -->
           <div class="d-flex justify-content-between justify-content-md-end">
             <button
-              class="btn btn-primary border-primary shadow clic-on-image mr-4"
+              class="btn btn-primary border-primary shadow clic-on-image me-4"
               (click)="openProductModal(false, null); this.editMode = false"
               [disabled]="getUserRole() === 'user'"
             >
@@ -48,7 +48,7 @@
             </button>
             <div>
               <button
-                class="btn btn-warning border-warning shadow clic-on-image mr-2"
+                class="btn btn-warning border-warning shadow clic-on-image me-2"
                 (click)="prevPage()"
                 [disabled]="page === 0"
                 style="color: white !important"
@@ -77,15 +77,15 @@
           <thead>
             <tr class="product-detail-table-titles">
               <th class="text-left" style="width: 40%">Producto</th>
-              <th class="text-right" style="width: 10%">Disponible</th>
-              <th class="text-right" style="width: 10%">P. Compra</th>
-              <th class="text-right d-none d-md-table-cell" style="width: 8%">
+              <th class="text-end" style="width: 10%">Disponible</th>
+              <th class="text-end" style="width: 10%">P. Compra</th>
+              <th class="text-end d-none d-md-table-cell" style="width: 8%">
                 Margen
               </th>
-              <th class="text-right d-none d-md-table-cell" style="width: 5%">
+              <th class="text-end d-none d-md-table-cell" style="width: 5%">
                 I.V.A.
               </th>
-              <th class="text-right" style="width: 12%">P. Venta</th>
+              <th class="text-end" style="width: 12%">P. Venta</th>
             </tr>
           </thead>
           <tbody class="">
@@ -111,7 +111,7 @@
                 >
                   <a
                     role="button"
-                    class="mr-3"
+                    class="me-3"
                     (click)="
                       openProductModal(true, product); this.editMode = true
                     "
@@ -122,7 +122,7 @@
                     ></i>
                   </a>
                   <a
-                    class="mr-2"
+                    class="me-2"
                     *ngIf="getUserRole() !== 'user'"
                     (click)="openPasswordModal(product)"
                   >
@@ -133,25 +133,25 @@
                   </a>
                 </div>
               </td>
-              <td class="text-right" style="min-width: 100px">
+              <td class="text-end" style="min-width: 100px">
                 {{ product.quantity | number : "1.2-2" }}
               </td>
-              <td class="text-right" style="min-width: 100px">
+              <td class="text-end" style="min-width: 100px">
                 {{ product.purchase_price | currency : "CRC" : "₡" }}
               </td>
               <td
-                class="text-right d-none d-md-table-cell"
+                class="text-end d-none d-md-table-cell"
                 style="min-width: 75px"
               >
                 {{ product.margin | number : "1.2-2" }} %
               </td>
               <td
-                class="text-right d-none d-md-table-cell"
+                class="text-end d-none d-md-table-cell"
                 style="min-width: 75px"
               >
                 {{ product.taxPercentage | number : "1." }} %
               </td>
-              <td class="right-curved text-right price-cell">
+              <td class="right-curved text-end price-cell">
                 {{ product.sale_price | currency : "CRC" : "₡" }}
               </td>
             </tr>
@@ -192,19 +192,19 @@
         <button
           type="button"
           aria-label="Close"
-          class="close clic-on-icon"
+          class="roundButton clic-on-icon"
           (click)="closeProductModal()"
         >
           <span >
-            <i class="fas fa-close"></i>
+            <i class="fa-solid fa-xmark text-danger fs-4"></i>
           </span>
         </button>
       </div>
       <form [formGroup]="productForm" (ngSubmit)="createProduct($event)">
         <div class="modal-body">
-          <div class="form-group form-row">
+          <div class="row">
             <div class="col-md-6">
-              <label for="int_code">Código:</label>
+              <label for="int_code" class="form-label">Código:</label>
               <input
                 type="text"
                 class="form-control"
@@ -225,13 +225,13 @@
               />
             </div>
             <div class="col-md-6">
-              <label for="category_id">Categoría:</label>
+              <label for="category_id" class="form-label">Categoría:</label>
               <select
                 type="select"
                 formControlName="category_id"
                 id="category_id"
                 required
-                class="custom-select"
+                class="form-select"
                 [ngClass]="{
                   'is-valid':
                     productForm.get('category_id').touched &&
@@ -251,9 +251,9 @@
               </select>
             </div>
           </div>
-          <div class="form-group form-row">
+          <div class="row mt-2">
             <div class="col-md-12">
-              <label for="productName">Nombre:</label>
+              <label for="productName" class="form-label">Nombre:</label>
               <input
                 type="text"
                 class="form-control"
@@ -273,9 +273,9 @@
               />
             </div>
           </div>
-          <div class="form-group form-row">
+          <div class="row mt-2">
             <div class="col-md-12">
-              <label for="productDescription">Descripción:</label>
+              <label for="productDescription" class="form-label">Descripción:</label>
               <textarea
                 class="form-control"
                 id="productDescription"
@@ -293,12 +293,12 @@
               ></textarea>
             </div>
           </div>
-          <div class="form-group form-row">
-            <div class="col">
-              <label for="purchase_price">Precio de compra:</label>
+          <div class="row mt-2">
+            <div class="col-md-6">
+              <label for="purchase_price" class="form-label">Precio de compra:</label>
               <input
                 type="number"
-                class="form-control text-right"
+                class="form-control text-end"
                 id="purchase_price"
                 formControlName="purchase_price"
                 name="purchase_price"
@@ -316,11 +316,11 @@
                 }"
               />
             </div>
-            <div class="col">
-              <label for="sale_price">Precio de venta:</label>
+            <div class="col-md-6">
+              <label for="sale_price" class="form-label">Precio de venta:</label>
               <input
                 type="number"
-                class="form-control text-right"
+                class="form-control text-end"
                 id="sale_price"
                 formControlName="sale_price"
                 name="sale_price"
@@ -330,12 +330,12 @@
               />
             </div>
           </div>
-          <div class="form-group form-row">
-            <div class="col">
-              <label for="productMargin">Margen de ganancia (%):</label>
+          <div class="row mt-2">
+            <div class="col-md-6">
+              <label for="productMargin" class="form-label">Margen de ganancia (%):</label>
               <input
                 type="number"
-                class="form-control text-right"
+                class="form-control text-end"
                 id="productMargin"
                 formControlName="margin"
                 name="margin"
@@ -353,22 +353,23 @@
                 }"
               />
             </div>
-            <div class="col custom-control custom-switch">
-              <label class="text-left mr-4" for="taxPercentage"
-                >Impuestos:</label
-              >
-              <input
-                type="checkbox"
-                id="taxes"
-                class="custom-control-input"
-                formControlName="taxes"
-                [checked]="productForm.get('taxes').value"
-                (change)="calculateTotal(true)"
-                (click)="toggleTaxPercentage()"
-              />
-              <label
+            <div class="col-md-6 ">
+              <div class="form-check form-switch">
+                <label class="form-check-label text-start me-4" for="taxPercentage"
+                  >Impuestos:</label
+                >
+                <input
+                  type="checkbox"
+                  id="taxes"
+                  class="form-check-input"
+                  formControlName="taxes"
+                  [checked]="productForm.get('taxes').value"
+                  (change)="calculateTotal(true)"
+                  (click)="toggleTaxPercentage()"
+                />
+                <label
                 for="taxes"
-                class="custom-control-label ml-5"
+                class="form-label ms-2"
                 [ngClass]="{
                   'text-success': productForm.get('taxes').value,
                   'text-danger': !productForm.get('taxes').value
@@ -376,9 +377,11 @@
               >
                 {{ productForm.get("taxes").value ? "Gravado" : "Exento" }}
               </label>
+              </div>
+             
               <input
                 type="number"
-                class="form-control text-right"
+                class="form-control text-end"
                 id="taxPercentage"
                 formControlName="taxPercentage"
                 name="taxPercentage"
@@ -412,14 +415,14 @@
             <button
               *ngIf="this.editMode === false && getUserRole() !== 'user'"
               type="submit"
-              class="btn btn-primary shadow clic-on-image mr-2"
+              class="btn btn-primary shadow clic-on-image me-2"
             >
               Guardar
             </button>
             <button
               *ngIf="this.editMode === true && getUserRole() !== 'user'"
               type="button"
-              class="btn btn-primary shadow clic-on-image mr-2"
+              class="btn btn-primary shadow clic-on-image me-2"
               (click)="editProduct()"
             >
               Guardar
