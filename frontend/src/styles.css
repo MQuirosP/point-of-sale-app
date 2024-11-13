@@ -4,6 +4,7 @@ html {
   margin: 0;
   padding: 0;
   font-size: 1rem;
+  overflow: auto;
   
 }
 
@@ -785,7 +786,7 @@ div.table-container {
   text-align: center;
 }
 
-.modal-header,
+.modal-header, .card-header,
 .product-list-header {
   background-color: #31708f;
   color: white;
@@ -864,6 +865,10 @@ button {
 
 h5.card-title {
   padding-top: 20px;
+}
+
+input[type="file"] {
+  display: none;
 }
 
 .clic-on-icon,
@@ -1008,7 +1013,7 @@ input::-webkit-input-placeholder {
 }
 
 .final-div {
-  margin-top: 40px;
+  margin-top: 30px;
 }
 
 @media (max-width: 768px) {
@@ -1140,8 +1145,8 @@ aside {
   position: fixed;
   top: 10%;
   left: 0;
-  width: 19.7%;
-  height: calc(100vh - 18%);
+  width: 20%;
+  height: 100vh;
   background-color: #363434;
   z-index: -1;
   background: url(src/assets/bg-pattern.png), #7b4397;
@@ -1152,13 +1157,15 @@ aside {
 }
 
 main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-left: 0;
+  transition: margin-left 0.3s ease;
   position: absolute;
   right: 0;
   width: 80%;
-  height: calc(100% - 30px);
-  background: url(src/assets/bg-pattern.png), #7b4397;
-  background: url(src/assets/bg-pattern.png),
-    -webkit-gradient(linear, right top, left top, from(#7b4397), to(#dc2430));
+  height: calc(100%);
   background: url(src/assets/bg-pattern.png),
     linear-gradient(to left, #a8e6ce, #6d9bcc);
   /* linear-gradient(to left, #9765a1, #ee1d1d); */

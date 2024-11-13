@@ -65,9 +65,10 @@ th {
   text-align: center;
 }
 
-@media (max-width: 768px) {
-  .final-div {
-    top: -10px;
-  }
+.final-div {
+  margin-top: 20px;
+  margin-bottom: 80px;
+  /* overflow-y: calc(100vh + 30px); */
+  /* height: calc(80vh + 10px); */
 }
 

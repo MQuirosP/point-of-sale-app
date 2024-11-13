@@ -1,7 +1,6 @@
 .final-div {
   margin-top: 20px;
-  overflow-y: calc(100vh + 30px);
-  /* height: calc(80vh + 10px); */
+  height: 85%;
 }
 
 td {

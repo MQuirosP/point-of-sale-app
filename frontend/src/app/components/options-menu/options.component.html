@@ -210,11 +210,11 @@
         </h5>
         <button
           type="button"
-          class="close clic-on-icon"
+          class="roundButton clic-on-icon"
           (click)="closeProviderListModal()"
           aria-label="Cerrar"
         >
-          <span ><i class="fas fa-close"></i></span>
+          <span ><i class="fa-solid fa-xmark text-danger fs-4"></i></span>
         </button>
       </div>
       <div class="modal-body">
@@ -261,7 +261,7 @@
                       [ngClass]="{ 'show-icons ': provider.showIcons }"
                     >
                       <a
-                        class="mr-3"
+                        class="me-3"
                         role="button"
                         (click)="
                           this.editMode = true;
@@ -273,7 +273,7 @@
                           style="color: #1100fa; cursor: pointer"
                         ></i>
                       </a>
-                      <a class="mr-2" *ngIf="getUserRole() !== 'user'">
+                      <a class="me-2" *ngIf="getUserRole() !== 'user'">
                         <i
                           class="fas fa-solid fa-trash clic-on-icon"
                           (click)="deleteProvider(provider.provider_id)"
@@ -332,11 +332,11 @@
         </h5>
         <button
           type="button"
-          class="close clic-on-icon"
+          class="roundButton clic-on-icon"
           aria-label="Close"
           (click)="closeProviderInfoModal()"
         >
-          <span><i class="fas fa-close"></i></span>
+          <span><i class="fa-solid fa-xmark text-danger fs-4"></i></span>
         </button>
       </div>
       <div class="modal-body">
@@ -462,7 +462,7 @@
             </button>
             <button
               type="button"
-              class="btn btn-secondary border border-secondary clic-on-image ml-2"
+              class="btn btn-secondary border border-secondary clic-on-image ms-2"
               (click)="closeProviderInfoModal()"
             >
               Cerrar
@@ -491,11 +491,11 @@
         </h5>
         <button
           type="button"
-          class="close clic-on-icon"
+          class="roundButton clic-on-icon"
           (click)="closeCustomerListModal()"
           aria-label="Cerrar"
         >
-          <span ><i class="fas fa-close"></i></span>
+          <span ><i class="fa-solid fa-xmark text-danger fs-4"></i></span>
         </button>
       </div>
       <div class="modal-body">
@@ -545,7 +545,7 @@
                       [ngClass]="{ 'show-icons ': customer.showIcons }"
                     >
                       <a
-                        class="mr-3"
+                        class="me-3"
                         role="button"
                         (click)="
                           openCustomerInfoModal(true, customer);
@@ -557,7 +557,7 @@
                           style="color: #1100fa; cursor: pointer"
                         ></i>
                       </a>
-                      <a class="mr-2" *ngIf="getUserRole() !== 'user'">
+                      <a class="me-2" *ngIf="getUserRole() !== 'user'">
                         <i
                           class="fas fa-solid fa-trash clic-on-icon"
                           (click)="deleteProvider(customer.customer_id)"
@@ -615,11 +615,11 @@
         </h5>
         <button
           type="button"
-          class="close clic-on-icon"
+          class="roundButton clic-on-icon"
           aria-label="Close"
           (click)="closeCustomerInfoModal()"
         >
-          <span ><i class="fas fa-close"></i></span>
+          <span ><i class="fa-solid fa-xmark text-danger fs-4"></i></span>
         </button>
       </div>
       <div class="modal-body">
@@ -785,7 +785,7 @@
             </button>
             <button
               type="button"
-              class="btn btn-secondary border border-secondary clic-on-image ml-2"
+              class="btn btn-secondary border border-secondary clic-on-image ms-2"
               (click)="closeCustomerInfoModal()"
             >
               Cerrar
@@ -814,11 +814,11 @@
         </h5>
         <button
           type="button"
-          class="close clic-on-icon"
+          class="roundButton clic-on-icon"
           (click)="closeUsersListModal()"
           aria-label="Cerrar"
         >
-          <span ><i class="fas fa-close"></i></span>
+          <span ><i class="fa-solid fa-xmark text-danger fs-4"></i></span>
         </button>
       </div>
       <div class="modal-body">
@@ -875,7 +875,7 @@
                       "
                     >
                       <a
-                        class="mr-3"
+                        class="me-3"
                         role="button"
                         (click)="
                           openUserInfoModal(true, user); this.editMode = true
@@ -943,11 +943,11 @@
         </h5>
         <button
           type="button"
-          class="close clic-on-icon"
+          class="roundButton clic-on-icon"
           aria-label="Close"
           (click)="closeUserInfoModal()"
         >
-          <span ><i class="fas fa-close"></i></span>
+          <span ><i class="fa-solid fa-xmark text-danger fs-4"></i></span>
         </button>
       </div>
       <div class="modal-body">
@@ -1069,7 +1069,7 @@
             </button>
             <button
               type="button"
-              class="btn btn-secondary border border-secondary clic-on-image ml-2"
+              class="btn btn-secondary border border-secondary clic-on-image ms-2"
               (click)="closeUserInfoModal()"
             >
               Cerrar
@@ -1098,12 +1098,12 @@
         </h5>
         <button
           type="button"
-          class="close clic-on-icon"
+          class="roundButton clic-on-icon"
           aria-label="Close"
           (click)="closeResetPasswordModal()"
         >
           <span >
-            <i class="fas fa-close"></i>
+            <i class="fa-solid fa-xmark text-danger fs-4"></i>
           </span>
         </button>
       </div>
