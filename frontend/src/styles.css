@@ -4,8 +4,14 @@ html {
   margin: 0;
   padding: 0;
   font-size: 1rem;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   
+}
+
+.final-div {
+
+  height: calc(40vh - 180px)
 }
 
 @media (min-width: 360px) and (max-width: 600px) {
@@ -105,25 +111,6 @@ body {
   text-shadow: darkgray 2px 2px 2px;
   cursor: pointer;
   font-size: 3em;
-  /* color: orangered !important; */
-}
-
-/* .app-container {
-  display: flex;
-  flex-direction: column;
-} */
-
-.main-board {
-  height: auto;
-}
-
-.main-image {
-  width: 100%;
-  height: 100%;
-  object-fit: fill;
-  border: 1px solid lightgray;
-  border-radius: 10px;
-  transition: all 0.2s ease;
 }
 
 .login-box {
@@ -137,12 +124,7 @@ body {
   
 }
 
-.main-board-style {
-  -webkit-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.85);
-  -moz-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.85);
-  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.85);
-}
-
+/* ICONOS del header de página*/
 h1 i {
   position: relative;
   margin-top: 8px;
@@ -150,10 +132,13 @@ h1 i {
   display: flex;
   vertical-align: text-top;
   font-size: 0.8em;
+  text-shadow: #706969 2px 2px;
 }
 
+/* TITULOS del header de página*/
 h1 {
   font-size: 1.8em;
+  text-shadow: #706969 2px 2px;
 }
 
 @media screen and (max-width: 767px) {
@@ -173,6 +158,9 @@ h1 {
 
 #main-header {
   min-height: 0px;
+  -webkit-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.85);
+  -moz-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.85);
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.85);
 }
 
 .nav-link {
@@ -228,10 +216,6 @@ div.dropdown-menu > a.dropdown-item, .dropdown > a, .dropdown-item {
   border: 1px solid transparent;
   color: #c0b5b5 !important;
 }
-
-/* div.dropdown-item > a.dropdown-item:hover {
-  color: #000 !important;
-} */
 
 option {
   font-style: italic;
@@ -366,27 +350,28 @@ a.hide {
 }
 
 .card-height {
-  /* min-height: 140px;
-  max-height: 140px; */
   height: 140px;
+  max-width: 400px;
+  display: flex;
 }
 
-.underline {
-  text-decoration: none;
-}
-
+/* CLASES PARA LAS TARJETAS DE LAS PANTALLAS PRINCIPAL
+   VENTAS Y COMPRAS*/
 .custom-main-card {
   border-radius: 10px;
   background-color: rgb(242, 243, 206);
   transition: all 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease-in-out;
   cursor: pointer;
-  border: 1px solid #ccc; /* Agrega un borde sólido inicial */
+  border: 1px solid #999; /* Cambia el color del borde en hover */
+ 
 }
 
 .custom-main-card:hover {
   background-color: #cdffd7;
   transform: scale(1.05);
-  border: 1px solid #999; /* Cambia el color del borde en hover */
+  border: 1px solid #ccc; /* Agrega un borde sólido inicial */
+  box-shadow: 2px 2px 4px rgba(255, 255, 255, 0.4) inset,
+    -2px -2px 4px rgba(39, 39, 39, 0.2) inset;
 }
 
 .custom-main-card:active {
@@ -394,12 +379,16 @@ a.hide {
 }
 
 .front-panel-image {
-  width: 20vw; /* La imagen ocupará el 20% del ancho de la ventana */
-  height: auto;
-  max-width: 120px; /* Limita el tamaño máximo */
-  max-height: 90px;
+  width: 630px; 
+  height: 140px;
 }
 
+.front-panel-image img {
+  width: 100%; 
+  height: 100%;
+  object-fit: fill;
+  border-radius: 10px;
+}
 
 .my-clic:hover {
   box-shadow: 2px 1px 1px darkgray;
@@ -753,13 +742,35 @@ div.table-container {
 }
 
 .svg {
-  height: 100px;
+  float: left;
+  height: 70px;
   padding: 5px;
   object-fit: scale-down;
   position: absolute;
-  right: 30px;
-  bottom: 10px;
+  right: 1rem;
+  top: 0.5rem;
 }
+
+.card.custom-main-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20px; /* Espacio inferior para el margen de la imagen */
+}
+
+.card.custom-main-card h4 {
+  margin-top: 10px; /* Espacio opcional para el título */
+}
+
+.card.custom-main-card .svg {
+  position: relative;
+  margin-top: auto; /* Empuja la imagen hacia abajo */
+  margin-bottom: 20px;
+  margin-left: 25px;
+  width: 80px; /* Ajusta el tamaño según prefieras */
+}
+
 
 .total-invoice {
   color: red;
@@ -796,19 +807,6 @@ div.table-container {
 
 .modal-shadow {
   box-shadow: 0px 0px 50px rgba(36, 35, 35, 0.897);
-}
-
-.fa-close {
-  color: red;
-}
-
-label {
-  margin-bottom: 0px;
-}
-
-button {
-  padding: 5px 10px !important;
-  background-color: transparent;
 }
 
 /* Animación para abrir el modal */
@@ -958,6 +956,13 @@ input.no-submit:hover {
   transform: translate(1px, 1px);
 }
 
+a.no-submit:hover {
+  background-color: #888;
+  box-shadow: 2px 2px 4px rgba(255, 255, 255, 0.4) inset,
+    -2px -2px 4px rgba(39, 39, 39, 0.2) inset;
+  transform: translate(1px, 1px);
+}
+
 /* Estilos cuando el input está enfocado */
 input[type="search"].no-submit:focus {
   background-position: calc(100% - 10px) center;
@@ -1012,17 +1017,6 @@ input::-webkit-input-placeholder {
   cursor: pointer;
 }
 
-.final-div {
-  margin-top: 30px;
-}
-
-@media (max-width: 768px) {
-  .final-div {
-    margin-top: 40px;
-    margin-bottom: 120px !important;
-  }
-}
-
 .row-selected:hover {
   background-color: rgba(129, 124, 124, 0.459);
   transition: all 0.15s ease;
@@ -1074,16 +1068,6 @@ app-header {
 
 nav.navbar {
   z-index: 2;
-}
-
-.screen-adjust {
-  margin-bottom: 30px;
-}
-
-@media (max-width: 767px) {
-  .screen-adjust {
-    margin-bottom: 100px;
-  }
 }
 
 .custom-file-input::-webkit-file-upload-button {

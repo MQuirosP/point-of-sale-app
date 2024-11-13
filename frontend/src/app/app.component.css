@@ -56,9 +56,5 @@
   margin-left: 250px; /* Espacio cuando aside está expandido */
 }
 
-footer {
-  height: 50px; /* Altura fija del footer */
-  flex-shrink: 0;
-}
 
   

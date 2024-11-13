@@ -1,5 +1,5 @@
 <!-- Cabecero panel principal -->
-<header id="main-header" class="pb-2 bg-info text-white main-board-style">
+<header id="main-header" class="pb-2 bg-info text-white">
   <div class="container">
     <div class="row pt-2">
       <div class="col-md-9" [@fadeAnimation]>
@@ -25,7 +25,7 @@
 </header>
 
 <!-- Tiles de menú -->
-<div class="container final-div" [@fadeAnimation]>
+<div class="ms-5 mt-4" [@fadeAnimation]>
   <!-- Cinta superior de tarjetas -->
   <div class="row">
     <div class="col-md-4 mb-3">
@@ -45,56 +45,30 @@
             "
             class="container"
           >
-            <div class="carousel-inner" style="height: 130px">
+            <div class="carousel-inner">
               <div
                 *ngFor="let product of filteredProducts; let i = index"
                 class="carousel-item pt-2"
-                [ngClass]="{'active': i === 0}"
+                [ngClass]="{ active: i === 0 }"
               >
-                <div class="row" style="font-size: 0.5rem">
-                  <div
-                    class="col-md-7 text-left"
-                    style="align-items: center; margin: auto 0"
-                  >
-                    <h4
-                      class="h4"
-                      style="
-                        font-size: 1.3rem;
-                        text-shadow: 2px 2px 2px darkgray;
-                      "
-                    >
-                      <span class="product-card">{{ product.name }}</span>
-                    </h4>
-                  </div>
-                  <div class="col-md-5">
-                    <h5
-                      class="text-right mr-1"
-                      style="
-                        font-size: 1.3rem;
-                        text-shadow: 2px 2px 2px darkgray;
-                      "
-                    >
-                      <span class="product-card">Precio:</span>
-                    </h5>
-                    <p
-                      class="text-right mr-1"
-                      style="
-                        font-size: 1.5rem;
-                        font-weight: bold;
-                        color: rgb(235, 11, 11);
-                        text-shadow: 2px 2px 2px darkgray;
-                      "
-                    >
-                      <span class="product-card">
-                        {{
-                          product.sale_price | currency : "CRC" : "₡" : "1.0-0"
-                        }}
-                      </span>
-                    </p>
+                <div class="d-flex flex-column">
+                  <!-- Contenedor del nombre y precio del producto -->
+                  <div class="d-flex justify-content-between align-items-start">
+                    <!-- Nombre del producto -->
+                    <h5 class="h5 text-wrap flex-grow-1 mb-0">{{ product.name }}</h5>
+                    <!-- Precio del producto -->
+                    <div class="text-end ms-2">
+                      <h5 class="mb-1">Precio:</h5>
+                      <p class="price-card mb-0">
+                        {{ product.sale_price | currency : "CRC" : "₡" : "1.0-0" }}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+  
+            <!-- Controles del carrusel y botón de carrito (sin cambios) -->
             <div
               class="carousel-control align-items-center justify-content-center"
             >
@@ -120,7 +94,7 @@
                   (click)="openSaleModal()"
                   type="button"
                   role="button"
-                  class="btn roundButton my-clic hidden-link my-clic text-decoration-none"
+                  class="no-submit btn roundButton text-decoration-none"
                   title="shoppin-cart-button"
                 >
                   <i class="fas fa-shopping-cart"></i>
@@ -148,73 +122,26 @@
         </div>
       </div>
     </div>
-    <!-- Segunda tarjeta, Mis Ventas -->
-    <div class="col-md-4 text-center mb-3">
-      <div
-        class="card card-height custom-main-card shadow"
-      >
-        <h4>Mis ventas</h4>
-        <div>
-          <a routerLink="/shopping-cart">
-            <img
-              src="assets/cashier-machine.png"
-              alt="Ventas"
-              class="front-panel-image"
-            />
-          </a>
-        </div>
-      </div>
-    </div>
-    <!-- Tercera tarjeta, Mis Compras -->
-    <div class="col-md-4 text-center mb-3">
-      <div
-        class="card card-height custom-main-card shadow"
-      >
-        <h4>Mis compras</h4>
-        <div>
-          <a routerLink="/purchase-history">
-            <img
-              src="assets/seller.png"
-              alt="Compras"
-              class="front-panel-image"
-            />
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Cinta inferior de tarjetas -->
-  <div class="row">
-    <!-- Cuarta tarjeta, reloj y configuraciones -->
-    <div class="col-md-4 mb-3">
-      <div class="d-none d-md-block">
-        <app-digital-watch
-          class="card-height"
-          style="background-color: transparent; width: 100%; height: 100%"
-        ></app-digital-watch>
-      </div>
-    </div>
-    <!-- Quinta tarjeta, logo y reportes -->
+  
+    <!-- Imagen en la segunda columna -->
     <div class="col-md-8 d-none d-md-block mb-3">
-      <div class="card-height shadow clic-on-main-image">
+      <div class="front-panel-image shadow clic-on-main-image">
         <a routerLink="/reports">
-          <img
-            src="assets/verduleria-sol.webp"
-            alt=""
-            class="main-image"
-          />
+          <img src="assets/verduleria-sol.webp" alt="" />
         </a>
       </div>
     </div>
+  
     <div class="col-md-4">
-      <!-- Contenido de la tercera columna de la segunda fila -->
+      <!-- Contenido adicional -->
     </div>
   </div>
 </div>
+<div class="final-div"></div>
 
 <!-- Resultado no coincidente búsqueda de productos -->
 <ng-template #noMatchesMessage>
-  <div class="text-center mt-4">
+  <div class="text-center mt-1">
     <h4 class="strong" style="text-shadow: 2px 2px 2px darkgray">
       No hay coincidencias, intente de nuevo por favor.
     </h4>

@@ -1,6 +1,9 @@
 .final-div {
-  margin-top: 20px;
-  height: 85%;
+  height: calc(100% - 30px);
+  margin-bottom: 90px;
+  background: url(src/assets/bg-pattern.png),
+  linear-gradient(to left, #a8e6ce, #6d9bcc);
+/* linear-gradient(to left, #9765a1, #ee1d1d); */
 }
 
 td {
@@ -12,11 +15,6 @@ th {
   padding-top: 10px;
   padding-bottom: 10px;
 }
-
-/* .product-list-header {
-  padding-top: 8px;
-  padding-bottom: 8px;
-} */
 
 /* Estilos para dispositivos móviles */
 @media screen and (max-width: 900px) {

@@ -3,8 +3,5 @@
   max-height: auto;
 }
 
-@media (max-width: 768px) {
-  .final-div {
-    top: -10px;
-  }
-}
+
+
