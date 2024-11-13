@@ -196,7 +196,7 @@
                       />
                       <label
                         for="fileInput"
-                        class="btn btn-secondary form-control d-block text-center"
+                        class="btn btn-secondary form-control d-block text-center" style="width: 200px; margin: 0 auto;"
                         data-bs-browse="Buscar"
                         >Cargar archivo</label
                       >
@@ -387,10 +387,10 @@
         <button
           type="button"
           aria-label="Close"
-          class="close clic-on-icon"
+          class="roundButton clic-on-icon"
           (click)="closeAuditListModal()"
         >
-          <span><i class="fas fa-close"></i></span>
+          <span><i class="fa-solid fa-xmark text-danger fs-4"></i></span>
         </button>
       </div>
       <div class="table-responsive">
@@ -529,12 +529,12 @@
         <div>
           <button
             type="button"
-            class="close clic-on-icon"
+            class="roundButton clic-on-icon"
             aria-label="Close"
             (click)="closeAuditHistoryModal()"
           >
             <span>
-              <i class="fas fa-close"></i>
+              <i class="fa-solid fa-xmark text-danger fs-4"></i>
             </span>
           </button>
         </div>
@@ -605,8 +605,8 @@
           <h5 class="modal-title">
             <i class="fas fa-exclamation-circle"></i>&nbsp;Finalizar auditoría
           </h5>
-          <button class="close clic-on-icon" (click)="closeDeleteAuditModal()">
-            <span><i class="fas fa-close"></i></span>
+          <button class="roundButton clic-on-icon" (click)="closeDeleteAuditModal()">
+            <span><i class="fa-solid fa-xmark text-danger fs-4"></i></span>
           </button>
         </div>
         <div class="modal-body">
