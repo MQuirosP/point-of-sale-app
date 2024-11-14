@@ -27,7 +27,7 @@
 </header>
 
 <!-- Tabla con la lista de productos -->
-<div class="d-flex justify-content-center container mt-4 final-div"  [@fadeAnimation]>
+<div class="d-flex justify-content-center mt-4"  [@fadeAnimation] style="margin-bottom: 100px;">
   <div class="modal-content " style="max-width: 80%;">
     <div class="card-header product-list-header border">
       <div class="row ">
@@ -181,9 +181,9 @@
   tabindex="-1"
   role="dialog"
   aria-labelledby="productModalLabel"
-  
+  style="overflow: hidden !important;"
 >
-  <div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-dialog modal-dialog-centered modal-shadow" role="document">
     <div class="modal-content modal-shadow">
       <div class="modal-header border">
         <h5 class="modal-title" id="productModalLabel">

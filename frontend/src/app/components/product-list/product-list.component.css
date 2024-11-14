@@ -76,7 +76,7 @@ td {
     width: auto;
     min-width: auto;
     max-width: auto;
-    overflow: visible;
+    /* overflow: visible; */
     text-overflow: clip;
   }
   th:nth-child(4) {

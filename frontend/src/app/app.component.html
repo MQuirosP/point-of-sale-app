@@ -1,4 +1,8 @@
-<app-header></app-header>
+
+
+<main>
+  <app-header></app-header>
+
 <aside
   class="aside"
   [ngClass]="{
@@ -26,14 +30,7 @@
     </ul>
   </div>
 </aside>
-
-<main
-  [ngClass]="{
-    'main-full': !(isLoggedIn$ | async),
-    'main-reduced': isLoggedIn$ | async
-  }"
->
   <router-outlet></router-outlet>
+  <app-footer></app-footer>
 </main>
 
-<app-footer></app-footer>

@@ -27,7 +27,7 @@
 </header>
 
 <!-- Opciones para la auditoría de productos -->
-<div class="container mt-4 final-div" [@fadeAnimation]>
+<div class="container mt-4" [@fadeAnimation] style="margin-bottom: 100px;">
   <div class="row">
     <div class="col-md-4 mb-3">
       <section id="product-list">
@@ -266,7 +266,7 @@
         </div>
         <div class="modal-body">
           <div class="row">
-            <div class="col-6 form-group">
+            <div class="col-md-6">
               <label for="int_code">Código:</label>
               <input
                 type="text"
@@ -289,50 +289,55 @@
               />
             </div>
           </div>
-          <div class="form-group">
-            <label for="name">Producto:</label>
-            <input
-              type="text"
-              class="form-control"
-              id="name"
-              formControlName="name"
-              required
-              readonly
-            />
-          </div>
           <div class="row">
-            <div class="col-md-6 form-group">
+            <div class="col-md-12">
+              <label for="name">Producto:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                formControlName="name"
+                required
+                readonly
+              />
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-md-6">
               <label for="quantity">Cantidad:</label>
               <input
                 type="text"
-                class="form-control text-right"
+                class="form-control text-end"
                 id="quantity"
                 formControlName="quantity"
                 required
                 readonly
               />
             </div>
-            <div class="col-md-6 form-group">
-              <label for="real_stock">Físico:</label>
+            <div class="col-md-6">
+              <label for="real_stock" class="">Físico:</label>
               <input
                 type="number"
-                class="form-control text-right"
+                class="form-control text-end"
                 id="real_stock"
                 formControlName="real_stock"
                 #realStockInput
+                step="0.01"
                 required
                 (input)="calculateDifference()"
               />
             </div>
-            <div class="col-4">
-              <label for="difference">Diferencia:</label>
-              <input
-                type="number"
-                class="form-control text-right"
-                formControlName="difference"
-                id="difference"
-                readonly
-              />
+            <div class="row mt-2">
+              <div class="col-4">
+                <label for="difference">Diferencia:</label>
+                <input
+                  type="number"
+                  class="form-control text-end"
+                  formControlName="difference"
+                  id="difference"
+                  readonly
+                />
+              </div>
             </div>
           </div>
         </div>
