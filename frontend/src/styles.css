@@ -153,10 +153,14 @@ h1 {
 }
 
 #main-header {
+  display: flex;
+  background-color: #1a4d85;
+  align-items: center;
+  margin-top: 50px;
+  color: white;
+  height: 10vh;
   min-height: 0px;
-  -webkit-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.85);
-  -moz-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.85);
-  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.85);
+  border-bottom: 1px solid gray;
 }
 
 .nav-link {
@@ -302,9 +306,9 @@ a.hide {
 
 #pie-pagina {
   padding-top: 10px;
-  -webkit-box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.85);
+  /* -webkit-box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.85);
   -moz-box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.85);
-  box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.85);
+  box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.85); */
 }
 
 .footer {
@@ -1048,14 +1052,6 @@ app-header {
 
 }
 
-/* Estilo para el contenido principal */
-#main-header {
-  display: flex;
-  align-items: center;
-  margin-top: 50px;
-  height: 10vh;
-}
-
 app-footer {
   position: fixed;
   bottom: 0;
@@ -1139,14 +1135,15 @@ aside {
   top: 9.7%;
   left: 0;
   width: 20%;
+  color: #000;
   height: 100vh;
-  background-color: #363434;
+  background-color: #9b9cb49a;
   z-index: -1;
-  background: url(src/assets/bg-pattern.png), #7b4397;
+  /* background: url(src/assets/bg-pattern.png), #7b4397;
   background: url(src/assets/bg-pattern.png),
-    -webkit-gradient(linear, right top, left top, from(#7b4397), to(#dc2430));
+    -webkit-gradient(linear, right top, left top, from(#1b579b), to(#dc2430)); */
   background: url(src/assets/bg-pattern.png),
-  linear-gradient(to left, #9765a1, #ee1d1d);
+  /* linear-gradient(to left, #1b579b77, #0f3383); */
 }
 
 
@@ -1174,3 +1171,64 @@ main {
   linear-gradient(to left, #a8e6ce, #6d9bcc);
 /* linear-gradient(to left, #9765a1, #ee1d1d); */
 }
+
+/* ASIDE */
+
+.container .list-unstyled li {
+  margin-top: 20px;
+  margin-left: 30px;
+}
+
+.container .list-unstyled a, .container .list-unstyled i {
+  text-decoration: none;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+}
+
+.container .list-unstyled a:hover::after {
+  transform: scaleX(0.85);
+}
+
+.container .list-unstyled i {
+  font-size: 18px;
+}
+
+.aside-collapsed {
+  width: 0;
+  overflow: hidden;
+  transition: width 0.3s ease;
+}
+
+.aside-expanded {
+  width: 20%; /* Ancho del aside cuando está visible */
+  transition: width 0.3s ease;
+}
+
+.main-full {
+  width: 100%;
+  transition: width 0.3s ease;
+}
+
+.main-reduced {
+  width: 80%; /* Ajuste según el ancho del aside */
+  transition: width 0.3s ease;
+}
+
+/* Configuración general */
+/* body, html {
+height: 100%;
+margin: 0;
+} */
+
+.container-layout {
+display: flex;
+flex-direction: column;
+height: 100vh; /* Ocupa toda la altura de la ventana */
+}
+
+
+.aside-expanded ~ main {
+margin-left: 250px; /* Espacio cuando aside está expandido */
+}
+
+
