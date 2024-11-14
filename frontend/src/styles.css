@@ -1137,13 +1137,13 @@ aside {
   width: 20%;
   color: #000;
   height: 100vh;
-  background-color: #9b9cb49a;
+  background-color: #9ba4b49a;
   z-index: -1;
   /* background: url(src/assets/bg-pattern.png), #7b4397;
   background: url(src/assets/bg-pattern.png),
     -webkit-gradient(linear, right top, left top, from(#1b579b), to(#dc2430)); */
-  background: url(src/assets/bg-pattern.png),
-  /* linear-gradient(to left, #1b579b77, #0f3383); */
+  background: url(src/assets/images.jpeg),
+  linear-gradient(to left, #1b579b77, #0f3383);
 }
 
 
