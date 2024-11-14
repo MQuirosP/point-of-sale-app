@@ -3,7 +3,7 @@
     margin-left: 30px;
 }
 
-.container .list-unstyled a {
+.container .list-unstyled a, .container .list-unstyled i {
     text-decoration: none;
     color: rgb(151, 149, 149);
     font-size: 1.1rem;

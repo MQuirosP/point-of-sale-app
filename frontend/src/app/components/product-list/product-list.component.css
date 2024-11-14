@@ -1,10 +1,4 @@
-.final-div {
-  height: calc(100% - 30px);
-  margin-bottom: 90px;
-  background: url(src/assets/bg-pattern.png),
-  linear-gradient(to left, #a8e6ce, #6d9bcc);
-/* linear-gradient(to left, #9765a1, #ee1d1d); */
-}
+
 
 td {
   padding-top: 9px;
@@ -21,6 +15,10 @@ th {
   .d-flex {
     flex-wrap: wrap;
   }
+
+  html, body {
+    overflow-x: hidden;
+  };
 
   .product-name {
     text-align: left;
@@ -99,3 +97,5 @@ td {
   border-radius: 10px;
   border: 1px solid #999;
 }
+
+

@@ -105,19 +105,19 @@ async function logoutUser(req, res) {
 async function getAllUsers(req, res) {
   try {
     const users = await userService.getAllUsers();
-    const usersView = users.map((users) => ({
-      userId: users.userId,
-      username: users.username,
-      // password: users.password,
-      email: users.email,
-      name: users.name,
-      lastname: users.lastname,
-      role: users.role,
-      // createdAt: users.createdAt,
-      // updatedAt: users.updatedAt,
-      status: users.status,
-    }));
-    responseUtils.sendSuccessResponse(res, { Users: usersView });
+    // const usersView = users.map((users) => ({
+    //   userId: users.userId,
+    //   username: users.username,
+    //   // password: users.password,
+    //   email: users.email,
+    //   name: users.name,
+    //   lastname: users.lastname,
+    //   role: users.role,
+    //   // createdAt: users.createdAt,
+    //   // updatedAt: users.updatedAt,
+    //   status: users.status,
+    // }));
+    responseUtils.sendSuccessResponse(res, { Users: users });
   } catch (error) {
     appLogger.error("Error getting users", error);
     responseUtils.sendErrorResponse(res, "Error retrieving users");

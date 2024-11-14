@@ -2,7 +2,7 @@
 <header id="main-header" class="pb-2 bg-info text-white">
   <div class="container">
     <div class="row pt-2">
-      <div class="col-md-9" [@fadeAnimation]>
+      <div class="col-md-8" [@fadeAnimation]>
         <h1><i class="fas fa-boxes-stacked"></i> Mis Existencias</h1>
       </div>
       <div
@@ -19,6 +19,7 @@
           placeholder="Ingresa tu búsqueda aquí..."
           autocomplete="off"
           [spellcheck]="false"
+          style="max-width: 220px;"
         />
       </div>
     </div>
@@ -26,7 +27,7 @@
 </header>
 
 <!-- Opciones para la auditoría de productos -->
-<div class="container mt-4" [@fadeAnimation]>
+<div class="container mt-4 final-div" [@fadeAnimation]>
   <div class="row">
     <div class="col-md-4 mb-3">
       <section id="product-list">
@@ -237,7 +238,6 @@
         </section>
     </div>
   </div>
-  <div class="final-div"></div>
 </div>
 
 <!-- Modal para la información del producto -->
@@ -265,7 +265,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class="form-row">
+          <div class="row">
             <div class="col-6 form-group">
               <label for="int_code">Código:</label>
               <input
@@ -300,8 +300,8 @@
               readonly
             />
           </div>
-          <div class="form-row">
-            <div class="col-4 form-group">
+          <div class="row">
+            <div class="col-md-6 form-group">
               <label for="quantity">Cantidad:</label>
               <input
                 type="text"
@@ -312,7 +312,7 @@
                 readonly
               />
             </div>
-            <div class="col-4 form-group">
+            <div class="col-md-6 form-group">
               <label for="real_stock">Físico:</label>
               <input
                 type="number"

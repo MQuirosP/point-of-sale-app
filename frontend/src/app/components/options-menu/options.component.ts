@@ -947,7 +947,8 @@ private showErrorNotification(message: string, error?: any) {
     });
   }
 
-  deleteUser(id: number) {
+  deleteUser(user: any) {
+    const id = user.userId
     this.http.get(`${this.backendUrl}users/id/${id}`).subscribe({
       next: (response: any) => {
         if (response.message.User.username === this.superUser) {

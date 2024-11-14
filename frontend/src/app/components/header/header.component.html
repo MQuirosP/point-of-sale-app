@@ -1,7 +1,7 @@
 <!-- Barra de navegación principal -->
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark p-0" [@fadeAnimation]>
-  <div class="container d-flex">
-    <a routerLink="/home" class="navbar-brand">Verdulería Sol</a>
+  <div class="d-flex justify-content-between w-100">
+    <a routerLink="/home" class="navbar-brand ms-4">Verdulería Sol</a>
     <button
       class="navbar-toggler collapsed mr-1"
       data-bs-toggle="collapse"
@@ -12,7 +12,7 @@
       <span></span>
       <span></span>
     </button>
-    <div class="collapse navbar-collapse top-50 right-0" id="navbarCollapse">
+    <div class="collapse navbar-collapse bg-dark top-50" id="navbarCollapse">
       <div class="me-auto">
         <ul *ngIf="isLoggedIn$ | async" class="navbar-nav">
           <li class="nav-item px-2">
@@ -41,27 +41,22 @@
           </li>
         </ul>
       </div>
-      <div class="dropdown ml-auto">
+      <div ngbDropdown class="dropdown ms-1 me-4">
         <a
           role="button"
           class="btn btn-primary dropdown-toggle mb-2 text-white"
           data-bs-toggle="collapse"
           data-bs-target="#useroptions"
           *ngIf="isLoggedIn$ | async"
+          ngbDropdownToggle
         >
           <i class="fas fa-user-check"></i> Bienvenido {{ user }}
         </a>
-        <span class="caret"></span>
-        <div id="useroptions">
-          <ul class="dropdown-menu dropdown-menu-right bg-dark">
+        <div id="useroptions" ngbDropdownMenu class="dropdown-menu dropdown-menu-right bg-dark">
+          <ul class="list-unstyled">
             <li>
-              <a
-                class="dropdown-item"
-                style="cursor: pointer"
-                (click)="openChangePasswordModal()"
-              >
-                <i class="fa-solid fa-pen-to-square"></i>&nbsp;Cambiar
-                contraseña
+              <a class="dropdown-item" style="cursor: pointer" (click)="openChangePasswordModal()">
+                <i class="fa-solid fa-pen-to-square"></i>&nbsp;Cambiar contraseña
               </a>
             </li>
             <li>
@@ -94,37 +89,36 @@
             </li>
           </ul>
         </div>
-        <ul class="navbar-nav" *ngIf="!(isLoggedIn$ | async)">
-          <!-- Componente Login -->
-
-          <li class="nav-item px-2">
-            <a
-              routerLink="/login"
-              class="nav-link"
-              routerLinkActive="router-link-active"
-            >
-              <i class="fas fa-user"></i> Ingreso
-            </a>
-          </li>
-
-          <!-- Registro usuarios -->
-          <li
-            *ngIf="!(isLoggedIn$ | async) && (allowRegisterUsers$ | async)"
-            class="nav-item"
-          >
-            <a
-              routerLink="/register"
-              class="nav-link px-2"
-              routerLinkActive="router-link-active"
-            >
-              <i class="fas fa-users"></i> Registrarse
-            </a>
-          </li>
-        </ul>
       </div>
+      
+      <ul class="navbar-nav me-4" *ngIf="!(isLoggedIn$ | async)">
+        <!-- Componente Login -->
+        <li class="nav-item px-2">
+          <a
+            routerLink="/login"
+            class="nav-link"
+            routerLinkActive="router-link-active"
+            ><i class="fas fa-user"></i> Ingreso</a
+          >
+        </li>
+
+        <!-- Registro usuarios -->
+        <li
+          *ngIf="!(isLoggedIn$ | async) && (allowRegisterUsers$ | async)"
+          class="nav-item"
+        >
+          <a
+            routerLink="/register"
+            class="nav-link px-2"
+            routerLinkActive="router-link-active"
+            ><i class="fas fa-users"></i> Registrarse</a
+          >
+        </li>
+      </ul>
     </div>
   </div>
 </nav>
+
 
 <!-- Modal para cambio de contraseña -->
 <div

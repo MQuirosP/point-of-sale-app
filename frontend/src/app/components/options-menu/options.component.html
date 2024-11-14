@@ -35,7 +35,7 @@
 </header>
 
 <!-- Tarjetas registro de usuarios, Proveedores y clientes -->
-<div class="container mt-4">
+<div class="container mt-4 final-div">
   <div class="row">
     <div class="col-md-4 mb-3">
       <section id="configuracion" [@fadeAnimation]>
@@ -191,7 +191,6 @@
       </section>
     </div>
   </div>
-  <div class="final-div"></div>
 </div>
 
 <!-- Modal para listado de proveedores -->
@@ -887,7 +886,7 @@
                           style="color: #1100fa; cursor: pointer"
                         ></i>
                       </a>
-                      <a class="text-left" (click)="deleteUser(user.userId)">
+                      <a class="text-left" (click)="deleteUser(user)">
                         <i
                           class="fas fa-solid fa-trash clic-on-icon"
                           style="color: #fa0000; cursor: pointer"
