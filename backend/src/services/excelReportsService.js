@@ -7,6 +7,7 @@ const {
 const { Op } = require("sequelize");
 
 async function generateSalesReport(startDate, endDate) {
+  console.log(startDate, endDate);
   const sales = await Sale.findAll({
     where: {
       createdAt: {

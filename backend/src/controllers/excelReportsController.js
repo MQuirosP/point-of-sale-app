@@ -4,6 +4,7 @@ const { appLogger } = require("../utils/logger")
 
 
 async function generateSalesReport(req, res) {
+  console.log(req);
     try {
       const startDate = req.body.startDate;
       const endDate = req.body.endDate;

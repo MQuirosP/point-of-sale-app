@@ -49,7 +49,7 @@ interface Purchase {
   providedIn: 'root',
 })
 export class ReportsService {
-  private backendUrl = `${environment.apiUrl}`;
+  private backendUrl = `${environment.apiUrl}reports/`;
 
   constructor(private http: HttpClient, private toastrService: ToastrService) {}
 
@@ -97,6 +97,7 @@ export class ReportsService {
           );
         },
         error: (error) => {
+          console.log(error);
           this.toastrService.error(
             'Error al generar el reporte de ventas:',
             error

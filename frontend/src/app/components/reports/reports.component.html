@@ -106,18 +106,18 @@
         <h5 class="modal-title"><i class="fas fa-server"></i>&nbsp;Generar Reporte de Ventas</h5>
         <button
           type="button"
-          class="close clic-on-icon"
+          class="roundButton clic-on-icon"
           aria-label="Close"
           (click)="closeSalesReportModal()"
         >
-          <span aria-hidden="true"><i class="fas fa-close"></i></span>
+          <span aria-hidden="true"><i class="fa-solid fa-xmark text-danger fs-4"></i></span>
         </button>
       </div>
       <div class="modal-body">
         <form>
-          <div class="row justify-content-between ml-4 mr-4">
-            <div class="form-group">
-              <label for="startDate">Fecha inicial:</label>
+          <div class="row g-3 justify-content-between">
+            <div class="col-12 col-md-5 d-flex flex-column align-items-center">
+              <label for="startDate" class="form-label">Fecha inicial:</label>
               <input
                 type="date"
                 class="form-control input-group-text shadow"
@@ -130,8 +130,8 @@
                 [max]="getCurrentDateString()"
               />
             </div>
-            <div class="form-group">
-              <label for="endDate">Fecha final:</label>
+            <div class="col-12 col-md-5 d-flex flex-column align-items-center">
+              <label for="endDate" class="form-label">Fecha final:</label>
               <input
                 type="date"
                 class="form-control input-group-text shadow"
@@ -188,17 +188,17 @@
         <h5 class="modal-title"><i class="fas fa-server"></i>&nbsp;Generar Reporte de Compras</h5>
         <button
           type="button"
-          class="close clic-on-icon"
+          class="roundButton clic-on-icon"
           aria-label="Close"
           (click)="closePurchasesReportModal()"
         >
-          <span aria-hidden="true"><i class="fas fa-close"></i></span>
+          <span aria-hidden="true"><i class="fa-solid fa-xmark text-danger fs-4"></i></span>
         </button>
       </div>
       <div class="modal-body">
         <form>
-          <div class="row justify-content-between ml-4 mr-4">
-            <div class="form-group">
+          <div class="row g-3 justify-content-between">
+            <div class="col-12 col-md-5 d-flex flex-column align-items-center">
               <label for="startDate">Fecha inicial:</label>
               <input
                 type="date"
@@ -212,7 +212,7 @@
                 [max]="getCurrentDateString()"
               />
             </div>
-            <div class="form-group">
+            <div class="col-12 col-md-5 d-flex flex-column align-items-center">
               <label for="endDate">Fecha final:</label>
               <input
                 type="date"
