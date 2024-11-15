@@ -27,20 +27,44 @@
     grid-area: footer;
     width: 100%;
   }
-  
-  /* Opcional: Ajuste para cuando el aside esté colapsado */
-  .aside-collapsed {
-    width: 0%; /* Ajusta según lo que necesites */
-  }
-  .aside-expanded {
-    width: 20%;
-  }
+  /* ASIDE */
 
-  .main-collapsed {
-    width: 80%;
-  }
+.container .list-unstyled li {
+  margin-top: 20px;
+  margin-left: 30px;
+}
 
-  .main-expanded {
-    width: 100%;
-  }
-  
+.container .list-unstyled a, .container .list-unstyled i {
+  text-decoration: none;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+}
+
+.container .list-unstyled a:hover::after {
+  transform: scaleX(0.85);
+}
+
+.container .list-unstyled i {
+  font-size: 18px;
+}
+
+.aside-collapsed {
+  width: 0;
+  overflow: hidden;
+  transition: width 0.3s ease;
+}
+
+.aside-expanded {
+  width: 20%; /* Ancho del aside cuando está visible */
+  transition: width 0.3s ease;
+}
+
+.main-expanded {
+  width: 100%;
+  transition: width 0.3s ease;
+}
+
+.main-collapsed {
+  width: 80%; /* Ajuste según el ancho del aside */
+  transition: width 0.3s ease;
+}
