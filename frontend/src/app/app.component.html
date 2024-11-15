@@ -1,39 +1,48 @@
-
-
-<main [ngClass]="{
-  'main-expanded': !(isLoggedIn$ | async),
-  'main-collapsed': isLoggedIn$ | async
-}">
-  <app-header></app-header>
-
-<aside
-  class="aside"
+<main
   [ngClass]="{
-    'aside-expanded': isLoggedIn$ | async,
-    'aside-collapsed': !(isLoggedIn$ | async)
+    'main-expanded': !(isLoggedIn$ | async),
+    'main-collapsed': isLoggedIn$ | async
   }"
 >
-  <div class="container mt-3">
-    <ul class="list-unstyled">
-      <li>
-        <a routerLink="shopping-cart" role="button" class=""
-          ><i class="fas fa-shopping-cart"></i>&nbsp;Ventas</a
-        >
-      </li>
-      <li>
-        <a routerLink="purchase-history" role="button" class=""
-          ><i class="fas fa-shopping-basket"></i>&nbsp;Compras</a
-        >
-      </li>
-      <li>
-        <a routerLink="product-list" role="button" class=""
-          ><i class="fas fa-receipt"></i>&nbsp;Lista de productos</a
-        >
-      </li>
-    </ul>
-  </div>
-</aside>
+  <app-header></app-header>
+
+  <aside
+    class="aside"
+    [ngClass]="{
+      'aside-expanded': isLoggedIn$ | async,
+      'aside-collapsed': !(isLoggedIn$ | async)
+    }"
+  >
+    <div class="container mt-3">
+      <ul class="list-unstyled">
+        <li>
+          <a routerLink="shopping-cart" role="button" class=""
+            ><i class="fas fa-shopping-cart"></i>&nbsp;Ventas</a
+          >
+        </li>
+        <li>
+          <a routerLink="purchase-history" role="button" class=""
+            ><i class="fas fa-shopping-basket"></i>&nbsp;Compras</a
+          >
+        </li>
+        <li>
+          <a routerLink="product-list" role="button" class=""
+            ><i class="fas fa-receipt"></i>&nbsp;Lista de productos</a
+          >
+        </li>
+        <li>
+          <a routerLink="stock-audit" role="button"
+            ><i class="fas fa-list"></i>&nbsp;Auditorías</a
+          >
+        </li>
+        <li>
+          <a routerLink="reports" role="button"
+            ><i class="fas fa-list-check"></i>&nbsp;Reportes</a
+          >
+        </li>
+      </ul>
+    </div>
+  </aside>
   <router-outlet></router-outlet>
   <app-footer></app-footer>
 </main>
-

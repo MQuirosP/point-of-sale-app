@@ -30,7 +30,11 @@ server.listen(port, () => {
 
 app.use(express.json());
 app.use(cors(corsOptions));
-app.use(compression());
+app.use(compression({
+  level: 6,
+  threshold: 1024,
+}
+));
 
 app.use(express.static(path.join(__dirname, "public"), {
   setHeaders: (res, path) => {

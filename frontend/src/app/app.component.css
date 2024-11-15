@@ -38,10 +38,14 @@
   text-decoration: none;
   font-size: 1.1rem;
   letter-spacing: 2px;
+  text-decoration: none;
+  transition: all 0.2s ease;
 }
 
-.container .list-unstyled a:hover::after {
+.container .list-unstyled a:hover, .container .list-unstyled i:hover {
   transform: scaleX(0.85);
+  color: blue !important;
+  font-weight: bold;
 }
 
 .container .list-unstyled i {

@@ -1026,8 +1026,6 @@ app-footer {
   background-color: #fff;
 }
 
-
-
 .custom-file-input::-webkit-file-upload-button {
   visibility: hidden;
 }
