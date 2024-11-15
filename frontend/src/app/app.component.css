@@ -1,0 +1,46 @@
+/* Contenedor principal */
+.grid-container {
+    display: grid;
+    grid-template-rows: auto 1fr auto; /* Fila para el header, main+aside y footer */
+    grid-template-columns: 20% 80%; /* Ancho del aside y main */
+    grid-template-areas: 
+      "header header"
+      "aside main"
+      "footer footer";
+    min-height: 100vh; /* Para que ocupe la altura completa de la ventana */
+  }
+  
+  header {
+    grid-area: header;
+    width: 100%;
+  }
+  
+  aside {
+    grid-area: aside;
+  }
+  
+  main {
+    grid-area: main;
+  }
+  
+  footer {
+    grid-area: footer;
+    width: 100%;
+  }
+  
+  /* Opcional: Ajuste para cuando el aside esté colapsado */
+  .aside-collapsed {
+    width: 0%; /* Ajusta según lo que necesites */
+  }
+  .aside-expanded {
+    width: 20%;
+  }
+
+  .main-collapsed {
+    width: 80%;
+  }
+
+  .main-expanded {
+    width: 100%;
+  }
+  

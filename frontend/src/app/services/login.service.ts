@@ -89,7 +89,7 @@ export class LoginService {
             );
             setTimeout(() => {
               this.router.navigate(['/home']);
-            }, 500);
+            }, 100);
           } else if (
             response.success === true &&
             response.message.status === 'suspended'

@@ -1,6 +1,9 @@
 
 
-<main>
+<main [ngClass]="{
+  'main-expanded': !(isLoggedIn$ | async),
+  'main-collapsed': isLoggedIn$ | async
+}">
   <app-header></app-header>
 
 <aside

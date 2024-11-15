@@ -426,6 +426,10 @@ export class ProductListComponent implements OnInit {
   }
 
   public resetProductForm() {
+    if(!this.editMode && this.modalTitle === 'Registro') {
+      this.productForm.reset();
+      return
+    }
     const formData = this.extractProductFormData();
     const propertiesChanged = this.arePropertiesChanged(
       this.validateProductDataTypes(formData),

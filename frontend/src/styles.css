@@ -21,6 +21,7 @@ aside {
   left: 0;
   top: 72px;
   width: 20%;
+  border-right: 2px rgb(180, 176, 176) solid;
   color: #000;
   height: 100vh;
   background: url(src/assets/bg-pattern.png),
@@ -670,29 +671,6 @@ h4 {
   position: relative;
   margin-bottom: 20px;
   margin-bottom: 10px;
-}
-
-.floating-label {
-  position: absolute;
-  left: 10px;
-  top: 50%;
-  padding-bottom: 5px;
-  transform: translate(0, -50%);
-  transition: all 0.3s;
-  opacity: 0.6;
-  font-size: 1.03rem;
-  pointer-events: none;
-}
-
-.floating-label.active {
-  top: 0;
-  left: 10px;
-  padding: 0;
-  background-color: #fff;
-  transform: translate(0, -60%);
-  font-size: 0.95rem;
-  opacity: 1;
-  transition: all 0.3s;
 }
 
 .taxes-row {
