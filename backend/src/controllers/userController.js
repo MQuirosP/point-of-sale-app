@@ -3,7 +3,7 @@ const { appLogger } = require("../utils/logger");
 const responseUtils = require("../utils/responseUtils");
 const userService = require("../services/userService");
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 async function createUser(req, res) {
   const { username, name, lastname, password, email } = req.body;

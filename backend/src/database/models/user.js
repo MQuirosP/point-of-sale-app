@@ -93,6 +93,5 @@ module.exports = (sequelize, DataTypes) => {
       // updatedAt: this.updatedAt,
     }
   }
-  console.log("AQUI", this.User);
   return User;
 };

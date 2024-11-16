@@ -25,6 +25,7 @@ const corsOptions = {
 };
 
 server.listen(port, () => {
+  console.log(`Servidor corriendo en puerto: ${port}`);
   appLogger.debug(`Server running on port ${port}`);
 });
 
@@ -46,12 +47,12 @@ app.use(express.static(path.join(__dirname, "public"), {
 
 app.use("/", routes);
 
-// sequelize.authenticate()
-//   .then(() => {
-//     dbLogger.debug("Connection to DataBase has been established successfully.");
-//   })
-//   .catch((err) => {
-//     dbLogger.error("Unable to connect to the database:", err);
-//   });
+sequelize.authenticate()
+  .then(() => {
+    dbLogger.debug("Connection to DataBase has been established successfully.");
+  })
+  .catch((err) => {
+    dbLogger.error("Unable to connect to the database:", err);
+  });
 
 module.exports = app;

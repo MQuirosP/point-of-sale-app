@@ -1,6 +1,6 @@
 const { appLogger } = require("../utils/logger");
 const { User, BlacklistedToken } = require("../database/models");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 async function createUser(userData) {
   try {
