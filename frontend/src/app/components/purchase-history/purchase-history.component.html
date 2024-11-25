@@ -281,7 +281,7 @@
                     type="number"
                     id="product_quantity"
                     formControlName="product_quantity"
-                    class="form-control text-right"
+                    class="form-control text-end"
                     autocomplete="off"
                     step="0.01"
                     [ngClass]="{
@@ -301,7 +301,7 @@
                     <label
                       *ngIf="selectedProduct"
                       for=""
-                      class="form-check-label text-right"
+                      class="form-check-label text-end"
                       [ngStyle]="{
                         color: selectedProductTaxes ? 'green' : 'red'
                       }"
@@ -320,7 +320,7 @@
                     type="number"
                     id="product_price"
                     formControlName="product_price"
-                    class="form-control text-right"
+                    class="form-control text-end"
                     [value]="selectedProductPrice"
                     autocomplete="off"
                     tabindex="-10"
@@ -339,7 +339,7 @@
                     type="number"
                     id="product_new_price"
                     formControlName="product_new_price"
-                    class="form-control text-right"
+                    class="form-control text-end"
                     autocomplete="off"
                     step="0.01"
                     [ngClass]="{
@@ -381,21 +381,21 @@
                         Producto
                       </th>
                       <th
-                        class="text-right product-detail-list-title"
+                        class="text-end product-detail-list-title"
                         scope="col"
                         style="width: 50px"
                       >
                         Cant.
                       </th>
                       <th
-                        class="text-right product-detail-list-title"
+                        class="text-end product-detail-list-title"
                         scope="col"
                         style="width: 60px"
                       >
                         Precio
                       </th>
                       <th
-                        class="text-right product-detail-list-title"
+                        class="text-end product-detail-list-title"
                         scope="col"
                         style="width: 25%"
                       >
@@ -429,16 +429,16 @@
                       >
                         {{ product.name }}
                       </td>
-                      <td class="text-right product-detail-table-content">
+                      <td class="text-end product-detail-table-content">
                         {{ product.quantity | number : "1.2-2" }}
                       </td>
-                      <td class="text-right product-detail-table-content">
+                      <td class="text-end product-detail-table-content">
                         {{
                           (product.sub_total + product.taxes_amount) /
                             product.quantity | currency : "CRC" : "₡"
                         }}
                       </td>
-                      <td class="text-right product-detail-table-content">
+                      <td class="text-end product-detail-table-content">
                         {{
                           product.sub_total + product.taxes_amount
                             | currency : "CRC" : "₡"
@@ -627,7 +627,7 @@
                     </p>
                   </div>
                   <div class="col-4">
-                    <p class="text-right">
+                    <p class="text-end">
                       Sub Total:
                       {{
                         purchase.sub_total | currency : "CRC" : "₡" : "1.2-2"
@@ -641,13 +641,13 @@
                     <p>{{ purchase.provider_name }}</p>
                   </div>
                   <div class="col-4">
-                    <p class="text-right">
+                    <p class="text-end">
                       IVA:
                       {{
                         purchase.taxes_amount | currency : "CRC" : "₡" : "1.2-2"
                       }}
                     </p>
-                    <p class="text-right">
+                    <p class="text-end">
                       <strong
                         >Total:
                         <span class="text-danger">
@@ -671,8 +671,8 @@
                     <tr class="custom-row">
                       <th class="text-left d-none d-md-table-cell">Cód.</th>
                       <th class="text-left">Producto</th>
-                      <th class="text-right">Cant.</th>
-                      <th class="text-right">Total</th>
+                      <th class="text-end">Cant.</th>
+                      <th class="text-end">Total</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -687,10 +687,10 @@
                         {{ item.int_code }}
                       </td>
                       <td class="text-left">{{ item.name }}</td>
-                      <td class="text-right">
+                      <td class="text-end">
                         {{ item.quantity | number : "1.2-2" }}
                       </td>
-                      <td class="text-right">
+                      <td class="text-end">
                         {{ item.total | currency : "CRC" : "₡" : "1.2-2" }}
                       </td>
                     </tr>
