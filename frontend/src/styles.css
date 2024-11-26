@@ -526,12 +526,16 @@ a.hide {
   text-shadow: 3px 3px 5px rgb(41, 38, 38);
 }
 
+i.fa-xmark {
+  text-shadow: 2px 2px 3px rgb(41, 38, 38);
+}
+
 /* Efecto íconos */
-.clic-on-icon:hover {
+i.fa-xmark:hover {
   transition: transform 0.2s ease;
 }
 
-.clic-on-icon:active {
+i.fa-xmark:active {
   transform: scale(0.8);
   transition: transform 0.2s ease;
 }
