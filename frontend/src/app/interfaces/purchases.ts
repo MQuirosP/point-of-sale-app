@@ -11,7 +11,7 @@ export interface Purchase {
   // products: any[];
   showDetails?: boolean;
   createdAt: string;
-  purchaseItems: PurchaseItem[];
+  purchaseItems: Products[];
   total: number
 }
 

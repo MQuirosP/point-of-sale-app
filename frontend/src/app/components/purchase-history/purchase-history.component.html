@@ -683,10 +683,10 @@
                       "
                       class="custom-row"
                     >
-                      <td class="text-left d-none d-md-table-cell">
+                      <td class="text-start d-none d-md-table-cell">
                         {{ item.int_code }}
                       </td>
-                      <td class="text-left">{{ item.name }}</td>
+                      <td class="text-start">{{ item.name }}</td>
                       <td class="text-end">
                         {{ item.quantity | number : "1.2-2" }}
                       </td>
@@ -697,14 +697,14 @@
                   </tbody>
                 </table>
                 <div class="card-footer pt-0 mt-0">
-                  <div class="mb-2">
+                  <div class="mt-2 mb-2">
                     <button
                       *ngIf="
                         purchase.status === 'aceptado' &&
                         isCurrentDate(purchase.createdAt) &&
                         getUserRole() !== 'user'
                       "
-                      class="btn btn-danger shadow clic-on-image mr-2"
+                      class="btn btn-danger shadow clic-on-image me-2"
                       (click)="
                         cancelPurchase(purchase);
                         togglePurchaseDetails(purchase)

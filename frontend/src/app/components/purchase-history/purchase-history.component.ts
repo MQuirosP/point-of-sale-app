@@ -22,6 +22,7 @@ import { productAnimations } from 'src/app/animations/product-list-animation';
 import { Purchase } from 'src/app/interfaces/purchases';
 import { Products } from 'src/app/interfaces/products';
 import { ScannerService } from 'src/app/services/scanner.service';
+import { IProviders } from '../../interfaces/providers';
 
 interface ApiPurchaseResponse {
   success: boolean;
@@ -55,8 +56,8 @@ export class PurchaseHistoryComponent {
   // product_name: string = '';
   selectedProductPrice: number = 0;
   selectedProductTaxes: boolean;
-  selectedProduct: any;
-  productList: any[] = [];
+  selectedProduct: Products;
+  productList: Products[] = [];
 
   subTotalPurchaseAmount: number = 0;
   totalTaxesAmount: number = 0;
@@ -70,14 +71,14 @@ export class PurchaseHistoryComponent {
   TAXES: number = 0.13;
 
   // Consultar las compras
-  purchases: any[] = [];
-  purchase: any[] = [];
+  purchases: Purchase[] = [];
+  purchase: Purchase[] = [];
 
   // Consultar proveedores
   provider_id: number = 0;
   formattedProviderNames:  { [key: string]: string } = {};
-  providersList: any[] = [];
-  providerSuggestionList: any[] = [];
+  providersList: IProviders[] = [];
+  providerSuggestionList: IProviders[] = [];
   isProviderValid: boolean = false;
   isScanning: boolean = false;
   isExpanded: boolean;
@@ -613,7 +614,7 @@ export class PurchaseHistoryComponent {
       const data = {
         purchase_price: product.purchase_price,
       };
-      console.log(data);
+      // console.log(data);
       return this.http.put(
         `${this.backendUrl}products/${cachedProduct.productId}`,
         data
@@ -679,7 +680,7 @@ export class PurchaseHistoryComponent {
       },
       error: (error: any) => {
         console.log(error);
-        this.toastr.error('No se pudo anular el documento.');
+        this.toastr.error('No fue posible anular el documento.');
       },
     });
   }
