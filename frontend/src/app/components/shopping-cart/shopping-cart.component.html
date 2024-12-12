@@ -299,7 +299,7 @@
                     type="number"
                     id="product_quantity"
                     formControlName="product_quantity"
-                    class="form-control text-right quantity-input"
+                    class="form-control text-end quantity-input"
                     autocomplete="off"
                     value="1"
                     step="1"
@@ -315,7 +315,7 @@
                     type="number"
                     id="product_price"
                     formControlName="product_price"
-                    class="form-control text-right"
+                    class="form-control text-end"
                     [ngClass]="{
                       'is-valid':
                         saleForm.get('product_price').touched &&
@@ -347,25 +347,25 @@
                   <thead>
                     <tr class="custom-row">
                       <th
-                        class="text-left product-detail-list-title"
+                        class="text-start product-detail-list-title"
                         style="width: 120px"
                       >
                         Producto
                       </th>
                       <th
-                        class="text-right product-detail-list-title"
+                        class="text-end product-detail-list-title"
                         style="width: 50px"
                       >
                         Cant.
                       </th>
                       <th
-                        class="text-right product-detail-list-title"
+                        class="text-end product-detail-list-title"
                         style="width: 60px"
                       >
                         Precio
                       </th>
                       <th
-                        class="text-right product-detail-list-title"
+                        class="text-end product-detail-list-title"
                         style="width: 60px"
                       >
                         Total
@@ -388,17 +388,17 @@
                       (@slideInOut.done)="product.isRemoved = false"
                     >
                       <td
-                        class="text-left product-detail-table-content"
+                        class="text-start product-detail-table-content"
                         style="width: 130px"
                       >
                         {{ product.name }}
                       </td>
                       <td
-                        class="text-right product-detail-table-content"
+                        class="text-end product-detail-table-content"
                         style="width: 50px"
                       >
                         <input
-                          class="custom-input text-right"
+                          class="custom-input text-end"
                           type="number"
                           [value]="product.quantity"
                           (input)="updateProduct(product, $event)"
@@ -408,13 +408,13 @@
                         />
                       </td>
                       <td
-                        class="text-right product-detail-table-content"
+                        class="text-end product-detail-table-content"
                         style="width: 70px"
                       >
                         {{ product.sale_price | currency : "CRC" : "₡" }}
                       </td>
                       <td
-                        class="text-right product-detail-table-content"
+                        class="text-end product-detail-table-content"
                         style="width: 70px"
                       >
                         {{
@@ -609,7 +609,7 @@
                     </p>
                   </div>
                   <div class="col-4">
-                    <p class="text-right">
+                    <p class="text-end">
                       Sub Total:
                       {{ sale.sub_total | currency : "CRC" : "₡" : "1.2-2" }}
                     </p>
@@ -621,11 +621,11 @@
                     <p>{{ sale.customer_name }}</p>
                   </div>
                   <div class="col-4">
-                    <p class="text-right">
+                    <p class="text-end">
                       IVA:
                       {{ sale.taxes_amount | currency : "CRC" : "₡" : "1.2-2" }}
                     </p>
-                    <p class="text-right">
+                    <p class="text-end">
                       <strong
                         >Total:
                         <span class="">
@@ -647,10 +647,10 @@
                 <table class="table">
                   <thead>
                     <tr class="custom-row">
-                      <th class="text-left d-none d-md-table-cell">Cód.</th>
-                      <th class="text-left">Producto</th>
-                      <th class="text-right">Cant.</th>
-                      <th class="text-right">Total</th>
+                      <th class="text-start d-none d-md-table-cell">Cód.</th>
+                      <th class="text-start">Producto</th>
+                      <th class="text-end">Cant.</th>
+                      <th class="text-end">Total</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -658,14 +658,14 @@
                       *ngFor="let item of sale.saleItems; let even = even"
                       class="custom-row"
                     >
-                      <td class="text-left d-none d-md-table-cell">
+                      <td class="text-start d-none d-md-table-cell">
                         {{ item.int_code }}
                       </td>
-                      <td class="text-left">{{ item.name }}</td>
-                      <td class="text-right">
+                      <td class="text-start">{{ item.name }}</td>
+                      <td class="text-end">
                         {{ item.quantity | number : "1.2-2" }}
                       </td>
-                      <td class="text-right">
+                      <td class="text-end">
                         {{ item.total | currency : "CRC" : "₡" : "1.2-2" }}
                       </td>
                     </tr>
@@ -675,7 +675,7 @@
                   class="card-footer pt-0 mt-0"
                   *ngIf="sale.status === 'aceptado'"
                 >
-                  <div class="mb-2">
+                  <div class="mt-2 mb-2">
                     <button
                       *ngIf="
                         sale.status === 'aceptado' &&
