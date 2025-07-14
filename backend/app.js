@@ -16,6 +16,7 @@ const port = process.env.APP_PORT || 3000;
 const corsOptions = {
   origin: [
     "http://localhost:4200",
+    "http://localhost:5000",
     "https://verduleria-app-142c1.firebaseapp.com",
     "http://192.168.0.18:4200",
     "https://verduleria-app-142c1.web.app",

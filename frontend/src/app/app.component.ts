@@ -20,6 +20,7 @@ export class AppComponent {
   isLoggedIn$: Observable<boolean>
   allowRegisterUsers$: Observable<boolean>;
   private isLoggedInSubscription!: Subscription;
+  isAsideExpanded = false;
 
   constructor (
     private authService: LoginService,
@@ -36,6 +37,10 @@ export class AppComponent {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  toggleAside() {
+    this.isAsideExpanded = !this.isAsideExpanded;
   }
 
   openSaleModal() {

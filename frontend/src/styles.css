@@ -157,7 +157,7 @@ h1 {
   text-shadow: #706969 2px 2px;
 }
 
-@media screen and (max-width: 767px) {
+@media (width: 768px) {
   h1 i {
     position: relative;
     margin-top: 8px;
